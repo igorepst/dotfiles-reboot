@@ -1,0 +1,4 @@
+# vim: ft=gitconfig
+[include]
+  # Validate: git config --global --includes user.email
+  path = ~/.gitconfig-private
