@@ -107,3 +107,19 @@ if has('langmap') && exists('+langremap')
   " compatible).
   set nolangremap
 endif
+
+let igVimPath = split(&rtp, ',')[0] . '/'
+let autoload_plug_path = igVimPath . 'autoload/plug.vim'
+if empty(glob(autoload_plug_path))
+  silent execute '!curl -fLo ' . autoload_plug_path . ' --create-dirs
+    \ https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim'
+  autocmd VimEnter * PlugInstall --sync | source $MYVIMRC
+endif
+unlet autoload_plug_path
+
+call plug#begin(igVimPath . 'volatile/plugged')
+Plug 'junegunn/fzf.vim'
+Plug 'https://gitlab.com/protesilaos/tempus-themes-vim.git'
+call plug#end()
+
+colorscheme tempus_dawn

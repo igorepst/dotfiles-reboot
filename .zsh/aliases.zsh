@@ -5,3 +5,5 @@ alias v='vim'
 alias vi='vim'
 
 alias gs='git status'
+
+alias sudo='sudo '
