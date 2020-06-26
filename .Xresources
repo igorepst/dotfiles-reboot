@@ -23,6 +23,7 @@ XTerm.vt100.saveLines: 4096
 *color14: #106e8c
 *color15: #eff0f2
 
-XTerm.vt100.faceName: "DejaVuSansMono Nerd Font Mono":style=Book:size=13
-XTerm.vt100.boldFont: "DejaVuSansMono Nerd Font Mono":style=Bold:size=13
+*vt100.faceName: "DejaVuSansMono Nerd Font Mono":style=Book:size=13
+*vt100.boldFont: "DejaVuSansMono Nerd Font Mono":style=Bold:size=13
 XTerm.vt100.selectToClipboard: true
+XTerm.alternateScroll: true

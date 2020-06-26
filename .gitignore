@@ -1,2 +1,7 @@
 .vim/volatile
 .vim/autoload/plug.vim
+.vim/.netrwhist
+.zsh/volatile
+my_pc_is
+bin/*archive
+
