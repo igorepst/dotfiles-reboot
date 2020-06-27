@@ -1,7 +1,5 @@
 #!/bin/bash
 
-mkdir -p ~/.zsh/volatile 
-
 dotfiles_dir="$(
     cd "$(dirname "$0")"
     pwd
@@ -19,16 +17,13 @@ if [ -z $MY_PC_IS ]; then
 	echo 'export MY_PC_IS='$MY_PC_IS>my_pc_is
 fi
 
-if [ ! -f ~/.gitconfig-private ]; then
-	read -p "Git username? " gituser
-	read -p "Git email? " gitemail
-	echo '[User]' >~/.gitconfig-private
-	echo 'name =' $gituser>>~/.gitconfig-private
-	echo 'email =' $gitemail>>~/.gitconfig-private
-fi
+
+recipes_dir="$dotfiles_dir/installRecipes"
+"$recipes_dir/01.packages.sh"
+"$recipes_dir/02.gitconfig-private.sh"
 
 link() {
-    orig_file="$dotfiles_dir/$1"
+    orig_file="$dotfiles_dir/links/$1"
     if [ -n "$2" ]; then
         dest_file="$HOME/$2"
     else
@@ -56,6 +51,9 @@ link ".local/share/fonts"
 link ".gitconfig"
 link "bin"
 
+mkdir -p ~/.zsh/volatile 
+
+
 fc-cache
 
 ln -sf ~/.zsh/plugins/archive/archive ~/bin/archive
@@ -66,7 +64,7 @@ ln -sf ~/.zsh/plugins/archive/unarchive ~/bin/unarchive
 chmod +x ~/bin/unarchive
 
 pmfile=~/.zsh/volatile/pathmarks
-if [ ! -f $pmfile ]; then
-	echo 'dotfiles:' $dotfiles_dir>$pmfile
-	[[ "$MY_PC_IS" = "home" ]] && echo 'inner: /mnt/Inner'>>$pmfile
+if [ ! -f "$pmfile" ]; then
+	echo 'dotfiles:' $dotfiles_dir>"$pmfile"
+	[[ "$MY_PC_IS" = "home" ]] && echo 'inner: /mnt/Inner'>>"$pmfile"
 fi

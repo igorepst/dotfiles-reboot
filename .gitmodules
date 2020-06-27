@@ -1,18 +1,18 @@
-[submodule ".zsh/plugins/powerlevel10k"]
-	path = .zsh/plugins/powerlevel10k
+[submodule "links/.zsh/plugins/powerlevel10k"]
+	path = links/.zsh/plugins/powerlevel10k
 	url = https://github.com/romkatv/powerlevel10k.git
-[submodule ".zsh/plugins/formarks"]
-	path = .zsh/plugins/formarks
+[submodule "links/.zsh/plugins/formarks"]
+	path = links/.zsh/plugins/formarks
 	url = https://github.com/wfxr/formarks.git
-[submodule ".zsh/plugins/archive"]
-	path = .zsh/plugins/archive
+[submodule "links/.zsh/plugins/archive"]
+	path = links/.zsh/plugins/archive
 	url = https://github.com/romkatv/archive.git
-[submodule ".zsh/plugins/zsh-completions"]
-	path = .zsh/plugins/zsh-completions
+[submodule "links/.zsh/plugins/zsh-completions"]
+	path = links/.zsh/plugins/zsh-completions
 	url = https://github.com/zsh-users/zsh-completions.git
-[submodule ".zsh/plugins/zsh-syntax-highlighting"]
-	path = .zsh/plugins/zsh-syntax-highlighting
+[submodule "links/.zsh/plugins/zsh-syntax-highlighting"]
+	path = links/.zsh/plugins/zsh-syntax-highlighting
 	url = https://github.com/zsh-users/zsh-syntax-highlighting.git
-[submodule ".zsh/plugins/zsh-autosuggestions"]
-	path = .zsh/plugins/zsh-autosuggestions
+[submodule "links/.zsh/plugins/zsh-autosuggestions"]
+	path = links/.zsh/plugins/zsh-autosuggestions
 	url = https://github.com/zsh-users/zsh-autosuggestions.git

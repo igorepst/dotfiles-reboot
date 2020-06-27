@@ -1,0 +1,82 @@
+#!/usr/bin/env zsh
+#
+# Extracts the contents of archives.
+#
+# Authors:
+#   Sorin Ionescu <sorin.ionescu@gmail.com>
+#   Roman Perepelitsa <roman.perepelitsa@gmail.com>
+
+'builtin' 'emulate' '-L' 'zsh' '-o' 'no_aliases' '-o' 'no_unset' '-o' 'err_return' '-o' 'pipe_fail'
+
+local remove_archives=0 OPTIND OPTARG
+while getopts ":hr" opt; do
+  case $opt in
+    r)  remove_archives=1;;
+    +r) remove_archives=0;;
+    \?) >&2 echo -E - "unarchive: invalid option: $OPTARG";            return 1;;
+    :)  >&2 echo -E - "unarchive: missing required argument: $OPTARG"; return 1;;
+    *h)
+      >&2 echo -E - 'usage: unarchive [{+|-}r] [archive...]'
+      >&2 echo -E - ''
+      >&2 echo -E - 'options:'
+      >&2 echo -E - '    -r    remove archive(s)'
+      return 0
+   ;;
+  esac
+done
+
+local gzip=${commands[pigz]:-gzip}
+local xz=${commands[pixz]:-xz}
+local bzip2=${commands[lbzip2]:-${commands[pbzip2]:-bzip2}}
+
+local archive
+for archive in "${@:$OPTIND}"; do
+  case $archive in
+    *.tar.gz|*.tgz)
+      tar -xvf $archive --use-compress-program=$gzip;;
+    *.tar.bz2|*.tbz|*.tbz2)
+      tar -xvf $archive --use-compress-program=$bzip2;;
+    *.tar.xz|*.txz)
+      tar -xvf $archive --use-compress-program=$xz;;
+    *.tar.lzma|*.tlz)
+      tar --lzma --help &>/dev/null && tar --lzma -xvf $archive || lzcat $archive | tar -xvf -;;
+    *.tar)
+      tar -xvf $archive;;
+    *.gz)
+      gunzip $archive;;
+    *.bz2)
+      bunzip2 $archive;;
+    *.xz)
+      unxz $archive;;
+    *.lzma)
+      unlzma $archive;;
+    *.Z)
+      uncompress $archive;;
+    *.zip|*.jar)
+      unzip $archive -d ${archive:t:r};;
+    *.rar)
+      ${commands[unrar]:-rar} x -ad $archive;;
+    *.7z)
+      7za x $archive;;
+    *.deb)
+      (
+        archive=${archive:A}
+        mkdir -p ${archive:t:r}/control
+        mkdir -p ${archive:t:r}/data
+        cd ${archive:t:r}
+        ar vx $archive >/dev/null
+        cd control
+        tar xvf ../control.tar.*
+        cd ../data
+        tar xvf ../data.tar.*
+        cd ..
+        rm control.tar.* data.tar.* debian-binary
+      )
+    ;;
+    *)
+      echo -E - "unarchive: unsupported archive type: ${(q+)archive}." >&2
+      return 1
+    ;;
+  esac
+  (( !remove_archives )) || rm $archive
+done

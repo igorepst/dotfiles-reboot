@@ -1,8 +1,0 @@
-zsh
-vim
-awesome
-fzf
-fd
-bat
-xterm
-ripgrep
