@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/usr/bin/env bash
 
 dotfiles_dir="$(
     cd "$(dirname "$0")"
@@ -21,6 +21,7 @@ fi
 recipes_dir="$dotfiles_dir/installRecipes"
 "$recipes_dir/01.packages.sh"
 "$recipes_dir/02.gitconfig-private.sh"
+"$recipes_dir/03.fonts.sh"
 
 link() {
     orig_file="$dotfiles_dir/links/$1"
@@ -47,14 +48,10 @@ link ".vim"
 link ".config/awesome"
 link ".config/bat"
 link ".config/pet"
-link ".local/share/fonts"
 link ".gitconfig"
 link "bin"
 
 mkdir -p ~/.zsh/volatile 
-
-
-fc-cache
 
 ln -sf ~/.zsh/plugins/archive/archive ~/bin/archive
 chmod +x ~/bin/archive
