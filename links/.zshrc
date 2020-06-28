@@ -2,7 +2,7 @@ source ~/.zsh/helpers/get_gh_release.zsh
 get_gh_release --repo knqyf263/pet --arch linux_amd64.tar.gz --toPath . --toCompletionPath misc/completions/zsh
 
 if [[ -r "${XDG_CACHE_HOME:-$HOME/.cache}/p10k-instant-prom:pt-${(%):-%n}.zsh" ]]; then
-  source "${XDG_CACHE_HOME:-$HOME/.cache}/p10k-instant-prompt-${(%):-%n}.zsh"
+    source "${XDG_CACHE_HOME:-$HOME/.cache}/p10k-instant-prompt-${(%):-%n}.zsh"
 fi
 
 source ~/.zsh/p10k.zsh
@@ -19,11 +19,11 @@ source ~/.zsh/pet.zsh
 
 # run command line as user root via sudo:
 function sudo-command-line () {
-    [[ -z $BUFFER ]] && zle up-history
-    if [[ $BUFFER != sudo\ * ]]; then
-        BUFFER="sudo $BUFFER"
-        CURSOR=$(( CURSOR+5 ))
-    fi
+[[ -z $BUFFER ]] && zle up-history
+if [[ $BUFFER != sudo\ * ]]; then
+    BUFFER="sudo $BUFFER"
+    CURSOR=$(( CURSOR+5 ))
+fi
 }
 zle -N sudo-command-line
 #Alt+s
@@ -51,20 +51,20 @@ fpath=($fpath ~/.zsh/plugins/archive ~/.zsh/plugins/zsh-completions/src)
 setopt globdots extendedglob auto_cd
 
 {
-autoload -Uz compinit
-  local zcd=.zsh/volatile/zcompdump
-  local zcdc="$zcd.zwc"
-  # To speed up loading do this once a day:
-  # https://gist.github.com/ctechols/ca1035271ad134841284#gistcomment-2894219
-  # Compile the completion dump to increase startup speed, if dump is newer or doesn't exist,
-  # in the background as this is doesn't affect the current session.
-  if [[ -f "$zcd"(#qN.m+1) ]]; then
-    compinit -i -d "$zcd"
-    { rm -f "$zcdc" && zcompile "$zcd" } &!
-  else
-    compinit -C -d "$zcd"
-    { [[ ! -f "$zcdc" || "$zcd" -nt "$zcdc" ]] && rm -f "$zcdc" && zcompile "$zcd" } &!
-  fi
+    autoload -Uz compinit
+    local zcd=.zsh/volatile/zcompdump
+    local zcdc="$zcd.zwc"
+    # To speed up loading do this once a day:
+    # https://gist.github.com/ctechols/ca1035271ad134841284#gistcomment-2894219
+    # Compile the completion dump to increase startup speed, if dump is newer or doesn't exist,
+    # in the background as this is doesn't affect the current session.
+    if [[ -f "$zcd"(#qN.m+1) ]]; then
+        compinit -i -d "$zcd"
+        { rm -f "$zcdc" && zcompile "$zcd" } &!
+        else
+            compinit -C -d "$zcd"
+            { [[ ! -f "$zcdc" || "$zcd" -nt "$zcdc" ]] && rm -f "$zcdc" && zcompile "$zcd" } &!
+    fi
 }
 
 # Ctrl+S will no longer freeze the terminal

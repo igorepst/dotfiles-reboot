@@ -21,6 +21,7 @@ checkP xterm
 checkP terminus-font
 # Convert TTF to OTF for pango
 checkP fontforge
+checkP python
 
 if [ ! -z "$pnames" ]; then
     echo 'Installing the following packages:'
