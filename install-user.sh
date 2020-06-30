@@ -30,7 +30,9 @@ function doWork(){
     fi
     export MY_PC_IS
 
-
+#Print header and run automatically
+#echo
+#echo '*********************'
     local RECIPES_DIR="${DOTFILES_DIR}/installRecipes"
     "${RECIPES_DIR}/01.packages.sh"
     "${RECIPES_DIR}/02.gitconfig-private.sh"

@@ -3,10 +3,11 @@
 pnames=""
 
 function checkP() {
-    /usr/bin/pacman -Qs '^'$1'$' >/dev/null && echo "$1 is installed" || pnames="$pnames $1"
+    /usr/bin/pacman -Qs '^'$1'$' >/dev/null && echo "${GREEN}*${RESET} $1 ${GREEN}is installed${RESET}" || pnames="${pnames} $1"
 }
 
-echo 'Checking prerequisites packages to install:'
+echo ${GREEN}'Checking prerequisites packages to install:'${RESET}
+echo
 checkP zsh
 checkP ripgrep
 checkP fzf
@@ -19,14 +20,15 @@ checkP awesome
 checkP gvim
 checkP xterm
 checkP terminus-font
+checkP curl
 # Convert TTF to OTF for pango
 checkP fontforge
 checkP python
 
-if [ ! -z "$pnames" ]; then
-    echo 'Installing the following packages:'
-    echo $pnames
-    sudo /usr/bin/pacman -Sy $pnames --noconfirm
+if [ ! -z "${pnames}" ]; then
+    echo ${RED}'Installing the following packages:'${RESET}
+    echo ${pnames}
+    yes | LC_ALL=en_US.UTF-8 sudo /usr/bin/pacman -Sy ${pnames}
 else
-    echo 'All the packages are installed'
+    echo ${GREEN}'All the packages are installed'${RESET}
 fi

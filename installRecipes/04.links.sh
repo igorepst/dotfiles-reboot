@@ -1,19 +1,21 @@
 #!/usr/bin/env bash
 
 function link() {
-    local orig_file="$DOTFILES_DIR/links/$1"
+    echo ${GREEN}'Setting links'${RESET}
+    echo
+    local orig_file="${DOTFILES_DIR}/links/$1"
     if [ -n "$2" ]; then
-        dest_file="$HOME/$2"
+        dest_file="${HOME}/$2"
     else
-        dest_file="$HOME/$1"
+        dest_file="${HOME}/$1"
     fi
 
-    mkdir -p "$(dirname "$orig_file")"
-    mkdir -p "$(dirname "$dest_file")"
+    mkdir -p "$(dirname "${orig_file}")"
+    mkdir -p "$(dirname "${dest_file}")"
 
-    rm -rf "$dest_file"
-    ln -s "$orig_file" "$dest_file"
-    echo "$dest_file -> $orig_file"
+    rm -rf "${dest_file}"
+    ln -s "${orig_file}" "${dest_file}"
+    echo "${dest_file} -> ${orig_file}"
 }
 
 function doWork(){
