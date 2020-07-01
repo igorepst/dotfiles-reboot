@@ -4,12 +4,12 @@ function doWork(){
     local tmpdir=$(mktemp -d) 
     echo ${GREEN}'Installing fonts:'${RESET}
     echo
-    echo ${RED}'Installing DejaVu Sans Mono Nerd Font Complete Mono.ttf'${RESET}
+    echo ${GREEN}'Installing DejaVu Sans Mono Nerd Font Complete Mono.ttf'${RESET}
     curl -o "${tmpdir}/DejaVu Sans Mono Nerd Font Complete Mono.ttf" -L -O https://github.com/ryanoasis/nerd-fonts/raw/master/patched-fonts/DejaVuSansMono/Regular/complete/DejaVu%20Sans%20Mono%20Nerd%20Font%20Complete%20Mono.ttf
-    echo ${RED}'Installing DejaVu Sans Mono Bold Nerd Font Complete Mono.ttf'${RESET}
+    echo ${GREEN}'Installing DejaVu Sans Mono Bold Nerd Font Complete Mono.ttf'${RESET}
     curl -o "${tmpdir}/DejaVu Sans Mono Bold Nerd Font Complete Mono.ttf" -L -O https://github.com/ryanoasis/nerd-fonts/raw/master/patched-fonts/DejaVuSansMono/Bold/complete/DejaVu%20Sans%20Mono%20Bold%20Nerd%20Font%20Complete%20Mono.ttf
 
-    echo ${RED}'Converting TTF to OTF for pango'${RESET}
+    echo ${GREEN}'Converting TTF to OTF for pango'${RESET}
     local convertScript=convertFonts.py
     cat >"${tmpdir}/${convertScript}" <<"EOF"
 import fontforge
@@ -20,7 +20,7 @@ for font in fonts:
         f.generate(font[:-3] + 'otf')
 EOF
     pushd "${tmpdir}" >/dev/null
-    python ./"${convertScript}"
+    python ./"${convertScript}" &>/dev/null
     popd >/dev/null
     local fdir=~/.local/share/fonts
     mkdir -p "${fdir}"

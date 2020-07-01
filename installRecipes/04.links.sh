@@ -1,8 +1,6 @@
 #!/usr/bin/env bash
 
 function link() {
-    echo ${GREEN}'Setting links'${RESET}
-    echo
     local orig_file="${DOTFILES_DIR}/links/$1"
     if [ -n "$2" ]; then
         dest_file="${HOME}/$2"
@@ -19,6 +17,8 @@ function link() {
 }
 
 function doWork(){
+    echo ${GREEN}'Setting links'${RESET}
+    echo
     link ".zsh"
     link ".zprofile"
     link ".zshrc"

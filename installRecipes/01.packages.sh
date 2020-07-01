@@ -21,6 +21,7 @@ checkP gvim
 checkP xterm
 checkP terminus-font
 checkP curl
+checkP xorg-xrdb
 # Convert TTF to OTF for pango
 checkP fontforge
 checkP python
@@ -30,5 +31,5 @@ if [ ! -z "${pnames}" ]; then
     echo ${pnames}
     yes | LC_ALL=en_US.UTF-8 sudo /usr/bin/pacman -Sy ${pnames}
 else
-    echo ${GREEN}'All the packages are installed'${RESET}
+    echo ${GREEN}'All packages are installed'${RESET}
 fi
