@@ -8,8 +8,8 @@ set suffixes-=.obj
 
 " Make shift-insert work like in Xterm
 if has('gui_running')
-  map <S-Insert> <MiddleMouse>
-  map! <S-Insert> <MiddleMouse>
+    map <S-Insert> <MiddleMouse>
+    map! <S-Insert> <MiddleMouse>
 endif
 
 
@@ -30,7 +30,7 @@ set scrolloff=5
 
 " Do incremental searching when it's possible to timeout.
 if has('reltime')
-  set incsearch
+    set incsearch
 endif
 
 " Do not recognize octal numbers for Ctrl-A and Ctrl-X, most users find it
@@ -39,7 +39,7 @@ set nrformats-=octal
 
 " For Win32 GUI: remove 't' flag from 'guioptions': no tearoff menu entries.
 if has('win32')
-  set guioptions-=t
+    set guioptions-=t
 endif
 
 " Don't use Ex mode, use Q for formatting.
@@ -56,39 +56,39 @@ inoremap <C-U> <C-G>u<C-U>
 " Only xterm can grab the mouse events when using the shift key, for other
 " terminals use ":", select text and press Esc.
 if has('mouse')
-  if &term =~ 'xterm'
-    set mouse=a
-  else
-    set mouse=nvi
-  endif
+    if &term =~ 'xterm'
+        set mouse=a
+    else
+        set mouse=nvi
+    endif
 endif
 
 
 " Only do this part when Vim was compiled with the +eval feature.
 if 1
 
-  " Enable file type detection.
-  " Use the default filetype settings, so that mail gets 'tw' set to 72,
-  " 'cindent' is on in C files, etc.
-  " Also load indent files, to automatically do language-dependent indenting.
-  " Revert with ":filetype off".
-  filetype plugin indent on
+    " Enable file type detection.
+    " Use the default filetype settings, so that mail gets 'tw' set to 72,
+    " 'cindent' is on in C files, etc.
+    " Also load indent files, to automatically do language-dependent indenting.
+    " Revert with ":filetype off".
+    filetype plugin indent on
 
-  " Put these in an autocmd group, so that you can revert them with:
-  " ":augroup vimStartup | au! | augroup END"
-  augroup vimStartup
-    au!
+    " Put these in an autocmd group, so that you can revert them with:
+    " ":augroup vimStartup | au! | augroup END"
+    augroup vimStartup
+        au!
 
-    " When editing a file, always jump to the last known cursor position.
-    " Don't do it when the position is invalid, when inside an event handler
-    " (happens when dropping a file on gvim) and for a commit message (it's
-    " likely a different one than last time).
-    autocmd BufReadPost *
-      \ if line("'\"") >= 1 && line("'\"") <= line("$") && &ft !~# 'commit'
-      \ |   exe "normal! g`\""
-      \ | endif
+        " When editing a file, always jump to the last known cursor position.
+        " Don't do it when the position is invalid, when inside an event handler
+        " (happens when dropping a file on gvim) and for a commit message (it's
+        " likely a different one than last time).
+        autocmd BufReadPost *
+                    \ if line("'\"") >= 1 && line("'\"") <= line("$") && &ft !~# 'commit'
+                    \ |   exe "normal! g`\""
+                    \ | endif
 
-  augroup END
+    augroup END
 
 endif
 
@@ -97,23 +97,23 @@ endif
 " Only define it when not defined already.
 " Revert with: ":delcommand DiffOrig".
 if !exists(":DiffOrig")
-  command DiffOrig vert new | set bt=nofile | r ++edit # | 0d_ | diffthis
-		  \ | wincmd p | diffthis
+    command DiffOrig vert new | set bt=nofile | r ++edit # | 0d_ | diffthis
+                \ | wincmd p | diffthis
 endif
 
 if has('langmap') && exists('+langremap')
-  " Prevent that the langmap option applies to characters that result from a
-  " mapping.  If set (default), this may break plugins (but it's backward
-  " compatible).
-  set nolangremap
+    " Prevent that the langmap option applies to characters that result from a
+    " mapping.  If set (default), this may break plugins (but it's backward
+    " compatible).
+    set nolangremap
 endif
 
 let igVimPath = split(&rtp, ',')[0] . '/'
 let autoload_plug_path = igVimPath . 'autoload/plug.vim'
 if empty(glob(autoload_plug_path))
-  silent execute '!curl -fLo ' . autoload_plug_path . ' --create-dirs
-    \ https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim'
-  autocmd VimEnter * PlugInstall --sync | source $MYVIMRC
+    silent execute '!curl -fLo ' . autoload_plug_path . ' --create-dirs
+                \ https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim'
+    autocmd VimEnter * PlugInstall --sync | source $MYVIMRC
 endif
 unlet autoload_plug_path
 
@@ -122,7 +122,16 @@ Plug 'junegunn/fzf.vim'
 Plug 'https://gitlab.com/protesilaos/tempus-themes-vim.git'
 call plug#end()
 
-colorscheme tempus_dawn
+if $TERM=~'linux'
+    colorscheme default
+else
+    colorscheme tempus_dawn
+    if $TERM=~'xterm'
+        " see modifyOtherKeys
+        let &t_TI = ""
+        let &t_TE = ""
+    endif
+endif
 
 "set shortmess-=WIF
 set shortmess-=I
@@ -157,24 +166,24 @@ hi User1 ctermbg=lightgreen ctermfg=black guibg=lightgreen guifg=black
 hi User9 ctermbg=black ctermfg=white guibg=black guifg=white
 
 function! StatuslineMode()
-  let l:mode=mode()
-  if l:mode==#"n"
-    return "NORMAL"
-  elseif l:mode==?"v"
-    return "VISUAL"
-  elseif l:mode==#"i"
-    return "INSERT"
-  elseif l:mode==#"R"
-    return "REPLACE"
-  elseif l:mode==?"s"
-    return "SELECT"
-  elseif l:mode==#"t"
-    return "TERMINAL"
-  elseif l:mode==#"c"
-    return "COMMAND"
-  elseif l:mode==#"!"
-    return "SHELL"
-  endif
+    let l:mode=mode()
+    if l:mode==#"n"
+        return "NORMAL"
+    elseif l:mode==?"v"
+        return "VISUAL"
+    elseif l:mode==#"i"
+        return "INSERT"
+    elseif l:mode==#"R"
+        return "REPLACE"
+    elseif l:mode==?"s"
+        return "SELECT"
+    elseif l:mode==#"t"
+        return "TERMINAL"
+    elseif l:mode==#"c"
+        return "COMMAND"
+    elseif l:mode==#"!"
+        return "SHELL"
+    endif
 endfunction
 
 
@@ -186,4 +195,7 @@ set shiftwidth=4
 set expandtab
 
 let g:netrw_home=igVimPath . 'volatile'
-set viminfofile=~/.vim/volatile/.viminfo 
+set viminfofile=~/.vim/volatile/.viminfo  
+
+
+

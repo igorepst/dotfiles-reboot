@@ -4,3 +4,6 @@ XTerm*vt100.faceName: "DejaVuSansMono Nerd Font Mono":style=Book:size=13
 XTerm*vt100.boldFont: "DejaVuSansMono Nerd Font Mono":style=Bold:size=13
 XTerm.vt100.selectToClipboard: true
 XTerm.alternateScroll: true
+XTerm.vt100.metaSendsEscape: true
+! Be consistent when connecting to other machines (SSH)
+XTerm.metaSendsEscape: true

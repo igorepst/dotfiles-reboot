@@ -9,7 +9,7 @@ source ~/.zsh/p10k.zsh
 source ~/.zsh/plugins/powerlevel10k/powerlevel10k.zsh-theme
 
 #Alt+g
-export FZF_MARKS_JUMP='ç'
+export FZF_MARKS_JUMP='g'
 export PATHMARKS_FILE=~/.zsh/volatile/pathmarks
 source ~/.zsh/plugins/formarks/formarks.plugin.zsh
 
@@ -28,17 +28,17 @@ fi
 }
 zle -N sudo-command-line
 #Alt+s
-bindkey 'ó' sudo-command-line
+bindkey 's' sudo-command-line
 
 autoload -Uz copy-earlier-word edit-command-line
 zle -N copy-earlier-word
 #Alt+m
-bindkey 'í' copy-earlier-word
+bindkey 'm' copy-earlier-word
 zle -N edit-command-line
 #Alt+e
-bindkey 'å' edit-command-line
+bindkey 'e' edit-command-line
 #Alt+.
-bindkey '®' insert-last-word
+bindkey '.' insert-last-word
 
 HISTFILE=~/.zsh/volatile/zsh_history
 HISTSIZE=10000000
