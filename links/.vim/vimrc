@@ -1,17 +1,19 @@
 filetype plugin indent on
 syntax enable
 
+" Backspacing over autoindent, line breaks, start of insert
 set backspace=indent,eol,start
+" Allow cursor to move to the previous/next line with arrows
+set whichwrap=<,>,[,]
+" Ignore files with these extensions for file name completion
 set suffixes+=.aux,.bbl,.blg,.brf,.cb,.dvi,.idx,.ilg,.ind,.inx,.jpg,.log,.out,.png,.toc
 set suffixes-=.h
-set suffixes-=.obj
 
 " Make shift-insert work like in Xterm
 if has('gui_running')
     map <S-Insert> <MiddleMouse>
     map! <S-Insert> <MiddleMouse>
 endif
-
 
 set history=200		" keep 200 lines of command line history
 set ruler		" show the cursor position all the time
@@ -134,7 +136,7 @@ else
 endif
 
 "set shortmess-=WIF
-set shortmess-=I
+set shortmess+=I
 set noshowmode
 set noruler
 set laststatus=2
