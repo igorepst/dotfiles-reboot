@@ -1,121 +1,87 @@
 filetype plugin indent on
 syntax enable
 
-" Backspacing over autoindent, line breaks, start of insert
+set autoindent
+" Allow backspacing over everything in insert mode.
 set backspace=indent,eol,start
-" Allow cursor to move to the previous/next line with arrows
-set whichwrap=<,>,[,]
-" Ignore files with these extensions for file name completion
-set suffixes+=.aux,.bbl,.blg,.brf,.cb,.dvi,.idx,.ilg,.ind,.inx,.jpg,.log,.out,.png,.toc
-set suffixes-=.h
 
-" Make shift-insert work like in Xterm
-if has('gui_running')
-    map <S-Insert> <MiddleMouse>
-    map! <S-Insert> <MiddleMouse>
-endif
+" Indent with spaces instead of tabs
+set smarttab
+set tabstop=8
+set softtabstop=4
+set shiftwidth=4
+set expandtab
 
-set history=200		" keep 200 lines of command line history
-set ruler		" show the cursor position all the time
-set showcmd		" display incomplete commands
-set wildmenu		" display completion matches in a status line
+" Timeout for mappings
+set timeout
+set timeoutlen=500
+" Timeout for key codes
+set ttimeout
+set ttimeoutlen=50
 
-set ttimeout		" time out for key codes
-set ttimeoutlen=100	" wait up to 100ms after Esc for special key
+set incsearch
+set hlsearch
 
-" Show @@@ in the last line if it is truncated.
-set display=truncate
-
-" Show a few lines of context around the cursor.  Note that this makes the
-" text scroll if you mouse-click near the start or end of the window.
-set scrolloff=5
-
-" Do incremental searching when it's possible to timeout.
-if has('reltime')
-    set incsearch
-endif
-
-" Do not recognize octal numbers for Ctrl-A and Ctrl-X, most users find it
-" confusing.
+" Do not recognize octal numbers for Ctrl-A and Ctrl-X
 set nrformats-=octal
 
-" For Win32 GUI: remove 't' flag from 'guioptions': no tearoff menu entries.
-if has('win32')
-    set guioptions-=t
-endif
-
-" Don't use Ex mode, use Q for formatting.
-" Revert with ":unmap Q".
-map Q gq
-
-" CTRL-U in insert mode deletes a lot.  Use CTRL-G u to first break undo,
-" so that you can undo CTRL-U after inserting a line break.
-" Revert with ":iunmap <C-U>".
-inoremap <C-U> <C-G>u<C-U>
-
-" In many terminal emulators the mouse works just fine.  By enabling it you
-" can position the cursor, Visually select and scroll with the mouse.
-" Only xterm can grab the mouse events when using the shift key, for other
-" terminals use ":", select text and press Esc.
-if has('mouse')
-    if &term =~ 'xterm'
-        set mouse=a
-    else
-        set mouse=nvi
-    endif
-endif
-
-
-" Only do this part when Vim was compiled with the +eval feature.
-if 1
-
-    " Enable file type detection.
-    " Use the default filetype settings, so that mail gets 'tw' set to 72,
-    " 'cindent' is on in C files, etc.
-    " Also load indent files, to automatically do language-dependent indenting.
-    " Revert with ":filetype off".
-    filetype plugin indent on
-
-    " Put these in an autocmd group, so that you can revert them with:
-    " ":augroup vimStartup | au! | augroup END"
-    augroup vimStartup
-        au!
-
-        " When editing a file, always jump to the last known cursor position.
-        " Don't do it when the position is invalid, when inside an event handler
-        " (happens when dropping a file on gvim) and for a commit message (it's
-        " likely a different one than last time).
-        autocmd BufReadPost *
-                    \ if line("'\"") >= 1 && line("'\"") <= line("$") && &ft !~# 'commit'
-                    \ |   exe "normal! g`\""
-                    \ | endif
-
-    augroup END
-
-endif
-
-" Convenient command to see the difference between the current buffer and the
-" file it was loaded from, thus the changes you made.
-" Only define it when not defined already.
-" Revert with: ":delcommand DiffOrig".
-if !exists(":DiffOrig")
-    command DiffOrig vert new | set bt=nofile | r ++edit # | 0d_ | diffthis
-                \ | wincmd p | diffthis
-endif
-
-if has('langmap') && exists('+langremap')
-    " Prevent that the langmap option applies to characters that result from a
-    " mapping.  If set (default), this may break plugins (but it's backward
-    " compatible).
-    set nolangremap
-endif
+set history=1000
+set clipboard=unnamedplus
 
 let igVimPath = split(&rtp, ',')[0] . '/'
+let g:netrw_home=igVimPath . 'volatile'
+set viminfo='20,<100,:100,%,n~/.vim/volatile/.viminfo
+
+set scrolloff=5
+set sidescroll=1
+set sidescrolloff=5
+
+set mouse=a
+set showcmd
+" Wrap long lines at the end of a word
+set linebreak
+" Left/right movement to the prev./next line also
+set whichwrap=b,s,<,>,[,]
+set listchars=tab:>\ ,trail:-,extends:>,precedes:<,nbsp:+,eol:$
+" Show @@@ in the last line if it is truncated.
+set display=truncate
+" Highlight strings inside C comments
+let c_comment_strings=1
+
+set wildmenu
+set wildmode=longest:full,full
+
+" Use Tab in mappings
+set wildcharm=<Tab>
+
+set ignorecase
+" Case insensitive completion of file/dirs
+set wildignorecase
+
+" Map Q to q and Q! to q!
+command! -bang  Q q<bang>
+
+" Break undo sequence on Space, Tab and Enter
+inoremap <Space> <Space><C-g>u
+inoremap <Tab> <Tab><C-g>u
+inoremap <CR> <CR><C-g>u
+" Make it possible to undo CTRL-U in insert mode
+inoremap <C-U> <C-G>u<C-U>
+
+" Diff between written and current states
+command! DiffOrig vert new | set bt=nofile | r ++edit # | 0d_ | diffthis | wincmd p | diffthis
+
+set suffixes+=.aux,.bbl,.blg,.brf,.cb,.dvi,.idx,.ilg,.ind,.inx,.jpg,.log,.out,.png,.toc
+set suffixes-=.h,.obj
+
+nnoremap <Space> <nop>
+let mapleader="\<Space>"
+
 let autoload_plug_path = igVimPath . 'autoload/plug.vim'
 if empty(glob(autoload_plug_path))
-    silent execute '!curl -fLo ' . autoload_plug_path . ' --create-dirs
-                \ https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim'
-    autocmd VimEnter * PlugInstall --sync | source $MYVIMRC
+  silent execute '!curl -fLo ' . autoload_plug_path . ' --create-dirs
+    \ https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim'
+  autocmd VimEnter * PlugInstall --sync | source $MYVIMRC
 endif
 unlet autoload_plug_path
 
@@ -135,8 +101,24 @@ else
     endif
 endif
 
-"set shortmess-=WIF
-set shortmess+=I
+let g:terminal_color_0  = '#4e4e4e'
+let g:terminal_color_1  = '#d68787'
+let g:terminal_color_2  = '#5f865f'
+let g:terminal_color_3  = '#d8af5f'
+let g:terminal_color_4  = '#85add4'
+let g:terminal_color_5  = '#d7afaf'
+let g:terminal_color_6  = '#87afaf'
+let g:terminal_color_7  = '#d0d0d0'
+let g:terminal_color_8  = '#626262'
+let g:terminal_color_9  = '#d75f87'
+let g:terminal_color_10 = '#87af87'
+let g:terminal_color_11 = '#ffd787'
+let g:terminal_color_12 = '#add4fb'
+let g:terminal_color_13 = '#ffafaf'
+let g:terminal_color_14 = '#87d7d7'
+let g:terminal_color_15 = '#e4e4e4'
+
+set shortmess+=Ia
 set noshowmode
 set noruler
 set laststatus=2
@@ -188,16 +170,51 @@ function! StatuslineMode()
     endif
 endfunction
 
+augroup vimStartup
+        au!
 
-" Indent with spaces instead of tabs
-set smarttab
-set tabstop=8
-set softtabstop=4
-set shiftwidth=4
-set expandtab
+        " When editing a file, always jump to the last known cursor position.
+        " Don't do it when the position is invalid, when inside an event handler
+        " (happens when dropping a file on gvim) and for a commit message (it's
+        " likely a different one than last time).
+        autocmd BufReadPost *
+                    \ if line("'\"") >= 1 && line("'\"") <= line("$") && &ft !~# 'commit'
+                    \ |   exe "normal! g`\""
+                    \ | endif
 
-let g:netrw_home=igVimPath . 'volatile'
-set viminfofile=~/.vim/volatile/.viminfo  
+    augroup END
 
 
+let g:fzfIgMenu_dict = {
+            \ "Toggle list": #{f: "call ighelper#ToggleBoolOpt('list')", k: "<Leader>tl"},
+            \ "Toggle wrap": #{f: "call ighelper#ToggleBoolOpt('wrap')",},
+            \ "Toggle hlsearch": #{f: "call ighelper#ToggleBoolOpt('hlsearch')",},
+            \ "Convert to DOS": #{f: "set ff=dos",},
+            \ "Convert to Unix": #{f: "set ff=unix",},
+            \ "Search in runtime": #{f: "call SearchInRuntime()",},
+            \ "Find file in runtime": #{f: "call FindFileInRuntime()",},
+            \ "Format JSON": #{f: "%!python -m json.tool",},
+            \ }
+let g:fzfIgMenu_createCmd = 1
+let g:fzfIgMenu_cmdPrefix = 'Ig'
 
+nmap <Leader><F2> <Plug>FzfIgMenuOpen
+
+set hidden
+set autoread
+
+function! SearchInRuntime() abort
+    call fzf#vim#grep("rg --column --line-number --no-heading --color=always '' " . g:igVimPath . ' /usr/share/vim', 1) 
+endfunction
+
+function! FindFileInRuntime() abort
+    call fzf#run({'sink': 'e', 'source': "fd . " . g:igVimPath . ' /usr/share/vim'})
+endfunction
+
+packadd! matchit
+
+" Make shift-insert work like in Xterm
+if has('gui_running')
+    map <S-Insert> <MiddleMouse>
+    map! <S-Insert> <MiddleMouse>
+endif
