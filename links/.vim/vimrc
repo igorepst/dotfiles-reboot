@@ -29,8 +29,10 @@ set history=1000
 set clipboard=unnamedplus
 
 let igVimPath = split(&rtp, ',')[0] . '/'
-let g:netrw_home=igVimPath . 'volatile'
-set viminfo='20,<100,:100,%,n~/.vim/volatile/.viminfo
+let igVimPathVolatile=igVimPath . 'volatile'
+let g:netrw_home=igVimPathVolatile
+" set doesn't do path expansion
+execute "set viminfo='20,<100,:100,%,n" . igVimPathVolatile . '/.viminfo'
 
 set scrolloff=5
 set sidescroll=1
@@ -59,7 +61,9 @@ set ignorecase
 set wildignorecase
 
 " Map Q to q and Q! to q!
-command! -bang  Q q<bang>
+command! -bang Q q<bang>
+" Don't use Ex mode, use Q for formatting.
+nnoremap Q gq
 
 " Break undo sequence on Space, Tab and Enter
 inoremap <Space> <Space><C-g>u
@@ -85,7 +89,7 @@ if empty(glob(autoload_plug_path))
 endif
 unlet autoload_plug_path
 
-call plug#begin(igVimPath . 'volatile/plugged')
+call plug#begin(igVimPathVolatile . '/plugged')
 Plug 'junegunn/fzf.vim'
 Plug 'https://gitlab.com/protesilaos/tempus-themes-vim.git'
 call plug#end()
@@ -101,89 +105,22 @@ else
     endif
 endif
 
-let g:terminal_color_0  = '#4e4e4e'
-let g:terminal_color_1  = '#d68787'
-let g:terminal_color_2  = '#5f865f'
-let g:terminal_color_3  = '#d8af5f'
-let g:terminal_color_4  = '#85add4'
-let g:terminal_color_5  = '#d7afaf'
-let g:terminal_color_6  = '#87afaf'
-let g:terminal_color_7  = '#d0d0d0'
-let g:terminal_color_8  = '#626262'
-let g:terminal_color_9  = '#d75f87'
-let g:terminal_color_10 = '#87af87'
-let g:terminal_color_11 = '#ffd787'
-let g:terminal_color_12 = '#add4fb'
-let g:terminal_color_13 = '#ffafaf'
-let g:terminal_color_14 = '#87d7d7'
-let g:terminal_color_15 = '#e4e4e4'
-
 set shortmess+=Ia
+set shortmess-=S
 set noshowmode
 set noruler
 set laststatus=2
-set statusline=
-set statusline+=%1*
-set statusline+=%{StatuslineMode()}
-set statusline+=%9*
-set statusline+=\ 
-set statusline+=%m
-set statusline+=\ 
-set statusline+=%r
-set statusline+=\ 
-set statusline+=%F
-set statusline+=%=
-set statusline+=%y
-set statusline+=\ 
-set statusline+=%{&ff}
-set statusline+=\ 
-set statusline+=%{strlen(&fenc)?&fenc:'none'}
-set statusline+=\ 
-set statusline+=%c
-set statusline+=:
-set statusline+=%l
-set statusline+=/
-set statusline+=%L
-set statusline+=\ 
-set statusline+=%P
-hi User1 ctermbg=lightgreen ctermfg=black guibg=lightgreen guifg=black
-hi User9 ctermbg=black ctermfg=white guibg=black guifg=white
 
-function! StatuslineMode()
-    let l:mode=mode()
-    if l:mode==#"n"
-        return "NORMAL"
-    elseif l:mode==?"v"
-        return "VISUAL"
-    elseif l:mode==#"i"
-        return "INSERT"
-    elseif l:mode==#"R"
-        return "REPLACE"
-    elseif l:mode==?"s"
-        return "SELECT"
-    elseif l:mode==#"t"
-        return "TERMINAL"
-    elseif l:mode==#"c"
-        return "COMMAND"
-    elseif l:mode==#"!"
-        return "SHELL"
-    endif
-endfunction
+" Define one augroup for all autocommands
+augroup ig_au
+    autocmd!
+augroup END
 
-augroup vimStartup
-        au!
-
-        " When editing a file, always jump to the last known cursor position.
-        " Don't do it when the position is invalid, when inside an event handler
-        " (happens when dropping a file on gvim) and for a commit message (it's
-        " likely a different one than last time).
-        autocmd BufReadPost *
-                    \ if line("'\"") >= 1 && line("'\"") <= line("$") && &ft !~# 'commit'
-                    \ |   exe "normal! g`\""
-                    \ | endif
-
-    augroup END
-
+" Always jump to the last known cursor position.
+autocmd ig_au BufReadPost *
+            \ if line("'\"") >= 1 && line("'\"") <= line("$") && &ft !~# 'commit'
+            \ |   exe "normal! g`\""
+            \ | endif
 
 let g:fzfIgMenu_dict = {
             \ "Toggle list": #{f: "call ighelper#ToggleBoolOpt('list')", k: "<Leader>tl"},
@@ -202,7 +139,7 @@ nmap <Leader><F2> <Plug>FzfIgMenuOpen
 
 set hidden
 set autoread
-
+ 
 function! SearchInRuntime() abort
     call fzf#vim#grep("rg --column --line-number --no-heading --color=always '' " . g:igVimPath . ' /usr/share/vim', 1) 
 endfunction
@@ -211,10 +148,13 @@ function! FindFileInRuntime() abort
     call fzf#run({'sink': 'e', 'source': "fd . " . g:igVimPath . ' /usr/share/vim'})
 endfunction
 
+" matchit.vim - % to jump between pairs
 packadd! matchit
+let b:match_ignorecase = 1
 
 " Make shift-insert work like in Xterm
 if has('gui_running')
     map <S-Insert> <MiddleMouse>
     map! <S-Insert> <MiddleMouse>
 endif
+
