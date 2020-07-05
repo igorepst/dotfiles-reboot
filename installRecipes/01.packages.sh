@@ -22,6 +22,7 @@ checkP xterm
 checkP terminus-font
 checkP curl
 checkP xorg-xrdb
+checkP tmux
 # Convert TTF to OTF for pango
 checkP fontforge
 checkP python

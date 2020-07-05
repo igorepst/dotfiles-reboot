@@ -3,21 +3,22 @@
 function doWork(){
     echo ${GREEN}'Finishing installation'${RESET}
     echo
-    local zsh_plugins=~/.zsh/plugins
-    ln -sf ${zsh_plugins}/archive/archive ~/bin/archive
+    local ZSH_PLUGINS=~/.zsh/plugins
+    ln -sf "${ZSH_PLUGINS}"/archive/archive ~/bin/archive
     chmod +x ~/bin/archive
-    ln -sf ${zsh_plugins}/archive/lsarchive ~/bin/lsarchive
+    ln -sf "${ZSH_PLUGINS}"/archive/lsarchive ~/bin/lsarchive
     chmod +x ~/bin/lsarchive
-    ln -sf ${zsh_plugins}/archive/unarchive ~/bin/unarchive
+    ln -sf "${ZSH_PLUGINS}"/archive/unarchive ~/bin/unarchive
     chmod +x ~/bin/unarchive
 
-    local zsh_volatile=~/.zsh/volatile
-    mkdir -p {$zsh_volatile}
-    [ -f ~/.zsh_history ] && mv ~/.zsh_history ${zsh_volatile}/zsh_history
-    local pmfile=${zsh_volatile}/pathmarks
-    if [ ! -f "${pmfile}" ]; then
-        echo 'dotfiles:' ${DOTFILES_DIR}>"${pmfile}"
-        [[ "${MY_PC_IS}" = "home" ]] && echo 'inner: /mnt/Inner'>>"${pmfile}"
+    local ZSH_VOLATILE=~/.zsh/volatile
+    mkdir -p "${ZSH_VOLATILE}"
+    [ -f ~/.zsh_history ] && mv ~/.zsh_history "${ZSH_VOLATILE}"/zsh_history
+    local PMFILE="${ZSH_VOLATILE}"/pathmarks
+    [ -f ~/.pathmarks ] && mv ~/.pathmarks "${PMFILE}"
+    if [ ! -f "${PMFILE}" ]; then
+        echo 'dotfiles:' ${DOTFILES_DIR}>"${PMFILE}"
+        [[ "${MY_PC_IS}" = "home" ]] && echo 'inner: /mnt/Inner'>>"${PMFILE}"
     fi
 }
 

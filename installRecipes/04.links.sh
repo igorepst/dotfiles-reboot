@@ -30,6 +30,7 @@ function doWork(){
     link ".config/pet"
     link ".gitconfig"
     link "bin"
+    link ".tmux.conf"
 }
 
 doWork

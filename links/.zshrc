@@ -53,7 +53,7 @@ setopt globdots extendedglob auto_cd
 
 {
     autoload -Uz compinit
-    local zcd=.zsh/volatile/zcompdump
+    local zcd=~/.zsh/volatile/zcompdump
     local zcdc="$zcd.zwc"
     # To speed up loading do this once a day:
     # https://gist.github.com/ctechols/ca1035271ad134841284#gistcomment-2894219
