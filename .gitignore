@@ -1,6 +1,7 @@
 links/.vim/volatile
 links/.vim/autoload/plug.vim
 links/.zsh/volatile
+links/.config/vifm/vifminfo
 my_pc_is
 links/bin/*archive
 

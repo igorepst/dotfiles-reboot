@@ -1,0 +1,4 @@
+# Enables searching hidden files in ripgrep ignoring VC dirs
+.git/
+.svn/
+.hg/

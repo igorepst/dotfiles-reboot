@@ -19,6 +19,10 @@ function link() {
 function doWork(){
     echo ${GREEN}'Setting links'${RESET}
     echo
+    if [[ -z "${DOTFILES_DIR}" ]]; then
+	echo ${RED}'Dotfiles directory is not defined. Aborting...'${RESET}
+	exit 1
+    fi
     link ".zsh"
     link ".zprofile"
     link ".zshrc"
@@ -28,6 +32,9 @@ function doWork(){
     link ".config/awesome"
     link ".config/bat"
     link ".config/pet"
+    link ".config/mpv"
+    link ".config/ripgrep"
+    link ".config/vifm"
     link ".gitconfig"
     link "bin"
     link ".tmux.conf"
