@@ -128,6 +128,7 @@ let g:fzfIgMenu_dict = {
             \ "Toggle hlsearch": #{f: "call ighelper#ToggleBoolOpt('hlsearch')",},
             \ "Convert to DOS": #{f: "set ff=dos",},
             \ "Convert to Unix": #{f: "set ff=unix",},
+            \ "Convert to UTF-8": #{f: "set fileencoding=utf8",},
             \ "Search in runtime": #{f: "call SearchInRuntime()",},
             \ "Find file in runtime": #{f: "call FindFileInRuntime()",},
             \ "Format JSON": #{f: "%!python -m json.tool",},
@@ -149,6 +150,7 @@ function! FindFileInRuntime() abort
 endfunction
 
 " matchit.vim - % to jump between pairs
+set matchpairs+=<:> 
 packadd! matchit
 let b:match_ignorecase = 1
 

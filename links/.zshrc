@@ -16,6 +16,7 @@ source ~/.zsh/plugins/formarks/formarks.plugin.zsh
 source ~/.zsh/aliases.zsh
 source ~/.zsh/fzf.zsh
 source ~/.zsh/pet.zsh 
+source ~/.zsh/ripgrep.zsh 
 source ~/.zsh/title.zsh 
 
 # run command line as user root via sudo:
