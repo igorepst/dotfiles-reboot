@@ -3,7 +3,7 @@
 function doWork(){
     echo ${GREEN}'Installing Chrome extension LocalNewTabPage'${RESET}
     echo
-    local INSTALL_DIR="${HOME}/localNewTabPage1"
+    local INSTALL_DIR="${HOME}/localNewTabPage"
     rm -rf "${INSTALL_DIR}"
     mkdir -p "${INSTALL_DIR}"
     cat >"${INSTALL_DIR}/manifest.json" <<"EOF"
