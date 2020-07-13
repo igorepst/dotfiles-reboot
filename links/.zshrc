@@ -47,7 +47,7 @@ bindkey '[B' history-beginning-search-forward
 
 fpath=($fpath ~/.zsh/plugins/archive ~/.zsh/plugins/zsh-completions/src)
 
-setopt globdots extendedglob auto_cd
+setopt globdots extendedglob auto_cd noflowcontrol
 
 {
     autoload -Uz compinit
@@ -65,9 +65,6 @@ setopt globdots extendedglob auto_cd
             { [[ ! -f "$zcdc" || "$zcd" -nt "$zcdc" ]] && rm -f "$zcdc" && zcompile "$zcd" } &!
     fi
 }
-
-# Ctrl+S will no longer freeze the terminal
-stty stop '' -ixoff -ixon
 
 # match uppercase from lowercase and complete from the middle of filename
 zstyle ':completion:*' matcher-list '' 'm:{[:lower:][:upper:]}={[:upper:][:lower:]}' '+l:|=* r:|=*'
