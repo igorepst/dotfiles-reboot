@@ -1,5 +1,5 @@
 # Add previous command to pet
-function pprev() {
+function pet-prev() {
     PREV=$(fc -lrn | head -n 1)
     sh -c "pet new -t `printf %q "$PREV"`"
 }
@@ -12,4 +12,4 @@ function pet-select() {
 }
 zle -N pet-select
 #Alt+p
-bindkey 'ð' pet-select
+bindkey 'p' pet-select
