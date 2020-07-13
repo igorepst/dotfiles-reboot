@@ -1,23 +1,19 @@
 source ~/.zsh/helpers/get_gh_release.zsh
 get_gh_release --repo knqyf263/pet --arch linux_amd64.tar.gz --toPath . --toCompletionPath misc/completions/zsh
 
-if [[ -r "${XDG_CACHE_HOME:-$HOME/.cache}/p10k-instant-prom:pt-${(%):-%n}.zsh" ]]; then
+if [[ -r "${XDG_CACHE_HOME:-$HOME/.cache}/p10k-instant-prompt-${(%):-%n}.zsh" ]]; then
     source "${XDG_CACHE_HOME:-$HOME/.cache}/p10k-instant-prompt-${(%):-%n}.zsh"
 fi
 
 source ~/.zsh/p10k.zsh
 source ~/.zsh/plugins/powerlevel10k/powerlevel10k.zsh-theme
 
-#Alt+g
-export FZF_MARKS_JUMP='g'
-export PATHMARKS_FILE=~/.zsh/volatile/pathmarks
-source ~/.zsh/plugins/formarks/formarks.plugin.zsh
-
 source ~/.zsh/aliases.zsh
 source ~/.zsh/fzf.zsh
 source ~/.zsh/pet.zsh 
 source ~/.zsh/ripgrep.zsh 
 source ~/.zsh/title.zsh 
+source ~/.zsh/formarks.zsh 
 
 # run command line as user root via sudo:
 function sudo-command-line () {

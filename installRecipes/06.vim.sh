@@ -1,5 +1,9 @@
 #!/usr/bin/env bash
 
-echo ${GREEN}'Installing vim plugins'${RESET}
-echo
-vim +PlugInstall +qall
+function doWork() {
+    echo ${GREEN}'Installing vim plugins'${RESET}
+    echo
+    vim +PlugInstall +qall
+}
+
+doWork

@@ -28,6 +28,7 @@ function doWork(){
     link ".zshrc"
     link ".xinitrc"
     link ".Xresources"
+    link ".Xmodmap"
     link ".vim"
     link ".config/awesome"
     link ".config/bat"
@@ -36,6 +37,7 @@ function doWork(){
     link ".config/ripgrep"
     link ".config/vifm"
     link ".gitconfig"
+    link ".gitignore-global"
     link "bin"
     link ".tmux.conf"
 }
