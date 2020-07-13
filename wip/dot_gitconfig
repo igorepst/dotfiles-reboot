@@ -1,0 +1,79 @@
+# vim: ft=gitconfig
+[include]
+  # Validate: git config --global --includes user.email
+  path = ~/.gitconfig-private
+[core]
+  excludesfile = ~/.gitignore-global
+  editor = vim
+  autocrlf = input
+  # Move between files with n/N
+  pager = diff-so-fancy | less --tabs=4 -iRFX --pattern '^(Date|added|deleted|modified): '
+[interactive]
+  diffFilter = diff-so-fancy --patch-mode
+[help]
+  autocorrect = 1
+[push]
+  followTags = true
+[fetch]
+  prune = true
+[stash]
+  showPatch = true
+[alias]
+  aliases = "!f() { git config --get-regexp 'alias.*' | colrm 1 6 | sed 's/[ ]/ = /'; }; f"
+  st = status
+  cp = cherry-pick --no-commit
+  ssh = stash save --include-untracked
+  lsh = show stash
+  ci = commit
+  br = branch
+  co = checkout
+  ignore = "!f() { echo \"$1\" >> .gitignore; }; f"
+  # See pretty.mine config here
+  gol = log --graph --pretty=mine --abbrev-commit --date=relative
+  gold = gol -n 10
+  rgol = reflog --pretty=mine
+  # See what new commits have been created by the last command (typically after a "git pull")
+  # Usage: git new <origin/master>
+  new = "!f() { git log $1@{1}..$1@{0} \"$@\"; }; f"
+  d = dsf+
+  dt = difftool
+  mt = mergetool
+  patch = !git --no-pager diff --no-color
+  cm = !git add -A && git commit -m
+  # Commit and do hard reset to remove it. Use reflog if you need to restore something specific
+  undo = !git add -A && git commit -qm 'UNDO SAVEPOINT' && git reset HEAD~1 --hard
+[pretty]
+  mine = %C(red)%h%Creset - %s %C(green)(%cr) %C(bold blue)<%an>%Creset
+[diff]
+  colorMoved = zebra
+  tool = vimdiff
+  guitool = meld
+  mnemonicprefix = true
+[difftool]
+  prompt = false
+  trustExitCode = true
+[difftool "vimdiff"]
+  cmd = vim -f -d -c 'wincmd l' -c 'cd "$GIT_PREFIX"' "$LOCAL" "$REMOTE"
+[merge]
+  tool = vimdiff
+  guitool = meld
+  conflictstyle = diff3
+  stat = true
+[mergetool]
+  prompt = false
+  keepBackup = false
+  trustExitCode = true
+[color]
+  ui = true
+[color "diff-highlight"]
+  oldNormal = red bold
+  oldHighlight = red bold 52
+  newNormal = green bold
+  newHighlight = green bold 22
+[color "diff"]
+  meta = yellow
+  frag = magenta bold
+  commit = yellow bold
+  old = red bold
+  new = green bold
+  whitespace = red reverse

@@ -1,0 +1,125 @@
+[[snippets]]
+  description = "Undo rebase/merge (Git saves HEAD to ORIG_HEAD before doing dangerous operation)"
+  command = "git reset --hard ORIG_HEAD"
+  tag = ["git"]
+  output = ""
+
+[[snippets]]
+  description = "Show unpushed commits"
+  command = "git log origin/master..HEAD"
+  tag = ["git"]
+  output = ""
+
+[[snippets]]
+  description = "Show list of commits in one line format"
+  command = "git log --oneline"
+  tag = ["git"]
+  output = ""
+
+[[snippets]]
+  description = "Search by commit message"
+  command = "git log --regexp-ignore-case --oneline --grep \"<string>\""
+  tag = ["git"]
+  output = ""
+
+[[snippets]]
+  description = "Rename branch, old omitted? current"
+  command = "git branch -m <old name> <new name>"
+  tag = ["git"]
+  output = ""
+
+[[snippets]]
+  description = "Remove a file from Git, but keep it on disk"
+  command = "git rm --cached <file>"
+  tag = ["git"]
+  output = ""
+
+[[snippets]]
+  description = "Remote command line"
+  command = "psql -U username -h localhost -d postgres -c \"DROP DATABASE \\\"$DATABASE\\\";\""
+  tag = ["psql"]
+  output = ""
+
+[[snippets]]
+  description = "Pull changes from a different remote branch to your local branch"
+  command = "git refresh <branch>"
+  tag = ["git"]
+  output = ""
+
+[[snippets]]
+  description = "Provide password on command line"
+  command = "PGPASSWORD=<pass> psql"
+  tag = ["psql"]
+  output = ""
+
+[[snippets]]
+  description = "Merge branch into current"
+  command = "git merge --no-ff --no-commit <branch>"
+  tag = ["git"]
+  output = ""
+
+[[snippets]]
+  description = "Get current branch name"
+  command = "git rev-parse --abbrev-ref HEAD"
+  tag = ["git"]
+  output = ""
+
+[[snippets]]
+  description = "Get DB owner"
+  command = "SELECT d.datname as \"Name\",pg_catalog.pg_get_userbyid(d.datdba) as \"Owner\" FROM pg_catalog.pg_database d WHERE d.datname = \"<db-name>\" ORDER BY 1;"
+  tag = ["PostgreSQL"]
+  output = ""
+
+[[snippets]]
+  description = "Discard local commits to match server"
+  command = "git reset --hard origin/<branch>"
+  tag = ["git"]
+  output = ""
+
+[[snippets]]
+  description = "Delete remote branch"
+  command = "git push <remote_name> --delete <branch>"
+  tag = ["git"]
+  output = ""
+
+[[snippets]]
+  description = "Delete local branch (-d if merged in upstream, -D deletes forcibly)"
+  command = "git branch -d <branch>"
+  tag = ["git"]
+  output = ""
+
+[[snippets]]
+  description = "Count number of lines in git repository"
+  command = "git ls-files | xargs cat | wc -l"
+  tag = ["git"]
+  output = ""
+
+[[snippets]]
+  description = "Count number of files in git repository"
+  command = "git ls-files | wc -l"
+  tag = ["git"]
+  output = ""
+
+[[snippets]]
+  description = "Committed to wrong branch (create new and reset current)"
+  command = "git branch <new name> && git reset --hard HEAD^"
+  tag = ["git"]
+  output = ""
+
+[[snippets]]
+  description = "Combine unpushed commits"
+  command = "git rebase -i @{u}"
+  tag = ["git"]
+  output = ""
+
+[[snippets]]
+  description = "Combine last N commits"
+  command = "git rebase -i HEAD~<N>"
+  tag = ["git"]
+  output = ""
+
+[[snippets]]
+  description = "Copy DB on the same server"
+  command = "CREATE DATABASE \"dst DB\" WITH TEMPLATE \"<src DB>\" OWNER postgres;"
+  tag = ["PostgreSQL,psql"]
+  output = ""

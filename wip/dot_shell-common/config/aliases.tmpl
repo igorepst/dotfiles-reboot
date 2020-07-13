@@ -1,0 +1,49 @@
+# vim: set ft=sh:
+alias als='alias | grep -i --'
+
+alias sudo='sudo -E '
+
+alias ls='ls --color=auto'
+
+alias e='exa'
+alias la='exa -albhg --git --group-directories-first'
+alias ll='la'
+# order by date, newest first
+alias lt='la --sort=time --reverse'
+
+alias grep='grep --color=auto'
+alias fgrep='fgrep --color=auto'
+alias egrep='egrep --color=auto'
+
+alias mkdir='mkdir -p'
+
+alias git='noglob git'
+alias g='git'
+alias gs='git status -s'
+alias gpl='git pull origin $(git rev-parse --abbrev-ref HEAD)'
+alias gps='git push origin $(git rev-parse --abbrev-ref HEAD)'
+
+alias f='fzf-tmux'
+alias v='vim'
+alias vi='vim'
+#alias vim='nvim'
+alias vimdiff='vim -d'
+alias o='xdg-open'
+alias top='top -c'
+alias t='tmux'
+alias b='bat'
+alias ranger='ranger.py'
+alias r='ranger'
+alias rg='rg --ignore-file $HOME/.config/ripgrep/ignore'
+
+alias fsize='df -PHT -x tmpfs -x devtmpfs -x squashfs | column -t'
+
+alias zinup='zinit self-update && zinit update --all'
+
+{{- if ne .pctype "home" }}
+alias cdl='cd ~/.IntelliJIdea2019.3/system/tomcat/Tomcat_7_0_961_build/logs'
+alias edl='vim ~/.IntelliJIdea2019.3/system/tomcat/Tomcat_7_0_961_build/logs/vmanage.log'
+alias cdc='cd /opt/apache-tomcat-7/7.0.96/conf'
+alias edp='vim /opt/apache-tomcat-7/7.0.96/conf/intigua.properties'
+alias edc='vim /opt/apache-tomcat-7/7.0.96/conf/intigua.config.xml'
+{{- end }}

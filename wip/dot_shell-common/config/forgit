@@ -1,0 +1,11 @@
+# vim: set ft=zsh:
+export FORGIT_NO_ALIASES=1
+
+alias ga='forgit::add'
+alias glo='forgit::log'
+alias gd='forgit::diff'
+alias gcf='forgit::restore'
+alias gignore='forgit::ignore'
+alias gclean='forgit::clean'
+alias gss='forgit::stash::show'
+

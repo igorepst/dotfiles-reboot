@@ -1,0 +1,2 @@
+# vim: set ft=zsh:
+[ -x /usr/bin/ssh-askpass ] && export SUDO_ASKPASS=/usr/bin/ssh-askpass
