@@ -1,12 +1,13 @@
 # vim: ft=gitconfig
 [include]
-        # Validate: git config --global --includes user.email
-        path = ~/.gitconfig-private
+    # Validate: git config --global --includes user.email
+    path = ~/.gitconfig-private
 [core]
-  	excludesfile = ~/.gitignore-global
-  	editor = vim
-  	autocrlf = input
+    excludesfile = ~/.gitignore-global
+    editor = vim
+    autocrlf = input
 [pull]
-	rebase = false
-
+    rebase = false
+[alias]
+    cm = !git add -A && git commit -m
 

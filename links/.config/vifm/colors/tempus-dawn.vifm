@@ -47,7 +47,8 @@
 
 highlight clear
 
-highlight Win cterm=none ctermfg=white ctermbg=236
+highlight Win cterm=none ctermfg=black ctermbg=15
+highlight OtherWin cterm=none ctermfg=black ctermbg=15
 highlight Directory cterm=bold ctermfg=cyan ctermbg=default
 highlight Link cterm=bold ctermfg=yellow ctermbg=default
 highlight BrokenLink cterm=bold ctermfg=red ctermbg=default
@@ -57,18 +58,18 @@ highlight Fifo cterm=bold ctermfg=cyan ctermbg=default
 highlight Executable cterm=bold ctermfg=green ctermbg=default
 highlight Selected cterm=bold ctermfg=magenta ctermbg=default
 highlight CurrLine cterm=bold,reverse ctermfg=default ctermbg=default
-highlight TopLine cterm=bold ctermfg=lightwhite ctermbg=236
-highlight TopLineSel cterm=bold ctermfg=yellow ctermbg=236
-highlight StatusLine cterm=bold ctermfg=236 ctermbg=white
-highlight WildMenu cterm=underline,reverse ctermfg=white ctermbg=236
-highlight CmdLine cterm=none ctermfg=white ctermbg=236
-highlight ErrorMsg cterm=none ctermfg=red ctermbg=236
-highlight Border cterm=none ctermfg=236 ctermbg=white
-highlight JobLine cterm=bold,reverse ctermfg=236 ctermbg=white
+highlight TopLine cterm=bold ctermfg=lightblack ctermbg=white
+highlight TopLineSel cterm=bold ctermfg=yellow ctermbg=white
+highlight StatusLine cterm=bold ctermfg=black ctermbg=white
+highlight WildMenu cterm=underline,reverse ctermfg=black ctermbg=white
+highlight CmdLine cterm=none ctermfg=black ctermbg=white
+highlight ErrorMsg cterm=none ctermfg=red ctermbg=white
+highlight Border cterm=none ctermfg=white ctermbg=249
+highlight JobLine cterm=bold,reverse ctermfg=white ctermbg=black
 highlight SuggestBox cterm=bold ctermfg=default ctermbg=default
 highlight CmpMismatch cterm=bold ctermfg=white ctermbg=red
 highlight AuxWin cterm=bold,underline,reverse,standout,italic ctermfg=default ctermbg=default
-highlight TabLine cterm=none ctermfg=white ctermbg=236
+highlight TabLine cterm=none ctermfg=black ctermbg=white
 highlight TabLineSel cterm=bold,reverse ctermfg=default ctermbg=default
 highlight User1 cterm=bold,underline,reverse,standout,italic ctermfg=default ctermbg=default
 highlight User2 cterm=bold,underline,reverse,standout,italic ctermfg=default ctermbg=default
@@ -79,4 +80,3 @@ highlight User6 cterm=bold,underline,reverse,standout,italic ctermfg=default cte
 highlight User7 cterm=bold,underline,reverse,standout,italic ctermfg=default ctermbg=default
 highlight User8 cterm=bold,underline,reverse,standout,italic ctermfg=default ctermbg=default
 highlight User9 cterm=bold,underline,reverse,standout,italic ctermfg=default ctermbg=default
-highlight OtherWin cterm=bold,italic ctermfg=white ctermbg=236

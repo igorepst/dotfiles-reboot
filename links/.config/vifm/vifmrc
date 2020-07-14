@@ -67,7 +67,7 @@ set norunexec
 
 " Selected color scheme
 
-colorscheme seoul-256
+colorscheme tempus-dawn
 
 " Format for displaying time in file list. For example:
 " TIME_STAMP_FORMAT=%m/%d-%H:%M
