@@ -6,6 +6,15 @@
     excludesfile = ~/.gitignore-global
     editor = vim
     autocrlf = input
+    pager = delta
+[delta]
+    plus-color = "#012800"
+    minus-color = "#340001"
+    syntax-theme = ansi-light
+    side-by-side = true
+    line-numbers = true
+[interactive]
+    diffFilter = delta --color-only
 [pull]
     rebase = false
 [alias]
