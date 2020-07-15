@@ -27,6 +27,7 @@ function doWork(){
     link ".zprofile"
     link ".zshrc"
     link ".xinitrc"
+    link ".xprofile"
     link ".Xresources"
     link ".Xmodmap"
     link ".vim"
