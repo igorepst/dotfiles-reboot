@@ -16,6 +16,8 @@ source ~/.zsh/ripgrep.zsh
 source ~/.zsh/functions.zsh 
 source ~/.zsh/title.zsh 
 source ~/.zsh/formarks.zsh 
+source ~/.zsh/terminal.zsh 
+source ~/.zsh/command_not_found.zsh 
 
 # run command line as user root via sudo:
 function sudo-command-line () {

@@ -14,17 +14,20 @@ function doWork(){
     export DOTFILES_DIR
     pushd "${DOTFILES_DIR}" >/dev/null
 
-    local MY_PC_ANSWER_FILE="${DOTFILES_DIR}/my_pc_is"
+    MY_PC_IS=
+    local MY_PC_ANSWER_FILE="${HOME}/.cache/.my_pc_is"
     [ -f ${MY_PC_ANSWER_FILE} ] && source ${MY_PC_ANSWER_FILE}
     if [ -z ${MY_PC_IS} ]; then
         local MY_PC_IS_H
         echo
         echo ${RED}'Checking environment'${RESET}
-        read -p "Is it a home PC? [Y]es:[N]o " MY_PC_IS_H
-        if [[ "${MY_PC_IS_H}" =~ ^[Yy]$ ]]; then
+        read -p "Is it a home (h), work (w) PC or virtual machine (v)? " MY_PC_IS_H
+        if [[ "${MY_PC_IS_H}" =~ ^[Hh]$ ]]; then
             MY_PC_IS="home"
-        else
+        elif [[ "${MY_PC_IS_H}" =~ ^[Ww]$ ]]; then
             MY_PC_IS="work"	
+        else
+            MY_PC_IS="vm"
         fi
         echo 'export MY_PC_IS='${MY_PC_IS}>${MY_PC_ANSWER_FILE}
     fi
@@ -40,6 +43,7 @@ function doWork(){
     done
 
     popd >/dev/null
+    echo "Setting ${MY_PC_IS} environment finished"
 }
 
 doWork

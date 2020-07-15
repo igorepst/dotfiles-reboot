@@ -36,10 +36,12 @@ function doWork(){
     link ".config/mpv"
     link ".config/ripgrep"
     link ".config/vifm"
+    link ".config/rofi"
     link ".gitconfig"
     link ".gitignore-global"
     link "bin"
     link ".tmux.conf"
+    link ".toprc"
 }
 
 doWork

@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 
 function doWork(){
-    echo ${GREEN}'Finishing installation'${RESET}
+    echo ${GREEN}'Completing installation'${RESET}
     echo
     local ZSH_PLUGINS=~/.zsh/plugins
     ln -sf "${ZSH_PLUGINS}"/archive/archive ~/bin/archive
@@ -18,7 +18,7 @@ function doWork(){
     [ -f ~/.pathmarks ] && mv ~/.pathmarks "${PMFILE}"
     if [ ! -f "${PMFILE}" ]; then
         echo 'dotfiles:' ${DOTFILES_DIR}>"${PMFILE}"
-        [[ "${MY_PC_IS}" = "home" ]] && echo 'inner: /mnt/Inner'>>"${PMFILE}"
+        [[ "${MY_PC_IS}" = "home" ]] || [[ "${MY_PC_IS}" = "vm" ]] && echo 'inner: /mnt/Inner'>>"${PMFILE}"
     fi
 }
 

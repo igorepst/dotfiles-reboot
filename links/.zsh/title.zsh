@@ -3,7 +3,7 @@
 # and on
 # https://github.com/robbyrussell/oh-my-zsh/blob/master/lib/termsupport.zsh
 
-if [[ "$TERM" == (dumb|linux|*bsd*|eterm*|tmux*) || ( ! -z "$INSIDE_EMACS" ) ]]; then
+if [[ "$TERM" == (dumb|linux|*bsd*|eterm*) ]]; then
   return 1
 fi
 
@@ -22,7 +22,7 @@ function title {
       print -Pn "\e]2;$2:q\a" # set window name
       print -Pn "\e]1;$1:q\a" # set tab name
       ;;
-    screen*)
+    screen*|tmux*)
       print -Pn "\ek$1:q\e\\" # set screen hardstatus
       ;;
     *)

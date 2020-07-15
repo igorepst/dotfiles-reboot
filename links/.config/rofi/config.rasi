@@ -3,11 +3,7 @@ configuration {
 /*	width: 50;*/
 /*	lines: 15;*/
 /*	columns: 1;*/
-{{- if eq .pctype "home" }}
-	font: "mono 16";
-{{- else }}
 	font: "mono 13";
-{{- end }}
 /*	bw: 1;*/
 /*	location: 0;*/
 /*	padding: 5;*/
@@ -55,7 +51,7 @@ configuration {
 /*	window-format: "{w}    {i}{c}   {t}";*/
 /*	click-to-exit: true;*/
 /*	show-match: true;*/
-	theme: "oxide";
+	theme: "tempus-dawn";
 /*	color-normal: ;*/
 /*	color-urgent: ;*/
 /*	color-active: ;*/

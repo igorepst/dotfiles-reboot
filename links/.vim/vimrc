@@ -94,23 +94,6 @@ Plug 'junegunn/fzf.vim'
 Plug 'https://gitlab.com/protesilaos/tempus-themes-vim.git'
 call plug#end()
 
-if $TERM=~'linux'
-    colorscheme default
-else
-    colorscheme tempus_dawn
-    if $TERM=~'xterm'
-        " see modifyOtherKeys
-        let &t_TI = ""
-        let &t_TE = ""
-    endif
-endif
-
-set shortmess+=Ia
-set shortmess-=S
-set noshowmode
-set noruler
-set laststatus=2
-
 " Define one augroup for all autocommands
 augroup ig_au
     autocmd!
@@ -124,6 +107,27 @@ autocmd ig_au BufReadPost *
 
 autocmd ig_au ColorScheme *
             \ highlight MatchParen gui=underline,bold guibg=red guifg=black cterm=underline,bold ctermbg=red ctermfg=black
+
+if $TERM=~'linux'
+    colorscheme default
+else
+    " see xterm-true-color (works in Tmux also)
+    let &t_8f = "\<Esc>[38;2;%lu;%lu;%lum"
+    let &t_8b = "\<Esc>[48;2;%lu;%lu;%lum"
+    set termguicolors
+    colorscheme tempus_dawn
+    if $TERM=~'xterm'
+        " see modifyOtherKeys
+        let &t_TI = ""
+        let &t_TE = ""
+    endif
+endif
+
+set shortmess+=Ia
+set shortmess-=S
+set noshowmode
+set noruler
+set laststatus=2
 
 let g:fzfIgMenu_dict = {
             \ "Toggle list": #{f: "call ighelper#ToggleBoolOpt('list')", k: "<Leader>tl"},

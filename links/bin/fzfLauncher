@@ -1,3 +1,0 @@
-#!/usr/bin/env zsh
-
-xterm -class FzfLauncher -e "whence -pm '*' | sort | fzf | xargs systemd-run --user >/dev/null 2>/dev/null"

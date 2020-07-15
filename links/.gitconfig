@@ -13,10 +13,15 @@
     syntax-theme = ansi-light
     side-by-side = true
     line-numbers = true
+    features = decorations
+[delta "decorations"]
+    hunk-header-style = omit
 [interactive]
     diffFilter = delta --color-only
 [pull]
     rebase = false
 [alias]
     cm = !git add -A && git commit -m
+    prev = !git diff HEAD~1 HEAD
+    url = "!f() { git remote -v | awk '/fetch/{print $2}' | sed -Ee 's#(git@|git://)#http://#' -e 's@com:@com/@' | head -n1; }; f"
 

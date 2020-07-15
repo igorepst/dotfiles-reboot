@@ -312,7 +312,7 @@ globalkeys = gears.table.join(
 
     -- Prompt
     awful.key({ modkey },            "r",     
-    function () awful.spawn.easy_async(os.getenv("HOME") .. "/bin/fzfLauncher", emptyCallback) end,
+    function () awful.spawn.easy_async(os.getenv("HOME") .. "/bin/rofiLauncher", emptyCallback) end,
     --function () awful.screen.focused().mypromptbox:run() end,
               {description = "run prompt", group = "launcher"}),
 
