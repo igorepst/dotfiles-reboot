@@ -122,6 +122,9 @@ autocmd ig_au BufReadPost *
             \ |   exe "normal! g`\""
             \ | endif
 
+autocmd ig_au ColorScheme *
+            \ highlight MatchParen gui=underline,bold guibg=red guifg=black cterm=underline,bold ctermbg=red ctermfg=black
+
 let g:fzfIgMenu_dict = {
             \ "Toggle list": #{f: "call ighelper#ToggleBoolOpt('list')", k: "<Leader>tl"},
             \ "Toggle wrap": #{f: "call ighelper#ToggleBoolOpt('wrap')",},
