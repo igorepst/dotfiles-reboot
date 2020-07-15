@@ -1,0 +1,3 @@
+#!/bin/sh
+
+rofi -show combi -combi-modi "drun,run" -modi combi -show-icons
