@@ -40,9 +40,16 @@ if [ -d /etc/X11/xinit/xinitrc.d ] ; then
     unset f
 fi
 
-if [ -f /usr/bin/VBoxClient-all ]; then 
-    VBoxClient-all
-    xrandr --output Virtual1 --mode 1440x900
-fi
+case "${MY_PC_IS}" in
+    home)
+        exec startplasma-x11
+        ;;
+    vm)
+        VBoxClient-all
+        xrandr --output Virtual1 --mode 1440x900
+        exec awesome
+        ;;
+    *)
+        ;;
+esac
 
-exec awesome
