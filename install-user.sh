@@ -43,7 +43,7 @@ function doWork(){
     done
 
     popd >/dev/null
-    echo "Setting ${MY_PC_IS} environment finished"
+    echo "Setting ${MY_PC_IS} environment finished. Please re-login"
 }
 
 doWork

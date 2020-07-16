@@ -67,6 +67,27 @@ configuration {
 }
 EOF
     fi
+
+    echo 'Setting Fontconfig'
+    local FONTCONFIG_DIR=${HOME}/.config/fontconfig
+    mkdir -p "${FONTCONFIG_DIR}"
+    local FONTCONFIG_CONF="${FONTCONFIG_DIR}/fonts.conf"
+    if [[ -f "${FONTCONFIG_CONF}" ]] && [[ ! -f "${FONTCONFIG_CONF}.bak" ]]; then
+        echo "Backing up ${FONTCONFIG_CONF} as ${FONTCONFIG_CONF}.bak"
+        mv "${FONTCONFIG_CONF}" "${FONTCONFIG_CONF}.bak"
+    fi
+    cat >"${FONTCONFIG_CONF}" <<"EOF"
+<?xml version="1.0"?>
+<!DOCTYPE fontconfig SYSTEM "fonts.dtd">
+<fontconfig>
+<alias>
+   <family>monospace</family>
+   <prefer>
+     <family>DejaVuSansMono Nerd Font Mono</family>
+   </prefer>
+ </alias>
+</fontconfig>
+EOF
 }
 
 function vcons(){
