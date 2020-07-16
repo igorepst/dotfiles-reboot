@@ -9,29 +9,34 @@ sysmodmap=/etc/X11/xinit/.Xmodmap
 
 # merge in defaults and keymaps
 
-if [ -f $sysresources ]; then
-    xrdb -merge $sysresources
+if [ -f "${sysresources}" ]; then
+    xrdb -merge "${sysresources}"
 fi
 
-if [ -f $sysmodmap ]; then
-    xmodmap $sysmodmap
+if [ -f "${sysmodmap}" ]; then
+    xmodmap "${sysmodmap}"
 fi
 
-if [ -f "$userresources" ]; then
-    xrdb -merge "$userresources"
+if [ -f "${userresources}" ]; then
+    xrdb -merge "${userresources}"
 fi
 
-currentThemeXColors=$HOME/.colors/currentTheme.Xcolors
-if [ -f "$currentThemeXColors" ]; then
-    xrdb -merge "$currentThemeXColors"
+currentThemeXColors=$HOME/.theme/currentTheme.Xcolors
+if [ -f "${currentThemeXColors}" ]; then
+    xrdb -merge "${currentThemeXColors}"
 fi
 
-currentThemeXResources=$HOME/.colors/currentTheme.Xresources
-if [ -f "$currentThemeXResources" ]; then
-    xrdb -merge "$currentThemeXResources"
+currentThemeXResources=$HOME/.theme/currentTheme.Xresources
+if [ -f "${currentThemeXResources}" ]; then
+    xrdb -merge "${currentThemeXResources}"
 fi
 
-if [ -f "$usermodmap" ]; then
-    xmodmap "$usermodmap"
+currentThemeXFonts=$HOME/.theme/currentTheme.Xfonts
+if [ -f "${currentThemeXFonts}" ]; then
+    xrdb -merge "${currentThemeXFonts}"
+fi
+
+if [ -f "${usermodmap}" ]; then
+    xmodmap "${usermodmap}"
 fi
 

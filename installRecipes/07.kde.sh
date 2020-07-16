@@ -18,6 +18,17 @@ function doWork(){
 
     echo Disabling Baloo indexing
     kwriteconfig5 --file baloofilerc --group 'Basic Settings' --key 'Indexing-Enabled' false
+
+    if [ -n "${DOTFILES_DIR}" ]; then
+        echo Setting Xresources for KDE
+        # KDE overrides various aspects
+        local SRC_XPROF="${HOME}/.config/autostart-scripts/srcXprofile"
+        cat >"${SRC_XPROF}" <<"EOF"
+#!/bin/sh
+source ~/.xprofile
+EOF
+        chmod +x "${SRC_XPROF}"
+    fi
 }
 
 if command -v kwriteconfig5 &> /dev/null; then

@@ -47,6 +47,15 @@ EOF
     mv -f -t "${FONTS_DIR}" "${TMP_DIR}/"*.[to]tf 2>/dev/null
     rm -rf "${TMP_DIR}"
     fc-cache
+
+    local XFONTS=${HOME}/.theme/currentTheme.Xfonts
+    if [ "${MY_PC_IS}" = "vm" ]; then
+        echo '*vt100.faceName: "DejaVuSansMono Nerd Font Mono":style=Book:size=13'>"${XFONTS}"
+        echo 'XTerm*vt100.boldFont: "DejaVuSansMono Nerd Font Mono":style=Bold:size=13'>>"${XFONTS}"
+    else
+        echo '*vt100.faceName: "DejaVuSansMono Nerd Font Mono":style=Book:size=16'>"${XFONTS}"
+        echo 'XTerm*vt100.boldFont: "DejaVuSansMono Nerd Font Mono":style=Bold:size=16'>>"${XFONTS}"
+    fi
 }
 
 function vcons(){
