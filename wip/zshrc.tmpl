@@ -1,8 +1,0 @@
-# vim: set ft=zsh:
-export npm_config_prefix=~/.node_modules
-
-{{- if ne .pctype "home" }}
-export PATH+=(~/bin-work ~/.node_modules/bin)
-
-JAVA_HOME=/usr/java/default
-{{- end }}

@@ -20,8 +20,13 @@
     diffFilter = delta --color-only
 [pull]
     rebase = false
+[help]
+    autocorrect = 1
 [alias]
     cm = !git add -A && git commit -m
     prev = !git diff HEAD~1 HEAD
     url = "!f() { git remote -v | awk '/fetch/{print $2}' | sed -Ee 's#(git@|git://)#http://#' -e 's@com:@com/@' | head -n1; }; f"
-
+    co = checkout
+    gold = log --graph --pretty=mine --abbrev-commit --date=relative -n 10
+[pretty]
+  mine = %C(red)%h%Creset - %s %C(green)(%cr) %C(bold blue)<%an>%Creset
