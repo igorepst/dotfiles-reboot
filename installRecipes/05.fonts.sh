@@ -49,12 +49,23 @@ EOF
     fc-cache
 
     local XFONTS=${HOME}/.theme/currentTheme.Xfonts
+    local ROFI_SETTINGS=${HOME}/.theme/rofiSettings.rasi
     if [ "${MY_PC_IS}" = "vm" ]; then
         echo '*vt100.faceName: "DejaVuSansMono Nerd Font Mono":style=Book:size=13'>"${XFONTS}"
         echo 'XTerm*vt100.boldFont: "DejaVuSansMono Nerd Font Mono":style=Bold:size=13'>>"${XFONTS}"
+        cat >"${ROFI_SETTINGS}" <<"EOF"
+configuration {
+ font: "mono 13";
+}
+EOF
     else
         echo '*vt100.faceName: "DejaVuSansMono Nerd Font Mono":style=Book:size=16'>"${XFONTS}"
         echo 'XTerm*vt100.boldFont: "DejaVuSansMono Nerd Font Mono":style=Bold:size=16'>>"${XFONTS}"
+        cat >"${ROFI_SETTINGS}" <<"EOF"
+configuration {
+ font: "mono 16";
+}
+EOF
     fi
 }
 
