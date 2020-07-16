@@ -19,6 +19,13 @@ source ~/.zsh/formarks.zsh
 source ~/.zsh/terminal.zsh 
 source ~/.zsh/command_not_found.zsh 
 
+[ -d ~/.work/bin ] && path+=(~/.work/bin)
+[ -f ~/.work/aliases.zsh ] && source ~/.work/aliases.zsh
+
+export npm_config_prefix=~/.node_modules
+
+[ -d "${npm_config_prefix}" ] && path+=("${npm_config_prefix}")
+
 # run command line as user root via sudo:
 function sudo-command-line () {
 [[ -z $BUFFER ]] && zle up-history
