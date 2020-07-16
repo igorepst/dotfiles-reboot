@@ -63,7 +63,7 @@ EOF
         echo 'XTerm*vt100.boldFont: "DejaVuSansMono Nerd Font Mono":style=Bold:size=16'>>"${XFONTS}"
         cat >"${ROFI_SETTINGS}" <<"EOF"
 configuration {
- font: "mono 16";
+ font: "mono 15";
 }
 EOF
     fi
