@@ -6,6 +6,9 @@ if [[ -r "${XDG_CACHE_HOME:-$HOME/.cache}/p10k-instant-prompt-${(%):-%n}.zsh" ]]
     source "${XDG_CACHE_HOME:-$HOME/.cache}/p10k-instant-prompt-${(%):-%n}.zsh"
 fi
 
+# automatically remove duplicates from these arrays
+typeset -U path PATH cdpath CDPATH fpath FPATH manpath MANPATH
+
 source ~/.zsh/p10k.zsh
 source ~/.zsh/plugins/powerlevel10k/powerlevel10k.zsh-theme
 
@@ -38,6 +41,15 @@ zle -N sudo-command-line
 #Alt+s
 bindkey 's' sudo-command-line
 
+# only slash should be considered as a word separator:
+function slash-backward-kill-word () {
+    local WORDCHARS="${WORDCHARS:s@/@}"
+    zle backward-kill-word
+}
+zle -N slash-backward-kill-word
+#Alt+v
+bindkey 'v' slash-backward-kill-word
+
 autoload -Uz copy-earlier-word edit-command-line
 zle -N copy-earlier-word
 #Alt+m
@@ -47,6 +59,18 @@ zle -N edit-command-line
 bindkey 'e' edit-command-line
 #Alt+.
 bindkey '.' insert-last-word
+#Alt+i
+bindkey 'i' menu-complete
+
+zmodload zsh/complist
+#Shift+Tab
+bindkey -M menuselect '[Z' reverse-menu-complete
+# Accept and stay in menu (multiple choices)
+bindkey -M menuselect '+' accept-and-menu-complete
+#Insert
+bindkey -M menuselect '[2~' accept-and-menu-complete
+# Accept and complete again (for ex., subdirectory)
+bindkey -M menuselect 'o' accept-and-infer-next-history
 
 HISTFILE=~/.zsh/volatile/zsh_history
 HISTSIZE=10000000
@@ -57,7 +81,9 @@ bindkey '[B' history-beginning-search-forward
 
 fpath=($fpath ~/.zsh/plugins/archive ~/.zsh/plugins/zsh-completions/src)
 
-setopt globdots extendedglob auto_cd noflowcontrol
+setopt glob_dots extended_glob auto_cd auto_pushd pushd_ignore_dups nomatch unset rm_star_silent
+setopt inc_append_history share_history extended_history hist_ignore_all_dups hist_ignore_space hist_save_no_dups
+setopt long_list_jobs notify no_beep complete_in_word no_hup no_flow_control
 
 {
     autoload -Uz compinit
@@ -76,9 +102,45 @@ setopt globdots extendedglob auto_cd noflowcontrol
     fi
 }
 
+export LESS_TERMCAP_mb=$'\e[1;31m'     # begin bold
+export LESS_TERMCAP_md=$'\e[1;33m'     # begin blink
+export LESS_TERMCAP_us=$'\e[01;32m'    # begin underline
+export LESS_TERMCAP_me=$'\e[0m'        # reset bold/blink
+export LESS_TERMCAP_se=$'\e[0m'        # reset reverse video
+export LESS_TERMCAP_ue=$'\e[0m'        # reset underline
+export GROFF_NO_SGR=1                  # needed in some terminals, incl. kitty, to show colors in man pages
+export MANPAGER='less -s -M +Gg'       # show % in man
+
+eval $(dircolors -b)
+# activate color-completion
+zstyle ':completion:*:default'         list-colors ${(s.:.)LS_COLORS}
+
 # match uppercase from lowercase and complete from the middle of filename
 zstyle ':completion:*' matcher-list '' 'm:{[:lower:][:upper:]}={[:upper:][:lower:]}' '+l:|=* r:|=*'
 zstyle ':completion:*' menu select
+# format on completion
+zstyle ':completion:*:descriptions' format $'%{\e[0;31m%}completing %B%d%b%{\e[0m%}'
+# separate matches into groups
+zstyle ':completion:*:matches' group 'yes'
+zstyle ':completion:*' group-name ''
+# complete manual by their section
+zstyle ':completion:*:manuals'    separate-sections true
+# host completion
+  [[ -r ~/.ssh/config ]] && _ssh_config_hosts=(${${(s: :)${(ps:\t:)${${(@M)${(f)"$(<$HOME/.ssh/config)"}:#Host *}#Host }}}:#*[*?]*}) || _ssh_config_hosts=()
+  [[ -r ~/.ssh/known_hosts ]] && _ssh_hosts=(${${${${(f)"$(<$HOME/.ssh/known_hosts)"}:#[\|]*}%%\ *}%%,*}) || _ssh_hosts=()
+  [[ -r /etc/hosts ]] && : ${(A)_etc_hosts:=${(s: :)${(ps:\t:)${${(f)~~"$(</etc/hosts)"}%%\#*}##[:blank:]#[^[:blank:]]#}}} || _etc_hosts=()
+hosts=(
+    $(cat /etc/hostname)
+    "$_ssh_config_hosts[@]"
+    "$_ssh_hosts[@]"
+    "$_etc_hosts[@]"
+    localhost
+)
+zstyle ':completion:*:hosts' hosts $hosts
+# on processes completion complete all user processes
+zstyle ':completion:*:processes' command 'ps -au $USER'
+# Provide more processes in completion of programs like killall:
+zstyle ':completion:*:processes-names' command 'ps c -u ${USER} -o command | uniq'
 
 ZSH_AUTOSUGGEST_HIGHLIGHT_STYLE="fg=6"
 ZSH_AUTOSUGGEST_USE_ASYNC=1
