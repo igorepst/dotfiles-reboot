@@ -83,9 +83,9 @@ let mapleader="\<Space>"
 
 let autoload_plug_path = igVimPath . 'autoload/plug.vim'
 if empty(glob(autoload_plug_path))
-  silent execute '!curl -fLo ' . autoload_plug_path . ' --create-dirs
-    \ https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim'
-  autocmd VimEnter * PlugInstall --sync | source $MYVIMRC
+    silent execute '!curl -fLo ' . autoload_plug_path . ' --create-dirs
+                \ https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim'
+    autocmd VimEnter * PlugInstall --sync | source $MYVIMRC
 endif
 unlet autoload_plug_path
 
@@ -147,7 +147,7 @@ nmap <Leader><F2> <Plug>FzfIgMenuOpen
 
 set hidden
 set autoread
- 
+
 function! SearchInRuntime() abort
     call fzf#vim#grep("rg --column --line-number --no-heading --color=always '' " . g:igVimPath . ' /usr/share/vim', 1) 
 endfunction
@@ -166,4 +166,30 @@ if has('gui_running')
     map <S-Insert> <MiddleMouse>
     map! <S-Insert> <MiddleMouse>
 endif
+
+" Commenting blocks of code.
+autocmd ig_au FileType c,cpp,java let b:comment_leader = '//'
+autocmd ig_au FileType sh,zsh,python,conf,fstab let b:comment_leader = '#'
+autocmd ig_au FileType vim let b:comment_leader = '"'
+autocmd ig_au FileType xdefaults let b:comment_leader = '!'
+
+" https://stackoverflow.com/a/24046914/407953
+function! ToggleComment()
+    if getline('.') =~ "^\\s*" . b:comment_leader . " " 
+        " Uncomment the line
+        execute "silent s/^\\(\\s*\\)" . b:comment_leader . " /\\1/"
+    else 
+        if getline('.') =~ "^\\s*" . b:comment_leader
+            " Uncomment the line
+            execute "silent s/^\\(\\s*\\)" . b:comment_leader . "/\\1/"
+        else
+            " Comment the line
+            execute "silent s/^\\(\\s*\\)/\\1" . b:comment_leader . " /"
+        end
+    end
+endfunction
+" This is actually Ctrl+/ and not Ctrl+_
+nnoremap <C-_> :call ToggleComment()<CR>
+vnoremap <C-_> :call ToggleComment()<CR>
+inoremap <C-_> <Esc>:call ToggleComment()<CR>i
 
