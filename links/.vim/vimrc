@@ -33,6 +33,7 @@ let igVimPathVolatile=igVimPath . 'volatile'
 let g:netrw_home=igVimPathVolatile
 " set doesn't do path expansion
 execute "set viminfo='20,<100,:100,%,n" . igVimPathVolatile . '/.viminfo'
+execute "set viewdir=" . igVimPathVolatile . '/view'
 
 set scrolloff=5
 set sidescroll=1
