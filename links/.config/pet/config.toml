@@ -1,10 +1,10 @@
 [General]
-  snippetfile = "/home/vasya/.config/pet/snippet.toml"
+  snippetfile = "~/.config/pet/snippets.toml"
   editor = "vim"
   column = 40
-  selectcmd = "fzf"
+  selectcmd = "fzf --no-preview"
   backend = "gist"
-  sortby = ""
+  sortby = "description"
 
 [Gist]
   file_name = "pet-snippet.toml"

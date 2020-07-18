@@ -1,5 +1,0 @@
-[[snippets]]
-  description = "Get current branch name"
-  command = "git rev-parse --abbrev-ref HEAD"
-  tag = ["git"]
-  output = ""
