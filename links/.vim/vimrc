@@ -1,6 +1,9 @@
 filetype plugin indent on
 syntax enable
 
+nnoremap <Space> <nop>
+let mapleader="\<Space>"
+
 set autoindent
 " Allow backspacing over everything in insert mode.
 set backspace=indent,eol,start
@@ -30,10 +33,19 @@ set clipboard=unnamedplus
 
 let igVimPath = split(&rtp, ',')[0] . '/'
 let igVimPathVolatile=igVimPath . 'volatile'
-let g:netrw_home=igVimPathVolatile
 " set doesn't do path expansion
 execute "set viminfo='20,<100,:100,%,n" . igVimPathVolatile . '/.viminfo'
 execute "set viewdir=" . igVimPathVolatile . '/view'
+
+let g:netrw_home=igVimPathVolatile
+let g:netrw_sort_options="i" " Case insensitive sort
+let g:netrw_keepdir=0 " Change working dir
+let g:netrw_hide=0 " Show all
+let g:netrw_banner=0
+let g:netrw_browse_split=4
+let g:netrw_liststyle=3 " Tree
+let g:netrw_sizestyle="H"
+nnoremap <expr> <Leader>- ":Explore" . (&filetype ==# 'netrw' ? ".." : ".") . "<CR>"
 
 set scrolloff=5
 set sidescroll=1
@@ -79,9 +91,6 @@ command! DiffOrig vert new | set bt=nofile | r ++edit # | 0d_ | diffthis | wincm
 set suffixes+=.aux,.bbl,.blg,.brf,.cb,.dvi,.idx,.ilg,.ind,.inx,.jpg,.log,.out,.png,.toc
 set suffixes-=.h,.obj
 
-nnoremap <Space> <nop>
-let mapleader="\<Space>"
-
 let autoload_plug_path = igVimPath . 'autoload/plug.vim'
 if empty(glob(autoload_plug_path))
     silent execute '!curl -fLo ' . autoload_plug_path . ' --create-dirs
@@ -90,7 +99,8 @@ if empty(glob(autoload_plug_path))
 endif
 unlet autoload_plug_path
 
-call plug#begin(igVimPathVolatile . '/plugged')
+let g:ig_plug_path=igVimPathVolatile . '/plugged'
+call plug#begin(g:ig_plug_path)
 Plug 'junegunn/fzf.vim'
 Plug 'https://gitlab.com/protesilaos/tempus-themes-vim.git'
 call plug#end()
@@ -194,3 +204,18 @@ nnoremap <C-_> :call ToggleComment()<CR>
 vnoremap <C-_> :call ToggleComment()<CR>
 inoremap <C-_> <Esc>:call ToggleComment()<CR>i
 
+set nohlsearch
+set completeopt=longest,menu,popup
+
+" Open Vim help or Man with 'K'
+source $VIMRUNTIME/ftplugin/man.vim
+
+set splitbelow splitright
+set diffopt+=vertical,indent-heuristic
+
+autocmd ig_au BufRead,BufNewFile *.txt call ighelper#UseSpellConditionally()
+
+" Disable automatic comment leader
+autocmd ig_au FileType * setlocal formatoptions-=ro
+" Add '-' to use search with '*' on expressions of the form 'xxx-yyy'
+set iskeyword+=-
