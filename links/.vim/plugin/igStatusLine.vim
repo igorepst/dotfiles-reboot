@@ -22,8 +22,6 @@ set statusline+=/
 set statusline+=%L
 set statusline+=\ 
 set statusline+=%P
-hi User1 ctermbg=lightgreen ctermfg=black guibg=lightgreen guifg=black
-hi User9 ctermbg=black ctermfg=white guibg=black guifg=white
 
 function! StatuslineMode()
     let l:mode=mode()

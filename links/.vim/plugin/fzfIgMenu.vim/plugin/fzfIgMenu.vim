@@ -11,5 +11,5 @@ if (g:fzfIgMenu_createCmd)
     call fzfIgMenu#fzfIgMenuCreateCmd()
 endif
 
-nnoremap <Plug>FzfIgMenuOpen :call fzf#run({'source': sort(keys(g:fzfIgMenu_dict)), 'sink': function('fzfIgMenu#fzfIgMenuRun'), 
+nnoremap <silent> <Plug>FzfIgMenuOpen :call fzf#run({'source': sort(keys(g:fzfIgMenu_dict)), 'sink': function('fzfIgMenu#fzfIgMenuRun'), 
             \ 'options': '--reverse', 'down': '40%'})<CR>

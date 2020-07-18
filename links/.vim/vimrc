@@ -117,7 +117,9 @@ autocmd ig_au BufReadPost *
             \ | endif
 
 autocmd ig_au ColorScheme *
-            \ highlight MatchParen gui=underline,bold guibg=red guifg=black cterm=underline,bold ctermbg=red ctermfg=black
+            \ highlight MatchParen gui=underline,bold guibg=red guifg=black cterm=underline,bold ctermbg=red ctermfg=black |
+            \ highlight User1 ctermbg=lightgreen ctermfg=black guibg=lightgreen guifg=black |
+            \ highlight User9 ctermbg=black ctermfg=white guibg=black guifg=white
 
 if $TERM=~'linux'
     colorscheme default
@@ -149,7 +151,10 @@ let g:fzfIgMenu_dict = {
             \ "Convert to UTF-8": #{f: "set fileencoding=utf8",},
             \ "Search in runtime": #{f: "call SearchInRuntime()",},
             \ "Find file in runtime": #{f: "call FindFileInRuntime()",},
+            \ "Reload config": #{f: "call ighelper#ReloadConfigFiles()",},
             \ "Format JSON": #{f: "%!python -m json.tool",},
+            \ "Trim trailing space": #{f: "execute ':%s/\\s\\+$//e'",},
+            \ "Reindent file": #{f: "execute 'normal! mzgg=G`z' | IgTrimTrailingSpace",},
             \ }
 let g:fzfIgMenu_createCmd = 1
 let g:fzfIgMenu_cmdPrefix = 'Ig'
@@ -160,11 +165,11 @@ set hidden
 set autoread
 
 function! SearchInRuntime() abort
-    call fzf#vim#grep("rg --column --line-number --no-heading --color=always '' " . g:igVimPath . ' /usr/share/vim', 1) 
+    call fzf#vim#grep("rg --column --line-number --no-heading --color=always '' " . g:igVimPath . ' ' . expand("$VIM"), 1) 
 endfunction
 
 function! FindFileInRuntime() abort
-    call fzf#run({'sink': 'e', 'source': "fd . " . g:igVimPath . ' /usr/share/vim'})
+    call fzf#run({'sink': 'e', 'source': "fd . " . g:igVimPath . ' ' . expand("$VIM")})
 endfunction
 
 " matchit.vim - % to jump between pairs
@@ -180,7 +185,7 @@ endif
 
 " Commenting blocks of code.
 autocmd ig_au FileType c,cpp,java let b:comment_leader = '//'
-autocmd ig_au FileType sh,zsh,python,conf,fstab let b:comment_leader = '#'
+autocmd ig_au FileType sh,bash,zsh,python,conf,fstab let b:comment_leader = '#'
 autocmd ig_au FileType vim let b:comment_leader = '"'
 autocmd ig_au FileType xdefaults let b:comment_leader = '!'
 
@@ -219,3 +224,47 @@ autocmd ig_au BufRead,BufNewFile *.txt call ighelper#UseSpellConditionally()
 autocmd ig_au FileType * setlocal formatoptions-=ro
 " Add '-' to use search with '*' on expressions of the form 'xxx-yyy'
 set iskeyword+=-
+set iskeyword-=#
+
+" Highlight sh as Bash by default
+let g:is_bash=1
+
+" Highlight ```[type] code blocks in MD
+let g:markdown_fenced_languages = [
+            \  'css',
+            \  'erb=eruby',
+            \  'sh',
+            \  'javascript',
+            \  'js=javascript',
+            \  'json=javascript',
+            \  'ruby',
+            \  'sass',
+            \  'xml',
+            \  'vim',
+            \]
+
+nnoremap <Leader>ov :edit $MYVIMRC<CR>
+
+" Create file's directory before saving, if it doesn't exist.
+" Original: https://stackoverflow.com/a/4294176/151048
+autocmd ig_au BufWritePre * :call s:MkNonExDir(expand('<afile>'), +expand('<abuf>'))
+fun! s:MkNonExDir(file, buf)
+  if empty(getbufvar(a:buf, '&buftype')) && a:file !~# '\v^\w+\:\/'
+    call mkdir(fnamemodify(a:file, ':h'), 'p')
+  endif
+endfun
+
+" https://gist.github.com/romainl/56f0c28ef953ffc157f36cc495947ab3
+set grepprg=rg\ --vimgrep\ --ignore-file\ $HOME/.config/ripgrep/ignore\ --smart-case
+command! -nargs=+ -complete=file_in_path -bar Grep  cgetexpr ighelper#Grep(<q-args>)
+command! -nargs=+ -complete=file_in_path -bar LGrep lgetexpr ighelper#Grep(<q-args>)
+
+autocmd ig_au QuickFixCmdPost cgetexpr cwindow
+autocmd ig_au QuickFixCmdPost lgetexpr lwindow
+
+nnoremap <Leader>// :LGrep<Space>
+
+" No relative number in quickfix and location list
+command! LListToggle call ighelper#LListToggle()
+nnoremap <Leader>ll :LListToggle<CR>
+
