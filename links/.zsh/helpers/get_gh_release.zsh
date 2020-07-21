@@ -35,7 +35,7 @@ function get_gh_release() {
     local tmpd=$(mktemp -d)
     pushd ${tmpd} >/dev/null
     local workf=bin${_GET_GH_REL_ARGS[--arch]}
-    curl -L ${binf} -o ${workf}
+    curl -k -L ${binf} -o ${workf}
     [ $? -ne 0 ] && print "Cannot download requested file. URL: ${binf}" && return
     rm -rf ${workd}
     mkdir -p ${workd}
