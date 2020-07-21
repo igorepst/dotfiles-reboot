@@ -49,22 +49,12 @@ EOF
 <h1>Links</h1>
 
 <table>
-  <tr>
-    <td><a href="http://newsru.co.il">NEWSru.co.il</a></td>
-    <td><a href="https://www.reddit.com/user/igorepst/m/vim/">R/Vim</a></td>
-    <td><a href="https://github.com/igorepst">Github</a></td>
-  </tr>
 EOF
-
-    if [ "${MY_PC_IS}" = "work" ]; then
-        cat >>"${HTML_FILE}" <<"EOF"
-  <tr>
-    <td><a href="https://30.30.0.151/vmanage-server/patch-governance/">Stakeholder</a></td>
-    <td><a href="https://30.30.0.150/vmanage-server/patch-governance/">Bughunt</a></td>
-    <td><a href="https://intigua.atlassian.net/secure/RapidBoard.jspa?rapidView=33&projectKey=CORE&quickFilter=249&assignee=5cbc4ea7bba9e20fca2733fd">Scrum Board</a></td>
-    <td><a href="https://app.propertime.co.il/MonthlyTimesheet.aspx">ProperTime</a></td>
-  </tr>
-EOF
+    
+    loop "$(dirname "$0")/localNewTabPage-links.txt" "${HTML_FILE}"
+    if [[ "${MY_PC_IS}" = "work" ]]; then
+        local WORK_LINKS="${HOME}"/.work/localNewTabPage-work-links.txt
+        [[ -f "${WORK_LINKS}" ]] && loop "${WORK_LINKS}" "${HTML_FILE}"
     fi
 
     cat >>"${HTML_FILE}" <<"EOF"
@@ -75,6 +65,32 @@ EOF
 EOF
 
     echo "Done. Select 'Load unpacked extension' in Chrome and point it to ${INSTALL_DIR}"
+}
+
+function loop() {
+    local OUTF="$2"
+    local cnt=0
+    while IFS="" read -r line || [ -n "${line}" ]; do
+        IFS='=' read -r first second <<< "${line}"
+        first=$(trim "${first}")
+        second=$(trim "${second}")
+        [[ -z "${first}" ]] || [[ -z "${second}" ]] && continue 
+        (( cnt == 0 )) && echo '<tr>'>>"${OUTF}"
+        echo "<td><a href=\"${second}\">${first}</a></td>">>"${OUTF}"
+        if (( cnt == 3 )); then 
+            cnt=0
+            echo '</tr>'>>"${OUTF}"
+        else 
+            (( cnt += 1 ))
+        fi
+    done < "$1"
+    (( cnt != 0 )) && echo '</tr>'>>"${OUTF}"
+}
+
+function trim() {
+    shopt -s extglob
+    set -- "${1##+([[:space:]])}"
+    printf "%s" "${1%%+([[:space:]])}" 
 }
 
 doWork

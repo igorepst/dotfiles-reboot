@@ -1,0 +1,3 @@
+NEWSru.co.il = http://newsru.co.il
+R/Vim = https://www.reddit.com/user/igorepst/m/vim/
+Github = https://github.com/igorepst
