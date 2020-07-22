@@ -27,7 +27,7 @@ source ~/.zsh/command_not_found.zsh
 
 export npm_config_prefix=~/.node_modules
 
-[ -d "${npm_config_prefix}" ] && path+=("${npm_config_prefix}")
+[ -d "${npm_config_prefix}" ] && path+=("${npm_config_prefix}/bin")
 
 # run command line as user root via sudo:
 function sudo-command-line () {
