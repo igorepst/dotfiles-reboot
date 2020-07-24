@@ -103,6 +103,7 @@ let g:ig_plug_path=igVimPathVolatile . '/plugged'
 call plug#begin(g:ig_plug_path)
 Plug 'junegunn/fzf.vim'
 Plug 'https://gitlab.com/protesilaos/tempus-themes-vim.git'
+Plug 'vifm/vifm.vim'
 call plug#end()
 
 " Define one augroup for all autocommands
