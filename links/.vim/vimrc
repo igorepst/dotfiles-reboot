@@ -185,7 +185,7 @@ endif
 
 " Commenting blocks of code.
 autocmd ig_au FileType c,cpp,java let b:comment_leader = '//'
-autocmd ig_au FileType sh,bash,zsh,jproperties,python,conf,fstab let b:comment_leader = '#'
+autocmd ig_au FileType sh,bash,zsh,jproperties,tmux,conf,fstab,python let b:comment_leader = '#'
 autocmd ig_au FileType vim let b:comment_leader = '"'
 autocmd ig_au FileType xdefaults let b:comment_leader = '!'
 
