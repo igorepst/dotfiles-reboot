@@ -16,3 +16,6 @@
 [submodule "links/.zsh/plugins/zsh-autosuggestions"]
 	path = links/.zsh/plugins/zsh-autosuggestions
 	url = https://github.com/zsh-users/zsh-autosuggestions.git
+[submodule "links/.config/awesome/external/lain"]
+	path = links/.config/awesome/external/lain
+	url = https://github.com/lcpz/lain.git

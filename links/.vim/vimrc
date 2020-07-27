@@ -189,6 +189,7 @@ autocmd ig_au FileType c,cpp,java let b:comment_leader = '//'
 autocmd ig_au FileType sh,bash,zsh,jproperties,tmux,conf,fstab,python let b:comment_leader = '#'
 autocmd ig_au FileType vim,vifm let b:comment_leader = '"'
 autocmd ig_au FileType xdefaults let b:comment_leader = '!'
+autocmd ig_au FileType lua let b:comment_leader = '--'
 
 " https://stackoverflow.com/a/24046914/407953
 function! ToggleComment()

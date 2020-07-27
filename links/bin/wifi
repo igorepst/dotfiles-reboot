@@ -1,0 +1,8 @@
+#!/usr/bin/env bash
+
+function wifi() {
+local con_uid=$(nmcli -g connection.uuid connection show $1)
+nmcli connection up $1 passwd-file <(echo "802-11-wireless-security.psk:$(secret-tool lookup connection-uuid ${con_uid})")
+}
+
+wifi $@

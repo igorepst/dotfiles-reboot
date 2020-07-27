@@ -2,6 +2,7 @@
 -- found (e.g. lgi). If LuaRocks is not installed, do nothing.
 pcall(require, "luarocks.loader")
 
+
 -- Standard awesome library
 local gears = require("gears")
 local awful = require("awful")
@@ -17,6 +18,10 @@ local hotkeys_popup = require("awful.hotkeys_popup")
 -- Enable hotkeys help widget for VIM and other apps
 -- when client with a matching name is opened:
 require("awful.hotkeys_popup.keys")
+
+local prefix = gears.filesystem.get_configuration_dir() .. '/external/'
+package.path = package.path .. ";" .. prefix .. "?.lua;" .. prefix .. "?/init.lua"
+local lain = require("lain")
 
 -- {{{ Error handling
 -- Check if awesome encountered an error during startup and fell back to
@@ -105,6 +110,63 @@ mykeyboardlayout = awful.widget.keyboardlayout()
 -- {{{ Wibar
 -- Create a textclock widget
 mytextclock = wibox.widget.textclock()
+
+
+local markup     = lain.util.markup
+local theme                                     = {}
+theme.font                                      = "Terminus 10.5"
+local gray       = "#9E9C9A"
+local mybattery = lain.widget.bat({
+    settings = function()
+        bat_header = " Bat "
+        bat_p      = bat_now.perc .. "% "
+        bat_t      = bat_now.time .. " "
+        bat_s      = (bat_now.status or "N/A/ ") .. " "
+        widget:set_markup(markup.font(theme.font, markup(gray, bat_header) .. bat_p .. bat_t .. bat_s))
+    end
+})
+
+local wifi_icon = wibox.widget.imagebox()
+-- local eth_icon = wibox.widget.imagebox()
+local net = lain.widget.net {
+    notify = "off",
+    wifi_state = "on",
+    eth_state = "off",
+    settings = function()
+        -- local eth0 = net_now.devices.eth0
+        -- if eth0 then
+            -- if eth0.ethernet then
+                -- eth_icon:set_image(ethernet_icon_filename)
+            -- else
+                -- eth_icon:set_image()
+            -- end
+        -- end
+
+        local wlan0 = net_now.devices.wlo1
+        if wlan0 then
+            if wlan0.wifi then
+                local signal = wlan0.signal
+                if signal < -83 then
+                    wifi_icon:set_image("/usr/share/icons/breeze/status/22/network-wireless-signal-weak.svg")
+                elseif signal < -70 then
+                    wifi_icon:set_image("/usr/share/icons/breeze/status/22/network-wireless-signal-ok.svg")
+                elseif signal < -53 then
+                    wifi_icon:set_image("/usr/share/icons/breeze/status/22/network-wireless-signal-good.svg")
+                elseif signal >= -53 then
+                    wifi_icon:set_image("/usr/share/icons/breeze/status/22/network-wireless-signal-excellent.svg")
+                end
+            else
+                    wifi_icon:set_image("/usr/share/icons/breeze/status/22/network-wireless-signal-none.svg")
+            end
+        else 
+                    wifi_icon:set_image("/usr/share/icons/breeze/status/22/network-wireless-signal-none.svg")
+        end
+    end
+}
+
+
+
+
 
 -- Create a wibox for each screen and add it
 local taglist_buttons = gears.table.join(
@@ -208,6 +270,9 @@ awful.screen.connect_for_each_screen(function(s)
         { -- Right widgets
             layout = wibox.layout.fixed.horizontal,
             mykeyboardlayout,
+            wifi_icon,
+            net.widget,
+            mybattery.widget,
             wibox.widget.systray(),
             mytextclock,
             s.mylayoutbox,
@@ -274,7 +339,7 @@ globalkeys = gears.table.join(
         {description = "go back", group = "client"}),
 
     -- Standard program
-    awful.key({ modkey,           }, "Return", function () awful.spawn(os.getenv("HOME") .. "/bin/xt") end,
+    awful.key({ modkey,           }, "Return", function () awful.spawn(terminal .. " -e tmux") end,
               {description = "open a terminal", group = "launcher"}),
     awful.key({ modkey, "Control" }, "r", awesome.restart,
               {description = "reload awesome", group = "awesome"}),
@@ -456,7 +521,9 @@ awful.rules.rules = {
                      buttons = clientbuttons,
                      screen = awful.screen.preferred,
                      placement = awful.placement.no_overlap+awful.placement.no_offscreen
-     }
+     }, 
+     -- New client is hown to the right in the tasklist
+     callback = awful.client.setslave
     },
 
     -- Floating clients.
