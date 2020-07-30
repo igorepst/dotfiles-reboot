@@ -110,7 +110,7 @@ mykeyboardlayout = awful.widget.keyboardlayout()
 
 -- {{{ Wibar
 -- Create a textclock widget
-mytextclock = wibox.widget.textclock()
+mytextclock = wibox.widget.textclock("%a %d/%m, %H:%M")
 
 -- Create a wibox for each screen and add it
 local taglist_buttons = gears.table.join(
@@ -215,8 +215,7 @@ awful.screen.connect_for_each_screen(function(s)
             layout = wibox.layout.fixed.horizontal,
             mykeyboardlayout,
             mywidget.wifi_icon,
-            mywidget.net.widget,
-            mywidget.mybattery.widget,
+            mywidget.bat_icon,
             wibox.widget.systray(),
             mytextclock,
             s.mylayoutbox,
@@ -581,5 +580,4 @@ client.connect_signal("focus", function(c) c.border_color = beautiful.border_foc
 client.connect_signal("unfocus", function(c) c.border_color = beautiful.border_normal end)
 -- }}}
 -- Update info immediately
-mywidget.mybattery.update()
-
+gears.timer({timeout = 0.5, callback = mywidget.mybattery.update, single_shot = true}):start()
