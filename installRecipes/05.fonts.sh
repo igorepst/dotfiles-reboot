@@ -74,7 +74,7 @@ EOF
         echo "Backing up ${FONTCONFIG_CONF} as ${FONTCONFIG_CONF}.bak"
         mv "${FONTCONFIG_CONF}" "${FONTCONFIG_CONF}.bak"
     fi
-    cat >"${FONTCONFIG_CONF}" <<"EOF"
+    cat >"${FONTCONFIG_CONF}" <<'EOF'
 <?xml version="1.0"?>
 <!DOCTYPE fontconfig SYSTEM "fonts.dtd">
 <fontconfig>
@@ -92,10 +92,10 @@ function vcons(){
     local VCONS=/etc/vconsole.conf
     [ -f "${VCONS}" ] && return
     echo "${RED}Setting ${VCONS}${RESET}"
-    sudo sh -c "cat >"${VCONS}" <<"EOF"
+    sudo sh -c "cat >${VCONS}" <<'EOF'
 FONT=ter-122n
 FONT_MAP=8859-1
-EOF"
+EOF
 }
 
 doWork

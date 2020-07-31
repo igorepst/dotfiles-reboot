@@ -14,7 +14,7 @@ function doWork(){
     sed -i 's@\\\\t@\\t@g' "${SH_RC}"
 
     # The name 'kglobalaccel' should have '5' only in the second case
-    kquitapp5 kglobalaccel && sleep 2s && kglobalaccel5 &
+    [ "$TERM" != "linux" ] && kquitapp5 kglobalaccel && sleep 2s && kglobalaccel5 &
 
     echo Disabling Baloo indexing
     kwriteconfig5 --file baloofilerc --group 'Basic Settings' --key 'Indexing-Enabled' false
