@@ -14,6 +14,15 @@ Section "InputClass"
     Option "ClickMethod" "clickfinger"
     Option "NaturalScrolling" "true"
 EndSection
+
+Section "InputClass"
+        Identifier "system-keyboard"
+        MatchIsKeyboard "on"
+        Option "XkbLayout" "us,ru,il"
+        Option "XkbModel" "pc104"
+        Option "XkbVariant" ",phonetic,"
+        Option "XkbOptions" "grp:caps_toggle"
+EndSection
 EOF
     fi
 }

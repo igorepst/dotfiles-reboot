@@ -29,7 +29,6 @@ function doWork(){
     link ".xinitrc"
     link ".xprofile"
     link ".Xresources"
-    link ".Xmodmap"
     link ".vim"
     link ".config/awesome"
     link ".config/bat"
