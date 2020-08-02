@@ -23,6 +23,7 @@ local prefix = gears.filesystem.get_configuration_dir() .. '/external/'
 package.path = package.path .. ";" .. prefix .. "?.lua;" .. prefix .. "?/init.lua"
 
 local mywidget = require("mywidget")
+local mykbdlayout = require("mykbdlayout")
 
 -- {{{ Error handling
 -- Check if awesome encountered an error during startup and fell back to
@@ -105,12 +106,9 @@ mylauncher = awful.widget.launcher({ image = beautiful.awesome_icon,
 menubar.utils.terminal = terminal -- Set the terminal for applications that require it
 -- }}}
 
--- Keyboard map indicator and switcher
-mykeyboardlayout = awful.widget.keyboardlayout()
-
 -- {{{ Wibar
 -- Create a textclock widget
-mytextclock = wibox.widget.textclock("%a %d/%m, %H:%M")
+mytextclock = wibox.widget.textclock("%a %d/%m,%H:%M")
 
 -- Create a wibox for each screen and add it
 local taglist_buttons = gears.table.join(
@@ -213,9 +211,9 @@ awful.screen.connect_for_each_screen(function(s)
         s.mytasklist, -- Middle widget
         { -- Right widgets
             layout = wibox.layout.fixed.horizontal,
-            mykeyboardlayout,
+            wibox.container.margin(mykbdlayout.kbd_icon, 8, 8),
             mywidget.wifi_icon,
-            mywidget.bat_icon,
+            wibox.container.margin(mywidget.bat_icon, 8, 8),
             wibox.widget.systray(),
             mytextclock,
             s.mylayoutbox,
@@ -579,5 +577,13 @@ end)
 client.connect_signal("focus", function(c) c.border_color = beautiful.border_focus end)
 client.connect_signal("unfocus", function(c) c.border_color = beautiful.border_normal end)
 -- }}}
+
+awful.spawn.easy_async(os.getenv("HOME") .. "/bin/wifi", function(stdout, stderr, reason, exitcode)
+    if exitcode == 0 then
+        naughty.notify({ text = stdout })
+    else
+        naughty.notify({ text = stderr, title = 'Cannot connect to WI-FI', preset = naughty.config.presets.critical})
+    end
+end)
 -- Update info immediately
 gears.timer({timeout = 0.5, callback = mywidget.mybattery.update, single_shot = true}):start()
