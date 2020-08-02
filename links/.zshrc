@@ -116,7 +116,7 @@ eval $(dircolors -b)
 zstyle ':completion:*:default'         list-colors ${(s.:.)LS_COLORS}
 
 # match uppercase from lowercase and complete from the middle of filename
-zstyle ':completion:*' matcher-list 'm:{[:lower:][:upper:]}={[:upper:][:lower:]}' '+l:|=* r:|=*'
+zstyle ':completion:*' matcher-list 'm:{[:lower:][:upper:]}={[:upper:][:lower:]}' 'l:|=* r:|=*'
 zstyle ':completion:*' menu select
 # format on completion
 zstyle ':completion:*:descriptions' format $'%{\e[0;31m%}completing %B%d%b%{\e[0m%}'
