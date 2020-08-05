@@ -104,6 +104,7 @@ call plug#begin(g:ig_plug_path)
 Plug 'junegunn/fzf.vim'
 Plug 'https://gitlab.com/protesilaos/tempus-themes-vim.git'
 Plug 'vifm/vifm.vim'
+Plug 'PProvost/vim-ps1'
 call plug#end()
 
 " Define one augroup for all autocommands
@@ -186,7 +187,7 @@ endif
 
 " Commenting blocks of code.
 autocmd ig_au FileType c,cpp,java let b:comment_leader = '//'
-autocmd ig_au FileType sh,bash,zsh,jproperties,tmux,conf,fstab,python let b:comment_leader = '#'
+autocmd ig_au FileType sh,bash,zsh,jproperties,tmux,conf,fstab,ps1,python let b:comment_leader = '#'
 autocmd ig_au FileType vim,vifm let b:comment_leader = '"'
 autocmd ig_au FileType xdefaults let b:comment_leader = '!'
 autocmd ig_au FileType lua let b:comment_leader = '--'
