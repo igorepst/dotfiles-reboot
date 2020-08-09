@@ -105,6 +105,9 @@ Plug 'junegunn/fzf.vim'
 Plug 'https://gitlab.com/protesilaos/tempus-themes-vim.git'
 Plug 'vifm/vifm.vim'
 Plug 'PProvost/vim-ps1'
+Plug 'rust-lang/rust.vim'
+Plug 'neoclide/coc.nvim', {'branch': 'release'}
+Plug 'antoinemadec/coc-fzf'
 call plug#end()
 
 " Define one augroup for all autocommands
@@ -138,7 +141,7 @@ else
     endif
 endif
 
-set shortmess+=Ia
+set shortmess+=IaF
 set shortmess-=S
 set noshowmode
 set noruler
@@ -185,9 +188,19 @@ if has('gui_running')
     map! <S-Insert> <MiddleMouse>
 endif
 
+" Large file: more than 10Mb
+autocmd ig_au BufReadPre *
+            \ let f=expand("<afile>") |
+            \ if getfsize(f) > 10485760 |
+            \ set eventignore+=FileType |
+            \ setlocal noswapfile bufhidden=unload buftype=nowrite undolevels=-1 |
+            \ else |
+            \ set eventignore-=FileType |
+            \ endif
+
 " Commenting blocks of code.
-autocmd ig_au FileType c,cpp,java let b:comment_leader = '//'
-autocmd ig_au FileType sh,bash,zsh,jproperties,tmux,conf,fstab,ps1,python let b:comment_leader = '#'
+autocmd ig_au FileType c,cpp,java,rust let b:comment_leader = '\/\/'
+autocmd ig_au FileType sh,bash,zsh,jproperties,tmux,conf,xf86conf,fstab,ps1,python let b:comment_leader = '#'
 autocmd ig_au FileType vim,vifm let b:comment_leader = '"'
 autocmd ig_au FileType xdefaults let b:comment_leader = '!'
 autocmd ig_au FileType lua let b:comment_leader = '--'
@@ -252,9 +265,9 @@ nnoremap <Leader>ov :edit $MYVIMRC<CR>
 " Original: https://stackoverflow.com/a/4294176/151048
 autocmd ig_au BufWritePre * :call s:MkNonExDir(expand('<afile>'), +expand('<abuf>'))
 fun! s:MkNonExDir(file, buf)
-  if empty(getbufvar(a:buf, '&buftype')) && a:file !~# '\v^\w+\:\/'
-    call mkdir(fnamemodify(a:file, ':h'), 'p')
-  endif
+    if empty(getbufvar(a:buf, '&buftype')) && a:file !~# '\v^\w+\:\/'
+        call mkdir(fnamemodify(a:file, ':h'), 'p')
+    endif
 endfun
 
 " https://gist.github.com/romainl/56f0c28ef953ffc157f36cc495947ab3

@@ -1,6 +1,7 @@
 source ~/.zsh/helpers/get_gh_release.zsh
 get_gh_release --repo knqyf263/pet --arch linux_amd64.tar.gz --toPath . --toCompletionPath misc/completions/zsh
 get_gh_release --repo dandavison/delta --arch x86_64-unknown-linux-gnu.tar.gz --toPath .
+get_gh_release --repo denisidoro/navi --arch x86_64-unknown-linux-musl.tar.gz --toPath .
 
 if [[ -r "${XDG_CACHE_HOME:-$HOME/.cache}/p10k-instant-prompt-${(%):-%n}.zsh" ]]; then
     source "${XDG_CACHE_HOME:-$HOME/.cache}/p10k-instant-prompt-${(%):-%n}.zsh"
@@ -49,6 +50,11 @@ function slash-backward-kill-word () {
 zle -N slash-backward-kill-word
 #Alt+v
 bindkey 'v' slash-backward-kill-word
+
+# Without the first one, backspace doesn't work properly when returning from normal mode
+bindkey "" backward-delete-char
+bindkey "" backward-kill-word
+bindkey "" backward-kill-line
 
 autoload -Uz copy-earlier-word edit-command-line
 zle -N copy-earlier-word
