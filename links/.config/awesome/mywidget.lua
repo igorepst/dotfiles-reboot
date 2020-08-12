@@ -94,4 +94,47 @@ mywidget.net = lain.widget.net({
     end
 })
 
+mywidget.volume_icon = wibox.widget.imagebox()
+mywidget.volume = lain.widget.pulse({settings = function()
+    local icon
+    if volume_now.muted == "yes" then
+        icon = "audio-volume-muted"
+    else
+        local perc = tonumber(volume_now.left)
+        if perc then
+            if perc <= 25 then
+                icon = "audio-volume-low"
+            elseif perc <= 80 then
+                icon = "audio-volume-medium"
+            else
+                icon = "audio-volume-high"
+            end
+        end
+        vlevel = volume_now.left .. "-" .. volume_now.right .. "% | " .. volume_now.device
+    end
+        mywidget.volume_icon:set_image(image_path .. icon .. ".svg")
+    end
+})
+mywidget.volume_icon:buttons(awful.util.table.join(
+    awful.button({}, 1, function() -- left click
+        awful.spawn("pavucontrol")
+    end),
+    awful.button({}, 2, function() -- middle click
+        os.execute(string.format("pactl set-sink-volume %s 100%%", mywidget.volume.device))
+        mywidget.volume.update()
+    end),
+    awful.button({}, 3, function() -- right click
+        os.execute(string.format("pactl set-sink-mute %s toggle", mywidget.volume.device))
+        mywidget.volume.update()
+    end),
+    awful.button({}, 4, function() -- scroll up
+        os.execute(string.format("pactl set-sink-volume %s +1%%", mywidget.volume.device))
+        mywidget.volume.update()
+    end),
+    awful.button({}, 5, function() -- scroll down
+        os.execute(string.format("pactl set-sink-volume %s -1%%", mywidget.volume.device))
+        mywidget.volume.update()
+    end)
+))
+
 return mywidget

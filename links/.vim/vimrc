@@ -107,7 +107,6 @@ Plug 'vifm/vifm.vim'
 Plug 'PProvost/vim-ps1'
 Plug 'rust-lang/rust.vim'
 Plug 'neoclide/coc.nvim', {'branch': 'release'}
-Plug 'antoinemadec/coc-fzf'
 call plug#end()
 
 " Define one augroup for all autocommands

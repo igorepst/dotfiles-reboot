@@ -1,3 +1,10 @@
+let g:coc_global_extensions = ['coc-json', 'coc-explorer', 'coc-highlight', 'coc-lists', 'coc-lua', 
+            \ 'coc-rls', 'coc-vimlsp', 'coc-tsserver', 'coc-html', 'coc-css', 'coc-fzf-preview']
+
+autocmd ig_au FileType json if expand("%:t") == 'coc-settings.json' | 
+                            \ syntax match Comment +\/\/.\+$+ |
+                            \ endif
+
 " TextEdit might fail if hidden is not set.
 set hidden
 

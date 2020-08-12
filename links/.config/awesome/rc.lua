@@ -212,10 +212,11 @@ awful.screen.connect_for_each_screen(function(s)
         { -- Right widgets
             layout = wibox.layout.fixed.horizontal,
             wibox.container.margin(mykbdlayout.kbd_icon, 8, 8),
-            mywidget.wifi_icon,
-            wibox.container.margin(mywidget.bat_icon, 8, 8),
+            mywidget.volume_icon,
+            wibox.container.margin(mywidget.wifi_icon, 8, 8),
+            mywidget.bat_icon,
             wibox.widget.systray(),
-            mytextclock,
+            wibox.container.margin(mytextclock, 8, 0),
             s.mylayoutbox,
         },
     }

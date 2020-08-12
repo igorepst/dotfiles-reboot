@@ -30,6 +30,8 @@ checkP python
 checkP awesome
 checkP gnome-keyring
 checkP libsecret
+# For coc.nvim
+checkP nodejs
 
 if [ ! -z "${pnames}" ]; then
     echo ${RED}'Installing the following packages:'${RESET}
