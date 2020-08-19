@@ -35,7 +35,7 @@ function any () {
     fi
 }
 
-up(){
+function up(){
   local declare dirs=()
   get_parent_dirs() {
     if [[ -d "${1}" ]]; then dirs+=("$1"); else return; fi
@@ -49,3 +49,6 @@ up(){
   cd "$DIR"
 }
 
+function ssh(){
+    TERM=xterm-256color command ssh -C -t $@ 'if command -v tmux >/dev/null; then tmux attach || tmux new; else bash -l; fi'
+}
