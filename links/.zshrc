@@ -148,7 +148,7 @@ zstyle ':completion:*:processes' command 'ps -au $USER'
 # Provide more processes in completion of programs like killall:
 zstyle ':completion:*:processes-names' command 'ps c -u ${USER} -o command | uniq'
 
-ZSH_AUTOSUGGEST_HIGHLIGHT_STYLE="fg=6"
+ZSH_AUTOSUGGEST_HIGHLIGHT_STYLE="fg=196"
 ZSH_AUTOSUGGEST_USE_ASYNC=1
 ZSH_AUTOSUGGEST_BUFFER_MAX_SIZE=20
 source ~/.zsh/plugins/zsh-autosuggestions/zsh-autosuggestions.zsh
