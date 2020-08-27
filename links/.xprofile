@@ -15,11 +15,6 @@ if [ -f "${userresources}" ]; then
     xrdb -merge "${userresources}"
 fi
 
-currentThemeXColors=$HOME/.theme/currentTheme.Xcolors
-if [ -f "${currentThemeXColors}" ]; then
-    xrdb -merge "${currentThemeXColors}"
-fi
-
 currentThemeXResources=$HOME/.theme/currentTheme.Xresources
 if [ -f "${currentThemeXResources}" ]; then
     xrdb -merge "${currentThemeXResources}"

@@ -102,7 +102,7 @@ unlet autoload_plug_path
 let g:ig_plug_path=igVimPathVolatile . '/plugged'
 call plug#begin(g:ig_plug_path)
 Plug 'junegunn/fzf.vim'
-Plug 'https://gitlab.com/protesilaos/tempus-themes-vim.git'
+Plug 'NLKNguyen/papercolor-theme'
 Plug 'vifm/vifm.vim'
 Plug 'PProvost/vim-ps1'
 Plug 'rust-lang/rust.vim'
@@ -132,7 +132,8 @@ else
     let &t_8f = "\<Esc>[38;2;%lu;%lu;%lum"
     let &t_8b = "\<Esc>[48;2;%lu;%lu;%lum"
     set termguicolors
-    colorscheme tempus_dawn
+    colorscheme PaperColor
+    " colorscheme tempus_dawn
     if $TERM=~'xterm'
         " see modifyOtherKeys
         let &t_TI = ""
@@ -263,7 +264,7 @@ nnoremap <Leader>ov :edit $MYVIMRC<CR>
 " Create file's directory before saving, if it doesn't exist.
 " Original: https://stackoverflow.com/a/4294176/151048
 autocmd ig_au BufWritePre * :call s:MkNonExDir(expand('<afile>'), +expand('<abuf>'))
-fun! s:MkNonExDir(file, buf)
+function! s:MkNonExDir(file, buf)
     if empty(getbufvar(a:buf, '&buftype')) && a:file !~# '\v^\w+\:\/'
         call mkdir(fnamemodify(a:file, ':h'), 'p')
     endif
@@ -283,3 +284,21 @@ nnoremap <Leader>// :LGrep<Space>
 command! LListToggle call ighelper#LListToggle()
 nnoremap <Leader>ll :LListToggle<CR>
 
+if !empty($TMUX)
+    set notitle
+endif
+" Customize fzf colors to match your color scheme
+" let g:fzf_colors =
+            " \ { 'fg':      ['fg', 'Normal'],
+  " \ 'bg':      ['bg', 'Normal'],
+  " \ 'hl':      ['fg', 'Comment'],
+  " \ 'fg+':     ['fg', 'CursorLine', 'CursorColumn', 'Normal'],
+  " \ 'bg+':     ['bg', 'CursorLine', 'CursorColumn'],
+  " \ 'hl+':     ['fg', 'Statement'],
+  " \ 'info':    ['fg', 'PreProc'],
+  " \ 'border':  ['fg', 'Ignore'],
+  " \ 'prompt':  ['fg', 'Conditional'],
+  " \ 'pointer': ['fg', 'Exception'],
+  " \ 'marker':  ['fg', 'Keyword'],
+  " \ 'spinner': ['fg', 'Label'],
+  " \ 'header':  ['fg', 'Comment'] }

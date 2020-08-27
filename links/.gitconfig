@@ -10,7 +10,7 @@
 [delta]
     plus-color = "#012800"
     minus-color = "#340001"
-    syntax-theme = ansi-light
+    syntax-theme = OneHalfLight
     side-by-side = true
     line-numbers = true
     features = decorations
