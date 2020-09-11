@@ -107,7 +107,21 @@ Plug 'vifm/vifm.vim'
 Plug 'PProvost/vim-ps1'
 Plug 'rust-lang/rust.vim'
 Plug 'neoclide/coc.nvim', {'branch': 'release'}
+Plug 'itchyny/lightline.vim'
 call plug#end()
+
+let g:lightline = {
+            \ 'colorscheme': 'PaperColor_light',
+            \ 'active': {
+            \   'left': [ [ 'mode', 'paste' ],
+            \             [ 'readonly', 'filename', 'modified', 'cocstatus' ] ]
+            \ },
+            \  'component_function': {
+            \   'cocstatus': 'coc#status'
+            \ },
+            \ }
+
+set relativenumber
 
 " Define one augroup for all autocommands
 augroup ig_au

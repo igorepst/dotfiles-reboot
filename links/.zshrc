@@ -22,6 +22,7 @@ source ~/.zsh/title.zsh
 source ~/.zsh/formarks.zsh 
 source ~/.zsh/terminal.zsh 
 source ~/.zsh/command_not_found.zsh 
+source ~/.zsh/nnn.zsh
 
 [ -d ~/.work/bin ] && path+=(~/.work/bin)
 [ -f ~/.work/aliases.zsh ] && source ~/.work/aliases.zsh
