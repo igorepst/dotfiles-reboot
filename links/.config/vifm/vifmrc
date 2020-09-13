@@ -29,6 +29,7 @@ set tabstop=2
 set rulerformat='%2l-%S%[ +%x%]'
 set dotfiles
 set caseoptions=pG
+set fillchars=vborder:ǀ
 
 if !has('win')
     set slowfs=curlftpfs
@@ -61,7 +62,7 @@ command! mkcd :mkdir %a | cd %a
 command! vgrep vim "+grep %a"
 command! reload :write | restart
 
-" Tmux: use 'system' to still see UI and open a split; otherwise - use 'term'
+" Tmux: use 'system' to see the UI and open a split; otherwise - use 'term'
 " as the command is interactive
 command! fzf :set noquickview 
     \| let $FCMD = 'fd --hidden | fzf-tmux -d 30%% --height 10 --preview "[ -d {} ] && (ls -Alh --color=always {}/ | head -10) || bat --color=always --style=plain --line-range=:10  --theme=base16 {}" 2>/dev/tty'
@@ -73,6 +74,7 @@ command! fzf :set noquickview
     \| if $FZF_RES != ''
     \|    goto $FZF_RES
     \| endif
+nnoremap // :fzf<cr>
 
 command! rg :set noquickview
     \| let $RGCMD = 'rg --files-with-matches --ignore-case --hidden'
@@ -85,6 +87,10 @@ command! rg :set noquickview
     \| if $FZF_RES != ''
     \|    goto $FZF_RES
     \| endif
+nnoremap /? :rg<cr>
+
+command! zzzInternalXC git log --name-only --format=%%n -- %d| CDUP=`git rev-parse --show-cdup` perl -lne 'print if /./ and s(^)($ENV{CDUP}) and -f and not $seen{$_}++' | head -%a %U
+
 
 " ------------------------------------------------------------------------------
 
@@ -407,7 +413,6 @@ nnoremap <f5> :copy<cr>
 nnoremap <f6> :move<cr>
 nnoremap <f7> :mkdir<space>
 nnoremap <f8> :delete<cr>
-nnoremap <f12> :set quickview!<cr>
 
 " ------------------------------------------------------------------------------
 

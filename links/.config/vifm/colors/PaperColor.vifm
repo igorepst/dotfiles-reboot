@@ -2,30 +2,30 @@
 " PaperColor.vifm
 highlight clear
 
-highlight TopLine cterm=none ctermfg=242 ctermbg=253
-highlight TopLineSel cterm=none ctermfg=237 ctermbg=253
-highlight TabLine cterm=none ctermfg=242 ctermbg=253
-highlight TabLineSel cterm=none ctermfg=237 ctermbg=253
-highlight StatusLine cterm=underline ctermfg=237 ctermbg=253
-highlight CmdLine cterm=none ctermfg=237 ctermbg=253
-highlight Border cterm=none ctermfg=237 ctermbg=253
-highlight ErrorMsg cterm=none ctermfg=red ctermbg=default
+highlight TopLine cterm=none ctermfg=242 ctermbg=250
+highlight TopLineSel cterm=none ctermfg=238 ctermbg=250
+highlight TabLine cterm=none ctermfg=242 ctermbg=250
+highlight TabLineSel cterm=none ctermfg=238 ctermbg=250
+highlight StatusLine cterm=none ctermfg=238 ctermbg=250
+highlight CmdLine cterm=none ctermfg=238 ctermbg=250
+highlight Border cterm=none ctermfg=24 ctermbg=default
+highlight ErrorMsg cterm=none ctermfg=124 ctermbg=default
+highlight Win cterm=none ctermfg=238 ctermbg=255
+highlight OtherWin cterm=none ctermfg=238 ctermbg=255
+highlight Directory cterm=none ctermfg=24 ctermbg=default
+highlight Link cterm=none ctermfg=64 ctermbg=default
+highlight BrokenLink cterm=none ctermfg=255 ctermbg=124
+highlight CmpMismatch cterm=bold ctermfg=255 ctermbg=124
+highlight Device cterm=none ctermfg=160 ctermbg=default
+highlight Socket cterm=none ctermfg=102 ctermbg=default
+highlight Fifo cterm=none ctermfg=91 ctermbg=default
+highlight Executable cterm=none ctermfg=28 ctermbg=default
+highlight Selected cterm=bold ctermfg=255 ctermbg=31
+highlight CurrLine cterm=bold ctermfg=255 ctermbg=166
+highlight WildMenu cterm=underline ctermfg=238 ctermbg=255
 
-highlight Win cterm=none ctermfg=7 ctermbg=0
-highlight OtherWin cterm=none ctermfg=7 ctermbg=0
-highlight Directory cterm=none ctermfg=6 ctermbg=default
-highlight Link cterm=none ctermfg=yellow ctermbg=default
-highlight BrokenLink cterm=none ctermfg=red ctermbg=default
-highlight Socket cterm=none ctermfg=magenta ctermbg=default
-highlight Device cterm=none ctermfg=red ctermbg=default
-highlight Fifo cterm=none ctermfg=cyan ctermbg=default
-highlight Executable cterm=none ctermfg=green ctermbg=default
-highlight Selected cterm=bold ctermfg=208 ctermbg=default
-highlight CurrLine cterm=bold ctermfg=237 ctermbg=208
+highlight SuggestBox cterm=bold ctermfg=red ctermbg=default
 highlight JobLine cterm=bold,reverse ctermfg=white ctermbg=black
-highlight WildMenu cterm=underline,reverse ctermfg=black ctermbg=white
-highlight SuggestBox cterm=bold ctermfg=default ctermbg=default
-highlight CmpMismatch cterm=bold ctermfg=white ctermbg=red
 highlight AuxWin cterm=bold,underline,reverse,standout,italic ctermfg=default ctermbg=default
 highlight User1 cterm=bold,underline,reverse,standout,italic ctermfg=default ctermbg=default
 highlight User2 cterm=bold,underline,reverse,standout,italic ctermfg=default ctermbg=default
