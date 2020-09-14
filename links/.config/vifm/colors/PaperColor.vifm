@@ -23,9 +23,9 @@ highlight Executable cterm=none ctermfg=28 ctermbg=default
 highlight Selected cterm=bold ctermfg=255 ctermbg=31
 highlight CurrLine cterm=bold ctermfg=255 ctermbg=166
 highlight WildMenu cterm=underline ctermfg=238 ctermbg=255
+highlight SuggestBox cterm=none ctermfg=default ctermbg=default
+highlight JobLine cterm=none ctermfg=238 ctermbg=250
 
-highlight SuggestBox cterm=bold ctermfg=red ctermbg=default
-highlight JobLine cterm=bold,reverse ctermfg=white ctermbg=black
 highlight AuxWin cterm=bold,underline,reverse,standout,italic ctermfg=default ctermbg=default
 highlight User1 cterm=bold,underline,reverse,standout,italic ctermfg=default ctermbg=default
 highlight User2 cterm=bold,underline,reverse,standout,italic ctermfg=default ctermbg=default
