@@ -37,6 +37,7 @@ endif
 
 if $TMUX != ''
     set notitle
+    screen!
 else
     set title
 endif
@@ -453,7 +454,6 @@ command! cmp : if expand('%%c') == expand('%%f')
               \ |     cmpinternal %f
               \ | endif
 
-" screen!
 
 " Ranger devicons for ViFM
 " https://github.com/cirala/vifm_devicons
@@ -526,3 +526,6 @@ set classify+=' ::*.doc,,*.docx,,*.adoc::'
 set classify+=' ::*.xls,,*.xls,,*.xlsmx::'
 set classify+=' ::*.pptx,,*.ppt::'
 
+if $MY_PC_IS == 'work'
+    source ~/.work/vifmrc-work
+endif
