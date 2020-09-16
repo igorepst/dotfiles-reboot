@@ -44,17 +44,19 @@ endif
 
 set vifminfo=dhistory,savedirs,chistory,state,tui,shistory,
     \phistory,fhistory,dirstack,registers,bookmarks,bmarks
+set noquickview
 " Sync registers between instances
 set syncregs='mineSync'
     
 windo set viewcolumns=-{iname}..,7{size},8{mode},16{mtime}
 
+set grepprg='rg --line-number --color=never --hidden %i %a %s'
+
 colorscheme PaperColor
 
 " Tmux: use 'system' to see the UI and open a split; otherwise - use 'term'
 " as the command is interactive
-command! fzf :set noquickview 
-    \| let $FCMD = 'fd --hidden | fzf-tmux -d 30%% --height 10 --preview "[ -d {} ] && (ls -Alh --color=always {}/ | head -10) || bat --color=always --style=plain --line-range=:10  --theme=base16 {}" 2>/dev/tty'
+command! fzf :let $FCMD = 'fd --hidden | fzf-tmux -d 30%% --height 10 --preview "[ -d {} ] && (ls -Alh --color=always {}/ | head -10) || bat --color=always --style=plain --line-range=:10  --theme=base16 {}" 2>/dev/tty'
     \| if $TMUX != '' 
     \|    let $FZF_RES = system($FCMD)
     \| else
@@ -65,8 +67,7 @@ command! fzf :set noquickview
     \| endif
 nnoremap // :fzf<cr>
 
-command! rg :set noquickview
-    \| let $RGCMD = 'rg --files-with-matches --ignore-case --hidden'
+command! rg :let $RGCMD = 'rg --files-with-matches --ignore-case --hidden'
     \| let $FCMD = 'FZF_DEFAULT_COMMAND="rg --files" fzf-tmux -d 30%% --height 10 --exact --ansi --phony --bind "change:reload:$RGCMD {q} || true" --preview "rg -i --pretty --context 2 {q} {}" 2>/dev/tty'
     \| if $TMUX != '' 
     \|    let $FZF_RES = system($FCMD)
@@ -79,17 +80,25 @@ command! rg :set noquickview
 nnoremap /? :rg<cr>
 
 command! reload :write | restart
+command! zzzGITCMD git -c color.ui=always %a %q
+command! gd :exe "zzzGITCMD diff %d"
+command! gs :exe "zzzGITCMD status %d"
+command! gl :exe "zzzGITCMD log %c"
+" nnoremap l :if &previewprg == '' | set previewprg='git log --color -- %c 2>&1' | view! | else | set previewprg='' | view | endif<cr>
 
 " Space selects and goes down
 nnoremap <space> tj
 nnoremap * ggVG
 nnoremap <c-\> :bmarks<cr>
 nnoremap <f3> :view<cr>
+vnoremap <f3> :view<cr>gv
 nnoremap <f4> :edit<cr>
 nnoremap <f5> :copy<cr>
 nnoremap <f6> :move<cr>
 nnoremap <f7> :mkdir<space>
 nnoremap <f8> :delete<cr>
+
+bmark! ~/dotfiles-reboot/ dotfiles
 
 filetype *.ssh
        \ {Mount with sshfs}
@@ -293,7 +302,8 @@ filextype */
         \ {View in thunar}
         \ Thunar %f &,
 
-fileviewer *.txt,*.sh,*.zsh bat --color=always --style=plain --pager=never --theme=base16 %c
+fileviewer *.txt,*.sh,*.zsh bat %c
+" fileviewer *.txt,*.sh,*.zsh bat --color=always --style=plain --pager=never --theme=base16 %c
 " fileviewer *.txt,*.sh,*.zsh bat --color=always --style=plain --pager=never --theme=base16-papercolor-light %c
 " fileviewer *.txt,*.sh,*.zsh highlight -O xterm256 -s dante %c --force
 
@@ -349,9 +359,6 @@ nnoremap s :shell<cr>
 " Display sorting dialog
 nnoremap S :sort<cr>
 
-" Toggle visibility of preview window
-nnoremap w :view<cr>
-vnoremap w :view<cr>gv
 
 " Open file in existing instance of gvim
 nnoremap o :!gvim --remote-tab-silent %f<cr>
@@ -389,7 +396,6 @@ nnoremap A cw
 " Open console in current directory
 nnoremap ,t :!xterm &<cr>
 
-nnoremap l :if &previewprg == '' | set previewprg='git log --color -- %c 2>&1' | view! | else | set previewprg='' | view | endif<cr>
 
 nmap ; :
 
@@ -405,13 +411,6 @@ nnoremap ,w :set wrap!<cr>
 
 " ------------------------------------------------------------------------------
 
-" Various customization examples
-
-" Use ag (the silver searcher) instead of grep
-"
-" set grepprg='ag --line-numbers %i %a %s'
-
-set grepprg='rg --line-number --color=never --hidden %i %a %s'
 
 " Add additional place to look for executables
 "
@@ -430,9 +429,8 @@ set grepprg='rg --line-number --color=never --hidden %i %a %s'
 "
 " let $VIFM_SERVER_NAME = v:servername
 
+
 command link ln -s %d/%f %D
-command gd git diff %d
-command gs git status %d %q
 command! cmpinternal compare-cmd %a %S
 command! cmp : if expand('%%c') == expand('%%f')
               \ |     echo expand('Comparing %%"c and %%"C:t ...')

@@ -17,6 +17,7 @@ source ~/.zsh/aliases.zsh
 source ~/.zsh/fzf.zsh
 source ~/.zsh/pet.zsh 
 source ~/.zsh/ripgrep.zsh 
+source ~/.zsh/vifm.zsh 
 source ~/.zsh/functions.zsh 
 source ~/.zsh/title.zsh 
 source ~/.zsh/formarks.zsh 
