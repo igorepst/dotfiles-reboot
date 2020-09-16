@@ -78,6 +78,18 @@ command! rg :set noquickview
     \| endif
 nnoremap /? :rg<cr>
 
+command! reload :write | restart
+
+" Space selects and goes down
+nnoremap <space> tj
+nnoremap * ggVG
+nnoremap <c-\> :bmarks<cr>
+nnoremap <f3> :view<cr>
+nnoremap <f4> :edit<cr>
+nnoremap <f5> :copy<cr>
+nnoremap <f6> :move<cr>
+nnoremap <f7> :mkdir<space>
+nnoremap <f8> :delete<cr>
 
 filetype *.ssh
        \ {Mount with sshfs}
@@ -101,6 +113,8 @@ filetype *.sha512
 
 
 
+
+
 mark b ~/bin/
 mark h ~/
 
@@ -111,7 +125,6 @@ command! run !! ./%f
 command! make !!make %a
 command! mkcd :mkdir %a | cd %a
 command! vgrep vim "+grep %a"
-command! reload :write | restart
 
 
 command! zzzInternalXC git log --name-only --format=%%n -- %d| CDUP=`git rev-parse --show-cdup` perl -lne 'print if /./ and s(^)($ENV{CDUP}) and -f and not $seen{$_}++' | head -%a %U
@@ -378,8 +391,6 @@ nnoremap ,t :!xterm &<cr>
 
 nnoremap l :if &previewprg == '' | set previewprg='git log --color -- %c 2>&1' | view! | else | set previewprg='' | view | endif<cr>
 
-" Space selects and goes down
-nmap <space> tj
 nmap ; :
 
 
@@ -391,13 +402,6 @@ nnoremap ,C :!gvim --remote-tab-silent $MYVIFMRC &<cr>
 " Toggle wrap setting on ,w key
 nnoremap ,w :set wrap!<cr>
 
-" Example of standard two-panel file managers mappings
-nnoremap <f3> :view<cr>
-nnoremap <f4> :edit<cr>
-nnoremap <f5> :copy<cr>
-nnoremap <f6> :move<cr>
-nnoremap <f7> :mkdir<space>
-nnoremap <f8> :delete<cr>
 
 " ------------------------------------------------------------------------------
 
