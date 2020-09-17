@@ -84,6 +84,8 @@ command! zzzGITCMD git -c color.ui=always %a %q
 command! gd :exe "zzzGITCMD diff %d"
 command! gs :exe "zzzGITCMD status %d"
 command! gl :exe "zzzGITCMD log %c"
+command! extract aunpack %f &>/dev/null &
+command! archive apack %a %f &>/dev/null &
 " nnoremap l :if &previewprg == '' | set previewprg='git log --color -- %c 2>&1' | view! | else | set previewprg='' | view | endif<cr>
 
 " Space selects and goes down
@@ -120,8 +122,31 @@ filetype *.sha512
        \ {Check SHA512 hash sum}
        \ sha512sum -c %f %S,
 
+filetype *.tar.gz,*.tgz,*.tar.bz,*.tbz,*.tar.bz2,*.tbz2,
+         \*.tar.Z,*.tZ,*.tar.lzo,*.tzo,*.tar.lz,*.tlz,*.tar.xz,*.txz,*.tar.7z,*.t7z,
+         \*.tar,
+         \*.zip,*.jar,*.war,*.rar,*.lha,*.lzh,
+         \*.alz,*.ace,*.a,*.arj,*.arc,
+         \*.rpm,*.deb,
+         \*.cab,
+         \*.gz,*.bz,*.bz2,
+         \*.Z,*.lzma,*.lzo,*.lz,*.xz,*.rz,*.lrz,*.7z,
+         \*.cpio
+         \ aunpack %f
+fileviewer *.tar.gz,*.tgz,*.tar.bz,*.tbz,*.tar.bz2,*.tbz2,
+         \*.tar.Z,*.tZ,*.tar.lzo,*.tzo,*.tar.lz,*.tlz,*.tar.xz,*.txz,*.tar.7z,*.t7z,
+         \*.tar,
+         \*.zip,*.jar,*.war,*.rar,*.lha,*.lzh,
+         \*.alz,*.ace,*.a,*.arj,*.arc,
+         \*.rpm,*.deb,
+         \*.cab,
+         \*.gz,*.bz,*.bz2,
+         \*.Z,*.lzma,*.lzo,*.lz,*.xz,*.rz,*.lrz,*.7z,
+         \*.cpio
+         \ als %f 2>/dev/null
 
 
+fileviewer *.txt,*.sh,*.zsh,*.py,*.log,*.log.[1-100] bat %c
 
 
 mark b ~/bin/
@@ -225,8 +250,8 @@ filetype *.html,*.htm links, lynx
 filetype *.o nm %f | less
 
 " Man page
-filetype *.[1-8] man ./%c
-fileviewer *.[1-8] man ./%c | col -b
+" filetype *.[1-8] man ./%c
+" fileviewer *.[1-8] man ./%c | col -b
 
 " Images
 filextype *.bmp,*.jpg,*.jpeg,*.png,*.gif,*.xpm,*.svg
@@ -252,29 +277,29 @@ filetype *.torrent ktorrent %f &
 fileviewer *.torrent dumptorrent -v %c
 
 " FuseZipMount
-filetype *.zip,*.jar,*.war,*.ear,*.oxt,*.apkg
-       \ {Mount with fuse-zip}
-       \ FUSE_MOUNT|fuse-zip %SOURCE_FILE %DESTINATION_DIR,
-       \ {View contents}
-       \ zip -sf %c | less,
-       \ {Extract here}
-       \ tar -xf %c,
-fileviewer *.zip,*.jar,*.war,*.ear,*.oxt zip -sf %c
-
+" filetype *.zip,*.jar,*.war,*.ear,*.oxt,*.apkg
+       " \ {Mount with fuse-zip}
+       " \ FUSE_MOUNT|fuse-zip %SOURCE_FILE %DESTINATION_DIR,
+       " \ {View contents}
+       " \ zip -sf %c | less,
+       " \ {Extract here}
+       " \ tar -xf %c,
+" fileviewer *.zip,*.jar,*.war,*.ear,*.oxt zip -sf %c
+" 
 " ArchiveMount
-filetype *.tar,*.tar.bz2,*.tbz2,*.tgz,*.tar.gz,*.tar.xz,*.txz
-       \ {Mount with archivemount}
-       \ FUSE_MOUNT|archivemount %SOURCE_FILE %DESTINATION_DIR,
-fileviewer *.tgz,*.tar.gz tar -tzf %c
-fileviewer *.tar.bz2,*.tbz2 tar -tjf %c
-fileviewer *.tar.txz,*.txz xz --list %c
-fileviewer *.tar tar -tf %c
-
+" filetype *.tar,*.tar.bz2,*.tbz2,*.tgz,*.tar.gz,*.tar.xz,*.txz
+       " \ {Mount with archivemount}
+       " \ FUSE_MOUNT|archivemount %SOURCE_FILE %DESTINATION_DIR,
+" fileviewer *.tgz,*.tar.gz tar -tzf %c
+" fileviewer *.tar.bz2,*.tbz2 tar -tjf %c
+" fileviewer *.tar.txz,*.txz xz --list %c
+" fileviewer *.tar tar -tf %c
+" 
 " Rar2FsMount and rar archives
-filetype *.rar
-       \ {Mount with rar2fs}
-       \ FUSE_MOUNT|rar2fs %SOURCE_FILE %DESTINATION_DIR,
-fileviewer *.rar unrar v %c
+" filetype *.rar
+       " \ {Mount with rar2fs}
+       " \ FUSE_MOUNT|rar2fs %SOURCE_FILE %DESTINATION_DIR,
+" fileviewer *.rar unrar v %c
 
 " IsoMount
 filetype *.iso
@@ -287,10 +312,10 @@ filetype *.ftp
        \ FUSE_MOUNT2|curlftpfs -o ftp_port=-,,disable_eprt %PARAM %DESTINATION_DIR %FOREGROUND,
 
 " Fuse7z and 7z archives
-filetype *.7z
-       \ {Mount with fuse-7z}
-       \ FUSE_MOUNT|fuse-7z %SOURCE_FILE %DESTINATION_DIR,
-fileviewer *.7z 7z l %c
+" filetype *.7z
+       " \ {Mount with fuse-7z}
+       " \ FUSE_MOUNT|fuse-7z %SOURCE_FILE %DESTINATION_DIR,
+" fileviewer *.7z 7z l %c
 
 " Office files
 filextype *.odt,*.doc,*.docx,*.xls,*.xlsx,*.odp,*.pptx libreoffice %f &
@@ -302,7 +327,6 @@ filextype */
         \ {View in thunar}
         \ Thunar %f &,
 
-fileviewer *.txt,*.sh,*.zsh bat %c
 " fileviewer *.txt,*.sh,*.zsh bat --color=always --style=plain --pager=never --theme=base16 %c
 " fileviewer *.txt,*.sh,*.zsh bat --color=always --style=plain --pager=never --theme=base16-papercolor-light %c
 " fileviewer *.txt,*.sh,*.zsh highlight -O xterm256 -s dante %c --force
