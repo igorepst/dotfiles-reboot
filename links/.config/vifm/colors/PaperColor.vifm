@@ -8,7 +8,7 @@ highlight TabLine cterm=none ctermfg=242 ctermbg=250
 highlight TabLineSel cterm=none ctermfg=238 ctermbg=250
 highlight StatusLine cterm=none ctermfg=238 ctermbg=250
 highlight CmdLine cterm=none ctermfg=238 ctermbg=250
-highlight Border cterm=none ctermfg=24 ctermbg=default
+highlight Border cterm=none ctermfg=24 ctermbg=255
 highlight ErrorMsg cterm=none ctermfg=124 ctermbg=default
 highlight Win cterm=none ctermfg=238 ctermbg=255
 highlight OtherWin cterm=none ctermfg=238 ctermbg=255
