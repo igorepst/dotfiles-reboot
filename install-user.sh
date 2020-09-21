@@ -33,7 +33,7 @@ function doWork(){
     fi
     export MY_PC_IS
 
-    local RECIPES_DIR="${DOTFILES_DIR}/installRecipes"
+    local RECIPES_DIR="${DOTFILES_DIR}/recipes"
     for recipe in ${RECIPES_DIR}/[0-9]*.sh; do
         if [ -x "${recipe}" ]; then
             echo

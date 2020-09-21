@@ -155,6 +155,33 @@ filetype <audio/*>,<video/*>
        \ {Play with mpv}
        \ mpv %f
 
+" vifmimg
+fileviewer *.pdf
+        \ vifmimg pdfpreview %px %py %pw %ph %c
+        \ %pc
+        \ vifmimg clear
+
+fileviewer *.avi,*.mp4,*.wmv,*.dat,*.3gp,*.ogv,*.mkv,*.mpg,*.mpeg,*.vob,
+        \*.fl[icv],*.m2v,*.mov,*.webm,*.ts,*.mts,*.m4v,*.r[am],*.qt,*.divx,
+        \ vifmimg videopreview %px %py %pw %ph %c
+        \ %pc
+        \ vifmimg clear
+
+fileviewer *.bmp,*.jpg,*.jpeg,*.png,*.xpm
+        \ vifmimg draw %px %py %pw %ph %c
+        \ %pc
+        \ vifmimg clear
+
+fileviewer *.gif
+        \ vifmimg gifpreview %px %py %pw %ph %c
+        \ %pc
+        \ vifmimg clear
+
+fileviewer *.ico
+        \ vifmimg magickpreview %px %py %pw %ph %c
+        \ %pc
+        \ vifmimg clear
+        
 if has('win')
     filetype * start, explorer
 else
@@ -302,10 +329,6 @@ command! zzzInternalXC git log --name-only --format=%%n -- %d| CDUP=`git rev-par
         " \ Thunar %f &,
 
 
-" Displaying pictures in terminal
-"
-" fileviewer *.jpg,*.png shellpic %c
-
 " Filter-out build and temporary files
 "
 " filter! /^.*\.(lo|o|d|class|py[co])$|.*~$/
@@ -402,17 +425,31 @@ command! cmp : if expand('%%c') == expand('%%f')
               \ | endif
 
 
-" Ranger devicons for ViFM
-" https://github.com/cirala/vifm_devicons
-"
-" Filetypes/directories
 set classify=' :dir:/, :exe:, :reg:, :link:,? :?:, ::../::'
+set classify+=' ::*.vim,,.vim,,*.vimrc,,.vimrc,,vimrc,,*.gvimrc,,*.vifm,,.viminfo,,.netrwhist,,*.vba::'
+set classify+=' ::*.vim/,,.vim/,,*.nvim/::/'
+set classify+=' ::*.exe,,*.dll,,*.msi::'
+set classify+=' ::*.db,,*.dump,,*.sql::'
+set classify+=' ::*.iso,,*.bin,,*.nrg,,*.vdi,,*.cue,,*.dmg,,*.img,,*.mdf,,*.vcd,,*.vmdk::'
+set classify+=' ::.git/::/,
+             \  ::.config/::/,
+             \  ::Desktop/::/,
+             \  ::Documents/::/,
+             \  ::Development/::/,
+             \  ::Downloads/::/,
+             \  ::Dropbox/::/,
+             \  ::Google\ Drive/::/,
+             \  ::gitrepos/::/,
+             \  ::Music/::/,
+             \  ::Pictures/::/,
+             \  ::Public/::/,
+             \  ::Templates/::/,
+             \  ::Videos/::/,
+             \  ::node_modules/::/'
 
-" Specific files
 set classify+=' ::.Xdefaults,,.Xresources,,.bashprofile,,.bash_profile,,.bashrc,,.dmrc,,.d_store,,.fasd,,.gitconfig,,.gitignore,,.jack-settings,,.mime.types,,.nvidia-settings-rc,,.pam_environment,,.profile,,.recently-used,,.selected_editor,,.xinitpurc,,.zprofile,,.yarnc,,.snclirc,,.tmux.conf,,.urlview,,.config,,.ini,,.user-dirs.dirs,,.mimeapps.list,,.offlineimaprc,,.msmtprc,,.Xauthority,,config::'
 set classify+=' ::dropbox::'
 set classify+=' ::favicon.*,,README,,readme::'
-set classify+=' ::.vim,,.vimrc,,.gvimrc,,.vifm::'
 set classify+=' ::gruntfile.coffee,,gruntfile.js,,gruntfile.ls::'
 set classify+=' ::gulpfile.coffee,,gulpfile.js,,gulpfile.ls::'
 set classify+=' ::ledger::'
@@ -442,9 +479,7 @@ set classify+=' ::*.lua::'
 set classify+=' ::*.jl::'
 set classify+=' ::*.go::'
 set classify+=' ::*.ts::'
-set classify+=' ::*.db,,*.dump,,*.sql::'
 set classify+=' ::*.sln,,*.suo::'
-set classify+=' ::*.exe::'
 set classify+=' ::*.diff,,*.sum,,*.md5,,*.sha512::'
 set classify+=' ::*.scala::'
 set classify+=' ::*.java,,*.jar::'
@@ -462,9 +497,8 @@ set classify+=' ::*.erl,,*.hrl::'
 set classify+=' ::*.ai::'
 set classify+=' ::*.psb,,*.psd::'
 set classify+=' ::*.jsx::'
-set classify+=' ::*.vim,,*.vimrc::'
 set classify+=' ::*.aac,,*.anx,,*.asf,,*.au,,*.axa,,*.flac,,*.m2a,,*.m4a,,*.mid,,*.midi,,*.mp3,,*.mpc,,*.oga,,*.ogg,,*.ogx,,*.ra,,*.ram,,*.rm,,*.spx,,*.wav,,*.wma,,*.ac3::'
-set classify+=' ::*.avi,,*.flv,,*.mkv,,*.mov,,*.mov,,*.mp4,,*.mpeg,,*.mpg,,*.webm::'
+set classify+=' ::*.avi,,*.flv,,*.m4v,,*.mkv,,*.mov,,*.mp4,,*.mpeg,,*.mpg,,*.webm::'
 set classify+=' ::*.epub,,*.pdf,,*.fb2,,*.djvu::'
 set classify+=' ::*.7z,,*.apk,,*.bz2,,*.cab,,*.cpio,,*.deb,,*.gem,,*.gz,,*.gzip,,*.lh,,*.lzh,,*.lzma,,*.rar,,*.rpm,,*.tar,,*.tgz,,*.xz,,*.zip::'
 set classify+=' ::*.cbr,,*.cbz::'
