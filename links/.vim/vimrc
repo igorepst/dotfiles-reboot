@@ -201,6 +201,8 @@ let b:match_ignorecase = 1
 if has('gui_running')
     map <S-Insert> <MiddleMouse>
     map! <S-Insert> <MiddleMouse>
+    set guifont=DejaVuSansMono\ Nerd\ Font\ Mono\ 15
+    set lines=999 columns=999
 endif
 
 " Large file: more than 10Mb
