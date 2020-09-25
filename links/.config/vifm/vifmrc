@@ -80,22 +80,38 @@ command! rg :let $RGCMD = 'rg --files-with-matches --ignore-case --hidden'
 nnoremap /? :rg<cr>
 
 command! reload :write | restart
-command! zzzGITCMD git -c color.ui=always %a %q
-command! gd :exe "zzzGITCMD diff %d"
-command! gs :exe "zzzGITCMD status %d"
-command! gl :exe "zzzGITCMD log %c"
 command! extract aunpack %f &>/dev/null &
 command! archive apack %a %f &>/dev/null &
 
-nnoremap xgl :set previewprg='git -c color.ui=always log %c' | view!<cr>
-nnoremap xgs :set previewprg='git -c color.ui=always status %d' | view!<cr>
-nnoremap xgd :set previewprg='git -c color.ui=always diff %d' | view!<cr>
-nnoremap xm :set previewprg='mediainfo %c' | view!<cr>
-nnoremap xx :set previewprg='' | view!<cr>
+command! previewGitLog :set previewprg='git -c color.ui=always log %c' | view!
+command! previewGitStatus :set previewprg='git -c color.ui=always status %d' | view!
+command! previewGitDiff :set previewprg='git -c color.ui=always diff %d' | view!
+command! previewMediainfo :set previewprg='mediainfo %c' | view!
+command! previewDefault :set previewprg='' | view!
+command! fzfPreviewSelector :let $FCMD = 'echo "Git log\nGit diff\nGit status\nMediainfo\nDefault" | fzf-tmux -d 30%% --height 10 --no-preview 2>/dev/tty'
+    \| if $TMUX != '' 
+    \|    let $FZF_RES = system($FCMD)
+    \| else
+    \|    let $FZF_RES = term($FCMD)
+    \| endif
+    \| if $FZF_RES == "Git log"
+    \|    :previewGitLog
+    \| elseif $FZF_RES == "Git status"
+    \|    :previewGitStatus
+    \| elseif $FZF_RES == "Git diff"
+    \|    :previewGitDiff
+    \| elseif $FZF_RES == "Mediainfo"
+    \|    :previewMediainfo
+    \| elseif $FZF_RES == "Default"
+    \|    :previewDefault
+    \| endif
+nnoremap <c-F3> :fzfPreviewSelector<cr>
+
 " Space selects and goes down
 nnoremap <space> tj
 nnoremap * ggVG
 nnoremap <c-\> :bmarks<cr>
+" previewDefault forces view mode, this, however, toggles it
 nnoremap <f3> :set previewprg='' | view<cr>
 vnoremap <f3> :set previewprg='' | view<cr>gv
 nnoremap <f4> :edit<cr>
