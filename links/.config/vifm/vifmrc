@@ -90,7 +90,8 @@ command! archive apack %a %f &>/dev/null &
 nnoremap xgl :set previewprg='git -c color.ui=always log %c' | view!<cr>
 nnoremap xgs :set previewprg='git -c color.ui=always status %d' | view!<cr>
 nnoremap xgd :set previewprg='git -c color.ui=always diff %d' | view!<cr>
-nnoremap xgx :set previewprg='' | view!<cr>
+nnoremap xm :set previewprg='mediainfo %c' | view!<cr>
+nnoremap xx :set previewprg='' | view!<cr>
 " Space selects and goes down
 nnoremap <space> tj
 nnoremap * ggVG

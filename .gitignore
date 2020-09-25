@@ -3,6 +3,7 @@ links/.vim/autoload/plug.vim*
 links/.vim/sessions
 links/.zsh/volatile
 links/.config/vifm/vifminfo
+links/.config/vifm/vifmimgpdf*
 # Override ~/.gitignore-global
 !links/bin
 links/bin/*archive
