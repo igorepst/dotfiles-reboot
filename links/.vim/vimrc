@@ -107,7 +107,6 @@ Plug 'vifm/vifm.vim'
 Plug 'PProvost/vim-ps1'
 Plug 'rust-lang/rust.vim'
 Plug 'neoclide/coc.nvim', {'branch': 'release'}
-Plug 'chrisbra/unicode.vim'
 Plug 'itchyny/lightline.vim'
 call plug#end()
 

@@ -425,92 +425,93 @@ command! cmp : if expand('%%c') == expand('%%f')
               \ | endif
 
 
-set classify=' :dir:/, :exe:, :reg:, :link:,? :?:, ::../::'
-set classify+=' ::*.vim,,.vim,,*.vimrc,,.vimrc,,vimrc,,*.gvimrc,,*.vifm,,.viminfo,,.netrwhist,,*.vba::'
-set classify+=' ::*.vim/,,.vim/,,*.nvim/::/'
-set classify+=' ::*.exe,,*.dll,,*.msi::'
-set classify+=' ::*.db,,*.dump,,*.sql::'
-set classify+=' ::*.iso,,*.bin,,*.nrg,,*.vdi,,*.cue,,*.dmg,,*.img,,*.mdf,,*.vcd,,*.vmdk::'
-set classify+=' ::VBoxMachines/,,VirtualBox VMs/::/'
-set classify+=' ::.gitconfig*,,.gitignore*,,.gitattributes,,.gitmodules::'
-set classify+=' ::.git/::/,
-             \  ::.config/::/,
-             \  ::Desktop/::/,
-             \  ::Documents/,, My Documents/::/,
-             \  ::Downloads/::/,
-             \  ::Dropbox/::/,
-             \  ::Google\ Drive/::/,
-             \  ::Music/::/,
-             \  ::Pictures/,,My Pictures/::/,
-             \  ::Public/::/,
-             \  ::Templates/::/,
-             \  ::Videos/::/,
-             \  ::node_modules/,,.node_modules/,,.npm/::/,
-             \  ::lost+found/::/'
-
-set classify+=' ::.Xdefaults,,.Xresources,,.bashprofile,,.bash_profile,,.bashrc,,.bash_logout,,bash_history,,.dmrc,,.DS_Store,,.fasd,,.inputrc,,.jack-settings,,.mime.types,,.nvidia-settings-rc,,.pam_environment,,.profile,,.recently-used,,.selected_editor,,.xinitrc,,.xinputrc,,.zprofile,,.yarnc,,.snclirc,,.tmux.conf,,.urlview,,.config,,.ini,,.user-dirs.dirs,,.mimeapps.list,,.offlineimaprc,,.msmtprc,,.Xauthority,,config,,Makefile,,Makefile.*,,.zshenv,,.zshrc,,.zlogin,,.zlogout::'
-set classify+=' ::dropbox::'
-set classify+=' ::favicon.*::'
-set classify+=' ::gruntfile.coffee,,gruntfile.js,,gruntfile.ls::'
-set classify+=' ::gulpfile.coffee,,gulpfile.js,,gulpfile.ls::'
-set classify+=' ::ledger::'
-set classify+=' ::known_hosts,,authorized_keys,,*.key,,*.pub::'
-set classify+=' ::*.jsx::'
-
-" File extensions
-set classify+='λ ::*.ml,,*.mli::'
-set classify+=' ::*.styl::'
-set classify+=' ::*.scss::'
-set classify+=' ::*.py,,*.pyc,,*.pyd,,*.pyo::'
-set classify+=' ::*.php::'
-set classify+=' ::*.markdown,,*.md,,README.*,,README,,license,,copyright,,copying,,LICENSE,,COPYRIGHT,,COPYING,,LICENSE.txt::'
-set classify+=' ::*.json::'
-set classify+=' ::*.js,,package.json,,package-lock.json::'
-set classify+=' ::*.bmp,,*.gif,,*.ico,,*.jpeg,,*.jpg,,*.png,,*.svg,,*.svgz,,*.tga,,*.tiff,,*.xmb,,*.xcf,,*.xpm,,*.xspf,,*.xwd,,*.cr2,,*.dng,,*.3fr,,*.ari,,*.arw,,*.bay,,*.crw,,*.cr3,,*.cap,,*.data,,*.dcs,,*.dcr,,*drf,,*.eip,,*.erf,,*.fff,,*.gpr,,*.iiq,,*.k25,,*.kdc,,*.mdc,,.*mef,,*.mos,,.*.mrw,,.*.obm,,*.orf,,*.pef,,*.ptx,,*.pxn,,*.r3d,,*.raf,,*.raw,,*.rwl,,*.rw2,,*.rwz,,*.sr2,,*.srf,,*.srf,,*.srw,,*.tif,,*.x3f,,.fehbg::'
-set classify+=' ::*.ejs,,*.htm,,*.html,,*.slim,,*.xml,,*.xhtml::'
-set classify+=' ::*.hbs,,*.mustasche::'
-set classify+=' ::*.css,,*.less,,*.bat,,*.conf,,*.ini,,*.rc,,*.yml,,*.yaml,,*.cfg,,*.rc::'
-set classify+=' ::*.rss::'
-set classify+=' ::*.coffee::'
-set classify+=' ::*.twig::'
-set classify+=' ::*.c++,,*.cc,,*.c,,*.cpp,,*.cxx,,*.c,,*.h::'
-set classify+=' ::*.hs,,*.lhs::'
-set classify+=' ::*.lua::'
-set classify+=' ::*.jl::'
-set classify+=' ::*.go::'
-set classify+=' ::.cargo/::/'
-set classify+=' ::*.ts::'
-set classify+=' ::*.sln,,*.suo::'
-set classify+=' ::*.diff,,*.sum,,*.md5,,*.sha512::'
-set classify+=' ::*.scala::'
-set classify+=' ::*.java,,*.jar,,*.class::'
-set classify+=' ::*.xul::'
-set classify+=' ::*.clj,,*.cljc::'
-set classify+=' ::*.pl,,*.pm,,*.t::'
-set classify+=' ::*.cljs,,*.edn::'
-set classify+=' ::*.rb,,Rakefile::'
-set classify+=' ::*.fish,,*.sh,,*.bash::'
-set classify+=' ::*.dart::'
-set classify+=' ::*.f#,,*.fs,,*.fsi,,*.fsscript,,*.fsx::'
-set classify+=' ::*.rlib,,*.rs::'
-set classify+=' ::.rustup/::/'
-set classify+=' ::*.d::'
-set classify+=' ::*.erl,,*.hrl::'
-set classify+=' ::*.ai::'
-set classify+=' ::*.psb,,*.psd::'
-set classify+=' ::*.aac,,*.anx,,*.asf,,*.au,,*.axa,,*.flac,,*.m2a,,*.m4a,,*.mid,,*.midi,,*.mp3,,*.mpc,,*.oga,,*.ogg,,*.ogx,,*.ra,,*.ram,,*.rm,,*.spx,,*.wav,,*.wma,,*.ac3::'
-set classify+=' ::*.avi,,*.flv,,*.m4v,,*.mkv,,*.mov,,*.mp4,,*.mpeg,,*.mpg,,*.webm::'
-set classify+=' ::*.epub,,*.pdf,,*.fb2,,*.djvu,,*.rtf::'
-set classify+=' ::*.7z,,*.apk,,*.bz2,,*.cab,,*.cpio,,*.deb,,*.gem,,*.gz,,*.gzip,,*.lh,,*.lzh,,*.lzma,,*.rar,,*.rpm,,*.tar,,*.tgz,,*.xz,,*.zip::'
-set classify+=' ::*.cbr,,*.cbz::'
-set classify+=' ::*.log::'
-set classify+=' ::*.doc,,*.docx,,*.adoc::'
-set classify+=' ::*.xls,,*.xls,,*.xlsmx::'
-set classify+=' ::*.pptx,,*.ppt::'
-set classify+=' ::*.cs::'
-set classify+=' ::procfile::'
-set classify+=' ::Dockerfile,,docker-compose.yml::'
-set classify+=' ::config.mk,,config.m4,,config.ac,,*.a,,*.cmake,,*.jl,,*.o,,*.so,,a.out,,configure::'
+set classify=' :dir:/, :exe:, :reg:, :link:,? :?:, ::../::,
+            \  ::*.vim,,.vim,,*.vimrc,,.vimrc,,vimrc,,*.gvimrc,,*.vifm,,.viminfo,,.netrwhist,,*.vba::,
+            \  ::*.vim/,,.vim/,,*.nvim/::/,
+            \  ::*.exe,,*.dll,,*.msi,,*.bat::,
+            \  ::*.db,,*.dump,,*.sql::,
+            \  ::*.iso,,*.bin,,*.nrg,,*.vdi,,*.cue,,*.dmg,,*.img,,*.mdf,,*.vcd,,*.vmdk::,
+            \  ::VBoxMachines/,,VirtualBox VMs/::/,
+            \  ::.git*::,
+            \  ::.git/::/,
+            \  ::.Xdefaults,,.Xresources,,.bashprofile,,.bash_profile,,.bash_logout,,bash_history,,.DS_Store,,.fasd,,.jack-settings,,.mime.types,,.pam_environment,,.profile,,.recently-used,,.selected_editor,,.zprofile,,.urlview,,.user-dirs.dirs,,.mimeapps.list,,.Xauthority,,Makefile,,Makefile.*,,.zshenv,,.zlogin,,.zlogout,,*.conf,,*.ini,,*.rc,,.*rc,,*rc,,*.yml,,*.yaml,,*.cfg::,
+            \  ::.config/,,.zsh/::/,
+            \  ::*.zsh,,.*.zsh,,*.sh,,*.bash,,*.fish::,
+            \  ::Desktop/::/,
+            \  ::Documents/,, My Documents/::/,
+            \  ::Downloads/::/,
+            \  ::Dropbox/::/,
+            \  ::Google\ Drive/::/,
+            \  ::*.aac,,*.anx,,*.asf,,*.au,,*.axa,,*.flac,,*.m2a,,*.m4a,,*.mid,,*.midi,,*.mp3,,*.mpc,,*.oga,,*.ogg,,*.ogx,,*.ra,,*.ram,,*.rm,,*.spx,,*.wav,,*.wma,,*.ac3::,
+            \  ::Music/::/,
+            \  ::*.bmp,,*.gif,,*.ico,,*.jpeg,,*.jpg,,*.png,,*.svg,,*.svgz,,*.tga,,*.tiff,,*.xmb,,*.xcf,,*.xpm,,*.xspf,,*.xwd,,*.cr2,,*.dng,,*.3fr,,*.ari,,*.arw,,*.bay,,*.crw,,*.cr3,,*.cap,,*.data,,*.dcs,,*.dcr,,*drf,,*.eip,,*.erf,,*.fff,,*.gpr,,*.iiq,,*.k25,,*.kdc,,*.mdc,,.*mef,,*.mos,,.*.mrw,,.*.obm,,*.orf,,*.pef,,*.ptx,,*.pxn,,*.r3d,,*.raf,,*.raw,,*.rwl,,*.rw2,,*.rwz,,*.sr2,,*.srf,,*.srf,,*.srw,,*.tif,,*.x3f,,.fehbg::,
+            \  ::Pictures/,,My Pictures/::/,
+            \  ::*.rlib,,*.rs::,
+            \  ::.rustup/::/,
+            \  ::*.go::,
+            \  ::.cargo/,,go/::/,
+            \  ::Public/::/,
+            \  ::Templates/::/,
+            \  ::*.avi,,*.flv,,*.m4v,,*.mkv,,*.mov,,*.mp4,,*.mpeg,,*.mpg,,*.webm::,
+            \  ::Videos/::/,
+            \  ::*.js,,package.json,,package-lock.json::,
+            \  ::node_modules/,,.node_modules/,,.npm/::/,
+            \  ::lost+found/::/,
+            \  ::favicon.*::,
+            \  ::gruntfile.coffee,,gruntfile.js,,gruntfile.ls::,
+            \  ::gulpfile.coffee,,gulpfile.js,,gulpfile.ls::,
+            \  ::ledger::,
+            \  ::known_hosts,,authorized_keys,,*.key,,*.pub,,id_rsa_*,,*.gpg,,*.kbx::,
+            \  ::.gnupg/,,.ssh/::/,
+            \  ::.tmux.conf::,
+            \  ::.tmux/::/,
+            \  ::*.jsx::,
+            \ λ ::*.ml,,*.mli::,
+            \  ::*.styl::,
+            \  ::*.scss::,
+            \  ::*.py,,*.pyc,,*.pyd,,*.pyo::,
+            \  ::*.php::,
+            \  ::*.markdown,,*.md,,README.*,,README::,
+            \  ::license,,copyright,,copying,,LICENSE,,COPYRIGHT,,COPYING,,LICENSE.txt::,
+            \  ::*.json::,
+            \  ::*.ejs,,*.htm,,*.html,,*.slim,,*.xml,,*.xhtml::,
+            \  ::*.hbs,,*.mustasche::,
+            \  ::*.css,,*.less::,
+            \  ::*.rss::,
+            \  ::*.coffee::,
+            \  ::*.twig::,
+            \  ::*.c++,,*.cc,,*.c,,*.cpp,,*.cxx,,*.c,,*.h::,
+            \  ::*.hs,,*.lhs::,
+            \  ::*.lua::,
+            \  ::*.jl::,
+            \  ::*.ts::,
+            \  ::*.sln,,*.suo::,
+            \  ::*.diff,,*.sum,,*.md5,,*.sha512::,
+            \  ::*.scala::,
+            \  ::*.java,,*.jar,,*.class::,
+            \  ::*.xul::,
+            \  ::*.clj,,*.cljc::,
+            \  ::*.pl,,*.pm,,*.t::,
+            \  ::*.cljs,,*.edn::,
+            \  ::*.rb,,Rakefile::,
+            \  ::*.dart::,
+            \  ::*.f#,,*.fs,,*.fsi,,*.fsscript,,*.fsx::,
+            \  ::*.d::,
+            \  ::*.erl,,*.hrl::,
+            \  ::*.ai::,
+            \  ::*.psb,,*.psd::,
+            \  ::*.pdf::,
+            \  ::*.epub,,*.fb2,,*.djvu,,*.rtf::,
+            \  ::*.7z,,*.apk,,*.bz2,,*.cab,,*.cpio,,*.deb,,*.gem,,*.gz,,*.gzip,,*.lh,,*.lzh,,*.lzma,,*.rar,,*.rpm,,*.tar,,*.tgz,,*.xz,,*.zip::,
+            \  ::*.cbr,,*.cbz::,
+            \  ::*.log::,
+            \  ::*.doc,,*.docx,,*.adoc::,
+            \  ::*.xls,,*.xls[mx]::,
+            \  ::*.pptx,,*.ppt::,
+            \  ::*.cs::,
+            \  ::procfile::,
+            \  ::Dockerfile,,docker-compose.yml::,
+            \  ::config.mk,,config.m4,,config.ac,,*.a,,*.cmake,,*.jl,,*.o,,*.so,,a.out,,configure::'
 
 if $MY_PC_IS == 'work'
     source ~/.work/vifmrc-work
