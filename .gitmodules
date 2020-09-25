@@ -18,7 +18,8 @@
 	url = https://github.com/zsh-users/zsh-autosuggestions.git
 [submodule "links/.config/awesome/external/lain"]
 	path = links/.config/awesome/external/lain
-	url = https://github.com/lcpz/lain.git
+        ignore = dirty
+        url = https://github.com/lcpz/lain.git
 [submodule "links/.tmux/plugins/tmux-better-mouse-mode"]
 	path = links/.tmux/plugins/tmux-better-mouse-mode
 	url = https://github.com/NHDaly/tmux-better-mouse-mode.git

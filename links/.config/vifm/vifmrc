@@ -86,14 +86,17 @@ command! gs :exe "zzzGITCMD status %d"
 command! gl :exe "zzzGITCMD log %c"
 command! extract aunpack %f &>/dev/null &
 command! archive apack %a %f &>/dev/null &
-" nnoremap l :if &previewprg == '' | set previewprg='git log --color -- %c 2>&1' | view! | else | set previewprg='' | view | endif<cr>
 
+nnoremap xgl :set previewprg='git -c color.ui=always log %c' | view!<cr>
+nnoremap xgs :set previewprg='git -c color.ui=always status %d' | view!<cr>
+nnoremap xgd :set previewprg='git -c color.ui=always diff %d' | view!<cr>
+nnoremap xgx :set previewprg='' | view!<cr>
 " Space selects and goes down
 nnoremap <space> tj
 nnoremap * ggVG
 nnoremap <c-\> :bmarks<cr>
-nnoremap <f3> :view<cr>
-vnoremap <f3> :view<cr>gv
+nnoremap <f3> :set previewprg='' | view<cr>
+vnoremap <f3> :set previewprg='' | view<cr>gv
 nnoremap <f4> :edit<cr>
 nnoremap <f5> :copy<cr>
 nnoremap <f6> :move<cr>
