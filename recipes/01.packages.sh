@@ -5,7 +5,8 @@ function doWork() {
     echo ${GREEN}'Checking prerequisites packages to install:'${RESET}
     echo
 
-    local arr=(zsh ripgrep fzf mpv xclip bat fd xterm terminus-font curl xorg-xrdb tmux rofi)
+    # 'jq' is for JSON manipulation, always useful
+    local arr=(zsh ripgrep fzf mpv xclip bat fd xterm terminus-font curl xorg-xrdb tmux rofi jq)
     # Convert TTF to OTF for pango
     arr+=(fontforge python)
     # For AwesomeWM

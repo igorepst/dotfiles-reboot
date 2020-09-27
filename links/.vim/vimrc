@@ -171,7 +171,7 @@ let g:fzfIgMenu_dict = {
             \ "Search in runtime": #{f: "call SearchInRuntime()",},
             \ "Find file in runtime": #{f: "call FindFileInRuntime()",},
             \ "Reload config": #{f: "call ighelper#ReloadConfigFiles()",},
-            \ "Format JSON": #{f: "%!python -m json.tool",},
+            \ "Format JSON": #{f: "%!jq -R '. as $line | try fromjson catch $line'",},
             \ "Trim trailing space": #{f: "execute ':%s/\\s\\+$//e'",},
             \ "Reindent file": #{f: "execute 'normal! mzgg=G`z' | IgTrimTrailingSpace",},
             \ }
