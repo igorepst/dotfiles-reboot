@@ -25,6 +25,8 @@ highlight CurrLine cterm=bold ctermfg=255 ctermbg=166
 highlight WildMenu cterm=underline ctermfg=238 ctermbg=255
 highlight SuggestBox cterm=none ctermfg=default ctermbg=default
 highlight JobLine cterm=none ctermfg=238 ctermbg=250
+highlight LineNr cterm=none ctermfg=default ctermbg=default
+highlight OddLine cterm=none ctermfg=default ctermbg=254
 
 highlight AuxWin cterm=bold,underline,reverse,standout,italic ctermfg=default ctermbg=default
 highlight User1 cterm=bold,underline,reverse,standout,italic ctermfg=default ctermbg=default
