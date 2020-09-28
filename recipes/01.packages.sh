@@ -29,4 +29,38 @@ function doWork() {
     fi
 }
 
+function doAurWork() {
+    mkdir -p ~/aur
+    pushd ~/aur >/dev/null
+    local arr=('https://aur.archlinux.org/vifmimg-git.git' 'https://aur.archlinux.org/lnav.git')
+    local dir
+    local changed
+    for url in "${arr[@]}"; do
+        dir=${url##*\/}
+        dir=${dir%%\.git*}
+        if [ -d "${dir}" ]; then
+            pushd "${dir}" >/dev/null
+            git pull origin master 2>&1 | grep -q 'Already up to date' || changed=1
+            if [ "${changed}" = "1" ]; then
+                echo ${RED}'Installing or updating the following package from AUR: '${dir}${RESET}
+            else
+                popd >/dev/null
+            fi
+        else
+            echo ${RED}'Installing or updating the following package from AUR: '${dir}${RESET}
+            git clone "${url}"
+            pushd "${dir}" >/dev/null
+            changed=1
+        fi
+        if [ "${changed}" = "1" ]; then
+            makepkg -si
+            popd >/dev/null
+        else
+            echo ${GREEN}'The following package from AUR is up to date: '${dir}${RESET}
+        fi
+    done
+    popd >/dev/null
+}
+
 doWork
+doAurWork
