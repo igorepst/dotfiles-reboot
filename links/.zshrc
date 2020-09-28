@@ -59,22 +59,22 @@ bindkey "" backward-kill-line
 
 autoload -Uz copy-earlier-word edit-command-line
 zle -N copy-earlier-word
-#Alt+m
+# Alt+m
 bindkey 'm' copy-earlier-word
 zle -N edit-command-line
-#Alt+e
+# Alt+e
 bindkey 'e' edit-command-line
-#Alt+.
+# Alt+.
 bindkey '.' insert-last-word
-#Alt+i
+# Alt+i
 bindkey 'i' menu-complete
 
 zmodload zsh/complist
-#Shift+Tab
+# Shift+Tab
 bindkey -M menuselect '[Z' reverse-menu-complete
 # Accept and stay in menu (multiple choices)
 bindkey -M menuselect '+' accept-and-menu-complete
-#Insert
+# Insert
 bindkey -M menuselect '[2~' accept-and-menu-complete
 # Accept and complete again (for ex., subdirectory)
 bindkey -M menuselect 'o' accept-and-infer-next-history
@@ -85,6 +85,9 @@ SAVEHIST=10000000
 
 bindkey '[A' history-beginning-search-backward
 bindkey '[B' history-beginning-search-forward
+
+# Ctrl+/ to 'suspend' the half typed command
+bindkey '' push-input
 
 fpath=($fpath ~/.zsh/plugins/archive ~/.zsh/plugins/zsh-completions/src)
 
