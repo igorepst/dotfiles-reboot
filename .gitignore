@@ -7,4 +7,6 @@ links/.config/vifm/vifmimgpdf*
 # Override ~/.gitignore-global
 !links/bin
 links/bin/*archive
+links/.config/mpv/*
+!links/.config/mpv/*.conf
 

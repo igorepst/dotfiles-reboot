@@ -119,6 +119,7 @@ nnoremap <f5> :copy<cr>
 nnoremap <f6> :move<cr>
 nnoremap <f7> :mkdir<space>
 nnoremap <f8> :delete<cr>
+vnoremap <f8> :delete<cr>
 
 bmark! ~/dotfiles-reboot/ dotfiles
 
