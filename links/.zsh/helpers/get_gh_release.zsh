@@ -39,10 +39,14 @@ function get_gh_release() {
     [ $? -ne 0 ] && print "Cannot download requested file. URL: ${binf}" && return
     rm -rf ${workd}
     mkdir -p ${workd}
-    tar -xvzf ${workf} >/dev/null
+    ~/.zsh/plugins/archive/unarchive ${workf} >/dev/null
+    [ $? -ne 0 ] && print "Cannot extract the file: ${workf}" && return
     rm ${workf}
     local dir_name=$(_check_dirs ${tmpd})
-    [ -n "$dir_name" ] && cd ${dir_name}
+    if [ -n "$dir_name" ]; then 
+        local dir_name1=$(_check_dirs ${dir_name})
+        [ -n "$dir_name1" ] && cd ${dir_name1} || cd ${dir_name}
+    fi
     autoload -Uz zmv
     zmv '*' ${workd}
     popd >/dev/null

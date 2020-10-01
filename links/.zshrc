@@ -2,6 +2,7 @@ source ~/.zsh/helpers/get_gh_release.zsh
 get_gh_release --repo knqyf263/pet --arch linux_amd64.tar.gz --toPath . --toCompletionPath misc/completions/zsh
 get_gh_release --repo dandavison/delta --arch x86_64-unknown-linux-gnu.tar.gz --toPath .
 get_gh_release --repo denisidoro/navi --arch x86_64-unknown-linux-musl.tar.gz --toPath .
+get_gh_release --repo tstack/lnav --arch linux-64bit.zip --toPath .
 
 if [[ -r "${XDG_CACHE_HOME:-$HOME/.cache}/p10k-instant-prompt-${(%):-%n}.zsh" ]]; then
     source "${XDG_CACHE_HOME:-$HOME/.cache}/p10k-instant-prompt-${(%):-%n}.zsh"
@@ -10,19 +11,20 @@ fi
 # automatically remove duplicates from these arrays
 typeset -U path PATH cdpath CDPATH fpath FPATH manpath MANPATH
 
-source ~/.zsh/p10k.zsh
+source ~/.zsh/helpers/p10k.zsh
 source ~/.zsh/plugins/powerlevel10k/powerlevel10k.zsh-theme
 
-source ~/.zsh/aliases.zsh
-source ~/.zsh/fzf.zsh
-source ~/.zsh/pet.zsh 
-source ~/.zsh/ripgrep.zsh 
-source ~/.zsh/vifm.zsh 
-source ~/.zsh/functions.zsh 
-source ~/.zsh/title.zsh 
-source ~/.zsh/formarks.zsh 
-source ~/.zsh/terminal.zsh 
-source ~/.zsh/command_not_found.zsh 
+source ~/.zsh/helpers/aliases.zsh
+source ~/.zsh/helpers/fzf.zsh
+source ~/.zsh/helpers/pet.zsh 
+source ~/.zsh/helpers/ripgrep.zsh 
+source ~/.zsh/helpers/vifm.zsh 
+source ~/.zsh/helpers/functions.zsh 
+source ~/.zsh/helpers/title.zsh 
+source ~/.zsh/helpers/formarks.zsh 
+source ~/.zsh/helpers/terminal.zsh 
+source ~/.zsh/helpers/command_not_found.zsh 
+source ~/.zsh/helpers/lnav.zsh 
 
 [ -d ~/.work/bin ] && path+=(~/.work/bin)
 [ -f ~/.work/aliases.zsh ] && source ~/.work/aliases.zsh
