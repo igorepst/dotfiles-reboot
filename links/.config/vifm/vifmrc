@@ -52,7 +52,11 @@ windo set viewcolumns=-{iname}..,7{size},8{mode},16{mtime}
 
 set grepprg='rg --line-number --color=never --hidden %i %a %s'
 
-colorscheme PaperColor
+if $TERM == 'linux'
+    colorscheme Default
+else
+    colorscheme PaperColor
+endif
 
 " Tmux: use 'system' to see the UI and open a split; otherwise - use 'term'
 " as the command is interactive
@@ -512,7 +516,7 @@ command! cmp : if expand('%%c') == expand('%%f')
 set classify=' :dir:/, :exe:, :reg:, :link:,? :?:, ::../::,
             \  ::*.vim,,.vim,,*.vimrc,,.vimrc,,vimrc,,*.gvimrc,,.viminfo,,.netrwhist,,*.vba::,
             \  ::*.vim/,,.vim/,,*.nvim/::/,
-            \ 勇::*.vifm,,vifminfo,,vifmrc::,
+            \ 勇::*.vifm,,vifminfo*,,vifmrc::,
             \ 勇::vifm/::/,
             \  ::*.exe,,*.dll,,*.msi,,*.bat::,
             \  ::*.db,,*.dump,,*.sql::,
