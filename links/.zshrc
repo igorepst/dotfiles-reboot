@@ -25,6 +25,7 @@ source ~/.zsh/helpers/formarks.zsh
 source ~/.zsh/helpers/terminal.zsh 
 source ~/.zsh/helpers/command_not_found.zsh 
 source ~/.zsh/helpers/lnav.zsh 
+source ~/.zsh/helpers/mvn.zsh 
 
 [ -d ~/.work/bin ] && path+=(~/.work/bin)
 [ -f ~/.work/aliases.zsh ] && source ~/.work/aliases.zsh
