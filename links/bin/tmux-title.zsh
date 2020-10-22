@@ -9,6 +9,9 @@ case "${cmd}" in
     *vifm*)
         cmd=Vifm
         ;;
+    *java*Dmaven*)
+        cmd=mvn
+        ;;
     *)
         cmd=$(echo ${cmd} | grep "${curCommand}" | head -n 1)
         case "${cmd}" in
