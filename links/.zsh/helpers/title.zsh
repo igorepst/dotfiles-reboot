@@ -3,7 +3,7 @@
 # and on
 # https://github.com/robbyrussell/oh-my-zsh/blob/master/lib/termsupport.zsh
 
-if [[ "$TERM" == (dumb|linux|*bsd*|eterm*) ]]; then
+if [[ "$TERM" == (tmux*|dumb|linux|*bsd*|eterm*) ]]; then
     return 1
 fi
 
