@@ -15,7 +15,7 @@ case "${cmd}" in
             *vim*|*sh\ *)
                 showPath=1
                 ;;
-            *sh)
+            *sh|gitstatusd)
                 cmd=
                 ;;
         esac
