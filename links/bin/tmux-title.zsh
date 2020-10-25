@@ -12,6 +12,12 @@ case "${cmd}" in
     *java*Dmaven*)
         cmd=mvn
         ;;
+    *ssh*)
+        showPath=1
+        cmd=$(echo ${cmd} | grep ssh | head -n 1)
+        unameHost=$(echo ${cmd} | grep -oP '(?<=-t )[^ ]*')
+        [ -n "${unameHost}" ] && cmd="ssh ${unameHost#*@}"
+        ;;
     *)
         cmd=$(echo ${cmd} | grep "${curCommand}" | head -n 1)
         case "${cmd}" in
