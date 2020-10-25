@@ -30,7 +30,7 @@ case "${cmd}" in
         esac
         ;;
 esac
-res=${cmd}
+res="${cmd/#${curCommand}/$(basename ${curCommand})}"
 if [ ${showPath} -eq 0 ]; then
     [ -n "${res}" ] && res="${res} "
     res=${res}$(basename "${curPath}")
