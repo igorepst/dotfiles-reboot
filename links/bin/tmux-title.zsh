@@ -1,5 +1,19 @@
 #!/usr/bin/env zsh
 
+function trim_path() {
+    emulate -L zsh
+    setopt EXTENDED_GLOB
+    local -a match mbegin mend
+    local abbreviated_path="${1/#$HOME/~}"
+    if [[ ${abbreviated_path} = (#b)(/#[^/]#/#)(*) ]]; then
+        unset MATCH
+        abbreviated_path=$(basename "${abbreviated_path}")
+        local len=${#abbreviated_path}
+        [ $len -gt 25 ] && abbreviated_path="${abbreviated_path[0,10]}...${abbreviated_path[-12,-1]}"
+    fi
+    echo $abbreviated_path
+}
+
 curCommand=$1
 curPath=$2
 paneTty=$3
@@ -37,6 +51,6 @@ esac
 res="${cmd/#${curCommand}/$(basename ${curCommand})}"
 if [ ${showPath} -eq 0 ]; then
     [ -n "${res}" ] && res="${res} "
-    res=${res}$(basename "${curPath}")
+    res=${res}$(trim_path "${curPath}")
 fi
 echo ${res}
