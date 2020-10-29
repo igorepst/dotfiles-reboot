@@ -22,6 +22,7 @@ showPath=0
 case "${cmd}" in
     *vifm*)
         cmd=Vifm
+        showPath=1
         ;;
     *java*Dmaven*)
         cmd=mvn
