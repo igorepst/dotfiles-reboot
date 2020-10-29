@@ -15,13 +15,17 @@ case "${cmd}" in
     *ssh*)
         showPath=1
         cmd=$(echo ${cmd} | grep ssh | head -n 1)
-        unameHost=$(echo ${cmd} | grep -oP '(?<=-t )[^ ]*')
-        [ -n "${unameHost}" ] && cmd="ssh ${unameHost#*@}"
+        if echo ${cmd} | grep -i git; then
+            cmd=git
+        else
+            unameHost=$(echo ${cmd} | grep -oP '(?<=-t )[^ ]*')
+            [ -n "${unameHost}" ] && cmd="ssh ${unameHost#*@}"
+        fi
         ;;
     *)
         cmd=$(echo ${cmd} | grep "${curCommand}" | head -n 1)
         case "${cmd}" in
-            *vim*|*sh\ *)
+            *vim*|*sh\ *|sudo*)
                 showPath=1
                 ;;
             *sh|*gitstatusd*)
