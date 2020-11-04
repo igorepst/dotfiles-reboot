@@ -43,6 +43,9 @@ case "${cmd}" in
             *vim*|*sh\ *|sudo*)
                 showPath=1
                 ;;
+            *git-core*)
+                cmd=git
+                ;;
             *sh|*gitstatusd*)
                 cmd=
                 ;;
