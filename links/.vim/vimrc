@@ -166,6 +166,7 @@ let g:fzfIgMenu_dict = {
             \ "Toggle wrap": #{f: "call ighelper#ToggleBoolOpt('wrap')",},
             \ "Toggle hlsearch": #{f: "call ighelper#ToggleBoolOpt('hlsearch')",},
             \ "Convert to DOS": #{f: "set ff=dos",},
+            \ "Show DOS line endings": #{f: "edit ++ff=unix",},
             \ "Convert to Unix": #{f: "set ff=unix",},
             \ "Convert to UTF-8": #{f: "set fileencoding=utf8",},
             \ "Search in runtime": #{f: "call SearchInRuntime()",},
