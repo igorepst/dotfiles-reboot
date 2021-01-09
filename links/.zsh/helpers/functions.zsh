@@ -52,3 +52,15 @@ function up(){
 function ssh(){
     TERM=xterm-256color command ssh -C -t $@ 'if command -v tmux >/dev/null; then tmux attach || tmux new; else bash -l; fi'
 }
+
+function updateDots(){
+    echo 'Updating Vim plugins'
+    vim +PlugUpgrade +qall
+    vim +PlugUpdate +qall
+    echo 'Updating Git submodules'
+    pushd ~/dotfiles-reboot >/dev/null
+    git submodule update --recursive --remote
+    popd >/dev/null
+    echo 'Updating GH releases'
+    IG_GH_REL_UPDATE=1 exec zsh
+}

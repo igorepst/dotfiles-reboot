@@ -5,7 +5,7 @@ function get_gh_release() {
     zparseopts -A _GET_GH_REL_ARGS -repo: -arch: -update:: -toPath:: -toCompletionPath:: -tag::
     local workd_prefix=$HOME/.zsh/volatile/igorepst/_gh_release
     local workd=${workd_prefix}/${_GET_GH_REL_ARGS[--repo]}
-    if [ -d ${workd} ] && [ "${_GET_GH_REL_ARGS[--update]}" != "1" ]; then
+    if [ -d ${workd} ] && [ -z "${IG_GH_REL_UPDATE}" ] && [ "${_GET_GH_REL_ARGS[--update]}" != "1" ]; then
         _set_path ${workd} ${_GET_GH_REL_ARGS[--toPath]} ${_GET_GH_REL_ARGS[--toCompletionPath]}
         return
     fi

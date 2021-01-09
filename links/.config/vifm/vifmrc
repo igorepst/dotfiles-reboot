@@ -211,7 +211,7 @@ if has('win')
     filetype * start, explorer
 else
     fileviewer *[^/] bat %c
-    filetype * xdg-open
+    filetype * xdg-open 2>/dev/null &
 endif
 
 

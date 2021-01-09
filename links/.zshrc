@@ -17,6 +17,7 @@ source ~/.zsh/plugins/powerlevel10k/powerlevel10k.zsh-theme
 source ~/.zsh/helpers/aliases.zsh
 source ~/.zsh/helpers/fzf.zsh
 source ~/.zsh/helpers/pet.zsh 
+source ~/.zsh/helpers/navi.zsh 
 source ~/.zsh/helpers/ripgrep.zsh 
 source ~/.zsh/helpers/vifm.zsh 
 source ~/.zsh/helpers/functions.zsh 
