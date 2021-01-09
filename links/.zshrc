@@ -3,6 +3,7 @@ get_gh_release --repo knqyf263/pet --arch linux_amd64.tar.gz --toPath . --toComp
 get_gh_release --repo dandavison/delta --arch x86_64-unknown-linux-gnu.tar.gz --toPath .
 get_gh_release --repo denisidoro/navi --arch x86_64-unknown-linux-musl.tar.gz --toPath .
 get_gh_release --repo tstack/lnav --arch linux-64bit.zip --toPath .
+get_gh_release --repo neovim/neovim --arch linux64.tar.gz --toPath ./bin --tag nightly
 
 if [[ -r "${XDG_CACHE_HOME:-$HOME/.cache}/p10k-instant-prompt-${(%):-%n}.zsh" ]]; then
     source "${XDG_CACHE_HOME:-$HOME/.cache}/p10k-instant-prompt-${(%):-%n}.zsh"

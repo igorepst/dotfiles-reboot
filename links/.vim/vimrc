@@ -34,7 +34,9 @@ set clipboard=unnamedplus
 let igVimPath = split(&rtp, ',')[0] . '/'
 let igVimPathVolatile=igVimPath . 'volatile'
 " set doesn't do path expansion
-execute "set viminfo='20,<100,:100,%,n" . igVimPathVolatile . '/.viminfo'
+if !has('nvim')
+    execute "set viminfo='20,<100,:100,%,n" . igVimPathVolatile . '/.viminfo'
+endif
 execute "set viewdir=" . igVimPathVolatile . '/view'
 
 let g:netrw_home=igVimPathVolatile
@@ -101,6 +103,7 @@ unlet autoload_plug_path
 
 let g:ig_plug_path=igVimPathVolatile . '/plugged'
 call plug#begin(g:ig_plug_path)
+Plug 'junegunn/fzf'
 Plug 'junegunn/fzf.vim'
 Plug 'NLKNguyen/papercolor-theme'
 Plug 'vifm/vifm.vim'
@@ -243,7 +246,12 @@ vnoremap <C-_> :call ToggleComment()<CR>
 inoremap <C-_> <Esc>:call ToggleComment()<CR>i
 
 set nohlsearch
-set completeopt=longest,menu,popup
+if has('nvim')
+    set completeopt=longest,menu,preview
+    set background=light
+else
+    set completeopt=longest,menu,popup
+endif
 
 " Open Vim help or Man with 'K'
 source $VIMRUNTIME/ftplugin/man.vim

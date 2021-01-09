@@ -37,6 +37,7 @@ function doWork(){
     link ".config/ripgrep"
     link ".config/vifm"
     link ".config/rofi"
+    link ".config/nvim"
     link ".gitconfig"
     link ".gitignore-global"
     link "bin"
