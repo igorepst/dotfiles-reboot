@@ -1,0 +1,11 @@
+% sed
+# Print matching line and following lines to EOF
+sed -ne '/pattern/,$p' file
+# Print lines following the match to EOF
+sed -ne '1,/pattern/!p' file
+# Print from start up to matching line including it
+sed -ne '1,/pattern/p' file
+# Print from start up to matching line excluding it
+sed -ne '/pattern/,$!p' file
+# Print between patterns
+sed -ne '/pattern1/,/pattern2/p' file

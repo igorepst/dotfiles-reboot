@@ -1,0 +1,3 @@
+% du, size
+# Show total size of each directory
+du -cksh *
