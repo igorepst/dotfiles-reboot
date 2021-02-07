@@ -6,7 +6,7 @@ function doWork() {
     echo
 
     # 'jq' is for JSON manipulation, always useful
-    local arr=(zsh ripgrep fzf mpv xclip bat fd xterm terminus-font curl xorg-xrdb tmux rofi jq)
+    local arr=(zsh ripgrep fzf mpv xclip bat fd xterm terminus-font curl xorg-xrdb tmux rofi jq kitty)
     # Convert TTF to OTF for pango
     arr+=(fontforge python)
     # For AwesomeWM

@@ -1,4 +1,4 @@
-alias ls='ls --color=auto'
+alias ls='ls --color=auto --hyperlink=auto'
 alias la='ls -al'
 alias ll='ls -al'
 # Order by date, newest first

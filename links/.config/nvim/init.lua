@@ -18,4 +18,6 @@ end
 
 opt('o', 'background', 'light')
 opt('o', 'mouse', 'a')
+opt('w', 'foldmethod', 'expr')
+opt('w', 'foldexpr', 'nvim_treesitter#foldexpr()')
 cmd 'colorscheme PaperColor'
