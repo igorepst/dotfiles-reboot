@@ -57,6 +57,7 @@ function updateDots(){
     echo 'Updating Vim plugins'
     vim +PlugUpgrade +qall
     vim +PlugUpdate +qall
+    nvim --headless +PackerUpdate +TSUpdate +qall
     echo 'Updating Git submodules'
     pushd ~/dotfiles-reboot >/dev/null
     git submodule update --recursive --remote
