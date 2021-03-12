@@ -32,6 +32,7 @@ function doWork(){
     link ".vim"
     link ".config/awesome"
     link ".config/bat"
+    bat cache --build 
     link ".config/pet"
     link ".config/mpv"
     link ".config/ripgrep"
