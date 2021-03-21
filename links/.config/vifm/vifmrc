@@ -118,7 +118,7 @@ nnoremap <c-\> :bmarks<cr>
 " previewDefault forces view mode, this, however, toggles it
 nnoremap <f3> :set previewprg='' | view<cr>
 vnoremap <f3> :set previewprg='' | view<cr>gv
-nnoremap <f4> :edit<cr>
+nnoremap <f4> :!kitty @ launch --type=tab --cwd %d vim %c<cr>
 nnoremap <f5> :copy<cr>
 nnoremap <f6> :move<cr>
 nnoremap <f7> :mkdir<space>
@@ -421,7 +421,7 @@ command! zzzInternalXC git log --name-only --format=%%n -- %d| CDUP=`git rev-par
 " Sample mappings
 
 " Start shell in current directory
-nnoremap s :shell<cr>
+nnoremap s :!kitty @ launch --type=tab --cwd %d<cr>
 
 " Display sorting dialog
 nnoremap S :sort<cr>
@@ -458,9 +458,6 @@ endif
 nnoremap I cw<c-a>
 nnoremap cc cw<c-u>
 nnoremap A cw
-
-" Open console in current directory
-nnoremap ,t :!xterm &<cr>
 
 " Open editor to edit vifmrc and apply settings after returning to vifm
 nnoremap ,c :write | edit $MYVIFMRC | restart full<cr>
