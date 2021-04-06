@@ -8,10 +8,10 @@
     autocrlf = input
     pager = delta
 [delta]
-    plus-color = "#012800"
-    minus-color = "#340001"
-    syntax-theme = ansi-light
-    side-by-side = true
+    plus-style = green bold ul "#eeffee"
+    minus-style = red bold ul "#ffeeee"
+    syntax-theme = igAnsi
+    #side-by-side = true
     line-numbers = true
     features = decorations
 [delta "decorations"]

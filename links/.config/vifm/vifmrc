@@ -60,7 +60,7 @@ endif
 
 " Tmux: use 'system' to see the UI and open a split; otherwise - use 'term'
 " as the command is interactive
-command! fzf :let $FCMD = 'fd --hidden | fzf-tmux -d 30%% --height 10 --preview "[ -d {} ] && (ls -Alh --color=always {}/ | head -10) || bat --color=always --style=plain --line-range=:10  --theme=base16 {}" 2>/dev/tty'
+command! fzf :let $FCMD = 'fd --hidden | fzf-tmux -d 30%% --height 10 --preview "[ -d {} ] && (ls -Alh --color=always {}/ | head -10) || bat --color=always --style=plain --line-range=:10 {}" 2>/dev/tty'
     \| if $TMUX != '' 
     \|    let $FZF_RES = system($FCMD)
     \| else
