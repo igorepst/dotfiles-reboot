@@ -105,6 +105,7 @@ let g:ig_plug_path=igVimPathVolatile . '/plugged'
 call plug#begin(g:ig_plug_path)
 Plug 'junegunn/fzf'
 Plug 'junegunn/fzf.vim'
+Plug 'cormacrelf/vim-colors-github'
 Plug 'NLKNguyen/papercolor-theme'
 Plug 'vifm/vifm.vim'
 Plug 'PProvost/vim-ps1'
@@ -137,10 +138,10 @@ autocmd ig_au BufReadPost *
             \ |   exe "normal! g`\""
             \ | endif
 
-autocmd ig_au ColorScheme *
-            \ highlight MatchParen gui=underline,bold guibg=red guifg=black cterm=underline,bold ctermbg=red ctermfg=black |
-            \ highlight User1 ctermbg=lightgreen ctermfg=black guibg=lightgreen guifg=black |
-            \ highlight User9 ctermbg=black ctermfg=white guibg=black guifg=white
+" autocmd ig_au ColorScheme *
+            " \ highlight MatchParen gui=underline,bold guibg=red guifg=black cterm=underline,bold ctermbg=red ctermfg=black |
+            " \ highlight User1 ctermbg=lightgreen ctermfg=black guibg=lightgreen guifg=black |
+            " \ highlight User9 ctermbg=black ctermfg=white guibg=black guifg=white
 
 if $TERM=~'linux'
     colorscheme default
@@ -149,7 +150,10 @@ else
     let &t_8f = "\<Esc>[38;2;%lu;%lu;%lum"
     let &t_8b = "\<Esc>[48;2;%lu;%lu;%lum"
     set termguicolors
-    colorscheme PaperColor
+    " colorscheme PaperColor
+let g:github_colors_soft = 1
+set background=light
+    colorscheme github
     " colorscheme tempus_dawn
     if $TERM=~'xterm'
         " see modifyOtherKeys
@@ -248,10 +252,10 @@ inoremap <C-_> <Esc>:call ToggleComment()<CR>i
 set nohlsearch
 if has('nvim')
     set completeopt=longest,menu,preview
-    set background=light
 else
     set completeopt=longest,menu,popup
 endif
+
 
 " Open Vim help or Man with 'K'
 source $VIMRUNTIME/ftplugin/man.vim

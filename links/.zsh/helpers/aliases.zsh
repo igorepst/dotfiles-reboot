@@ -4,8 +4,9 @@ alias ll='ls -al'
 # Order by date, newest first
 alias lt='la --sort=time --reverse'
 
-alias v='vim'
-alias vi='vim'
+alias v='nvim'
+alias vi='nvim'
+alias :q='exit'
 
 # Globbing should be done by Git itself
 alias git='noglob git'

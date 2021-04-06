@@ -58,7 +58,7 @@ function updateDots(){
     echo 'Updating Vim plugins'
     vim +PlugUpgrade +qall
     vim +PlugUpdate +qall
-    nvim --headless +PackerUpdate +TSUpdate +qall
+#    nvim --headless +PackerUpdate +TSUpdate +qall
     echo 'Updating Git submodules'
     setopt no_pushd_ignore_dups 
     pushd ~/dotfiles-reboot >/dev/null
