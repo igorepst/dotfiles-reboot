@@ -9,8 +9,6 @@ function doWork() {
     local arr=(zsh ripgrep fzf mpv xclip bat fd xterm terminus-font curl xorg-xrdb rofi jq kitty)
     # Convert TTF to OTF for pango
     arr+=(fontforge python)
-    # Vim with clipboard support + coc.nvim
-    arr+=(gvim nodejs)
     # Vifm + atool + img. support
     arr+=(vifm ueberzug ffmpegthumbnailer imagemagick poppler mediainfo \
         atool rpm-tools bzip2 cpio gzip lha xz lzop p7zip tar unace unrar zip unzip)

@@ -23,7 +23,7 @@ function rf() {
         local ln fn tmp
         IFS=':' read -r fn ln tmp <<<"$sel"
         # Add to history
-        print -s vim "$fn" +"$ln"
-        vim "$fn" +"$ln"
+        print -s $EDITOR "$fn" +"$ln"
+        $EDITOR "$fn" +"$ln"
     fi
 }

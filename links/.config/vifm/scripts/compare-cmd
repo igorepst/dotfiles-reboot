@@ -6,7 +6,7 @@ if [ $# != 2 ] ; then
 fi
 
 if [ -f "$1" -a -f "$2" ]; then
-    xterm -e vimdiff "$1" "$2" &
+    $MYTERM -e nvim -d "$1" "$2" &
 elif [ -d "$1" -a -d "$2" ]; then
     if diff -r "$1" "$2" > /dev/null 2>&1; then
         echo 'Equal'

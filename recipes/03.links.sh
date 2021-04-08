@@ -29,7 +29,6 @@ function doWork(){
     link ".xinitrc"
     link ".xprofile"
     link ".Xresources"
-    link ".vim"
     link ".config/bat"
     bat cache --build 
     link ".config/pet"

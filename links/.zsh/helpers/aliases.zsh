@@ -6,6 +6,7 @@ alias lt='la --sort=time --reverse'
 
 alias v='nvim'
 alias vi='nvim'
+alias vim='nvim'
 alias :q='exit'
 
 # Globbing should be done by Git itself

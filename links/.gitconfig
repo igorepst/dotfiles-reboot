@@ -4,7 +4,6 @@
     path = ~/.gitconfig-private
 [core]
     excludesfile = ~/.gitignore-global
-    editor = vim
     autocrlf = input
     pager = delta
 [delta]
