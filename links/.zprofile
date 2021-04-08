@@ -12,7 +12,3 @@ if [[ "${MY_PC_IS}" = "vm" ]] && systemctl -q is-active graphical.target && [[ !
 	 exec startx
 fi
 
-if [[ "${MY_PC_IS}" = "home" ]]; then
-    /usr/lib/polkit-kde-authentication-agent-1 &
-fi
-
