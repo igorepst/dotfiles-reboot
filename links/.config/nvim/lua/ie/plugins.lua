@@ -68,7 +68,7 @@ return require('packer').startup(function(use)
     use {'hrsh7th/nvim-compe', config = function()
         require ('compe').setup {
             enabled = true;
-            autocomplete = true;
+            autocomplete = false;
             debug = false;
             min_length = 1;
             preselect = 'enable';

@@ -46,7 +46,7 @@ require('ie.plugins')
 --vim.api.nvim_set_var('material_terminal_italics', 1)
 --cmd 'colorscheme material'
 vim.g.material_style = "lighter-contrast"
---vim.g.material_italic_comments = 1
+vim.g.material_italic_comments = 1
 --vim.g.material_italic_keywords = 1
 --vim.g.material_italic_functions = 1
 require('colorbuddy').colorscheme('material')

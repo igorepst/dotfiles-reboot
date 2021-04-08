@@ -5,27 +5,25 @@ function doWork(){
     echo
     local FONTS_DIR=${HOME}/.local/share/fonts
     mkdir -p "${FONTS_DIR}"
-    local REG_FONT="DejaVu Sans Mono Nerd Font Complete Mono"
-    local CONV_NEEDED=0
-    if [ ! -f "${FONTS_DIR}/${REG_FONT}.ttf" ] || [ -n "${DOT_UPDATE_FONTS}" ]; then 
-        CONV_NEEDED=1
-        echo "${GREEN}Installing ${REG_FONT}.ttf"${RESET}
-        curl -o "${FONTS_DIR}/${REG_FONT}.ttf" -L -O \
-https://github.com/ryanoasis/nerd-fonts/raw/master/patched-fonts/DejaVuSansMono/Regular/complete/DejaVu%20Sans%20Mono%20Nerd%20Font%20Complete%20Mono.ttf
-    else
-        echo "${GREEN}${REG_FONT}.ttf is installed${RESET}"
-    fi
-    local BOLD_FONT="DejaVu Sans Mono Bold Nerd Font Complete Mono"
-    if [ ! -f "${FONTS_DIR}/${BOLD_FONT}.ttf" ] || [ -n "${DOT_UPDATE_FONTS}" ]; then 
-        CONV_NEEDED=1
-        echo "${GREEN}Installing ${BOLD_FONT}.ttf"${RESET}
-        curl -o "${FONTS_DIR}/${BOLD_FONT}.ttf" -L -O \
-https://github.com/ryanoasis/nerd-fonts/raw/master/patched-fonts/DejaVuSansMono/Bold/complete/DejaVu%20Sans%20Mono%20Bold%20Nerd%20Font%20Complete%20Mono.ttf
-    else
-        echo "${GREEN}${BOLD_FONT}.ttf is installed${RESET}"
-    fi
+    declare -A FARR=( ["Regular"]="DejaVu Sans Mono Nerd Font Complete Mono"
+    ["Bold"]="DejaVu Sans Mono Bold Nerd Font Complete Mono" 
+    ["Italic"]="DejaVu Sans Mono Oblique Nerd Font Complete Mono"
+    ["Bold-Italic"]="DejaVu Sans Mono Bold Oblique Nerd Font Complete Mono" )
 
-    if [ "${CONV_NEEDED}" -eq "1" ] || [ ! -f "${FONTS_DIR}/${REG_FONT}.otf" ] || [ ! -f "${FONTS_DIR}/${BOLD_FONT}.otf" ]; then 
+    local CONV_NEEDED=0
+    for FTYPE in "${!FARR[@]}"; do
+        local FNAME=${FARR[$FTYPE]}
+        if [ ! -f "${FONTS_DIR}/${FNAME}.ttf" ] || [ -n "${DOT_UPDATE_FONTS}" ]; then
+            CONV_NEEDED=1
+            echo "${GREEN}Installing ${FNAME}.ttf"${RESET}
+            curl -o "${FONTS_DIR}/${FNAME}.ttf" -L -O \
+                https://github.com/ryanoasis/nerd-fonts/raw/master/patched-fonts/DejaVuSansMono/${FTYPE}/complete/${FNAME// /%20}.ttf
+        else
+            echo "${GREEN}${FNAME}.ttf is installed${RESET}"
+            [ ! -f "${FONTS_DIR}/${FNAME}.otf" ] && CONV_NEEDED=1
+        fi
+    done
+    if [ "${CONV_NEEDED}" -eq "1" ]; then
         echo ${GREEN}'Converting TTF to OTF for pango'${RESET}
         local CONV_SCRIPT=convertFonts.py
         cat >"${FONTS_DIR}/${CONV_SCRIPT}" <<"EOF"
