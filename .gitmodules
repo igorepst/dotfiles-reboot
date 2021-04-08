@@ -16,6 +16,3 @@
 [submodule "links/.zsh/plugins/zsh-autosuggestions"]
 	path = links/.zsh/plugins/zsh-autosuggestions
 	url = https://github.com/zsh-users/zsh-autosuggestions.git
-[submodule "links/.tmux/plugins/tmux-better-mouse-mode"]
-	path = links/.tmux/plugins/tmux-better-mouse-mode
-	url = https://github.com/NHDaly/tmux-better-mouse-mode.git

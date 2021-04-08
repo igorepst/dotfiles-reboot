@@ -50,7 +50,7 @@ function up(){
 }
 
 function ssh(){
-    TERM=xterm-256color command ssh -C -t $@ 'if command -v tmux >/dev/null; then tmux attach || tmux new; else bash -l; fi'
+    TERM=xterm-256color command ssh -C -t $@ 'bash -l'
 }
 
 function updateDots(){

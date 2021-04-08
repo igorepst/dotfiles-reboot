@@ -43,8 +43,6 @@ function doWork(){
     link ".gitconfig"
     link ".gitignore-global"
     link "bin"
-    link ".tmux.conf"
-    link ".tmux"
     link ".toprc"
 }
 
