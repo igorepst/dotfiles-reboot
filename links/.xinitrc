@@ -16,7 +16,7 @@ case "${MY_PC_IS}" in
     vm)
         VBoxClient-all
         xrandr --output Virtual1 --mode 1440x900
-        exec awesome
+        exec startplasma-x11
         ;;
     *)
         ;;

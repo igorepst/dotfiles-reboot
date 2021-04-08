@@ -9,8 +9,6 @@ function doWork() {
     local arr=(zsh ripgrep fzf mpv xclip bat fd xterm terminus-font curl xorg-xrdb tmux rofi jq kitty)
     # Convert TTF to OTF for pango
     arr+=(fontforge python)
-    # For AwesomeWM
-    arr+=(awesome gnome-keyring libsecret)
     # Vim with clipboard support + coc.nvim
     arr+=(gvim nodejs)
     # Vifm + atool + img. support

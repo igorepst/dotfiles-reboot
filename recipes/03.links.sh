@@ -30,7 +30,6 @@ function doWork(){
     link ".xprofile"
     link ".Xresources"
     link ".vim"
-    link ".config/awesome"
     link ".config/bat"
     bat cache --build 
     link ".config/pet"

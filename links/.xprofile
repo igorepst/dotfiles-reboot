@@ -25,7 +25,3 @@ if [ -f "${currentThemeXFonts}" ]; then
     xrdb -merge "${currentThemeXFonts}"
 fi
 
-if [ "${DESKTOP_SESSION}" = "/usr/share/xsessions/awesome" ]; then
-    eval $(gnome-keyring-daemon --start)
-    export SSH_AUTH_SOCK
-fi
