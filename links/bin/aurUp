@@ -1,0 +1,31 @@
+#!/usr/bin/env bash
+
+function main() {
+    local f n hold found
+    hold=( 'nomachine' 'openfortigui' )
+    for f in ~/aur/*; do
+        pushd "$f" >/dev/null
+        n=$(basename "$f")
+        echo '************************'
+        found=
+        for i in "${hold[@]}"; do
+            if [ "$i" = "$n" ]; then
+                found=0
+                break
+            fi
+        done
+        if [ $found ]; then
+            echo "$n should not be updated"
+        elif [ $(git rev-parse HEAD) = $(git ls-remote $(git rev-parse --abbrev-ref @{u} | sed 's/\// /g') | cut -f1) ]; then
+            echo "$n is up to date"
+        else
+            echo "Updating $n" 
+            git reset --hard
+            git pull origin $(git rev-parse --abbrev-ref HEAD)
+            makepkg -si
+        fi
+        popd >/dev/null
+    done
+}
+
+main "$@"

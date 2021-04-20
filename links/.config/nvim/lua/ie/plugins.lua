@@ -17,9 +17,11 @@ return require('packer').startup(function(use)
     use {'wbthomason/packer.nvim', opt = true}
     use {'NLKNguyen/papercolor-theme'}
     use {'rakr/vim-one'}
+    use {'noahfrederick/vim-hemisu'}
     use {'cormacrelf/vim-colors-github'}
     use {'junegunn/fzf.vim', requires = {{'junegunn/fzf'}}}
     use {'marko-cerovac/material.nvim', requires = {{'tjdevries/colorbuddy.nvim'}}}
+    use {'https://gitlab.com/protesilaos/tempus-themes-vim.git'}
     use {'neovim/nvim-lspconfig',
         config = function()
             require'lspconfig'.sumneko_lua.setup {
