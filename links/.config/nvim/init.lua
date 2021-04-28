@@ -8,19 +8,35 @@ local function set_options(scope,options)
     end
 end
 
--- https://gist.github.com/voyeg3r/223f148a115c17a02a15660cc7335f4c
-function ToggleComment()
-    vim.api.nvim_exec([[
-        if getline('.') =~ '^\s*$'
-            " Skip empty line
-    elseif getline('.') =~ '^\s*' . b:comment_leader
-            " Uncomment the line
-            execute 'silent s/\v\s*\zs' . b:comment_leader . '\s*\ze//' | nohlsearch
+function ToggleComment(mode)
+    if not vim.b.comment_leader then error('Comment leader is undefined') end
+    local lines = {}
+    local line_number_start, line_number_end, line, hl
+    if mode == 'v' then
+        line_number_start = vim.fn.line("'<")
+        line_number_end = vim.fn.line("'>")
+    else
+        line_number_start = vim.fn.line('.')
+        line_number_end = line_number_start + (vim.v.count == 0 and 0 or vim.v.count - 1)
+    end
+    for i = line_number_start, line_number_end do
+        line = vim.fn.getline(i)
+        if string.find(line, '^%s*$') then
+            table.insert(lines, line)
+        elseif string.find(line, '^%s*' .. vim.b.comment_leader) then
+            -- TODO: fix, leave spaces before the comment, if after the comment there is no space => next char is trimmed
+            table.insert(lines, string.sub(line, string.len(vim.b.comment_leader) + 2))
+            hl = true
         else
-            " Comment the line
-            execute 'silent s/\v^(\s*)/\1' . b:comment_leader . ' /' | nohlsearch
-        endif
-    ]], true)
+            table.insert(lines, vim.b.comment_leader .. ' ' .. line)
+            hl = true
+        end
+    end
+    vim.api.nvim_buf_set_lines(0, line_number_start - 1, line_number_end, false, lines)
+    vim.fn.cursor(line_number_end, 0)
+    if hl then
+        vim.api.nvim_command('nohlsearch')
+    end
 end
 
 -- https://github.com/norcalli/nvim_utils
@@ -42,6 +58,7 @@ local autocmds = {
         {"FileType", "sh,bash,zsh,jproperties,tmux,conf,xf86conf,fstab,ps1,python", "let b:comment_leader = '#'"};
         {"FileType", "vim,vifm", "let b:comment_leader = '\"'"};
         {"FileType", "xdefaults", "let b:comment_leader = '!'"};
+        {"FileType", "dosini", "let b:comment_leader = ';'"};
         {"FileType", "lua,haskell", "let b:comment_leader = '--'"};
     };
 }
@@ -70,9 +87,10 @@ local options_global = {
     sidescroll = 1,
     sidescrolloff = 5,
     linebreak = true,
-    whichwrap = 'b,s,<,>,[,]',
+whichwrap = 'b,s,<,>,[,]',
     listchars = 'tab:> ,trail:-,extends:>,precedes:<,nbsp:+,eol:$',
-    wildmode = 'longest:full,full'
+    wildmode = 'longest:full,full',
+    title = true,
 }
 
 local options_buffer = {
@@ -99,9 +117,9 @@ end
 vim.g.mapleader = ' '
 map('n', '<Leader>bl', ':buffers<CR>')
 --  Actually 'C-/' and not 'C-_'
-map('n', '<C-_>', ':lua ToggleComment()<CR>')
-map('v', '<C-_>', ':lua ToggleComment()<CR>')
-map('i', '<C-_>', '<Esc>:lua ToggleComment()<CR>i')
+map('n', '<C-_>', ':lua ToggleComment("n")<CR>')
+map('v', '<C-_>', ':lua ToggleComment("v")<CR>')
+map('i', '<C-_>', '<Esc>:lua ToggleComment("i")<CR>i')
 
 vim.g.netrw_sort_options = "i"
 vim.g.netrw_keepdir = 0

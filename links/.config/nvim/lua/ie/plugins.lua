@@ -24,6 +24,9 @@ return require('packer').startup(function(use)
     use {'https://gitlab.com/protesilaos/tempus-themes-vim.git'}
     use {'neovim/nvim-lspconfig',
         config = function()
+            require'lspconfig'.hls.setup{
+-- cmd = { "haskell-language-server-wrapper", "--lsp", "--logfile", "/tmp/hls.log", "--debug" }
+            }
             require'lspconfig'.sumneko_lua.setup {
                 cmd = {'/usr/bin/lua-language-server', "-E", '/usr/share/lua-language-server/main.lua'};
                 settings = {
