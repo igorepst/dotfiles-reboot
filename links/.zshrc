@@ -1,10 +1,3 @@
-source ~/.zsh/helpers/get_gh_release.zsh
-get_gh_release --repo knqyf263/pet --arch linux_amd64.tar.gz --toPath . --toCompletionPath misc/completions/zsh
-get_gh_release --repo dandavison/delta --arch x86_64-unknown-linux-gnu.tar.gz --toPath .
-get_gh_release --repo denisidoro/navi --arch x86_64-unknown-linux-musl.tar.gz --toPath .
-get_gh_release --repo tstack/lnav --arch linux-64bit.zip --toPath .
-get_gh_release --repo neovim/neovim --arch linux64.tar.gz --toPath ./bin --tag nightly
-
 if [[ -r "${XDG_CACHE_HOME:-$HOME/.cache}/p10k-instant-prompt-${(%):-%n}.zsh" ]]; then
     source "${XDG_CACHE_HOME:-$HOME/.cache}/p10k-instant-prompt-${(%):-%n}.zsh"
 fi
@@ -107,7 +100,7 @@ setopt long_list_jobs notify no_beep complete_in_word no_hup no_flow_control
     # To speed up loading do this once a day:
     # https://gist.github.com/ctechols/ca1035271ad134841284#gistcomment-2894219
     # Compile the completion dump to increase startup speed, if dump is newer or doesn't exist,
-    # in the background as this is doesn't affect the current session.
+    # in the background as this doesn't affect the current session.
     if [[ -f "$zcd"(#qN.m+1) ]]; then
         compinit -i -d "$zcd"
         { rm -f "$zcdc" && zcompile "$zcd" } &!
