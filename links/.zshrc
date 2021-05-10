@@ -150,6 +150,12 @@ zstyle ':completion:*:processes' command 'ps -au $USER'
 # Provide more processes in completion of programs like killall:
 zstyle ':completion:*:processes-names' command 'ps c -u ${USER} -o command | uniq'
 
+autoload -U url-quote-magic  
+zle -N self-insert url-quote-magic
+remote_commands=(scp rsync)
+zstyle -e :urlglobber url-other-schema \
+  '[[ $remote_commands[(i)$words[1]] -le ${#remote_commands} ]] && reply=("*") || reply=(http https ftp)'
+
 ZSH_AUTOSUGGEST_HIGHLIGHT_STYLE="fg=196"
 ZSH_AUTOSUGGEST_USE_ASYNC=1
 ZSH_AUTOSUGGEST_BUFFER_MAX_SIZE=20

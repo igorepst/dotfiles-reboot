@@ -16,8 +16,6 @@ alias gs='git status -s'
 alias gpl='git pull origin $(git rev-parse --abbrev-ref HEAD)'
 alias gps='git push origin $(git rev-parse --abbrev-ref HEAD)'
 
-alias scp='noglob scp'
-
 alias sudo='sudo -E '
 alias mkdir='mkdir -p'
 alias o='xdg-open'
