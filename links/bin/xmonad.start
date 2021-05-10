@@ -1,0 +1,15 @@
+#!/bin/bash
+eval $(/usr/bin/gnome-keyring-daemon --start --components=pkcs11,secrets,ssh)
+export SSH_AUTH_SOCK
+
+export QT_SELECT="5"
+export XDG_CURRENT_DESKTOP=GNOME
+
+feh --no-fehbg --bg-scale "/home/vasya/.local/share/wallpapers/pexels-leonid-sobolev-1663362.jpg" &
+wifi &
+picom -b
+# ~/.config/polybar/launch_polybar.sh &
+
+xmobar -v >/tmp/log 2>&1 &
+
+xmonad

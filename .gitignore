@@ -10,4 +10,9 @@ links/.config/nvim/plugin/packer_compiled.vim
 links/bin/*archive
 links/.config/mpv/*
 !links/.config/mpv/*.conf
+links/.config/xmonad/*
+!links/.config/xmonad/cabal.project
+!links/.config/xmonad/hie.yaml
+!links/.config/xmonad/ig-xmonad.cabal
+!links/.config/xmonad/xmonad.hs
 
