@@ -11,7 +11,7 @@ end
 function ToggleComment(mode)
     if not vim.b.comment_leader then error('Comment leader is undefined') end
     local lines = {}
-    local line_number_start, line_number_end, line, hl
+    local line_number_start, line_number_end, line, hl, ms, tmp
     if mode == 'v' then
         line_number_start = vim.fn.line("'<")
         line_number_end = vim.fn.line("'>")
@@ -23,18 +23,25 @@ function ToggleComment(mode)
         line = vim.fn.getline(i)
         if string.find(line, '^%s*$') then
             table.insert(lines, line)
-        elseif string.find(line, '^%s*' .. vim.b.comment_leader) then
-            -- TODO: fix, leave spaces before the comment, if after the comment there is no space => next char is trimmed
-            table.insert(lines, string.sub(line, string.len(vim.b.comment_leader) + 2))
-            hl = true
         else
-            table.insert(lines, vim.b.comment_leader .. ' ' .. line)
-            hl = true
+            tmp = string.gsub(vim.b.comment_leader, "%p", "%%%1")
+            ms = string.match(line, '^%s*' .. tmp)
+            if ms then
+                line = string.gsub(line, tmp, "", 1)
+                if string.sub(line, 1, 1) == ' ' then
+                    line = string.sub(line, 2)
+                end
+                table.insert(lines, line)
+                hl = true
+            else
+                table.insert(lines, vim.b.comment_leader .. ' ' .. line)
+                hl = true
+            end
         end
     end
-    vim.api.nvim_buf_set_lines(0, line_number_start - 1, line_number_end, false, lines)
-    vim.fn.cursor(line_number_end, 0)
     if hl then
+        vim.api.nvim_buf_set_lines(0, line_number_start - 1, line_number_end, false, lines)
+        vim.fn.cursor(line_number_end, 0)
         vim.api.nvim_command('nohlsearch')
     end
 end
@@ -87,7 +94,7 @@ local options_global = {
     sidescroll = 1,
     sidescrolloff = 5,
     linebreak = true,
-whichwrap = 'b,s,<,>,[,]',
+    whichwrap = 'b,s,<,>,[,]',
     listchars = 'tab:> ,trail:-,extends:>,precedes:<,nbsp:+,eol:$',
     wildmode = 'longest:full,full',
     title = true,

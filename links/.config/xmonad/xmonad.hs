@@ -17,22 +17,18 @@ import XMonad.Util.ClickableWorkspaces (clickablePP)
 import XMonad.Util.Hacks (javaHack)
 
 
-igSB = statusBarProp "xmobar" (clickablePP igXmobarPP)
 main :: IO ()
 main = do
   igTerm <- getEnv "MYTERM"
-  xmonad
-     $ withSB igSB
-     $ ewmhFullscreen
-     $ ewmh
-     $ docks
-     $ javaHack (igConfig igTerm)
+  xmonad $ withSB igSB $ ewmhFullscreen $ ewmh $ docks
+     $ javaHack $ igConfig igTerm
 
 igConfig igTerm = def
     { terminal = igTerm
     , modMask    = mod4Mask
     , layoutHook = igLayout
     , manageHook = igManageHook <+> manageDocks
+    , startupHook = igStartupHook
     }
   `additionalKeysP`
     [ ("M-<Return>", spawn igTerm)
@@ -43,9 +39,13 @@ igConfig igTerm = def
     , ("M-x", sendMessage $ Toggle NBFULL)
     ]
 
+igStartupHook = do
+    spawn "killall trayer; trayer --edge top --align right --SetDockType true --SetPartialStrut false --expand true --height 17 --transparent true --alpha 0 --tint 0xfffffa --widthtype request --monitor 0"
+
 igManageHook :: ManageHook
 igManageHook = composeAll
     [ className =? "Gimp" --> doFloat
+    , className =? "Xmessage" --> doFloat
     , isDialog            --> doFloat
     ]
 
@@ -56,24 +56,26 @@ igLayout = mkToggle (single NBFULL) $ avoidStruts $ tiled ||| Mirror tiled ||| F
     delta = 3 / 100
     ratio = 1 / 2
 
+igSB = statusBarProp "xmobar" (clickablePP igXmobarPP)
+
 igXmobarPP :: PP
 igXmobarPP = def
-    { ppSep             = magenta " • "
-    , ppTitle           = wrap (white    "[") (white    "]") . magenta . ppWindow
+    { ppSep             = " "
+    , ppTitle           = wrap " " "" . magenta . ppWindow
     , ppTitleSanitize   = xmobarStrip
-    , ppCurrent         = wrap " " "" . xmobarBorder "Top" "#8be9fd" 2
-    , ppHidden          = white . wrap " " ""
-    , ppHiddenNoWindows = lowWhite . wrap " " ""
+    , ppCurrent         = blue
+    , ppHidden          = white
+    , ppVisibleNoWindows = Nothing
     , ppUrgent          = red . wrap (yellow "!") (yellow "!")
+    , ppOrder = \(ws:_:t:_) -> [ws,t]
     }
   where
     ppWindow :: String -> String
-    ppWindow = xmobarRaw . (\w -> if null w then "untitled" else w) . shorten 30
+    ppWindow = xmobarRaw . (\w -> if null w then "" else w) . shorten 100
 
-    blue, lowWhite, magenta, red, white, yellow :: String -> String
-    magenta  = xmobarColor "#ff79c6" ""
-    blue     = xmobarColor "#bd93f9" ""
-    white    = xmobarColor "#f8f8f2" ""
-    yellow   = xmobarColor "#f1fa8c" ""
-    red      = xmobarColor "#ff5555" ""
-    lowWhite = xmobarColor "#bbbbbb" ""
+    blue, red, white, yellow :: String -> String
+    magenta  = xmobarColor "#5c345f" ""
+    blue     = xmobarColor "#00729b" ""
+    white    = xmobarColor "#999999" ""
+    yellow   = xmobarColor "#503d15" ""
+    red      = xmobarColor "#ff0055" ""

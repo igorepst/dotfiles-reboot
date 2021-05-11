@@ -8,8 +8,7 @@ export XDG_CURRENT_DESKTOP=GNOME
 feh --no-fehbg --bg-scale "/home/vasya/.local/share/wallpapers/pexels-leonid-sobolev-1663362.jpg" &
 wifi &
 picom -b
-# ~/.config/polybar/launch_polybar.sh &
 
-xmobar -v >/tmp/log 2>&1 &
+xmobar &
 
-xmonad
+exec dbus-launch xmonad
