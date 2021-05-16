@@ -15,4 +15,8 @@ links/.config/xmonad/*
 !links/.config/xmonad/hie.yaml
 !links/.config/xmonad/ig-xmonad.cabal
 !links/.config/xmonad/xmonad.hs
-
+links/.config/xmobar/*
+!links/.config/xmobar/icons/
+!links/.config/xmobar/icons/*
+!links/.config/xmobar/icons/*/*
+!links/.config/xmobar/xmobar.hs

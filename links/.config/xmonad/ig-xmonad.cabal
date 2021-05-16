@@ -8,4 +8,5 @@ executable ig-xmonad
   build-depends:       base
                      , xmonad
                      , xmonad-contrib
+                     , regex-posix
   default-language:    Haskell2010

@@ -1,5 +1,5 @@
 packages: ./* /home/vasya/github/xmonad /home/vasya/github/xmonad-contrib
 
 package *
-  ghc-options: -fwrite-ide-info -hiedir /home/vasya/.xmonad/hiedb
+  ghc-options: -fwrite-ide-info -hiedir /home/vasya/.config/xmonad/hiedb
 

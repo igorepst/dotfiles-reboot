@@ -85,6 +85,7 @@ local options_global = {
     clipboard = 'unnamedplus',
     ignorecase = true,
     wildignorecase = true,
+    wildignore = '*.o,*.obj,*.hi',
     hidden = true,
     autoread = true,
     splitbelow = true,
