@@ -44,7 +44,7 @@ config igHome = defaultConfig {
               ]
   , sepChar = "%"
   , alignSep = "}{"
-  , template = "%UnsafeXMonadLog% }{ %wlo1wi% | %kbd% | %bright% | %battery% | %date%%trayerpad%"
+  , template = "%UnsafeXMonadLog% }{ <action=`kill -s USR1 $(pidof deadd-notification-center)` button=1>DNC</action> | %wlo1wi% | %kbd% | <action=`brightness-deadd` button=1>%bright%</action> | <action=`battery-deadd` button=1>%battery%</action> |  %date%%trayerpad%"
 }
 
 main :: IO ()

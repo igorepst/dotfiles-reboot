@@ -1,0 +1,12 @@
+#!/bin/bash
+
+function main(){
+    local BAT='BAT0'
+    local cur max res
+    cur=$((100*$(cat /sys/class/power_supply/${BAT}/charge_now)))
+    max=$(cat /sys/class/power_supply/${BAT}/charge_full)
+    res=$(((cur+max-1)/max))
+    notify-send.py "Battery" "${res}/100" --hint string:image-path:battery boolean:transient:true --replaces-process "battery-popup"
+}
+
+main "$@"
