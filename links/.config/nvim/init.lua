@@ -139,22 +139,7 @@ vim.g.netrw_sizestyle = "H"
 
 require('ie.plugins')
 
---cmd 'colorscheme PaperColor'
---vim.api.nvim_set_var('github_colors_soft',1)
---cmd 'colorscheme github'
---vim.api.nvim_set_var('material_theme_style','lighter')
---vim.api.nvim_set_var('material_terminal_italics', 1)
---cmd 'colorscheme material'
---vim.g.material_style = "lighter-contrast"
---vim.g.material_italic_comments = 1
---vim.g.material_italic_keywords = 1
---vim.g.material_italic_functions = 1
---require('colorbuddy').colorscheme('material')
---vim.g.tempus_enforce_background_color = 1
---cmd 'colorscheme tempus_totus'
 cmd 'colorscheme hemisu'
-
-
 
 --" Map Q to q and Q! to q!
 --command! -bang Q q<bang>

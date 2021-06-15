@@ -15,17 +15,11 @@ cmd 'autocmd BufWritePost plugins.lua PackerCompile'
 
 return require('packer').startup(function(use)
     use {'wbthomason/packer.nvim', opt = true}
-    use {'NLKNguyen/papercolor-theme'}
-    use {'rakr/vim-one'}
     use {'noahfrederick/vim-hemisu'}
-    use {'cormacrelf/vim-colors-github'}
     use {'junegunn/fzf.vim', requires = {{'junegunn/fzf'}}}
-    use {'marko-cerovac/material.nvim', requires = {{'tjdevries/colorbuddy.nvim'}}}
-    use {'https://gitlab.com/protesilaos/tempus-themes-vim.git'}
-    use {'neovim/nvim-lspconfig',
-        config = function()
-            require'lspconfig'.hls.setup{
--- cmd = { "haskell-language-server-wrapper", "--lsp", "--logfile", "/tmp/hls.log", "--debug" }
+    use {'neovim/nvim-lspconfig', config = function()
+        require'lspconfig'.hls.setup{
+                -- cmd = { "haskell-language-server-wrapper", "--lsp", "--logfile", "/tmp/hls.log", "--debug" }
             }
             require'lspconfig'.sumneko_lua.setup {
                 cmd = {'/usr/bin/lua-language-server', "-E", '/usr/share/lua-language-server/main.lua'};
@@ -62,14 +56,35 @@ return require('packer').startup(function(use)
             },
         }
     end, run = ':execute "TSInstall all" | execute "TSUpdate"',}
-    use {
-        'glepnir/galaxyline.nvim',
-        branch = 'main',
-        requires = {'kyazdani42/nvim-web-devicons', opt = true},
-        config = function()
-            require ('eviline')
-        end
-    }
+    use {'hoob3rt/lualine.nvim', requires = {'kyazdani42/nvim-web-devicons', opt = true}, config = function()
+        require'lualine'.setup {
+            options = {
+                icons_enabled = true,
+                theme = 'onelight',
+                component_separators = {'', ''},
+                section_separators = {'', ''},
+                disabled_filetypes = {}
+            },
+            sections = {
+                lualine_a = {'mode'},
+                lualine_b = {'branch'},
+                lualine_c = {'filename'},
+                lualine_x = {'encoding', 'fileformat', 'filetype'},
+                lualine_y = {'progress'},
+                lualine_z = {'location'}
+            },
+            inactive_sections = {
+                lualine_a = {},
+                lualine_b = {},
+                lualine_c = {'filename'},
+                lualine_x = {'location'},
+                lualine_y = {},
+                lualine_z = {}
+            },
+            tabline = {},
+            extensions = {}
+        }
+    end}
     use {'hrsh7th/nvim-compe', config = function()
         require ('compe').setup {
             enabled = true;
