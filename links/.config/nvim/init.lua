@@ -1,4 +1,5 @@
 local cmd = vim.cmd
+local fn = vim.fn
 local scopes = {o = vim.o, b = vim.bo, w = vim.wo}
 
 local function set_options(scope,options)
@@ -13,14 +14,14 @@ function ToggleComment(mode)
     local lines = {}
     local line_number_start, line_number_end, line, hl, ms, tmp
     if mode == 'v' then
-        line_number_start = vim.fn.line("'<")
-        line_number_end = vim.fn.line("'>")
+        line_number_start = fn.line("'<")
+        line_number_end = fn.line("'>")
     else
-        line_number_start = vim.fn.line('.')
+        line_number_start = fn.line('.')
         line_number_end = line_number_start + (vim.v.count == 0 and 0 or vim.v.count - 1)
     end
     for i = line_number_start, line_number_end do
-        line = vim.fn.getline(i)
+        line = fn.getline(i)
         if string.find(line, '^%s*$') then
             table.insert(lines, line)
         else
@@ -41,7 +42,7 @@ function ToggleComment(mode)
     end
     if hl then
         vim.api.nvim_buf_set_lines(0, line_number_start - 1, line_number_end, false, lines)
-        vim.fn.cursor(line_number_end, 0)
+        fn.cursor(line_number_end, 0)
         vim.api.nvim_command('nohlsearch')
     end
 end
@@ -138,6 +139,9 @@ vim.g.netrw_liststyle = 3
 vim.g.netrw_sizestyle = "H"
 
 require('ie.plugins')
+map('i', '<C-Space>', 'compe#complete()', {silent = true, expr = true})
+map('i', '<CR>', "compe#confirm('<CR>')", {silent = true, expr = true})
+map('i', '<Esc>', "compe#close('<Esc>')", {silent = true, expr = true})
 
 cmd 'colorscheme hemisu'
 
@@ -156,7 +160,6 @@ cmd 'colorscheme hemisu'
 --" Diff between written and current states
 --command! DiffOrig vert new | set bt=nofile | r ++edit # | 0d_ | diffthis | wincmd p | diffthis
 
---Plug 'vifm/vifm.vim'
 --Plug 'PProvost/vim-ps1'
 --Plug 'rust-lang/rust.vim'
 
@@ -192,13 +195,15 @@ cmd 'colorscheme hemisu'
 
 --nmap <Leader><F2> <Plug>FzfIgMenuOpen
 
---function! SearchInRuntime() abort
---    call fzf#vim#grep("rg --column --line-number --no-heading --color=always '' " . g:igVimPath . ' ' . expand("$VIM"), 1) 
---endfunction
+function SearchInRuntime()
+    fn['fzf#vim#grep']("rg --column --line-number --no-heading --color=always '' "
+        .. fn.stdpath('config') .. ' ' .. fn.stdpath('data') .. ' ' .. fn.expand("$VIMRUNTIME"), 1)
+end
 
---function! FindFileInRuntime() abort
---    call fzf#run({'sink': 'e', 'source': "fd . " . g:igVimPath . ' ' . expand("$VIM")})
---endfunction
+function FindFileInRuntime()
+    fn['fzf#run']({sink = "e", source = "fd --type file . "
+        .. fn.stdpath('config') .. ' ' .. fn.stdpath('data') .. ' ' .. fn.expand("$VIMRUNTIME")})
+end
 
 --" matchit.vim - % to jump between pairs
 --set matchpairs+=<:> 

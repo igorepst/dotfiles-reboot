@@ -1,12 +1,11 @@
 local execute = vim.api.nvim_command
 local fn = vim.fn
 local cmd = vim.cmd
-package.path = package.path .. ';' .. fn.stdpath('data')..'/site/pack/packer/start/galaxyline.nvim/example/?.lua'
 
-local install_path = fn.stdpath('data')..'/site/pack/packer/opt/packer.nvim'
+local install_path = fn.stdpath('data') .. '/site/pack/packer/opt/packer.nvim'
 
 if fn.empty(fn.glob(install_path)) > 0 then
-    execute('!git clone https://github.com/wbthomason/packer.nvim '..install_path)
+    execute('!git clone https://github.com/wbthomason/packer.nvim ' .. install_path)
     execute 'packadd packer.nvim'
 end
 
@@ -17,6 +16,7 @@ return require('packer').startup(function(use)
     use {'wbthomason/packer.nvim', opt = true}
     use {'noahfrederick/vim-hemisu'}
     use {'junegunn/fzf.vim', requires = {{'junegunn/fzf'}}}
+    use {'vifm/vifm.vim'}
     use {'neovim/nvim-lspconfig', config = function()
         require'lspconfig'.hls.setup{
                 -- cmd = { "haskell-language-server-wrapper", "--lsp", "--logfile", "/tmp/hls.log", "--debug" }
@@ -106,7 +106,8 @@ return require('packer').startup(function(use)
                 calc = true;
                 nvim_lsp = true;
                 nvim_lua = true;
-                vsnip = true;
+                vsnip = false;
+                ultisnips = false;
             };
         }
     end
