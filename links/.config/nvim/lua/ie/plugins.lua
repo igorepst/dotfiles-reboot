@@ -5,18 +5,18 @@ local cmd = vim.cmd
 local install_path = fn.stdpath('data') .. '/site/pack/packer/opt/packer.nvim'
 
 if fn.empty(fn.glob(install_path)) > 0 then
-    execute('!git clone https://github.com/wbthomason/packer.nvim ' .. install_path)
+    fn.system({'git', 'clone', 'https://github.com/wbthomason/packer.nvim', install_path})
     execute 'packadd packer.nvim'
 end
 
 cmd 'packadd packer.nvim'
-cmd 'autocmd BufWritePost plugins.lua PackerCompile'
+cmd 'autocmd BufWritePost plugins.lua execute "luafile %" | PackerCompile'
 
-return require('packer').startup(function(use)
+return require('packer').startup({function(use)
     use {'wbthomason/packer.nvim', opt = true}
-    use {'noahfrederick/vim-hemisu'}
+    use 'noahfrederick/vim-hemisu'
     use {'junegunn/fzf.vim', requires = {{'junegunn/fzf'}}}
-    use {'vifm/vifm.vim'}
+    use 'vifm/vifm.vim'
     use {'neovim/nvim-lspconfig', config = function()
         require'lspconfig'.hls.setup{
                 -- cmd = { "haskell-language-server-wrapper", "--lsp", "--logfile", "/tmp/hls.log", "--debug" }
@@ -55,7 +55,7 @@ return require('packer').startup(function(use)
                 enable = true
             },
         }
-    end, run = ':execute "TSInstall all" | execute "TSUpdate"',}
+    end, run = ':TSUpdate'}
     use {'hoob3rt/lualine.nvim', requires = {'kyazdani42/nvim-web-devicons', opt = true}, config = function()
         require'lualine'.setup {
             options = {
@@ -77,9 +77,9 @@ return require('packer').startup(function(use)
                 lualine_a = {},
                 lualine_b = {},
                 lualine_c = {'filename'},
-                lualine_x = {'location'},
+                lualine_x = {'encoding', 'fileformat', 'filetype'},
                 lualine_y = {},
-                lualine_z = {}
+                lualine_z = {'location'}
             },
             tabline = {},
             extensions = {}
@@ -112,5 +112,12 @@ return require('packer').startup(function(use)
         }
     end
     }
-end)
+end,
+config = {
+  display = {
+    open_fn = function()
+      return require('packer.util').float({ border = 'single' })
+    end
+  }
+}})
 
