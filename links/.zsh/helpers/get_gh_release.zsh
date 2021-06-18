@@ -5,7 +5,7 @@ function get_gh_release() {
     emulate -L zsh
     setopt no_autopushd
     zmodload zsh/zutil
-    zparseopts -A _GET_GH_REL_ARGS -repo: -arch: -update:: -toPath:: -toCompletionPath:: -tag::
+    zparseopts -A _GET_GH_REL_ARGS -repo: -arch: -update:: -toPath:: -toCompletionPath:: -tag:: -unarchive:: -rn::
     local workd=${workd_prefix}/${_GET_GH_REL_ARGS[--repo]}
     if [ -d ${workd} ] && [ -z "${IG_GH_REL_UPDATE}" ] && [ "${_GET_GH_REL_ARGS[--update]}" != "1" ]; then
         _set_path ${workd} ${_GET_GH_REL_ARGS[--toPath]} ${_GET_GH_REL_ARGS[--toCompletionPath]}
@@ -39,14 +39,17 @@ function get_gh_release() {
     [ -z ${binf} ] && print "Cannot find requested architecture" && return
     local tmpd=$(mktemp -d)
     pushd ${tmpd} >/dev/null
-    local workf=bin${_GET_GH_REL_ARGS[--arch]}
+    local workf
+    [ -n "${_GET_GH_REL_ARGS[--rn]}" ] && workf="${_GET_GH_REL_ARGS[--rn]}" || workf="bin${_GET_GH_REL_ARGS[--arch]}"
     curl -k -L ${binf} -o ${workf}
     [ $? -ne 0 ] && print "Cannot download requested file. URL: ${binf}" && return
     rm -rf ${workd}
     mkdir -p ${workd}
-    ~/.zsh/plugins/archive/unarchive ${workf} >/dev/null
-    [ $? -ne 0 ] && print "Cannot extract the file: ${workf}" && return
-    rm ${workf}
+    if [ -z "${_GET_GH_REL_ARGS[--unarchive]}" ] || [ "${_GET_GH_REL_ARGS[--unarchive]}" = "1" ]; then
+        ~/.zsh/plugins/archive/unarchive ${workf} >/dev/null
+        [ $? -ne 0 ] && print "Cannot extract the file: ${workf}" && return
+        rm ${workf}
+    fi
     local dir_name=$(_check_dirs ${tmpd})
     if [ -n "$dir_name" ]; then 
         local dir_name1=$(_check_dirs ${dir_name})
@@ -79,7 +82,8 @@ function _check_dirs() {
 function _set_path(){
     if [ -n "${2}" ]; then
         local top="${1}/${2}"
-        if [ -f "${top}" ] && [ -x "${top}" ]; then
+        if [ -f "${top}" ]; then
+            chmod +x "${top}"
             local bind="${workd_cache}/_bin"
             mkdir -p "${bind}"
             ln -sf "${top}" "${bind}"

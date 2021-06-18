@@ -71,6 +71,8 @@ function updateDots(){
     get_gh_release --repo denisidoro/navi --arch x86_64-unknown-linux-musl.tar.gz --toPath navi
     get_gh_release --repo tstack/lnav --arch linux-64bit.zip --toPath lnav
     get_gh_release --repo neovim/neovim --arch linux64.tar.gz --toPath bin/nvim --tag nightly
+    get_gh_release --repo koalaman/shellcheck --arch linux.x86_64.tar.xz --toPath shellcheck
+    get_gh_release --repo mvdan/sh --arch linux_amd64 --toPath shfmt --unarchive 0 --rn shfmt
     rm -f ~/.zsh/volatile/zcompdump*
     exec zsh
 }

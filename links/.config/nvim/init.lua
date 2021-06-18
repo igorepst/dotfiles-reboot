@@ -138,7 +138,7 @@ vim.g.netrw_browse_split = 4
 vim.g.netrw_liststyle = 3
 vim.g.netrw_sizestyle = "H"
 
-require('ie.plugins')
+require('plugins')
 map('i', '<C-Space>', 'compe#complete()', {silent = true, expr = true})
 map('i', '<CR>', "compe#confirm('<CR>')", {silent = true, expr = true})
 map('i', '<Esc>', "compe#close('<Esc>')", {silent = true, expr = true})
