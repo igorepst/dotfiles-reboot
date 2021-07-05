@@ -1,27 +1,22 @@
 local cmd = vim.cmd
 local fn = vim.fn
-local scopes = {o = vim.o, b = vim.bo, w = vim.wo}
+local opt = vim.opt
+local g = vim.g
 
-local function set_options(scope,options)
-    for key, value in pairs(options) do
-        scopes[scope][key] = value
-        if scope ~= 'o' then scopes['o'][key] = value end
-    end
-end
-
+-- TODO switch for commentstring
 function ToggleComment(mode)
     if not vim.b.comment_leader then error('Comment leader is undefined') end
     local lines = {}
     local line_number_start, line_number_end, line, hl, ms, tmp
     if mode == 'v' then
-        line_number_start = fn.line("'<")
-        line_number_end = fn.line("'>")
+        line_number_start = vim.fn.line("'<")
+        line_number_end = vim.fn.line("'>")
     else
-        line_number_start = fn.line('.')
+        line_number_start = vim.fn.line('.')
         line_number_end = line_number_start + (vim.v.count == 0 and 0 or vim.v.count - 1)
     end
     for i = line_number_start, line_number_end do
-        line = fn.getline(i)
+        line = vim.fn.getline(i)
         if string.find(line, '^%s*$') then
             table.insert(lines, line)
         else
@@ -42,7 +37,7 @@ function ToggleComment(mode)
     end
     if hl then
         vim.api.nvim_buf_set_lines(0, line_number_start - 1, line_number_end, false, lines)
-        fn.cursor(line_number_end, 0)
+        vim.fn.cursor(line_number_end, 0)
         vim.api.nvim_command('nohlsearch')
     end
 end
@@ -63,7 +58,7 @@ end
 local autocmds = {
     ig_au = {
         {"FileType", "c,cpp,java,rust", "let b:comment_leader = '//'"};
-        {"FileType", "sh,bash,zsh,jproperties,tmux,conf,xf86conf,fstab,ps1,python", "let b:comment_leader = '#'"};
+        {"FileType", "sh,bash,zsh,jproperties,tmux,conf,xf86conf,fstab,ps1,python,yaml", "let b:comment_leader = '#'"};
         {"FileType", "vim,vifm", "let b:comment_leader = '\"'"};
         {"FileType", "xdefaults", "let b:comment_leader = '!'"};
         {"FileType", "dosini", "let b:comment_leader = ';'"};
@@ -73,49 +68,46 @@ local autocmds = {
 
 nvim_create_augroups(autocmds)
 
+opt.title = true
+opt.background = 'light'
+opt.mouse = 'a'
+opt.termguicolors = true
+opt.completeopt = { 'menuone', 'noselect' }
+opt.smarttab = true
+opt.showmode = false
+opt.ruler = false
+opt.clipboard = 'unnamedplus'
+opt.ignorecase = true
+opt.wildignorecase = true
+opt.wildignore = { '*.o', '*.obj', '*.hi' }
+opt.hidden = true
+opt.autoread = true
+opt.splitbelow = true
+opt.splitright = true
+opt.timeoutlen = 500
+opt.scrolloff = 5
+opt.sidescroll = 1
+opt.sidescrolloff = 5
+opt.linebreak = true
+opt.expandtab = true
+opt.tabstop = 8
+opt.softtabstop = 4
+opt.shiftwidth = 4
+opt.relativenumber = true
+opt.wildmode = { 'longest:full', 'full' }
+opt.listchars = { tab = '> ', trail = '-', extends = '>', precedes = '<', nbsp = '+', eol = '$' }
+opt.shortmess = 'atToOIc'
+opt.whichwrap = 'b,s,<,>,[,]'
 
-local options_global = {
-    background = 'light',
-    mouse = 'a',
-    termguicolors = true,
-    shortmess = 'atToOIc',
-    completeopt = 'menuone,noselect',
-    smarttab = true,
-    showmode = false,
-    ruler = false,
-    clipboard = 'unnamedplus',
-    ignorecase = true,
-    wildignorecase = true,
-    wildignore = '*.o,*.obj,*.hi',
-    hidden = true,
-    autoread = true,
-    splitbelow = true,
-    splitright = true,
-    timeoutlen = 500,
-    scrolloff = 5,
-    sidescroll = 1,
-    sidescrolloff = 5,
-    linebreak = true,
-    whichwrap = 'b,s,<,>,[,]',
-    listchars = 'tab:> ,trail:-,extends:>,precedes:<,nbsp:+,eol:$',
-    wildmode = 'longest:full,full',
-    title = true,
-}
+g.mapleader = ' '
+g.netrw_sort_options = "i"
+g.netrw_keepdir = 0
+g.netrw_hide = 0
+g.netrw_banner = 0
+g.netrw_browse_split = 4
+g.netrw_liststyle = 3
+g.netrw_sizestyle = "H"
 
-local options_buffer = {
-    expandtab = true,
-    tabstop = 8,
-    softtabstop = 4,
-    shiftwidth = 4,
-}
-
-local options_window = {
-    relativenumber = true
-}
-
-set_options('o', options_global)
-set_options('b', options_buffer)
-set_options('w', options_window)
 
 local function map(mode, lhs, rhs, opts)
     local options = {noremap = true}
@@ -123,25 +115,16 @@ local function map(mode, lhs, rhs, opts)
     vim.api.nvim_set_keymap(mode, lhs, rhs, options)
 end
 
-vim.g.mapleader = ' '
 map('n', '<Leader>bl', ':buffers<CR>')
 --  Actually 'C-/' and not 'C-_'
 map('n', '<C-_>', ':lua ToggleComment("n")<CR>')
 map('v', '<C-_>', ':lua ToggleComment("v")<CR>')
 map('i', '<C-_>', '<Esc>:lua ToggleComment("i")<CR>i')
 
-vim.g.netrw_sort_options = "i"
-vim.g.netrw_keepdir = 0
-vim.g.netrw_hide = 0
-vim.g.netrw_banner = 0
-vim.g.netrw_browse_split = 4
-vim.g.netrw_liststyle = 3
-vim.g.netrw_sizestyle = "H"
-
-require('plugins')
 map('i', '<C-Space>', 'compe#complete()', {silent = true, expr = true})
 map('i', '<CR>', "compe#confirm('<CR>')", {silent = true, expr = true})
 map('i', '<Esc>', "compe#close('<Esc>')", {silent = true, expr = true})
+require('plugins')
 
 cmd 'colorscheme hemisu'
 
@@ -219,4 +202,26 @@ end
 --            \ else |
 --            \ set eventignore-=FileType |
 --            \ endif
+local snap = require'snap'
+
+-- normal mode mapping <Leader><Leader> for searching files in cwd 
+snap.register.map('n', '<Leader><Leader>', snap.create(function ()
+  return {
+    producer = snap.get'consumer.fzf'(snap.get'producer.ripgrep.file'.hidden),
+    select = snap.get'select.file'.select,
+    multiselect = snap.get'select.file'.multiselect,
+    views = {snap.get'preview.file'}
+  }
+end))
+
+-- creates normal mode mapping <Leader>f for grepping files in cwd 
+snap.register.map('n', '<Leader>f', snap.create(function ()
+  return {
+        producer = snap.get'consumer.limit'(10000, snap.get'producer.ripgrep.vimgrep'),
+--     producer = snap.get'producer.ripgrep.vimgrep',
+    select = snap.get'select.vimgrep'.select,
+    multiselect = snap.get'select.vimgrep'.multiselect,
+    views = {snap.get'preview.vimgrep'}
+  }
+end))
 

@@ -16,3 +16,12 @@
 [submodule "links/.zsh/plugins/zsh-autosuggestions"]
 	path = links/.zsh/plugins/zsh-autosuggestions
 	url = https://github.com/zsh-users/zsh-autosuggestions.git
+[submodule "links/.config/xmonad/xmonad-git"]
+	path = links/.config/xmonad/xmonad-git
+	url = https://github.com/xmonad/xmonad.git
+[submodule "links/.config/xmonad/xmonad-contrib-git"]
+	path = links/.config/xmonad/xmonad-contrib-git
+	url = https://github.com/xmonad/xmonad-contrib.git
+[submodule "links/.config/xmobar/xmobar-git"]
+	path = links/.config/xmobar/xmobar-git
+	url = https://github.com/jaor/xmobar.git

@@ -2,21 +2,21 @@ local execute = vim.api.nvim_command
 local fn = vim.fn
 local cmd = vim.cmd
 
-local install_path = fn.stdpath('data') .. '/site/pack/packer/opt/packer.nvim'
+local install_path = fn.stdpath('data') .. '/site/pack/packer/start/packer.nvim'
 
 if fn.empty(fn.glob(install_path)) > 0 then
     fn.system({'git', 'clone', 'https://github.com/wbthomason/packer.nvim', install_path})
     execute 'packadd packer.nvim'
 end
 
-cmd 'packadd packer.nvim'
 cmd 'autocmd BufWritePost plugins.lua execute "luafile %" | PackerCompile'
 
 return require('packer').startup({function(use)
-    use {'wbthomason/packer.nvim', opt = true}
+    use 'wbthomason/packer.nvim'
     use 'noahfrederick/vim-hemisu'
+    use { 'camspiers/snap' }
     use {'junegunn/fzf.vim', requires = {{'junegunn/fzf'}}}
-    use 'vifm/vifm.vim'
+    use {'vifm/vifm.vim', opt=true, cmd={'Vifm'}}
     use {'kabouzeid/nvim-lspinstall', config = function()
 local on_attach = function(client, bufnr)
   local function buf_set_keymap(...) vim.api.nvim_buf_set_keymap(bufnr, ...) end
@@ -244,7 +244,7 @@ setup_servers()
             extensions = {}
         }
     end}
-    use {'hrsh7th/nvim-compe', config = function()
+    use {'hrsh7th/nvim-compe', event = "InsertEnter", config = function()
         require ('compe').setup {
             enabled = true;
             autocomplete = false;
@@ -262,7 +262,7 @@ setup_servers()
             source = {
                 path = true;
                 buffer = true;
-                calc = true;
+                calc = false;
                 nvim_lsp = true;
                 nvim_lua = true;
                 vsnip = false;

@@ -9,10 +9,10 @@ feh --no-fehbg --bg-scale "/home/vasya/.local/share/wallpapers/pexels-leonid-sob
 wifi &
 picom -b
 
-~/.config/xmobar/xmobar &
+xmobar &
 
 trayer --edge top --align right --SetDockType true --SetPartialStrut false --expand true --height 17 --transparent true --alpha 0 --tint 0xfffffa --widthtype request --monitor 0 &
 
 deadd-notification-center &
 
-exec xmonad
+exec ~/.local/share/xmonad/xmonad-x86_64-linux
