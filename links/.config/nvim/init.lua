@@ -62,7 +62,7 @@ local autocmds = {
         {"FileType", "vim,vifm", "let b:comment_leader = '\"'"};
         {"FileType", "xdefaults", "let b:comment_leader = '!'"};
         {"FileType", "dosini", "let b:comment_leader = ';'"};
-        {"FileType", "lua,haskell", "let b:comment_leader = '--'"};
+        {"FileType", "lua,haskell,cabalconfig", "let b:comment_leader = '--'"};
     };
 }
 

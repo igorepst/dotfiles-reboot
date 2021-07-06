@@ -173,15 +173,10 @@ fileviewer *.avi,*.mp4,*.wmv,*.dat,*.3gp,*.ogv,*.mkv,*.mpg,*.mpeg,*.vob,
         \ %pc
         \ vifmimg clear
 
-fileviewer *.bmp,*.jpg,*.jpeg,*.png,*.xpm
-        \ vifmimg draw %px %py %pw %ph %c
+fileviewer *.bmp,*.jpg,*.jpeg,*.png,*.xpm,*.gif
+        \ kitty +kitten icat --place %pwx%ph@%pxx%py  --silent %c
         \ %pc
-        \ vifmimg clear
-
-fileviewer *.gif
-        \ vifmimg gifpreview %px %py %pw %ph %c
-        \ %pc
-        \ vifmimg clear
+        \ kitty +kitten icat --clear --silent %pd
 
 fileviewer *.ico
         \ vifmimg magickpreview %px %py %pw %ph %c
