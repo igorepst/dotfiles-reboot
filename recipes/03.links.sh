@@ -38,6 +38,7 @@ function doWork(){
     link ".config/rofi"
     link ".config/nvim"
     link ".config/kitty"
+    link ".config/picom"
     link ".local/share/navi"
     link ".gitconfig"
     link ".gitignore-global"
