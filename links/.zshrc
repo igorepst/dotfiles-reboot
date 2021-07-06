@@ -17,7 +17,6 @@ source ~/.zsh/helpers/vifm.zsh
 source ~/.zsh/helpers/functions.zsh 
 source ~/.zsh/helpers/title.zsh 
 source ~/.zsh/helpers/formarks.zsh 
-source ~/.zsh/helpers/terminal.zsh 
 source ~/.zsh/helpers/command_not_found.zsh 
 source ~/.zsh/helpers/lnav.zsh 
 source ~/.zsh/helpers/mvn.zsh 

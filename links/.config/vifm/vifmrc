@@ -74,7 +74,7 @@ command! archive apack %a %f &>/dev/null &
 
 command! previewGitLog :set previewprg='git -c color.ui=always log %c' | view!
 command! previewGitStatus :set previewprg='git -c color.ui=always status %d' | view!
-command! previewGitDiff :set previewprg='git -c color.ui=always diff %d' | view!
+command! previewGitDiff :set previewprg='git -c color.ui=always difftool %d' | view!
 command! previewMediainfo :set previewprg='mediainfo %c' | view!
 command! previewDefault :set previewprg='' | view!
 command! fzfPreviewSelector :let $FCMD = '~/bin/kitty_split_ret "printf \"%%s\n%%s\n%%s\n%%s\n%%s\" \"Git log\" \"Git diff\" \"Git status\" Mediainfo Default | fzf-tmux --no-preview 2>/dev/tty" "%d"'
@@ -195,7 +195,7 @@ mark b ~/bin/
 mark h ~/
 
 command! df df -h %m 2> /dev/null
-command! diff $EDITOR -d %f %F
+command! diff kitty +kitten diff %f %F
 command! zip zip -r %f.zip %f
 command! run !! ./%f
 command! make !!make %a
@@ -476,7 +476,7 @@ nmap ; :
 
 
 command link ln -s %d/%f %D
-command! cmpinternal compare-cmd %a %S
+command! cmpinternal kitty +kitten diff %a %S
 command! cmp : if expand('%%c') == expand('%%f')
               \ |     echo expand('Comparing %%"c and %%"C:t ...')
               \ |     cmpinternal %c %C

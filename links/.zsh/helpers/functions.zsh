@@ -67,12 +67,11 @@ function updateDots(){
     IG_GH_REL_UPDATE=1
     source ~/.zsh/helpers/get_gh_release.zsh
     get_gh_release --repo knqyf263/pet --arch linux_amd64.tar.gz --toPath pet --toCompletionPath misc/completions/zsh/_pet
-    get_gh_release --repo dandavison/delta --arch x86_64-unknown-linux-gnu.tar.gz --toPath delta
     get_gh_release --repo denisidoro/navi --arch x86_64-unknown-linux-musl.tar.gz --toPath navi
     get_gh_release --repo tstack/lnav --arch linux-64bit.zip --toPath lnav
-    get_gh_release --repo neovim/neovim --arch linux64.tar.gz --toPath bin/nvim --tag nightly
     get_gh_release --repo koalaman/shellcheck --arch linux.x86_64.tar.xz --toPath shellcheck
     get_gh_release --repo mvdan/sh --arch linux_amd64 --toPath shfmt --unarchive 0 --rn shfmt
+    get_gh_release --repo neovim/neovim --arch linux64.tar.gz --toPath bin/nvim --tag nightly
     rm -f ~/.zsh/volatile/zcompdump*
     exec zsh
 }

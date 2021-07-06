@@ -5,18 +5,6 @@
 [core]
     excludesfile = ~/.gitignore-global
     autocrlf = input
-    pager = delta
-[delta]
-    plus-style = green bold ul "#eeffee"
-    minus-style = red bold ul "#ffeeee"
-    syntax-theme = igAnsi
-    #side-by-side = true
-    line-numbers = true
-    features = decorations
-[delta "decorations"]
-    hunk-header-style = omit
-[interactive]
-    diffFilter = delta --color-only
 [pull]
     rebase = false
 [help]
@@ -29,3 +17,13 @@
     gold = log --graph --pretty=mine --abbrev-commit --date=relative -n 10
 [pretty]
   mine = %C(red)%h%Creset - %s %C(green)(%cr) %C(bold blue)<%an>%Creset
+[diff]
+    tool = kitty
+    guitool = kitty.gui
+[difftool]
+    prompt = false
+    trustExitCode = true
+[difftool "kitty"]
+    cmd = kitty +kitten diff $LOCAL $REMOTE
+[difftool "kitty.gui"]
+    cmd = kitty kitty +kitten diff $LOCAL $REMOTE
