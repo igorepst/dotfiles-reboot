@@ -35,12 +35,7 @@ if !has('win')
     set slowfs=curlftpfs
 endif
 
-if $TMUX != ''
-    set notitle
-    screen!
-else
-    set title
-endif
+set title
 
 set vifminfo=dhistory,savedirs,chistory,state,tui,shistory,tabs,
     \phistory,fhistory,dirstack,registers,bookmarks,bmarks
@@ -58,26 +53,16 @@ else
     colorscheme PaperColor
 endif
 
-" Tmux: use 'system' to see the UI and open a split; otherwise - use 'term'
-" as the command is interactive
-command! fzf :let $FCMD = 'fd --hidden | fzf-tmux -d 30%% --height 10 --preview "[ -d {} ] && (ls -Alh --color=always {}/ | head -10) || bat --color=always --style=plain --line-range=:10 {}" 2>/dev/tty'
-    \| if $TMUX != '' 
-    \|    let $FZF_RES = system($FCMD)
-    \| else
-    \|    let $FZF_RES = term($FCMD)
-    \| endif
+command! fzf :let $FCMD = '~/bin/kitty_split_ret "fd --hidden | fzf-tmux --preview \"[ -d {} ] && (ls -Alh --color=always {}/ | head -10) || bat --color=always --style=plain --line-range=:10 {}\" 2>/dev/tty" "%d"'
+    \| let $FZF_RES = system($FCMD)
     \| if $FZF_RES != ''
     \|    goto $FZF_RES
     \| endif
 nnoremap // :fzf<cr>
 
 command! rg :let $RGCMD = 'rg --files-with-matches --ignore-case --hidden'
-    \| let $FCMD = 'FZF_DEFAULT_COMMAND="rg --files" fzf-tmux -d 30%% --height 10 --exact --ansi --phony --bind "change:reload:$RGCMD {q} || true" --preview "rg -i --pretty --context 2 {q} {}" 2>/dev/tty'
-    \| if $TMUX != '' 
-    \|    let $FZF_RES = system($FCMD)
-    \| else
-    \|    let $FZF_RES = term($FCMD)
-    \| endif
+    \| let $FCMD = 'FZF_DEFAULT_COMMAND="rg --files" ~/bin/kitty_split_ret "fzf-tmux --exact --ansi --phony --bind \"change:reload:$RGCMD {q} || true\" --preview \"rg -i --pretty --context 2 {q} {}\" 2>/dev/tty" "%d"'
+    \| let $FZF_RES = system($FCMD)
     \| if $FZF_RES != ''
     \|    goto $FZF_RES
     \| endif
@@ -92,12 +77,8 @@ command! previewGitStatus :set previewprg='git -c color.ui=always status %d' | v
 command! previewGitDiff :set previewprg='git -c color.ui=always diff %d' | view!
 command! previewMediainfo :set previewprg='mediainfo %c' | view!
 command! previewDefault :set previewprg='' | view!
-command! fzfPreviewSelector :let $FCMD = 'echo "Git log\nGit diff\nGit status\nMediainfo\nDefault" | fzf-tmux -d 30%% --height 10 --no-preview 2>/dev/tty'
-    \| if $TMUX != '' 
-    \|    let $FZF_RES = system($FCMD)
-    \| else
-    \|    let $FZF_RES = term($FCMD)
-    \| endif
+command! fzfPreviewSelector :let $FCMD = '~/bin/kitty_split_ret "printf \"%%s\n%%s\n%%s\n%%s\n%%s\" \"Git log\" \"Git diff\" \"Git status\" Mediainfo Default | fzf-tmux --no-preview 2>/dev/tty" "%d"'
+    \| let $FZF_RES = system($FCMD)
     \| if $FZF_RES == "Git log"
     \|    :previewGitLog
     \| elseif $FZF_RES == "Git status"

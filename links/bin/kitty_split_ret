@@ -1,0 +1,16 @@
+#!/bin/sh
+
+[ -z "${1}" ] && exit 1
+[ -z "${2}" ] && exit 1
+
+dir=$(mktemp -d) || exit 1
+fifo=${dir}/fifo
+mkfifo "${fifo}" || { rmdir "${dir}"; exit 1; }
+
+trap "rm -rf ${dir}" EXIT
+
+kitty @launch --no-response --location hsplit --cwd "${2}" sh -c "${1} >${fifo}"
+
+if read line <${fifo}; then
+    echo "${line}"
+fi
