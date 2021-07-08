@@ -8,19 +8,6 @@ typeset -U path PATH cdpath CDPATH fpath FPATH manpath MANPATH
 source ~/.zsh/helpers/p10k.zsh
 source ~/.zsh/plugins/powerlevel10k/powerlevel10k.zsh-theme
 
-source ~/.zsh/helpers/aliases.zsh
-source ~/.zsh/helpers/fzf.zsh
-source ~/.zsh/helpers/pet.zsh 
-source ~/.zsh/helpers/navi.zsh 
-source ~/.zsh/helpers/ripgrep.zsh 
-source ~/.zsh/helpers/vifm.zsh 
-source ~/.zsh/helpers/functions.zsh 
-source ~/.zsh/helpers/title.zsh 
-source ~/.zsh/helpers/formarks.zsh 
-source ~/.zsh/helpers/command_not_found.zsh 
-source ~/.zsh/helpers/lnav.zsh 
-source ~/.zsh/helpers/mvn.zsh 
-
 [ -d ~/.work/bin ] && path+=(~/.work/bin)
 [ -f ~/.work/aliases.zsh ] && source ~/.work/aliases.zsh
 
@@ -100,7 +87,7 @@ setopt long_list_jobs notify no_beep complete_in_word no_hup no_flow_control
     # https://gist.github.com/ctechols/ca1035271ad134841284#gistcomment-2894219
     # Compile the completion dump to increase startup speed, if dump is newer or doesn't exist,
     # in the background as this doesn't affect the current session.
-    if [[ -f "$zcd"(#qN.m+1) ]]; then
+    if [[ -f "$zcd"(N.m+1) ]]; then
         compinit -i -d "$zcd"
         { rm -f "$zcdc" && zcompile "$zcd" } &!
         else
@@ -108,6 +95,20 @@ setopt long_list_jobs notify no_beep complete_in_word no_hup no_flow_control
             { [[ ! -f "$zcdc" || "$zcd" -nt "$zcdc" ]] && rm -f "$zcdc" && zcompile "$zcd" } &!
     fi
 }
+
+source ~/.zsh/helpers/aliases.zsh
+source ~/.zsh/helpers/fzf.zsh
+source ~/.zsh/helpers/pet.zsh 
+source ~/.zsh/helpers/navi.zsh 
+source ~/.zsh/helpers/ripgrep.zsh 
+source ~/.zsh/helpers/vifm.zsh 
+source ~/.zsh/helpers/functions.zsh 
+source ~/.zsh/helpers/title.zsh 
+source ~/.zsh/helpers/formarks.zsh 
+source ~/.zsh/helpers/command_not_found.zsh 
+source ~/.zsh/helpers/lnav.zsh 
+source ~/.zsh/helpers/mvn.zsh 
+
 
 export LESS_TERMCAP_mb=$'\e[1;31m'     # begin bold
 export LESS_TERMCAP_md=$'\e[1;33m'     # begin blink
@@ -133,9 +134,9 @@ zstyle ':completion:*' group-name ''
 # complete manual by their section
 zstyle ':completion:*:manuals'    separate-sections true
 # host completion
-  [[ -r ~/.ssh/config ]] && _ssh_config_hosts=(${${(s: :)${(ps:\t:)${${(@M)${(f)"$(<$HOME/.ssh/config)"}:#Host *}#Host }}}:#*[*?]*}) || _ssh_config_hosts=()
-  [[ -r ~/.ssh/known_hosts ]] && _ssh_hosts=(${${${${(f)"$(<$HOME/.ssh/known_hosts)"}:#[\|]*}%%\ *}%%,*}) || _ssh_hosts=()
-  [[ -r /etc/hosts ]] && : ${(A)_etc_hosts:=${(s: :)${(ps:\t:)${${(f)~~"$(</etc/hosts)"}%%\#*}##[:blank:]#[^[:blank:]]#}}} || _etc_hosts=()
+[[ -r ~/.ssh/config ]] && _ssh_config_hosts=(${${(s: :)${(ps:\t:)${${(@M)${(f)"$(<$HOME/.ssh/config)"}:#Host *}#Host }}}:#*[*?]*}) || _ssh_config_hosts=()
+[[ -r ~/.ssh/known_hosts ]] && _ssh_hosts=(${${${${(f)"$(<$HOME/.ssh/known_hosts)"}:#[\|]*}%%\ *}%%,*}) || _ssh_hosts=()
+[[ -r /etc/hosts ]] && : ${(A)_etc_hosts:=${(s: :)${(ps:\t:)${${(f)~~"$(</etc/hosts)"}%%\#*}##[:blank:]#[^[:blank:]]#}}} || _etc_hosts=()
 hosts=(
     $(cat /etc/hostname)
     "$_ssh_config_hosts[@]"
@@ -153,7 +154,7 @@ autoload -U url-quote-magic
 zle -N self-insert url-quote-magic
 remote_commands=(scp rsync)
 zstyle -e :urlglobber url-other-schema \
-  '[[ $remote_commands[(i)$words[1]] -le ${#remote_commands} ]] && reply=("*") || reply=(http https ftp)'
+    '[[ $remote_commands[(i)$words[1]] -le ${#remote_commands} ]] && reply=("*") || reply=(http https ftp)'
 
 ZSH_AUTOSUGGEST_HIGHLIGHT_STYLE="fg=196"
 ZSH_AUTOSUGGEST_USE_ASYNC=1

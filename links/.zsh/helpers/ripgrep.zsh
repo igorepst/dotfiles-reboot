@@ -1,17 +1,9 @@
 alias rg='rg --ignore-file $HOME/.config/ripgrep/ignore'
 
 function ri() {
-    local COLORVAL
-    if [ -t 1 ]; then
-        # Output is tty
-        COLORVAL="always"
-    else
-        COLORVAL="never"
-    fi
-    local SVAL="$1"
-    shift
-    rg -e ${SVAL} --color=${COLORVAL} --smart-case --follow --heading --hidden --line-number --sort-files $@
+    kitty +kitten hyperlinked_grep --ignore-file $HOME/.config/ripgrep/ignore --smart-case --follow --hidden --sort-files "$@"
 }
+compdef _rg ri
 
 function rf() {
     local sel rg_pref initq
