@@ -100,8 +100,8 @@ nnoremap <c-\> :bmarks<cr>
 nnoremap <f3> :set previewprg='' | view<cr>
 vnoremap <f3> :set previewprg='' | view<cr>gv
 nnoremap <f4> :!kitty @ launch --type=tab --no-response --location after --cwd %d $EDITOR %c<cr>
-nnoremap <f5> :copy<cr>
-nnoremap <f6> :move<cr>
+nnoremap <f5> :copy!<cr>
+nnoremap <f6> :move!<cr>
 nnoremap <f7> :mkdir<space>
 nnoremap <f8> :delete<cr>
 vnoremap <f8> :delete<cr>
