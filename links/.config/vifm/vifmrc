@@ -99,7 +99,7 @@ nnoremap <c-\> :bmarks<cr>
 " previewDefault forces view mode, this, however, toggles it
 nnoremap <f3> :set previewprg='' | view<cr>
 vnoremap <f3> :set previewprg='' | view<cr>gv
-nnoremap <f4> :!kitty @ launch --type=tab --no-response --location after --cwd %d $EDITOR %c<cr>
+nnoremap <f4> :!kitty @launch --type=tab --no-response --location after --cwd %d $EDITOR %c<cr>
 nnoremap <f5> :copy!<cr>
 nnoremap <f6> :move!<cr>
 nnoremap <f7> :mkdir<space>
@@ -397,7 +397,7 @@ command! zzzInternalXC git log --name-only --format=%%n -- %d| CDUP=`git rev-par
 " Sample mappings
 
 " Start shell in current directory
-nnoremap s :!kitty @ launch --type=tab --cwd %d<cr>
+nnoremap s :!kitty @launch --no-response --type=tab --cwd %d<cr>
 
 " Display sorting dialog
 nnoremap S :sort<cr>
