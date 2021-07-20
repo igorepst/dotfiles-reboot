@@ -78,6 +78,7 @@ opt.showmode = false
 opt.ruler = false
 opt.clipboard = 'unnamedplus'
 opt.ignorecase = true
+opt.smartcase = true
 opt.wildignorecase = true
 opt.wildignore = { '*.o', '*.obj', '*.hi' }
 opt.hidden = true
@@ -85,6 +86,7 @@ opt.autoread = true
 opt.splitbelow = true
 opt.splitright = true
 opt.timeoutlen = 500
+opt.updatetime = 250
 opt.scrolloff = 5
 opt.sidescroll = 1
 opt.sidescrolloff = 5
@@ -98,8 +100,10 @@ opt.wildmode = { 'longest:full', 'full' }
 opt.listchars = { tab = '> ', trail = '-', extends = '>', precedes = '<', nbsp = '+', eol = '$' }
 opt.shortmess = 'atToOIc'
 opt.whichwrap = 'b,s,<,>,[,]'
+opt.inccommand = 'nosplit'
 
 g.mapleader = ' '
+g.maplocalleader = ' '
 g.netrw_sort_options = "i"
 g.netrw_keepdir = 0
 g.netrw_hide = 0
