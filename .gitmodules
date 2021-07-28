@@ -25,3 +25,6 @@
 [submodule "links/.config/xmobar/xmobar-git"]
 	path = links/.config/xmobar/xmobar-git
 	url = https://github.com/jaor/xmobar.git
+[submodule "links/.config/kitty/kitty_grab"]
+	path = links/.config/kitty/kitty_grab
+	url = https://github.com/yurikhan/kitty_grab
