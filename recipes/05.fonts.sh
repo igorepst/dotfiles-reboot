@@ -5,19 +5,24 @@ function doWork(){
     echo
     local FONTS_DIR=${HOME}/.local/share/fonts
     mkdir -p "${FONTS_DIR}"
-    declare -A FARR=( ["Regular"]="DejaVu Sans Mono Nerd Font Complete Mono"
-    ["Bold"]="DejaVu Sans Mono Bold Nerd Font Complete Mono" 
-    ["Italic"]="DejaVu Sans Mono Oblique Nerd Font Complete Mono"
-    ["Bold-Italic"]="DejaVu Sans Mono Bold Oblique Nerd Font Complete Mono" )
+    declare -A FARR=( 
+    ["DejaVu Sans Mono Nerd Font Complete Mono"]="https://github.com/ryanoasis/nerd-fonts/raw/master/patched-fonts/DejaVuSansMono/Regular/complete/DejaVu%20Sans%20Mono%20Nerd%20Font%20Complete%20Mono.ttf"
+    ["DejaVu Sans Mono Bold Nerd Font Complete Mono"]="https://github.com/ryanoasis/nerd-fonts/raw/master/patched-fonts/DejaVuSansMono/Bold/complete/DejaVu%20Sans%20Mono%20Bold%20Nerd%20Font%20Complete%20Mono.ttf"
+    ["DejaVu Sans Mono Oblique Nerd Font Complete Mono"]="https://github.com/ryanoasis/nerd-fonts/raw/master/patched-fonts/DejaVuSansMono/Italic/complete/DejaVu%20Sans%20Mono%20Oblique%20Nerd%20Font%20Complete%20Mono.ttf"
+    ["DejaVu Sans Mono Bold Oblique Nerd Font Complete Mono"]="https://github.com/ryanoasis/nerd-fonts/raw/master/patched-fonts/DejaVuSansMono/Bold-Italic/complete/DejaVu%20Sans%20Mono%20Bold%20Oblique%20Nerd%20Font%20Complete%20Mono.ttf"
+    ["Ubuntu Nerd Font Complete"]="https://github.com/ryanoasis/nerd-fonts/raw/master/patched-fonts/Ubuntu/Regular/complete/Ubuntu%20Nerd%20Font%20Complete.ttf"
+    ["VSCode Codicons"]="https://github.com/microsoft/vscode-codicons/raw/main/dist/codicon.ttf"
+    ["Nonicons"]="https://github.com/yamatsum/nonicons/raw/master/dist/nonicons.ttf"
+    ["Symbola"]="https://github.com/gearit/ttf-symbola/raw/master/Symbola.ttf"
+)
 
     local CONV_NEEDED=0
-    for FTYPE in "${!FARR[@]}"; do
-        local FNAME=${FARR[$FTYPE]}
+    for FNAME in "${!FARR[@]}"; do
+        local URL=${FARR[$FNAME]}
         if [ ! -f "${FONTS_DIR}/${FNAME}.ttf" ] || [ -n "${DOT_UPDATE_FONTS}" ]; then
             CONV_NEEDED=1
             echo "${GREEN}Installing ${FNAME}.ttf"${RESET}
-            curl -o "${FONTS_DIR}/${FNAME}.ttf" -L -O \
-                https://github.com/ryanoasis/nerd-fonts/raw/master/patched-fonts/DejaVuSansMono/${FTYPE}/complete/${FNAME// /%20}.ttf
+            curl -o "${FONTS_DIR}/${FNAME}.ttf" -L -O "$URL"
         else
             echo "${GREEN}${FNAME}.ttf is installed${RESET}"
             [ ! -f "${FONTS_DIR}/${FNAME}.otf" ] && CONV_NEEDED=1
