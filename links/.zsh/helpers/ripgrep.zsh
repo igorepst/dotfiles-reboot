@@ -5,6 +5,11 @@ function ri() {
 }
 compdef _rg ri
 
+function rif() {
+    ri --files-with-matches "$@"
+}
+compdef _rg rif
+
 function rf() {
     local sel rg_pref initq
     [ -n "$1" ] && initq="$1" || initq=''
