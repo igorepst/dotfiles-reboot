@@ -5,29 +5,29 @@ function doWork(){
     echo
     local THEME_DIR=~/.theme
     mkdir -p "${THEME_DIR}"
-    local CUR_COLOR=paperColor.Xresources
+    local CUR_COLOR=hemisu.Xresources
     cat >"${THEME_DIR}/${CUR_COLOR}" <<"EOF"
 ! vim: filetype=xdefaults :
 
-#define Ansi_0_Color     #1c1c1c
-#define Ansi_8_Color     #1c1c1c
-#define Ansi_1_Color     #af0000
-#define Ansi_9_Color     #af0000
-#define Ansi_2_Color     #008700
-#define Ansi_10_Color    #008700
-#define Ansi_3_Color     #d75f00
-#define Ansi_11_Color    #d75f00
-#define Ansi_4_Color     #005faf
-#define Ansi_12_Color    #005faf
-#define Ansi_5_Color     #d70087
-#define Ansi_13_Color    #d70087
-#define Ansi_6_Color     #0087af
-#define Ansi_14_Color    #0087af
-#define Ansi_7_Color     #e4e4e4
-#define Ansi_15_Color    #e4e4e4
-#define Foreground_Color #444444
-#define Background_Color #eeeeee
-#define Cursor_Color     #005f87
+#define Ansi_0_Color     #777777
+#define Ansi_8_Color     #999999
+#define Ansi_1_Color     #ff0055
+#define Ansi_9_Color     #d65e76
+#define Ansi_2_Color     #82b414
+#define Ansi_10_Color    #9dc700
+#define Ansi_3_Color     #503d15
+#define Ansi_11_Color    #957656
+#define Ansi_4_Color     #00729b
+#define Ansi_12_Color    #9eb3cd
+#define Ansi_5_Color     #5c345f
+#define Ansi_13_Color    #a284a5
+#define Ansi_6_Color     #538192
+#define Ansi_14_Color    #85b2ab
+#define Ansi_7_Color     #999999
+#define Ansi_15_Color    #bbbbbb
+#define Foreground_Color #282828
+#define Background_Color #fffffa
+#define Cursor_Color     #fc971e
 xterm*color0      : Ansi_0_Color/*  normal black   */
 xterm*color1      : Ansi_1_Color/*  normal red     */
 xterm*color2      : Ansi_2_Color/*  normal green   */
