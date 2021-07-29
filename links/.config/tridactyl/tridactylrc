@@ -1,0 +1,10 @@
+" vim: filetype=vim
+
+" Ctrl-F should use the browser's native 'find' functionality.
+unbind <C-f>
+
+" But also support Tridactyl search too.
+bind / fillcmdline find
+bind ? fillcmdline find -?
+bind n findnext 1
+bind N findnext -1
