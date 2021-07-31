@@ -5,280 +5,334 @@ _M.colorscheme = function()
 end
 
 _M.statusline = function()
-    local present, feline = pcall(require, 'feline')
-    if not present then
-        return
-    end
-    local lsp = require('feline.providers.lsp')
-    local vi_mode_utils = require('feline.providers.vi_mode')
+--     local present, feline = pcall(require, 'feline')
+--     if not present then
+--         return
+--     end
 
-    local b = vim.b
-    local fn = vim.fn
+    vim.cmd([[
+    augroup felineReset
+    autocmd!
+    autocmd User PackerCompileDone lua require('feline').reset_highlights()
+    autocmd OptionSet background PackerCompile
+    augroup END
+    ]])
+
+    local hemisu_c = require('lush_theme.hemisu_colors')
+    local colors = {
+        bg = hemisu_c.bg.hex,
+        fg = hemisu_c.norm.hex,
+        yellow = '#503d15',
+        cyan = '#538192',
+        darkblue = hemisu_c.faintBlue.hex,
+        green = hemisu_c.normGreen.hex,
+        orange = '#d19a66',
+        violet = '#b294bb',
+        magenta = '#ff80ff',
+        blue = hemisu_c.normBlue.hex;
+        red = hemisu_c.normRed.hex;
+    }
+
+    local vi_mode_colors = {
+        NORMAL = colors.green,
+        INSERT = colors.blue,
+        VISUAL = colors.violet,
+        OP = colors.green,
+        BLOCK = colors.blue,
+        REPLACE = colors.red,
+        ['V-REPLACE'] = colors.red,
+        ENTER = colors.cyan,
+        MORE = colors.cyan,
+        SELECT = colors.orange,
+        COMMAND = colors.magenta,
+        SHELL = colors.green,
+        TERM = colors.blue,
+        NONE = colors.yellow
+    }
+
+    local vi_mode_text = {
+        n = "NORMAL",
+        i = "INSERT",
+        v = "VISUAL",
+        [''] = "V-BLOCK",
+        V = "V-LINE",
+        c = "COMMAND",
+        no = "UNKNOWN",
+        s = "UNKNOWN",
+        S = "UNKNOWN",
+        ic = "UNKNOWN",
+        R = "REPLACE",
+        Rv = "UNKNOWN",
+        cv = "UNKWON",
+        ce = "UNKNOWN",
+        r = "REPLACE",
+        rm = "UNKNOWN",
+        t = "INSERT"
+    }
+
+    local function file_osinfo()
+        local os = vim.bo.fileformat:upper()
+        local icon
+        if os == 'UNIX' then
+            icon = ' '
+        elseif os == 'MAC' then
+            icon = ' '
+        else
+            icon = ' '
+        end
+        return icon .. os
+    end
+
+    local function get_filename(component, modifiers)
+        -- local filename = vim.fn.expand('%:t')
+        local modifiers_str = table.concat(modifiers, ":")
+        local filename = vim.fn.expand("%" .. modifiers_str)
+        local extension = vim.fn.expand('%:e')
+        local modified_str
+
+        local icon = component.icon or
+            require'nvim-web-devicons'.get_icon(filename, extension, { default = true })
+
+        if filename == '' then filename = 'unnamed' end
+
+        if vim.bo.modified then
+            local modified_icon = component.file_modified_icon or '●'
+            modified_str = modified_icon .. ' '
+        else
+            modified_str = ''
+        end
+
+        return icon .. ' ' .. filename .. ' ' .. modified_str
+    end
+
+    local lsp = require 'feline.providers.lsp'
+    local vi_mode_utils = require 'feline.providers.vi_mode'
+    local cursor = require 'feline.providers.cursor'
+
+    -- LuaFormatter off
+
+    local comps = {
+        vi_mode = {
+            left = {
+                provider = function()
+                    local current_text = ' '..vi_mode_text[vim.fn.mode()]..' '
+                    return current_text
+                end,
+                hl = function()
+                    local val = {
+                        name = vi_mode_utils.get_mode_highlight_name(),
+                        fg = colors.bg,
+                        bg = vi_mode_utils.get_mode_color(),
+                        style = 'bold'
+                    }
+                    return val
+                end
+                -- right_sep = ' '
+            },
+            right = {
+                provider = '▊',
+                hl = function()
+                    local val = {
+                        name = vi_mode_utils.get_mode_highlight_name(),
+                        fg = vi_mode_utils.get_mode_color()
+                    }
+                    return val
+                end,
+                left_sep = ' '
+            }
+        },
+        file = {
+            info = {
+                -- provider = 'file_info',
+                provider = require("file_name").get_current_ufn,
+                hl = {
+                    fg = colors.blue,
+                    style = 'bold'
+                },
+                left_sep = ' '
+            },
+            encoding = {
+                provider = 'file_encoding',
+                left_sep = ' ',
+                hl = {
+                    fg = colors.violet,
+                    style = 'bold'
+                }
+            },
+            type = {
+                provider = 'file_type'
+            },
+            os = {
+                provider = file_osinfo,
+                left_sep = ' ',
+                hl = {
+                    fg = colors.violet,
+                    style = 'bold'
+                }
+            }
+        },
+        line_percentage = {
+            provider = 'line_percentage',
+            left_sep = ' ',
+            hl = {
+                style = 'bold'
+            }
+        },
+        position = {
+            provider = function()
+                pos = cursor.position()
+                return ' '..pos..' '
+            end,
+            left_sep = ' ',
+            hl = function()
+                local val = {
+                    name = vi_mode_utils.get_mode_highlight_name(),
+                    fg = colors.bg,
+                    bg = vi_mode_utils.get_mode_color(),
+                    style = 'bold'
+                }
+                return val
+            end
+        },
+        diagnos = {
+            err = {
+                provider = 'diagnostic_errors',
+                enabled = function()
+                    return lsp.diagnostics_exist('Error')
+                end,
+                hl = {
+                    fg = colors.red
+                }
+            },
+            warn = {
+                provider = 'diagnostic_warnings',
+                enabled = function()
+                    return lsp.diagnostics_exist('Warning')
+                end,
+                hl = {
+                    fg = colors.yellow
+                }
+            },
+            hint = {
+                provider = 'diagnostic_hints',
+                enabled = function()
+                    return lsp.diagnostics_exist('Hint')
+                end,
+                hl = {
+                    fg = colors.cyan
+                }
+            },
+            info = {
+                provider = 'diagnostic_info',
+                enabled = function()
+                    return lsp.diagnostics_exist('Information')
+                end,
+                hl = {
+                    fg = colors.blue
+                }
+            },
+        },
+        lsp = {
+            name = {
+                provider = 'lsp_client_names',
+                left_sep = ' ',
+                icon = ' ',
+                hl = {
+                    fg = colors.yellow
+                }
+            }
+        },
+        git = {
+            branch = {
+                provider = 'git_branch',
+                icon = ' ',
+                left_sep = ' ',
+                hl = {
+                    fg = colors.violet,
+                    style = 'bold'
+                },
+            },
+            add = {
+                provider = 'git_diff_added',
+                hl = {
+                    fg = colors.green
+                }
+            },
+            change = {
+                provider = 'git_diff_changed',
+                hl = {
+                    fg = colors.orange
+                }
+            },
+            remove = {
+                provider = 'git_diff_removed',
+                hl = {
+                    fg = colors.red
+                }
+            }
+        }
+    }
 
     local properties = {
         force_inactive = {
-            filetypes = {},
-            buftypes = {},
+            filetypes = {
+                'NvimTree',
+                'dbui',
+                'packer',
+                'startify',
+                'fugitive',
+                'fugitiveblame'
+            },
+            buftypes = {'terminal'},
             bufnames = {}
         }
     }
 
     local components = {
         left = {
-            active = {},
-            inactive = {}
+            active = {
+                comps.vi_mode.left,
+                comps.file.info,
+                comps.lsp.name,
+                comps.diagnos.err,
+                comps.diagnos.warn,
+                comps.diagnos.hint,
+                comps.diagnos.info
+            },
+            inactive = {
+                comps.file.info
+            }
         },
         mid = {
             active = {},
             inactive = {}
         },
         right = {
-            active = {},
-            inactive = {}
-        }
-    }
-
-    properties.force_inactive.filetypes = {
-        'NvimTree',
-        'dbui',
-        'packer',
-        'startify',
-        'fugitive',
-        'fugitiveblame'
-    }
-
-    properties.force_inactive.buftypes = {
-        'terminal'
-    }
-
-    components.left.active[1] = {
-        provider = 'vi_mode',
-        hl = function()
-            local val = {}
-
-            val.name = vi_mode_utils.get_mode_highlight_name()
-            val.bg = vi_mode_utils.get_mode_color()
-            val.style = 'bold'
-
-            return val
-        end,
-        right_sep = ' '
-    }
-
-    components.left.active[2] = {
-        provider = 'file_info',
-        hl = {
-            fg = 'white',
-            bg = 'oceanblue',
-            style = 'bold'
-        },
-        left_sep = {
-            ' ', 'slant_left_2',
-            {str = ' ', hl = {bg = 'oceanblue', fg = 'NONE'}}
-        },
-        right_sep = {'slant_right_2', ' '}
-    }
-
-    components.left.active[3] = {
-        provider = 'file_size',
-        enabled = function() return fn.getfsize(fn.expand('%:p')) > 0 end,
-        right_sep = {
-            ' ',
-            {
-                str = 'slant_left_2_thin',
-                hl = {
-                    fg = 'fg',
-                    bg = 'bg'
-                }
+            active = {
+                comps.git.add,
+                comps.git.change,
+                comps.git.remove,
+                comps.file.os,
+                comps.git.branch,
+                comps.line_percentage,
+                -- comps.vi_mode.right
+                comps.position
             },
-        }
-    }
-
-    components.left.active[4] = {
-        provider = 'position',
-        left_sep = ' ',
-        right_sep = {
-            ' ',
-            {
-                str = 'slant_right_2_thin',
-                hl = {
-                    fg = 'fg',
-                    bg = 'bg'
-                }
+            inactive = {
+                comps.file.os
             }
         }
     }
 
-    components.left.active[5] = {
-        provider = 'diagnostic_errors',
-        enabled = function() return lsp.diagnostics_exist('Error') end,
-        hl = { fg = 'red' }
-    }
+    -- LuaFormatter on
 
-    components.left.active[6] = {
-        provider = 'diagnostic_warnings',
-        enabled = function() return lsp.diagnostics_exist('Warning') end,
-        hl = { fg = 'yellow' }
-    }
-
-    components.left.active[7] = {
-        provider = 'diagnostic_hints',
-        enabled = function() return lsp.diagnostics_exist('Hint') end,
-        hl = { fg = 'cyan' }
-    }
-
-    components.left.active[8] = {
-        provider = 'diagnostic_info',
-        enabled = function() return lsp.diagnostics_exist('Information') end,
-        hl = { fg = 'skyblue' }
-    }
-
-    components.right.active[1] = {
-        provider = 'git_branch',
-        hl = {
-            fg = 'white',
-            bg = 'black',
-            style = 'bold'
-        },
-        right_sep = function()
-            local val = {hl = {fg = 'NONE', bg = 'black'}}
-            if b.gitsigns_status_dict then val.str = ' ' else val.str = '' end
-
-            return val
-        end
-    }
-
-    components.right.active[2] = {
-        provider = 'git_diff_added',
-        hl = {
-            fg = 'green',
-            bg = 'black'
-        }
-    }
-
-    components.right.active[3] = {
-        provider = 'git_diff_changed',
-        hl = {
-            fg = 'orange',
-            bg = 'black'
-        }
-    }
-
-    components.right.active[4] = {
-        provider = 'git_diff_removed',
-        hl = {
-            fg = 'red',
-            bg = 'black'
-        },
-        right_sep = function()
-            local val = {hl = {fg = 'NONE', bg = 'black'}}
-            if b.gitsigns_status_dict then val.str = ' ' else val.str = '' end
-
-            return val
-        end
-    }
-
-    components.right.active[5] = {
-        provider = 'line_percentage',
-        hl = {
-            style = 'bold'
-        },
-        left_sep = '  ',
-        right_sep = ' '
-    }
-
-    components.left.inactive[1] = {
-        provider = 'file_type',
-        hl = {
-            fg = 'white',
-            bg = 'oceanblue',
-            style = 'bold'
-        },
-        left_sep = {
-            str = ' ',
-            hl = {
-                fg = 'NONE',
-                bg = 'oceanblue'
-            }
-        },
-        right_sep = {
-            {
-                str = ' ',
-                hl = {
-                    fg = 'NONE',
-                    bg = 'oceanblue'
-                }
-            },
-            'slant_right'
-        }
-    }
-
-    -- This table is equal to the default colors table
-    local colors = {
-        black = '#1B1B1B',
-        skyblue = '#50B0F0',
-        cyan = '#009090',
-        green = '#60A040',
-        oceanblue = '#0066cc',
-        magenta = '#C26BDB',
-        orange = '#FF9000',
-        red = '#D10000',
-        violet = '#9E93E8',
-        white = '#FFFFFF',
-        yellow = '#E1E120'
-    }
-
-    -- This table is equal to the default separators table
-    local separators = {
-        vertical_bar = '┃',
-        vertical_bar_thin = '│',
-        left = '',
-        right = '',
-        block = '█',
-        left_filled = '',
-        right_filled = '',
-        slant_left = '',
-        slant_left_thin = '',
-        slant_right = '',
-        slant_right_thin = '',
-        slant_left_2 = '',
-        slant_left_2_thin = '',
-        slant_right_2 = '',
-        slant_right_2_thin = '',
-        left_rounded = '',
-        left_rounded_thin = '',
-        right_rounded = '',
-        right_rounded_thin = '',
-        circle = '●'
-    }
-
-    -- This table is equal to the default vi_mode_colors table
-    local vi_mode_colors = {
-        NORMAL = 'green',
-        OP = 'green',
-        INSERT = 'red',
-        VISUAL = 'skyblue',
-        BLOCK = 'skyblue',
-        REPLACE = 'violet',
-        ['V-REPLACE'] = 'violet',
-        ENTER = 'cyan',
-        MORE = 'cyan',
-        SELECT = 'orange',
-        COMMAND = 'green',
-        SHELL = 'green',
-        TERM = 'green',
-        NONE = 'yellow'
-    }
-
-    feline.setup({
-        default_bg = '#1F1F23',
-        default_fg = '#D0D0D0',
-        colors = colors,
-        separators = separators,
+    require('feline').setup {
+        default_bg = colors.bg,
+        default_fg = colors.fg,
         components = components,
         properties = properties,
         vi_mode_colors = vi_mode_colors
-    })
+    }
 end
 
 return _M

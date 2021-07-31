@@ -6,10 +6,10 @@ if vim.fn.empty(vim.fn.glob(install_path)) > 0 then
 end
 
 vim.cmd([[
-augroup packComp
-autocmd!
-autocmd BufWritePost 20-pluginList.lua source <afile> | PackerCompile
-augroup END
+    augroup packComp
+    autocmd!
+    autocmd BufWritePost 20-pluginList.lua source <afile> | PackerCompile
+    augroup END
 ]])
 
 return require('packer').startup({
@@ -23,10 +23,13 @@ return require('packer').startup({
             config = function() require('treesitter') end}
         use {'famiu/feline.nvim',
             requires = {'kyazdani42/nvim-web-devicons', opt = true},
-            config = function() require('theme').statusline() end}
+            config = require('theme').statusline}
         use {'neovim/nvim-lspconfig',
             requires = {'kabouzeid/nvim-lspinstall'},
             config = function() require('lsp') end}
+        use {'lewis6991/gitsigns.nvim',
+            requires = {'nvim-lua/plenary.nvim'},
+            config = function() require('gitsigns').setup() end}
     end,
     config = {
         display = {

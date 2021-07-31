@@ -55,14 +55,14 @@ function ssh(){
 
 function updateDots(){
     emulate zsh; setopt localoptions
-    #    echo 'Updating nvim plugins'
-    #    nvim --headless +PackerUpdate +TSUpdate +qall
     echo 'Updating Git submodules'
     setopt no_pushd_ignore_dups 
     pushd ~/dotfiles-reboot >/dev/null
     git pull origin $(git rev-parse --abbrev-ref HEAD)
     git submodule update --recursive --remote
     popd >/dev/null
+    echo 'Updating nvim plugins'
+    nvim --headless -c 'autocmd User PackerComplete quitall' -c 'TSUpdate' -c 'PackerSync'
     echo 'Updating GH releases'
     IG_GH_REL_UPDATE=1
     source ~/.zsh/helpers/get_gh_release.zsh
