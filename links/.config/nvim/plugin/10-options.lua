@@ -31,7 +31,7 @@ opt.shiftwidth = 4
 opt.relativenumber = true
 opt.wildmode = { 'longest:full', 'full' }
 opt.listchars = { tab = '> ', trail = '-', extends = '>', precedes = '<', nbsp = '+', eol = '$' }
-opt.shortmess = 'atToOIc'
+opt.shortmess = 'atToOIcF'
 opt.whichwrap = 'b,s,<,>,[,]'
 opt.inccommand = 'nosplit'
 opt.foldenable = false
