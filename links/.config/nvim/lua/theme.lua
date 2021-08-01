@@ -5,10 +5,10 @@ _M.colorscheme = function()
 end
 
 _M.statusline = function()
---     local present, feline = pcall(require, 'feline')
---     if not present then
---         return
---     end
+    --     local present, feline = pcall(require, 'feline')
+    --     if not present then
+    --         return
+    --     end
 
     vim.cmd([[
     augroup felineReset
@@ -29,15 +29,15 @@ _M.statusline = function()
         orange = '#d19a66',
         violet = '#b294bb',
         magenta = '#ff80ff',
-        blue = hemisu_c.normBlue.hex;
-        red = hemisu_c.normRed.hex;
+        blue = hemisu_c.normBlue.hex,
+        red = hemisu_c.normRed.hex,
     }
 
     local vi_mode_colors = {
         NORMAL = colors.green,
+        OP = colors.green,
         INSERT = colors.blue,
         VISUAL = colors.violet,
-        OP = colors.green,
         BLOCK = colors.blue,
         REPLACE = colors.red,
         ['V-REPLACE'] = colors.red,
@@ -47,141 +47,83 @@ _M.statusline = function()
         COMMAND = colors.magenta,
         SHELL = colors.green,
         TERM = colors.blue,
-        NONE = colors.yellow
-    }
-
-    local vi_mode_text = {
-        n = "NORMAL",
-        i = "INSERT",
-        v = "VISUAL",
-        [''] = "V-BLOCK",
-        V = "V-LINE",
-        c = "COMMAND",
-        no = "UNKNOWN",
-        s = "UNKNOWN",
-        S = "UNKNOWN",
-        ic = "UNKNOWN",
-        R = "REPLACE",
-        Rv = "UNKNOWN",
-        cv = "UNKWON",
-        ce = "UNKNOWN",
-        r = "REPLACE",
-        rm = "UNKNOWN",
-        t = "INSERT"
+        NONE = colors.yellow,
     }
 
     local function file_osinfo()
         local os = vim.bo.fileformat:upper()
         local icon
         if os == 'UNIX' then
-            icon = ' '
+            icon = ''
         elseif os == 'MAC' then
-            icon = ' '
+            icon = ''
         else
-            icon = ' '
+            icon = ''
         end
-        return icon .. os
+        return icon
     end
 
-    local function get_filename(component, modifiers)
-        -- local filename = vim.fn.expand('%:t')
-        local modifiers_str = table.concat(modifiers, ":")
-        local filename = vim.fn.expand("%" .. modifiers_str)
-        local extension = vim.fn.expand('%:e')
-        local modified_str
-
-        local icon = component.icon or
-            require'nvim-web-devicons'.get_icon(filename, extension, { default = true })
-
-        if filename == '' then filename = 'unnamed' end
-
-        if vim.bo.modified then
-            local modified_icon = component.file_modified_icon or '●'
-            modified_str = modified_icon .. ' '
-        else
-            modified_str = ''
-        end
-
-        return icon .. ' ' .. filename .. ' ' .. modified_str
-    end
-
-    local lsp = require 'feline.providers.lsp'
-    local vi_mode_utils = require 'feline.providers.vi_mode'
-    local cursor = require 'feline.providers.cursor'
-
-    -- LuaFormatter off
+    local lsp = require('feline.providers.lsp')
+    local vi_mode_utils = require('feline.providers.vi_mode')
 
     local comps = {
         vi_mode = {
             left = {
                 provider = function()
-                    local current_text = ' '..vi_mode_text[vim.fn.mode()]..' '
-                    return current_text
+                    return ' ' .. vi_mode_utils.get_vim_mode() .. ' '
                 end,
                 hl = function()
-                    local val = {
+                    return {
                         name = vi_mode_utils.get_mode_highlight_name(),
                         fg = colors.bg,
                         bg = vi_mode_utils.get_mode_color(),
-                        style = 'bold'
+                        style = 'bold',
                     }
-                    return val
-                end
-                -- right_sep = ' '
-            },
-            right = {
-                provider = '▊',
-                hl = function()
-                    local val = {
-                        name = vi_mode_utils.get_mode_highlight_name(),
-                        fg = vi_mode_utils.get_mode_color()
-                    }
-                    return val
                 end,
-                left_sep = ' '
-            }
+            },
         },
         file = {
             info = {
-                -- provider = 'file_info',
-                provider = require("file_name").get_current_ufn,
+                provider = 'file_info',
+                file_modified_icon = '+',
+                type = 'unique',
                 hl = {
                     fg = colors.blue,
-                    style = 'bold'
+                    style = 'bold',
                 },
-                left_sep = ' '
+                left_sep = ' ',
+            },
+            size = {
+                provider = 'file_size',
             },
             encoding = {
                 provider = 'file_encoding',
                 left_sep = ' ',
                 hl = {
                     fg = colors.violet,
-                    style = 'bold'
-                }
-            },
-            type = {
-                provider = 'file_type'
+                    style = 'bold',
+                },
             },
             os = {
                 provider = file_osinfo,
                 left_sep = ' ',
                 hl = {
                     fg = colors.violet,
-                    style = 'bold'
-                }
-            }
-        },
-        line_percentage = {
-            provider = 'line_percentage',
-            left_sep = ' ',
-            hl = {
-                style = 'bold'
-            }
+                    style = 'bold',
+                },
+            },
         },
         position = {
             provider = function()
-                pos = cursor.position()
-                return ' '..pos..' '
+                local curr_line = vim.fn.line('.')
+                local lines = vim.fn.line('$')
+                return string.format(
+                    ' %d/%d:%d %d%%%% ',
+                    curr_line,
+                    lines,
+                    vim.fn.col('.'),
+                    vim.fn.round(curr_line / lines * 100)
+                )
             end,
             left_sep = ' ',
             hl = function()
@@ -189,10 +131,10 @@ _M.statusline = function()
                     name = vi_mode_utils.get_mode_highlight_name(),
                     fg = colors.bg,
                     bg = vi_mode_utils.get_mode_color(),
-                    style = 'bold'
+                    style = 'bold',
                 }
                 return val
-            end
+            end,
         },
         diagnos = {
             err = {
@@ -201,8 +143,8 @@ _M.statusline = function()
                     return lsp.diagnostics_exist('Error')
                 end,
                 hl = {
-                    fg = colors.red
-                }
+                    fg = colors.red,
+                },
             },
             warn = {
                 provider = 'diagnostic_warnings',
@@ -210,8 +152,8 @@ _M.statusline = function()
                     return lsp.diagnostics_exist('Warning')
                 end,
                 hl = {
-                    fg = colors.yellow
-                }
+                    fg = colors.yellow,
+                },
             },
             hint = {
                 provider = 'diagnostic_hints',
@@ -219,8 +161,8 @@ _M.statusline = function()
                     return lsp.diagnostics_exist('Hint')
                 end,
                 hl = {
-                    fg = colors.cyan
-                }
+                    fg = colors.cyan,
+                },
             },
             info = {
                 provider = 'diagnostic_info',
@@ -228,19 +170,18 @@ _M.statusline = function()
                     return lsp.diagnostics_exist('Information')
                 end,
                 hl = {
-                    fg = colors.blue
-                }
+                    fg = colors.blue,
+                },
             },
         },
         lsp = {
             name = {
                 provider = 'lsp_client_names',
                 left_sep = ' ',
-                icon = ' ',
                 hl = {
-                    fg = colors.yellow
-                }
-            }
+                    fg = colors.yellow,
+                },
+            },
         },
         git = {
             branch = {
@@ -249,28 +190,28 @@ _M.statusline = function()
                 left_sep = ' ',
                 hl = {
                     fg = colors.violet,
-                    style = 'bold'
+                    style = 'bold',
                 },
             },
             add = {
                 provider = 'git_diff_added',
                 hl = {
-                    fg = colors.green
-                }
+                    fg = colors.green,
+                },
             },
             change = {
                 provider = 'git_diff_changed',
                 hl = {
-                    fg = colors.orange
-                }
+                    fg = colors.orange,
+                },
             },
             remove = {
                 provider = 'git_diff_removed',
                 hl = {
-                    fg = colors.red
-                }
-            }
-        }
+                    fg = colors.red,
+                },
+            },
+        },
     }
 
     local properties = {
@@ -281,11 +222,11 @@ _M.statusline = function()
                 'packer',
                 'startify',
                 'fugitive',
-                'fugitiveblame'
+                'fugitiveblame',
             },
-            buftypes = {'terminal'},
-            bufnames = {}
-        }
+            buftypes = { 'terminal' },
+            bufnames = {},
+        },
     }
 
     local components = {
@@ -293,19 +234,20 @@ _M.statusline = function()
             active = {
                 comps.vi_mode.left,
                 comps.file.info,
+                comps.file.size,
                 comps.lsp.name,
                 comps.diagnos.err,
                 comps.diagnos.warn,
                 comps.diagnos.hint,
-                comps.diagnos.info
+                comps.diagnos.info,
             },
             inactive = {
-                comps.file.info
-            }
+                comps.file.info,
+            },
         },
         mid = {
             active = {},
-            inactive = {}
+            inactive = {},
         },
         right = {
             active = {
@@ -313,26 +255,23 @@ _M.statusline = function()
                 comps.git.change,
                 comps.git.remove,
                 comps.file.os,
+                comps.file.encoding,
                 comps.git.branch,
-                comps.line_percentage,
-                -- comps.vi_mode.right
-                comps.position
+                comps.position,
             },
             inactive = {
-                comps.file.os
-            }
-        }
+                comps.file.os,
+            },
+        },
     }
 
-    -- LuaFormatter on
-
-    require('feline').setup {
+    require('feline').setup({
         default_bg = colors.bg,
         default_fg = colors.fg,
         components = components,
         properties = properties,
-        vi_mode_colors = vi_mode_colors
-    }
+        vi_mode_colors = vi_mode_colors,
+    })
 end
 
 return _M

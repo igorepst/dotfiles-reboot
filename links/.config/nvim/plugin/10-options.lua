@@ -36,19 +36,19 @@ opt.whichwrap = 'b,s,<,>,[,]'
 opt.inccommand = 'nosplit'
 opt.foldenable = false
 
-g.netrw_sort_options = "i"
+g.netrw_sort_options = 'i'
 g.netrw_keepdir = 0
 g.netrw_hide = 0
 g.netrw_banner = 0
 g.netrw_browse_split = 4
 g.netrw_liststyle = 3
-g.netrw_sizestyle = "H"
+g.netrw_sizestyle = 'H'
 
 local disabled_built_ins = {
-    "tutor_mode_plugin",
-    "remote_plugins",
+    'tutor_mode_plugin',
+    'remote_plugins',
 }
 
 for _, plugin in pairs(disabled_built_ins) do
-    vim.g["loaded_" .. plugin] = 1
+    vim.g['loaded_' .. plugin] = 1
 end

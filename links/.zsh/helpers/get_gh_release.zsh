@@ -19,7 +19,6 @@ function get_gh_release() {
     [ -z ${curlo} ] && print "Empty output received" && return
     local new_ver=$(echo ${curlo} | grep -Po '"tag_name": "\K.*?(?=")')
     local new_published_at=$(echo ${curlo} | grep -Po '"published_at": "\K.*?(?=")')
-    print "New version is '${new_ver}', published at ${new_published_at}"
     local cur_version_dir="${workd_cache}/${_GET_GH_REL_ARGS[--repo]}"
     local cur_version_file="${cur_version_dir}/version.txt"
     if [ -r "${cur_version_file}" ]; then
@@ -35,6 +34,7 @@ function get_gh_release() {
     else
         print "Current version doesn't exist"
     fi
+    print "New version is '${new_ver}', published at ${new_published_at}"
     local binf=$(echo ${curlo} | grep -Po '"browser_download_url": "\K.*'${(q)_GET_GH_REL_ARGS[--arch]}'?(?=")')
     [ -z ${binf} ] && print "Cannot find requested architecture" && return
     local tmpd=$(mktemp -d)
