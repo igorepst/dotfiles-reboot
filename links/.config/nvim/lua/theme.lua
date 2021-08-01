@@ -176,7 +176,16 @@ _M.statusline = function()
         },
         lsp = {
             name = {
-                provider = 'lsp_client_names',
+                provider = function(component)
+                    local clients = {}
+                    local icon = component.icon or ' '
+
+                    for _, client in pairs(vim.lsp.buf_get_clients()) do
+                        clients[#clients + 1] = client.name
+                    end
+
+                    return icon .. table.concat(clients, ',')
+                end,
                 left_sep = ' ',
                 hl = {
                     fg = colors.yellow,
