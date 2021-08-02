@@ -26,15 +26,15 @@ function get_gh_release() {
         local cur_version_array=("${(f)mapfile[${cur_version_file}]}")
         local cur_ver="${cur_version_array[1]}"
         local cur_published_at="${cur_version_array[2]}"
-        print "Current version is '${cur_ver}', published at ${cur_published_at}"
+        print "Current version = '${cur_ver}', published at ${cur_published_at}"
         if [ "${cur_published_at}" = "${new_published_at}" ]; then
             _set_path ${workd} ${_GET_GH_REL_ARGS[--toPath]} ${_GET_GH_REL_ARGS[--toCompletionPath]}
             return
         fi
     else
-        print "Current version doesn't exist"
+        print "Current version does not exist"
     fi
-    print "New version is '${new_ver}', published at ${new_published_at}"
+    print "New version     = '${new_ver}', published at ${new_published_at}"
     local binf=$(echo ${curlo} | grep -Po '"browser_download_url": "\K.*'${(q)_GET_GH_REL_ARGS[--arch]}'?(?=")')
     [ -z ${binf} ] && print "Cannot find requested architecture" && return
     local tmpd=$(mktemp -d)

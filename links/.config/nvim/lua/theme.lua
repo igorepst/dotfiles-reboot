@@ -95,6 +95,7 @@ _M.statusline = function()
             },
             size = {
                 provider = 'file_size',
+                enabled = function() return vim.fn.filereadable(vim.fn.expand('%p')) > 0 end
             },
             encoding = {
                 provider = 'file_encoding',
@@ -185,6 +186,9 @@ _M.statusline = function()
                     end
 
                     return icon .. table.concat(clients, ',')
+                end,
+                enabled = function()
+                    return lsp.is_lsp_attached()
                 end,
                 left_sep = ' ',
                 hl = {

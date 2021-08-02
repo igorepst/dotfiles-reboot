@@ -46,7 +46,7 @@ g.netrw_sizestyle = 'H'
 
 local disabled_built_ins = {
     'tutor_mode_plugin',
-    'remote_plugins',
+--     'remote_plugins',
 }
 
 for _, plugin in pairs(disabled_built_ins) do
