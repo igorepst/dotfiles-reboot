@@ -34,9 +34,9 @@ function get_gh_release() {
     else
         print "Current version does not exist"
     fi
-    print "New version     = '${new_ver}', published at ${new_published_at}"
     local binf=$(echo ${curlo} | grep -Po '"browser_download_url": "\K.*'${(q)_GET_GH_REL_ARGS[--arch]}'?(?=")')
     [ -z ${binf} ] && print "Cannot find requested architecture" && return
+    print "New version     = '${new_ver}', published at ${new_published_at}"
     local tmpd=$(mktemp -d)
     pushd ${tmpd} >/dev/null
     local workf
