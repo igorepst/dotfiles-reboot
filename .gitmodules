@@ -28,3 +28,6 @@
 [submodule "links/.config/kitty/kitty_grab"]
 	path = links/.config/kitty/kitty_grab
 	url = https://github.com/yurikhan/kitty_grab
+[submodule "links/.config/kitty/kitty-smart-scroll"]
+	path = links/.config/kitty/kitty-smart-scroll
+	url = https://github.com/yurikhan/kitty-smart-scroll
