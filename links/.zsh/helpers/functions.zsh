@@ -64,7 +64,7 @@ function updateDots(){
     printf '%s\n' 'Updating nvim plugins'
     nvim --headless -c 'autocmd User PackerComplete quitall' -c 'TSUpdate' -c 'PackerSync'
     printf '\n%s\n' 'Updating GH releases'
-    source $0
+    source $0:A
     _get_gh_releases
     rm -f ~/.zsh/volatile/zcompdump*
     exec zsh
