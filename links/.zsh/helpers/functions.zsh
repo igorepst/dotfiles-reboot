@@ -61,11 +61,11 @@ function updateDots(){
     git pull origin $(git rev-parse --abbrev-ref HEAD)
     git submodule update --recursive --remote
     popd >/dev/null
-    printf '%s\n' 'Updating nvim plugins'
-    nvim --headless -c 'autocmd User PackerComplete quitall' -c 'TSUpdate' -c 'PackerSync'
     printf '\n%s\n' 'Updating GH releases'
     source ${(%):-%x}
     _get_gh_releases
+    printf '%s\n' 'Updating nvim plugins'
+    nvim --headless -c 'autocmd User PackerComplete quitall' -c 'TSUpdate' -c 'PackerSync'
     rm -f ~/.zsh/volatile/zcompdump*
     exec zsh
 }
