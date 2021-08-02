@@ -4,6 +4,7 @@ links/.vim/sessions
 links/.zsh/volatile
 links/.config/vifm/vifminfo*
 links/.config/vifm/vifmimgpdf*
+links/.config/nvim/plugin/packer_compiled*
 # Override ~/.gitignore-global
 !links/bin
 links/bin/*archive
