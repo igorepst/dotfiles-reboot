@@ -64,7 +64,13 @@ function updateDots(){
     printf '%s\n' 'Updating nvim plugins'
     nvim --headless -c 'autocmd User PackerComplete quitall' -c 'TSUpdate' -c 'PackerSync'
     printf '\n%s\n' 'Updating GH releases'
+    source $0
+    _get_gh_releases
+    rm -f ~/.zsh/volatile/zcompdump*
     exec zsh
+}
+
+function _get_gh_releases() {
     IG_GH_REL_UPDATE=1
     source ~/.zsh/helpers/get_gh_release.zsh
     get_gh_release --repo knqyf263/pet --arch linux_amd64.tar.gz --toPath pet --toCompletionPath misc/completions/zsh/_pet
@@ -73,8 +79,6 @@ function updateDots(){
     get_gh_release --repo koalaman/shellcheck --arch linux.x86_64.tar.xz --toPath shellcheck
     get_gh_release --repo mvdan/sh --arch linux_amd64 --toPath shfmt --unarchive 0 --rn shfmt
     get_gh_release --repo JohnnyMorganz/StyLua --arch linux.zip --toPath stylua
-    get_gh_release --repo lunaryorn/mdcat --arch x86_64-unknown-linux-musl.tar.gz --toPath mdcat
+    get_gh_release --repo lunaryorn/mdcat1 --arch x86_64-unknown-linux-musl.tar.gz --toPath mdcat
     get_gh_release --repo neovim/neovim --arch linux64.tar.gz --toPath bin/nvim --tag nightly
-    rm -f ~/.zsh/volatile/zcompdump*
-    exec zsh
 }
