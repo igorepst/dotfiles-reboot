@@ -59,7 +59,7 @@ function updateDots(){
     setopt no_pushd_ignore_dups 
     pushd ~/dotfiles-reboot >/dev/null
     git pull origin $(git rev-parse --abbrev-ref HEAD)
-    git submodule update --recursive --remote
+    git submodule update --recursive --remote --init
     popd >/dev/null
     echo 'Updating GH releases'
     source ${(%):-%x}
