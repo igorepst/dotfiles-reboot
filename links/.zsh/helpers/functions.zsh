@@ -66,7 +66,7 @@ function updateDots(){
     _get_gh_releases
     echo 'Updating nvim plugins'
     rehash
-    nvim --headless -c 'autocmd User PackerComplete quitall' -c 'TSUpdate' -c 'PackerSync'
+    nvim --headless -c 'autocmd User PackerComplete quitall' -c 'silent! TSUpdateSync' -c 'PackerSync'
     rm -f ~/.zsh/volatile/zcompdump*
     exec zsh
 }
