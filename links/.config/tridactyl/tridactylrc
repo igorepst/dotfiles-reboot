@@ -6,3 +6,5 @@ bind n findnext 1
 bind N findnext -1
 
 bind <Backspace> back
+
+source_quiet ~/.work/tridactylrc
