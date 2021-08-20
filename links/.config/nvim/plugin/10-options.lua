@@ -35,6 +35,7 @@ opt.shortmess = 'atToOIcF'
 opt.whichwrap = 'b,s,<,>,[,]'
 opt.inccommand = 'nosplit'
 opt.foldenable = false
+opt.path = '.,,'
 
 g.netrw_sort_options = 'i'
 g.netrw_keepdir = 0
