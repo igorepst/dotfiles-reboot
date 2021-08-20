@@ -39,9 +39,12 @@ igConfig igTerm = def
     , ("M-S-<Return>", windows W.swapMaster)
     , ("M-b", sendMessage ToggleStruts)
     , ("M-x", sendMessage $ Toggle NBFULL)
-    , ("M-S-/", igHelpCommand) 
+--     , ("M-S-/", igHelpCommand) 
     , ("<XF86MonBrightnessUp>", spawn "xbacklight -inc 10") 
-    , ("<XF86MonBrightnessDown>", spawn "xbacklight -dec 10") 
+    , ("<XF86MonBrightnessDown>", spawn "xbacklight -dec 10")
+    , ("<XF86AudioMute>", spawn "pulsemixer --toggle-mute")
+    , ("<XF86AudioLowerVolume>", spawn "pulsemixer --change-volume -10")
+    , ("<XF86AudioRaiseVolume>", spawn "pulsemixer --change-volume +10")
     ]
     where
     igHelpCommand :: X ()

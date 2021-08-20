@@ -4,6 +4,7 @@ import System.Environment (getEnv)
 config :: String -> Config
 config igHome = defaultConfig {
   font = "xft:Ubuntu Nerd Font-12"
+--   font = "xft:DejaVu Sans Mono Nerd Font Complete-12"
   , additionalFonts = ["Symbola-12"]
   , borderColor = "black"
   , border = NoBorder
@@ -23,6 +24,7 @@ config igHome = defaultConfig {
   , commands = [ Run $  Com (igHome ++ "/bin/trayer-padding-icon.sh") [] "trayerpad" 10
                 , Run $ Date "%a %d/%m/%y %H:%M" "date" 10
                 , Run $ UnsafeXMonadLog
+                , Run $ Alsa "default" "Master" []
                 , Run $ BatteryP ["BAT0"] [
                     "-t", "<leftipat> <left>% / <timeleft>"
                     , "--"
@@ -44,7 +46,7 @@ config igHome = defaultConfig {
               ]
   , sepChar = "%"
   , alignSep = "}{"
-  , template = "%UnsafeXMonadLog% }{ <action=`kill -s USR1 $(pidof deadd-notification-center)` button=1>DNC</action> | %wlo1wi% | %kbd% | <action=`brightness-deadd` button=1>%bright%</action> | <action=`battery-deadd` button=1>%battery%</action> |  %date%%trayerpad%"
+  , template = "%UnsafeXMonadLog% }{ <action=`kill -s USR1 $(pidof deadd-notification-center)` button=1>DNC</action> | %wlo1wi% | %alsa:default:Master% | %kbd% | <action=`brightness-deadd` button=1>%bright%</action> | <action=`battery-deadd` button=1>%battery%</action> |  %date%%trayerpad%"
 }
 
 main :: IO ()

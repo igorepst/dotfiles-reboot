@@ -15,4 +15,4 @@ trayer --edge top --align right --SetDockType true --SetPartialStrut false --exp
 
 deadd-notification-center &
 
-exec ~/.local/share/xmonad/xmonad-x86_64-linux
+exec xmonad

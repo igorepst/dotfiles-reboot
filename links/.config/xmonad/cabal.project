@@ -1,4 +1,4 @@
-packages: ./*
+packages: */*.cabal
 
 package *
   ghc-options: -fwrite-ide-info -hiedir /home/vasya/.config/xmonad/hiedb
