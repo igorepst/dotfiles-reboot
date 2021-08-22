@@ -75,7 +75,7 @@ function _get_gh_releases() {
     IG_GH_REL_UPDATE=1
     source ~/.zsh/helpers/get_gh_release.zsh
     get_gh_release --repo denisidoro/navi --arch x86_64-unknown-linux-musl.tar.gz --toPath navi
-    get_gh_release --repo tstack/lnav --arch linux-64bit.zip --toPath lnav
+    get_gh_release --repo tstack/lnav --arch musl-64bit.zip --toPath lnav
     get_gh_release --repo koalaman/shellcheck --arch linux.x86_64.tar.xz --toPath shellcheck
     get_gh_release --repo mvdan/sh --arch linux_amd64 --toPath shfmt --unarchive 0 --rn shfmt
     get_gh_release --repo JohnnyMorganz/StyLua --arch linux.zip --toPath stylua
