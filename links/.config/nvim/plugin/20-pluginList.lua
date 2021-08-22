@@ -15,7 +15,7 @@ vim.cmd([[
 return require('packer').startup({
     function(use)
         use({ 'wbthomason/packer.nvim' })
-        use({'~/github/igCommands.nvim',
+        use({'igorepst/igCommands.nvim',
         config = function()
             require('igCommands').setup({
                 prefix = 'ig',
