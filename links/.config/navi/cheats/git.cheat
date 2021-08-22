@@ -1,0 +1,92 @@
+% git_common
+$ branch: git branch | awk '{print $NF}'
+
+% git
+@ git_common
+# View unpushed commits
+git log origin/<branch>..HEAD
+
+% git
+@ git_common
+# Diff unpushed commits
+git diff origin/<branch>..HEAD
+
+% git
+@ git_common
+# Undo rebase/merge (Git saves HEAD to ORIG_HEAD before doing dangerous operation)
+git reset --hard ORIG_HEAD
+
+% git
+@ git_common
+# Show list of commits in one line format
+git log --oneline
+
+% git
+@ git_common
+# Search by commit message
+git log --regexp-ignore-case --oneline --grep <string>
+
+% git
+@ git_common
+# Rename branch, old omitted? current
+git branch -m <old name> <new name>
+
+% git
+@ git_common
+# Remove a file from Git, but keep it on disk
+git rm --cached <file>
+
+% git
+@ git_common
+# Pull changes from a different remote branch to your local branch
+git refresh <other_branch>
+
+% git
+@ git_common
+# Merge branch into current
+git merge --no-ff --no-commit <other_branch>
+
+% git
+@ git_common
+# Get current branch name
+git rev-parse --abbrev-ref HEAD
+
+% git
+@ git_common
+# Discard local commits to match server
+git reset --hard origin/<branch>
+
+% git
+@ git_common
+# Delete remote branch
+git push <remote_name> --delete <branch>
+
+% git
+@ git_common
+# Delete local branch (-d if merged in upstream, -D deletes forcibly)
+git branch -d <branch>
+
+% git
+@ git_common
+# Count number of lines in git repository
+git ls-files | xargs cat | wc -l
+
+% git
+@ git_common
+# Count number of files in git repository
+git ls-files | wc -l
+
+% git
+@ git_common
+# Committed to wrong branch (create new and reset current)
+git branch <new name> && git reset --hard HEAD^
+
+% git
+@ git_common
+# Combine unpushed commits
+git rebase -i @{u}
+
+%git
+@git_common
+# Combine last N commits
+git rebase -i HEAD~<N>

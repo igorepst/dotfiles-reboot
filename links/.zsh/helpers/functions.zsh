@@ -74,7 +74,6 @@ function updateDots(){
 function _get_gh_releases() {
     IG_GH_REL_UPDATE=1
     source ~/.zsh/helpers/get_gh_release.zsh
-    get_gh_release --repo knqyf263/pet --arch linux_amd64.tar.gz --toPath pet --toCompletionPath misc/completions/zsh/_pet
     get_gh_release --repo denisidoro/navi --arch x86_64-unknown-linux-musl.tar.gz --toPath navi
     get_gh_release --repo tstack/lnav --arch linux-64bit.zip --toPath lnav
     get_gh_release --repo koalaman/shellcheck --arch linux.x86_64.tar.xz --toPath shellcheck

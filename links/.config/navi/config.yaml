@@ -1,0 +1,25 @@
+style:
+  tag:
+    color: dark_magenta # text color. possible values: https://bit.ly/3gloNNI
+    width_percentage: 7 # column width relative to the terminal window
+    min_width: 20 # minimum column width as number of characters
+  comment:
+    color: dark_blue
+    width_percentage: 42
+    min_width: 45
+  snippet:
+    color: dark_magenta
+
+finder:
+  command: fzf
+
+cheats:
+  paths: 
+    - ~/.config/navi/cheats
+
+# search:
+  # tags: git,!checkout # equivalent to the --tag-rules option
+
+shell:
+  command: zsh
+

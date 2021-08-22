@@ -98,7 +98,6 @@ setopt long_list_jobs notify no_beep complete_in_word no_hup no_flow_control
 
 source ~/.zsh/helpers/aliases.zsh
 source ~/.zsh/helpers/fzf.zsh
-source ~/.zsh/helpers/pet.zsh 
 source ~/.zsh/helpers/navi.zsh 
 source ~/.zsh/helpers/ripgrep.zsh 
 source ~/.zsh/helpers/vifm.zsh 

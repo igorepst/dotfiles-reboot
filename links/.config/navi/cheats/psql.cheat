@@ -1,0 +1,15 @@
+% psql
+# Remote command line
+psql -U username -h localhost -d postgres -c "DROP DATABASE \"$DATABASE\";"
+
+%psql
+# Provide password on command line
+PGPASSWORD=<pass> psql
+
+%psql
+# Get DB owner
+SELECT d.datname as "Name",pg_catalog.pg_get_userbyid(d.datdba) as "Owner" FROM pg_catalog.pg_database d WHERE d.datname = "<db-name>" ORDER BY 1;
+
+%psql
+# Copy DB on the same server
+CREATE DATABASE "<dst DB>" WITH TEMPLATE "<src DB>" OWNER postgres;
