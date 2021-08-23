@@ -15,3 +15,4 @@ map('v', '<C-_>', ':lua ToggleComment("v")<CR>')
 map('i', '<C-_>', '<Esc>:lua ToggleComment("i")<CR>i')
 
 map('c', 'ee<Space>', "(getcmdtype() == ':' && getcmdline() == '')? 'edit **/*' : 'ee<Space>'", {expr = true})
+
