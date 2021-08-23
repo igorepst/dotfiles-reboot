@@ -86,7 +86,7 @@ git branch <new name> && git reset --hard HEAD^
 # Combine unpushed commits
 git rebase -i @{u}
 
-%git
-@git_common
+% git
+@ git_common
 # Combine last N commits
 git rebase -i HEAD~<N>
