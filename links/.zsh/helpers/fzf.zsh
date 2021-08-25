@@ -10,3 +10,11 @@ function f.(){
     print -s "$EDITOR $f" # Append to history
     kitty @launch --no-response --type=tab $EDITOR "$f"
 }
+
+function kitty_list_hints(){
+    local com
+    com=$(sed -ne 's/^map \(kitty_mod+p[a-z+>]\+\) \(.*\)/\2 (\1)/p' ~/.config/kitty/kitty.conf | fzf --nth ..-2 --exact | awk '{$NF=""}1')
+    [ -n "${com}" ] && kitty @ $(echo "${com}")
+}
+zle -N kitty_list_hints
+bindkey 'h' kitty_list_hints
