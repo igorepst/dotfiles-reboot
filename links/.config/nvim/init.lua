@@ -19,6 +19,7 @@ vim.cmd([[
 
         " Save last cursor position at \ mark and open buffer at last cursor position
         autocmd BufReadPost * if @% !~# "\.git[\/\\]COMMIT_EDITMSG$" && line("'\"") > 1 && line("'\"") <= line("$") | exe "normal! g`\"" | endif
+        autocmd BufEnter * setlocal formatoptions-=ro
     augroup end
 
     " Map Q to q and Q! to q!
@@ -26,3 +27,4 @@ vim.cmd([[
     " Don't use Ex mode, use Q for formatting.
     nnoremap Q gq
 ]])
+
