@@ -36,7 +36,7 @@ opt.whichwrap = 'b,s,<,>,[,]'
 opt.inccommand = 'nosplit'
 opt.foldenable = false
 opt.path = '.,,'
-vim.opt_local.formatoptions = vim.opt_local.formatoptions - 'r'
+opt.signcolumn = 'yes'
 
 g.netrw_sort_options = 'i'
 g.netrw_keepdir = 0

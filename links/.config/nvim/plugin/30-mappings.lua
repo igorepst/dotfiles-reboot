@@ -10,14 +10,13 @@ local function map(mode, lhs, rhs, opts)
 end
 
 --  Actually 'C-/' and not 'C-_'
-map('n', '<C-_>', ':lua ToggleComment("n")<CR>')
-map('v', '<C-_>', ':lua ToggleComment("v")<CR>')
-map('i', '<C-_>', '<Esc>:lua ToggleComment("i")<CR>i')
+map('n', '<C-_>', ':lua ToggleComment("n")<CR>', { silent = true })
+map('v', '<C-_>', ':lua ToggleComment("v")<CR>', { silent = true })
+map('i', '<C-_>', '<Esc>:lua ToggleComment("i")<CR>i', { silent = true })
 
-map('c', 'ee<Space>', "(getcmdtype() == ':' && getcmdline() == '')? 'edit **/*' : 'ee<Space>'", {expr = true})
+map('c', 'ee<Space>', '(getcmdtype() == \':\' && getcmdline() == \'\')? \'edit **/*\' : \'ee<Space>\'', { expr = true })
 
-map('n', '[b', ':<C-U>exe v:count1 . "bprevious!"<CR>', {silent = true})
-map('n', ']b', ':<C-U>exe v:count1 . "bnext!"<CR>', {silent = true})
-map('n', '[q', ':<C-U>exe v:count1 . "cprevious!"<CR>', {silent = true})
-map('n', ']q', ':<C-U>exe v:count1 . "cnext!"<CR>', {silent = true})
-
+map('n', '[b', ':<C-U>exe v:count1 . "bprevious!"<CR>', { silent = true })
+map('n', ']b', ':<C-U>exe v:count1 . "bnext!"<CR>', { silent = true })
+map('n', '[q', ':<C-U>exe v:count1 . "cprevious!"<CR>', { silent = true })
+map('n', ']q', ':<C-U>exe v:count1 . "cnext!"<CR>', { silent = true })
