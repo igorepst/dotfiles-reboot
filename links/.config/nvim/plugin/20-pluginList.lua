@@ -15,26 +15,30 @@ vim.cmd([[
 return require('packer').startup({
     function(use)
         use({ 'wbthomason/packer.nvim' })
-        use({'igorepst/igToggleComment.nvim'})
-        use({'igorepst/igCommands.nvim',
-        config = function()
-            require('igCommands').setup({
-                prefix = 'ig',
-                commands = {
-                        {name = 'Toggle list', cmd = 'lua vim.opt.list = not vim.opt.list:get()', key = '<Leader>tl'},
-                        {name = 'Toggle wrap', cmd = 'lua vim.opt.wrap = not vim.opt.wrap:get()'},
-                        {name = 'Toggle hlsearch', cmd = 'lua vim.opt.hlsearch = not vim.opt.hlsearch:get()'},
-                        {name = 'Convert to DOS', cmd = 'set ff=dos'},
-                        {name = 'Convert to Unix', cmd = 'set ff=unix'},
-                        {name = 'Show DOS line endings', cmd = 'edit ++ff=unix'},
-                        {name = 'Convert to UTF-8', cmd = 'set fileencoding=utf8'},
-                        {name = 'Format JSON', cmd = "%!jq -R '. as $line | try fromjson catch $line'"},
-                        {name = 'Trim trailing space', cmd = "execute ':%s/\\s\\+$//e'"},
-                        {name = 'Reindent file',  cmd = "execute 'normal! mzgg=G`z' | IgTrimTrailingSpace"},
-                        {name = 'Diff saved', cmd = 'vert new | set bt=nofile | r ++edit # | 0d_ | diffthis | wincmd p | diffthis'},
-                    }
+        use({ 'igorepst/igToggleComment.nvim', keys = { '<Plug>(IgToggleComment)' } })
+        use({
+            'igorepst/igCommands.nvim',
+            config = function()
+                require('igCommands').setup({
+                    prefix = 'ig',
+                    commands = {
+                        { name = 'Toggle list', cmd = 'lua vim.opt.list = not vim.opt.list:get()', key = '<Leader>tl' },
+                        { name = 'Toggle wrap', cmd = 'lua vim.opt.wrap = not vim.opt.wrap:get()' },
+                        { name = 'Toggle hlsearch', cmd = 'lua vim.opt.hlsearch = not vim.opt.hlsearch:get()' },
+                        { name = 'Convert to DOS', cmd = 'set ff=dos' },
+                        { name = 'Convert to Unix', cmd = 'set ff=unix' },
+                        { name = 'Show DOS line endings', cmd = 'edit ++ff=unix' },
+                        { name = 'Convert to UTF-8', cmd = 'set fileencoding=utf8' },
+                        { name = 'Format JSON', cmd = '%!jq -R \'. as $line | try fromjson catch $line\'' },
+                        { name = 'Trim trailing space', cmd = 'execute \':%s/\\s\\+$//e\'' },
+                        { name = 'Reindent file', cmd = 'execute \'normal! mzgg=G`z\' | IgTrimTrailingSpace' },
+                        {
+                            name = 'Diff saved',
+                            cmd = 'vert new | set bt=nofile | r ++edit # | 0d_ | diffthis | wincmd p | diffthis',
+                        },
+                    },
                 })
-        end,
+            end,
         })
         use({
             'igorepst/hemisu.nvim',
@@ -43,68 +47,68 @@ return require('packer').startup({
                 require('theme').colorscheme()
             end,
         })
---         use({'rakr/vim-one', config = function()
---             vim.cmd[[
---                 let g:one_allow_italics = 1
---                 colorscheme one]]
---         end})
---       use({'kaicataldo/material.vim', config = function()
---        vim.cmd[[
---            let g:material_terminal_italics = 1
---            let g:material_theme_style = 'lighter'
---         colorscheme material
---         ]]
---             end
---         })
-        use({'Pocco81/Catppuccino.nvim', config = function()
-            local catppuccino = require("catppuccino")
+        --         use({'rakr/vim-one', config = function()
+        --             vim.cmd[[
+        --                 let g:one_allow_italics = 1
+        --                 colorscheme one]]
+        --         end})
+        --       use({'kaicataldo/material.vim', config = function()
+        --        vim.cmd[[
+        --            let g:material_terminal_italics = 1
+        --            let g:material_theme_style = 'lighter'
+        --         colorscheme material
+        --         ]]
+        --             end
+        --         })
+        use({
+            'Pocco81/Catppuccino.nvim',
+            config = function()
+                local catppuccino = require('catppuccino')
 
--- configure it
-catppuccino.setup(
-    {
-		colorscheme = "light_melya",
-		transparency = false,
-		styles = {
-			comments = "italic",
-			functions = "italic",
-			keywords = "italic",
-			strings = "NONE",
-			variables = "NONE",
-		},
-		integrations = {
-			treesitter = true,
-			native_lsp = {
-				enabled = true,
-				styles = {
-					errors = "italic",
-					hints = "italic",
-					warnings = "italic",
-					information = "italic"
-				}
-			},
-			lsp_trouble = false,
-			lsp_saga = false,
-			gitgutter = false,
-			gitsigns = false,
-			telescope = false,
-			nvimtree = false,
-			which_key = false,
-			indent_blankline = false,
-			dashboard = false,
-			neogit = false,
-			vim_sneak = false,
-			fern = false,
-			barbar = false,
-			bufferline = false,
-			markdown = false,
-		}
-	}
-)
+                -- configure it
+                catppuccino.setup({
+                    colorscheme = 'light_melya',
+                    transparency = false,
+                    styles = {
+                        comments = 'italic',
+                        functions = 'italic',
+                        keywords = 'italic',
+                        strings = 'NONE',
+                        variables = 'NONE',
+                    },
+                    integrations = {
+                        treesitter = true,
+                        native_lsp = {
+                            enabled = true,
+                            styles = {
+                                errors = 'italic',
+                                hints = 'italic',
+                                warnings = 'italic',
+                                information = 'italic',
+                            },
+                        },
+                        lsp_trouble = false,
+                        lsp_saga = false,
+                        gitgutter = false,
+                        gitsigns = false,
+                        telescope = false,
+                        nvimtree = false,
+                        which_key = false,
+                        indent_blankline = false,
+                        dashboard = false,
+                        neogit = false,
+                        vim_sneak = false,
+                        fern = false,
+                        barbar = false,
+                        bufferline = false,
+                        markdown = false,
+                    },
+                })
 
--- load it
--- catppuccino.load()
-
-            end})
+                -- load it
+                -- catppuccino.load()
+            end,
+        })
         use({
             'nvim-treesitter/nvim-treesitter',
             run = ':TSUpdate',
