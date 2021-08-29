@@ -66,7 +66,10 @@ function updateDots(){
     _get_gh_releases
     echo 'Updating nvim plugins'
     rehash
-    nvim --headless -c 'autocmd User PackerComplete quitall' -c 'silent! TSUpdateSync' -c 'PackerSync'
+    local packerDir=~/.local/share/nvim/site/pack/packer/start/packer.nvim
+    [ ! -d "${packerDir}" ] && git clone https://github.com/wbthomason/packer.nvim "${packerDir}" 
+    nvim --headless -c 'autocmd User PackerComplete quitall' -c 'PackerSync'
+    nvim --headless -c 'TSUpdateSync' -c 'quitall'
     rm -f ~/.zsh/volatile/zcompdump*
     exec zsh
 }
