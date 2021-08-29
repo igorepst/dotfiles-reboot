@@ -15,6 +15,7 @@ vim.cmd([[
 return require('packer').startup({
     function(use)
         use({ 'wbthomason/packer.nvim' })
+        use({'igorepst/igToggleComment.nvim'})
         use({'igorepst/igCommands.nvim',
         config = function()
             require('igCommands').setup({

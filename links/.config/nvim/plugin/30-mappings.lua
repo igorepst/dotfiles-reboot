@@ -10,9 +10,9 @@ local function map(mode, lhs, rhs, opts)
 end
 
 --  Actually 'C-/' and not 'C-_'
-map('n', '<C-_>', ':lua ToggleComment("n")<CR>', { silent = true })
-map('v', '<C-_>', ':lua ToggleComment("v")<CR>', { silent = true })
-map('i', '<C-_>', '<Esc>:lua ToggleComment("i")<CR>i', { silent = true })
+map('n', '<C-_>', '<Plug>(IgToggleComment)', { noremap = false })
+map('v', '<C-_>', '<Plug>(IgToggleComment)', { noremap = false })
+map('i', '<C-_>', '<Plug>(IgToggleComment)', { noremap = false })
 
 map('c', 'ee<Space>', '(getcmdtype() == \':\' && getcmdline() == \'\')? \'edit **/*\' : \'ee<Space>\'', { expr = true })
 
