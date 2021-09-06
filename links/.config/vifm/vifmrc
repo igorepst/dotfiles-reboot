@@ -397,6 +397,7 @@ command! zzzInternalXC git log --name-only --format=%%n -- %d| CDUP=`git rev-par
 " Sample mappings
 
 " Start shell in current directory
+"nnoremap s :!wezterm cli spawn --cwd %d<cr>
 nnoremap s :!kitty @launch --no-response --type=tab --cwd %d<cr>
 
 " Display sorting dialog
