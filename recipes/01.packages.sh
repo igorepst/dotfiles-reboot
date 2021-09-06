@@ -28,7 +28,7 @@ function doWork() {
 function doAurWork() {
     mkdir -p ~/aur
     pushd ~/aur >/dev/null
-    local arr=('https://aur.archlinux.org/vifmimg-git.git')
+    local arr=('https://aur.archlinux.org/vifmimg-git.git' 'https://aur.archlinux.org/awesome-git.git')
     local dir
     local changed
     for url in "${arr[@]}"; do

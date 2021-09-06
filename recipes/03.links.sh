@@ -47,6 +47,7 @@ function doWork(){
     link ".toprc"
     link ".config/xmonad"
     link ".config/xmobar"
+    link ".config/awesome"
 }
 
 doWork
