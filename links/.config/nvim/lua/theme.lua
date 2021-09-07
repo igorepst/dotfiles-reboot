@@ -95,7 +95,9 @@ _M.statusline = function()
             },
             size = {
                 provider = 'file_size',
-                enabled = function() return vim.fn.filereadable(vim.fn.expand('%p')) > 0 end
+                enabled = function()
+                    return vim.fn.filereadable(vim.fn.expand('%p')) > 0
+                end,
             },
             encoding = {
                 provider = 'file_encoding',
@@ -243,8 +245,8 @@ _M.statusline = function()
     }
 
     local components = {
-        left = {
-            active = {
+        active = {
+            {
                 comps.vi_mode.left,
                 comps.file.info,
                 comps.file.size,
@@ -254,16 +256,8 @@ _M.statusline = function()
                 comps.diagnos.hint,
                 comps.diagnos.info,
             },
-            inactive = {
-                comps.file.info,
-            },
-        },
-        mid = {
-            active = {},
-            inactive = {},
-        },
-        right = {
-            active = {
+            {},
+            {
                 comps.git.add,
                 comps.git.change,
                 comps.git.remove,
@@ -272,7 +266,13 @@ _M.statusline = function()
                 comps.git.branch,
                 comps.position,
             },
-            inactive = {
+        },
+        inactive = {
+            {
+                comps.file.info,
+            },
+            {},
+            {
                 comps.file.os,
             },
         },
