@@ -6,7 +6,17 @@ function ri() {
 compdef _rg ri
 
 function rif() {
-    ri --files-with-matches "$@"
+    local res ec
+    res=$(rg --ignore-file $HOME/.config/ripgrep/ignore --files-with-matches --smart-case --follow --hidden --sort-files "$@")
+    ec=$?
+    if [ ${ec} -eq 0 ]; then
+        local hn=$(hostname)
+        local f
+        while read f; do
+            echo "]8;;file://${hn}$(readlink -f ${f})${f}]8;;" 
+        done<<<"${res}"
+    fi
+    return ${ec}
 }
 compdef _rg rif
 
