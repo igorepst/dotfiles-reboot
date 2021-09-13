@@ -13,3 +13,7 @@ SELECT d.datname as "Name",pg_catalog.pg_get_userbyid(d.datdba) as "Owner" FROM 
 %psql
 # Copy DB on the same server
 CREATE DATABASE "<dst DB>" WITH TEMPLATE "<src DB>" OWNER postgres;
+
+%psql
+# Check vacuum and autovacuum
+select relname,n_live_tup,n_dead_tup,last_autovacuum,last_vacuum from pg_stat_user_tables where relname='<table-name>'
