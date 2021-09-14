@@ -6,12 +6,28 @@ function doWork() {
         echo "Source file ${srcf} doesn't exist"
         exit 1
     fi
-    local line
+    local line name val
     declare -A colors
     while read -r line; do
-        ( [[ -z "${line}" ]] || [[ "${line}" =~ ^# ]] )  && continue
-        echo $line
+        ( [[ -z "${line}" ]] || [[ "${line}" =~ ^# ]] ) && continue
+        read -r name val <<< "${line}"
+        ( [[ -z "${name}" ]] || ! [[ "${val}" =~ ^# ]] ) && continue 
+        colors["${name}"]="${val}"
     done < "${srcf}"
+    local destf=~/.theme/currentTheme.Xresources
+    {
+        echo '! vim: filetype=xdefaults:'
+        local cnt
+        for cnt in {0..15}; do 
+            echo "*color${cnt}: ${colors[color${cnt}]}"
+        done
+        echo "*background: ${colors[background]}"
+        echo "*foreground: ${colors[foreground]}"
+        echo "*cursorColor: ${colors[cursor]}"
+        echo "*highlightColor: ${colors[selection_background]}"
+        echo "*highlightTextColor: ${colors[selection_foreground]}"
+    } > "${destf}"
+
 }
 
 doWork $@
