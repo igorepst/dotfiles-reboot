@@ -10,10 +10,8 @@ function doWork(){
     ["DejaVu Sans Mono Bold Nerd Font Complete Mono"]="https://github.com/ryanoasis/nerd-fonts/raw/master/patched-fonts/DejaVuSansMono/Bold/complete/DejaVu%20Sans%20Mono%20Bold%20Nerd%20Font%20Complete%20Mono.ttf"
     ["DejaVu Sans Mono Oblique Nerd Font Complete Mono"]="https://github.com/ryanoasis/nerd-fonts/raw/master/patched-fonts/DejaVuSansMono/Italic/complete/DejaVu%20Sans%20Mono%20Oblique%20Nerd%20Font%20Complete%20Mono.ttf"
     ["DejaVu Sans Mono Bold Oblique Nerd Font Complete Mono"]="https://github.com/ryanoasis/nerd-fonts/raw/master/patched-fonts/DejaVuSansMono/Bold-Italic/complete/DejaVu%20Sans%20Mono%20Bold%20Oblique%20Nerd%20Font%20Complete%20Mono.ttf"
-    ["Ubuntu Nerd Font Complete"]="https://github.com/ryanoasis/nerd-fonts/raw/master/patched-fonts/Ubuntu/Regular/complete/Ubuntu%20Nerd%20Font%20Complete.ttf"
     ["VSCode Codicons"]="https://github.com/microsoft/vscode-codicons/raw/main/dist/codicon.ttf"
     ["Nonicons"]="https://github.com/yamatsum/nonicons/raw/master/dist/nonicons.ttf"
-    ["Symbola"]="https://github.com/gearit/ttf-symbola/raw/master/Symbola.ttf"
 )
 
     local CONV_NEEDED=0
