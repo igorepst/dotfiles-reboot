@@ -45,8 +45,6 @@ function doWork(){
     link ".gitignore-global"
     link "bin"
     link ".toprc"
-    link ".config/xmonad"
-    link ".config/xmobar"
     link ".config/awesome"
 }
 

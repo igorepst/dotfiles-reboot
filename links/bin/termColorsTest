@@ -1,0 +1,40 @@
+#!/usr/bin/env bash
+
+function 24bColorsTest(){
+    awk 'BEGIN{
+        s="/\\/\\/\\/\\/\\"; s=s s s s s s s s s s s s s s s s s s s s s s s;
+        for (colnum = 0; colnum<256; colnum++) {
+            if (colnum==76 || colnum==152) printf "\n";
+            r = 255-(colnum*255/255);
+            g = (colnum*510/255);
+            b = (colnum*255/255);
+            if (g>255) g = 510-g;
+            printf "\033[48;2;%d;%d;%dm", r,g,b;
+            printf "\033[38;2;%d;%d;%dm", 255-r,255-g,255-b;
+            printf "%s\033[0m", substr(s,colnum+1,1);
+        }
+        printf "\n";
+    }'
+}
+
+function 255colorsTest() {
+    for i in {250..16..-6}; do 
+        for j in {0..5}; do
+            k=$(( i + j ))
+            printf "\x1b[48;5;%sm%3d\e[0m " "$k" "$k"
+        done
+        printf "\n"
+    done
+    for i in {8..0..-8}; do 
+        for j in {0..7}; do
+            k=$(( i + j ))
+            printf "\x1b[48;5;%sm%3d\e[0m " "$k" "$k"
+        done
+        printf "\n"
+    done
+}
+
+24bColorsTest
+printf "\n"
+255colorsTest
+

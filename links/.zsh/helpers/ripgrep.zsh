@@ -12,7 +12,7 @@ function rif() {
     if [ ${ec} -eq 0 ]; then
         local hn=$(hostname)
         local f
-        while read f; do
+        while read -r f; do
             echo "]8;;file://${hn}$(readlink -f ${f})${f}]8;;" 
         done<<<"${res}"
     fi

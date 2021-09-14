@@ -1,0 +1,17 @@
+#!/usr/bin/env bash
+
+function doWork() {
+    local srcf=~/.config/kitty/current-theme.conf
+    if [[ ! -f ${srcf} ]]; then
+        echo "Source file ${srcf} doesn't exist"
+        exit 1
+    fi
+    local line
+    declare -A colors
+    while read -r line; do
+        ( [[ -z "${line}" ]] || [[ "${line}" =~ ^# ]] )  && continue
+        echo $line
+    done < "${srcf}"
+}
+
+doWork $@

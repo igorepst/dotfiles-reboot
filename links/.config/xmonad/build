@@ -1,6 +1,0 @@
-#!/bin/sh
-object_dir=$(mktemp -d)
-exec ghc --make xmonad.hs -package=xmonad -package=xmonad-contrib -package=regex-posix -i -ilib -fforce-recomp -main-is main -v0 -o "$1" -threaded -rtsopts -with-rtsopts -V0 -odir "$object_dir" -hidir "$object_dir"
-status=$?
-rm -r "$object_dir"
-exit $status
