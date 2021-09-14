@@ -1,6 +1,0 @@
-packages: ./*
-flags: +all_extensions
-
-package *
-  ghc-options: -fwrite-ide-info -hiedir /home/vasya/.config/xmobar/hiedb
-
