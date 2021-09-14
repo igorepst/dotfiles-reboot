@@ -40,6 +40,7 @@ return require('packer').startup({
                 require('theme').colorscheme()
             end,
         })
+        use({'jsit/disco.vim', config = function() vim.cmd[[colorscheme disco]] end})
         --         use({'rakr/vim-one', config = function()
         --             vim.cmd[[
         --                 let g:one_allow_italics = 1

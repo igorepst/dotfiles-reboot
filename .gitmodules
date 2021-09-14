@@ -31,3 +31,9 @@
 [submodule "links/.config/kitty/kitty-smart-scroll"]
 	path = links/.config/kitty/kitty-smart-scroll
 	url = https://github.com/yurikhan/kitty-smart-scroll
+[submodule "links/.config/awesome/awesome-wm-widgets"]
+	path = links/.config/awesome/awesome-wm-widgets
+	url = https://github.com/streetturtle/awesome-wm-widgets.git
+[submodule "links/.config/awesome/awesome-buttons"]
+	path = links/.config/awesome/awesome-buttons
+	url = https://github.com/streetturtle/awesome-buttons

@@ -36,7 +36,7 @@ opt.whichwrap = 'b,s,<,>,[,]'
 opt.inccommand = 'nosplit'
 opt.foldenable = false
 opt.path = '.,,'
-opt.signcolumn = 'yes'
+opt.signcolumn = 'number'
 
 g.netrw_sort_options = 'i'
 g.netrw_keepdir = 0

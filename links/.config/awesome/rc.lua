@@ -82,6 +82,13 @@ tag.connect_signal('request::default_layouts', function()
 end)
 
 local mykeyboardlayout = awful.widget.keyboardlayout()
+-- local gdb = require('gears.debug')
+mykeyboardlayout.layout_name = function(v)
+    return v.file
+end
+local capi = {awesome = awesome}
+capi.awesome.emit_signal('xkb::map_changed')
+-- naughty.notification({message=gdb.dump_return(mykeyboardlayout, 'mkl')})
 
 screen.connect_signal('request::wallpaper', function(s)
     -- Wallpaper
@@ -97,7 +104,9 @@ end)
 
 screen.connect_signal('request::desktop_decoration', function(s)
     -- Each screen has its own tag table.
-    awful.tag({ '', '', '' }, s, awful.layout.layouts[1])
+    awful.tag({ '', '',
+--         ''
+    }, s, awful.layout.layouts[1])
 
     -- Create a promptbox for each screen
     s.mypromptbox = awful.widget.prompt()
@@ -166,7 +175,13 @@ screen.connect_signal('request::desktop_decoration', function(s)
                 awful.client.focus.byidx(1)
             end),
         },
+        style = {
+            font_focus = beautiful.font_bold,
+        },
     })
+
+    local volume_widget = require('awesome-wm-widgets.volume-widget.volume')
+    local battery_widget = require('awesome-wm-widgets.battery-widget.battery')
 
     s.mywibox = awful.wibar({ position = 'bottom', screen = s })
 
@@ -182,6 +197,10 @@ screen.connect_signal('request::desktop_decoration', function(s)
         { -- Right widgets
             layout = wibox.layout.fixed.horizontal,
             mykeyboardlayout,
+            volume_widget({
+                widget_type = 'icon_and_text',
+            }),
+            battery_widget(),
             wibox.widget.systray(),
             wibox.widget({
                 format = '%a %d/%m,%H:%M',
@@ -244,6 +263,12 @@ awful.keyboard.append_global_keybindings({
     end, {
         description = 'show the menubar',
         group = 'launcher',
+    }),
+    awful.key({}, 'XF86PowerOff', function()
+        require('awesome-wm-widgets.logout-popup-widget.logout-popup').launch()
+    end, {
+        description = 'Show logout screen',
+        group = 'custom',
     }),
 })
 
@@ -559,11 +584,11 @@ ruled.client.connect_signal('request::rules', function()
         properties = { floating = true },
     })
 
-    ruled.client.append_rule({
-        id = 'kitty',
-        rule_any = { class = { 'kitty' } },
-        properties = { titlebars_enabled = false, maximized_horizontal = true, maximized_vertical = true },
-    })
+    --     ruled.client.append_rule({
+    --         id = 'kitty',
+    --         rule_any = { class = { 'kitty' } },
+    --         properties = { titlebars_enabled = false, maximized_horizontal = true, maximized_vertical = true },
+    --     })
 
     ruled.client.append_rule({
         id = 'notetaker',
@@ -584,11 +609,11 @@ client.connect_signal('request::manage', function(c)
     -- i.e. put it at the end of others instead of setting it master.
     if not awesome.startup then
         awful.client.setslave(c)
---     else
---         if not c.size_hints.user_position and not c.size_hints.program_position then
---             Prevent clients from being unreachable after screen count changes.
---             awful.placement.no_offscreen(c)
---         end
+        --     else
+        --         if not c.size_hints.user_position and not c.size_hints.program_position then
+        --             Prevent clients from being unreachable after screen count changes.
+        --             awful.placement.no_offscreen(c)
+        --         end
     end
 end)
 
@@ -647,3 +672,15 @@ end)
 client.connect_signal('mouse::enter', function(c)
     c:activate({ context = 'mouse_enter', raise = false })
 end)
+
+local function run_once(cmd_arr)
+    for _, cmd in ipairs(cmd_arr) do
+        local findme = cmd
+        local firstspace = cmd:find(' ')
+        if firstspace then
+            findme = cmd:sub(0, firstspace - 1)
+        end
+        awful.spawn.with_shell(string.format('pgrep -u $USER -x %s > /dev/null || (%s)', findme, cmd))
+    end
+end
+run_once({ 'picom -b' })

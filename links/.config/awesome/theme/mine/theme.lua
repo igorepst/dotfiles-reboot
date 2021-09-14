@@ -12,7 +12,8 @@ local themes_path = gfs.get_configuration_dir() .. 'theme/mine/'
 
 local theme = {}
 
-theme.font = 'DejaVuSansMono Nerd Font Mono 10'
+theme.font = 'DejaVu Sans Mono Nerd Font Complete Mono 10'
+theme.font_bold = 'DejaVu Sans Mono Bold Nerd Font Complete Mono Bold 10'
 
 theme.bg_normal = '#fffffa'
 theme.bg_focus = '#bbbbbb'
@@ -31,6 +32,8 @@ theme.border_color_normal = '#000000'
 theme.border_color_active = '#535d6c'
 theme.border_color_marked = '#91231c'
 
+theme.dark_green = '#4e9a05'
+
 -- There are other variable sets
 -- overriding the default one when
 -- defined, the sets are:
@@ -46,7 +49,7 @@ theme.border_color_marked = '#91231c'
 
 -- Generate taglist squares:
 local taglist_square_size = dpi(8)
-theme.taglist_squares_sel = theme_assets.taglist_squares_sel(taglist_square_size, theme.fg_normal)
+theme.taglist_squares_sel = theme_assets.taglist_squares_sel(taglist_square_size, theme.dark_green)
 theme.taglist_squares_unsel = theme_assets.taglist_squares_unsel(taglist_square_size, theme.fg_normal)
 theme.taglist_font = 'DejaVuSansMono Nerd Font Mono 18'
 
@@ -128,5 +131,5 @@ rnotification.connect_signal('request::rules', function()
     })
 end)
 
-theme = theme_assets.recolor_layout(theme, theme.fg_normal)
+theme = theme_assets.recolor_layout(theme, theme.dark_green)
 return theme
