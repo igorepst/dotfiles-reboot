@@ -11,3 +11,4 @@ XTerm.utf8: 1
 XTerm.scrollLines: 5
 XTerm.disallowedWindowOps: 20,21,SetXprop
 XTerm.selectToClipboard: true
+XTerm.highlightColorMode: true

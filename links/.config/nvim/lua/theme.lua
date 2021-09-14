@@ -229,21 +229,6 @@ _M.statusline = function()
         },
     }
 
-    local properties = {
-        force_inactive = {
-            filetypes = {
-                'NvimTree',
-                'dbui',
-                'packer',
-                'startify',
-                'fugitive',
-                'fugitiveblame',
-            },
-            buftypes = { 'terminal' },
-            bufnames = {},
-        },
-    }
-
     local components = {
         active = {
             {
@@ -279,11 +264,20 @@ _M.statusline = function()
     }
 
     require('feline').setup({
-        default_bg = colors.bg,
-        default_fg = colors.fg,
         components = components,
-        properties = properties,
         vi_mode_colors = vi_mode_colors,
+        force_inactive = {
+            filetypes = {
+                'NvimTree',
+                'dbui',
+                'packer',
+                'startify',
+                'fugitive',
+                'fugitiveblame',
+            },
+            buftypes = { 'terminal' },
+            bufnames = {},
+        },
     })
 end
 
