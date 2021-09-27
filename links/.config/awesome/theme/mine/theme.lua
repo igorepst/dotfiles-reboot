@@ -14,6 +14,7 @@ local theme = {}
 
 theme.font = 'DejaVu Sans Mono Nerd Font Complete Mono 10'
 theme.font_bold = 'DejaVu Sans Mono Bold Nerd Font Complete Mono Bold 10'
+theme.menu_font = 'DejaVu Sans Mono Nerd Font Complete Mono 13'
 
 theme.bg_normal = '#fffffa'
 theme.bg_focus = '#bbbbbb'
@@ -63,7 +64,7 @@ theme.taglist_font = 'DejaVuSansMono Nerd Font Mono 18'
 -- menu_[bg|fg]_[normal|focus]
 -- menu_[border_color|border_width]
 theme.menu_submenu_icon = themes_path .. 'submenu.png'
-theme.menu_height = dpi(15)
+theme.menu_height = dpi(20)
 theme.menu_width = dpi(150)
 
 -- You can add as many variables as

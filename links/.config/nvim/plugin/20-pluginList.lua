@@ -5,6 +5,16 @@ vim.cmd([[
     augroup END
 ]])
 
+function FindFileInRuntime()
+    require('fzf-lua').files({ raw_cmd = 'fd --type file . ' .. vim.fn.stdpath('config') .. ' ' .. vim.fn.stdpath('data') .. ' ' .. vim.fn.getenv('VIMRUNTIME') })
+end
+
+function SearchInRuntime()
+    require('fzf-lua').live_grep({ filespec = 'hjgjhjhkjhj' })
+--require('fzf-lua').live_grep({ filespec = '~/.config/nvim ~/.local/share/nvim/site' })
+--     require('fzf-lua').live_grep({ filespec = '-- ' .. vim.fn.stdpath('config') .. ' ' .. vim.fn.stdpath('data') .. ' ' .. vim.fn.getenv('VIMRUNTIME') })
+end
+
 return require('packer').startup({
     function(use)
         use({ 'wbthomason/packer.nvim' })
@@ -40,7 +50,11 @@ return require('packer').startup({
                 require('theme').colorscheme()
             end,
         })
-        use({'jsit/disco.vim', config = function() vim.cmd[[colorscheme disco]] end})
+        use({'ibhagwan/fzf-lua',
+  requires = {
+    'vijaymarupudi/nvim-fzf',
+    'kyazdani42/nvim-web-devicons' }})
+--         use({'jsit/disco.vim', config = function() vim.cmd[[colorscheme disco]] end})
         --         use({'rakr/vim-one', config = function()
         --             vim.cmd[[
         --                 let g:one_allow_italics = 1

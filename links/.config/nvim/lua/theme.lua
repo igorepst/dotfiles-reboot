@@ -183,7 +183,7 @@ _M.statusline = function()
                     local clients = {}
                     local icon = component.icon or ' '
 
-                    for _, client in pairs(vim.lsp.buf_get_clients()) do
+                    for _, client in pairs(vim.lsp.buf_get_clients(vim.api.nvim_get_current_win())) do
                         clients[#clients + 1] = client.name
                     end
 
@@ -235,11 +235,11 @@ _M.statusline = function()
                 comps.vi_mode.left,
                 comps.file.info,
                 comps.file.size,
-                comps.lsp.name,
-                comps.diagnos.err,
-                comps.diagnos.warn,
-                comps.diagnos.hint,
-                comps.diagnos.info,
+--                 comps.lsp.name,
+--                 comps.diagnos.err,
+--                 comps.diagnos.warn,
+--                 comps.diagnos.hint,
+--                 comps.diagnos.info,
             },
             {},
             {

@@ -27,6 +27,7 @@ function doWork() {
         echo "*highlightColor: ${colors[selection_background]}"
         echo "*highlightTextColor: ${colors[selection_foreground]}"
     } > "${destf}"
+    xrdb -override "${destf}"
 
 }
 

@@ -86,7 +86,7 @@ local mykeyboardlayout = awful.widget.keyboardlayout()
 mykeyboardlayout.layout_name = function(v)
     return v.file
 end
-local capi = {awesome = awesome}
+local capi = { awesome = awesome }
 capi.awesome.emit_signal('xkb::map_changed')
 -- naughty.notification({message=gdb.dump_return(mykeyboardlayout, 'mkl')})
 
@@ -104,8 +104,10 @@ end)
 
 screen.connect_signal('request::desktop_decoration', function(s)
     -- Each screen has its own tag table.
-    awful.tag({ '', '',
---         ''
+    awful.tag({
+        '',
+        '',
+        --         ''
     }, s, awful.layout.layouts[1])
 
     -- Create a promptbox for each screen
@@ -181,26 +183,27 @@ screen.connect_signal('request::desktop_decoration', function(s)
     })
 
     local volume_widget = require('awesome-wm-widgets.volume-widget.volume')
-    local battery_widget = require('awesome-wm-widgets.battery-widget.battery')
+    local upower_bat = require('widgets.battery.battery')
 
     s.mywibox = awful.wibar({ position = 'bottom', screen = s })
 
     s.mywibox.widget = {
         layout = wibox.layout.align.horizontal,
-        { -- Left widgets
+        {
             layout = wibox.layout.fixed.horizontal,
             mylauncher,
             s.mytaglist,
             s.mypromptbox,
         },
-        s.mytasklist, -- Middle widget
-        { -- Right widgets
+        s.mytasklist,
+        {
             layout = wibox.layout.fixed.horizontal,
+            spacing = 5,
             mykeyboardlayout,
             volume_widget({
                 widget_type = 'icon_and_text',
             }),
-            battery_widget(),
+            upower_bat(),
             wibox.widget.systray(),
             wibox.widget({
                 format = '%a %d/%m,%H:%M',
@@ -480,10 +483,66 @@ client.connect_signal('request::default_keybindings', function()
             description = 'toggle fullscreen',
             group = 'client',
         }),
-        awful.key({ modkey, 'Shift' }, 'c', function(c)
-            c:kill()
+        awful.key({ modkey }, 'm', function(c)
+            local clientMenu = awful.menu({
+                items = {
+                    {
+                        '&Close',
+                        function()
+                            c:kill()
+                        end,
+                        beautiful.titlebar_close_button_normal,
+                    },
+                    {
+                        'Mi&nimize',
+                        function()
+                            c.minimized = true
+                        end,
+                        beautiful.titlebar_minimize_button_normal,
+                    },
+                    {
+                        'Ma&ximize',
+                        function()
+                            c.maximized = not c.maximized
+                            c:raise()
+                        end,
+                        beautiful.titlebar_maximized_button_normal_active,
+                    },
+                    {
+                        'Max &vert',
+                        function()
+                            c.maximized_vertical = not c.maximized_vertical
+                            c:raise()
+                        end,
+                        beautiful.titlebar_maximized_button_normal_active,
+                    },
+                    {
+                        'Max hori&z',
+                        function()
+            c.maximized_horizontal = not c.maximized_horizontal
+                            c:raise()
+                        end,
+                        beautiful.titlebar_maximized_button_normal_active,
+                    },
+                    {
+                        'On &top',
+                        function()
+                            c.ontop = not c.ontop
+                        end,
+                        beautiful.titlebar_ontop_button_normal_active,
+                    },{
+                        '&Sticky',
+                        function()
+                            c.sticky = not c.sticky
+                        end,
+                        beautiful.titlebar_sticky_button_normal_active,
+                    },
+
+                },
+            })
+            clientMenu:toggle()
         end, {
-            description = 'close',
+            description = 'client menu',
             group = 'client',
         }),
         awful.key(
@@ -504,41 +563,6 @@ client.connect_signal('request::default_keybindings', function()
             description = 'move to screen',
             group = 'client',
         }),
-        awful.key({ modkey }, 't', function(c)
-            c.ontop = not c.ontop
-        end, {
-            description = 'toggle keep on top',
-            group = 'client',
-        }),
-        awful.key({ modkey }, 'n', function(c)
-            -- The client currently has the input focus, so it cannot be
-            -- minimized, since minimized clients can't have the focus.
-            c.minimized = true
-        end, {
-            description = 'minimize',
-            group = 'client',
-        }),
-        awful.key({ modkey }, 'm', function(c)
-            c.maximized = not c.maximized
-            c:raise()
-        end, {
-            description = '(un)maximize',
-            group = 'client',
-        }),
-        awful.key({ modkey, 'Control' }, 'm', function(c)
-            c.maximized_vertical = not c.maximized_vertical
-            c:raise()
-        end, {
-            description = '(un)maximize vertically',
-            group = 'client',
-        }),
-        awful.key({ modkey, 'Shift' }, 'm', function(c)
-            c.maximized_horizontal = not c.maximized_horizontal
-            c:raise()
-        end, {
-            description = '(un)maximize horizontally',
-            group = 'client',
-        }),
     })
 end)
 
@@ -551,6 +575,7 @@ ruled.client.connect_signal('request::rules', function()
             raise = true,
             screen = awful.screen.preferred,
             placement = awful.placement.no_overlap + awful.placement.no_offscreen,
+            size_hints_honor = false,
         },
     })
 
@@ -584,11 +609,11 @@ ruled.client.connect_signal('request::rules', function()
         properties = { floating = true },
     })
 
-    --     ruled.client.append_rule({
-    --         id = 'kitty',
-    --         rule_any = { class = { 'kitty' } },
-    --         properties = { titlebars_enabled = false, maximized_horizontal = true, maximized_vertical = true },
-    --     })
+    --         ruled.client.append_rule({
+    --             id = 'kitty',
+    --             rule_any = { class = { 'kitty' } },
+    --             properties = { titlebars_enabled = false },
+    --         })
 
     ruled.client.append_rule({
         id = 'notetaker',
@@ -683,4 +708,4 @@ local function run_once(cmd_arr)
         awful.spawn.with_shell(string.format('pgrep -u $USER -x %s > /dev/null || (%s)', findme, cmd))
     end
 end
-run_once({ 'picom -b' })
+run_once({ 'picom -b', 'wifi' })
