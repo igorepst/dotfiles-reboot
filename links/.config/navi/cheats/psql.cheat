@@ -25,3 +25,15 @@ select schemaname as table_schema, relname as table_name, pg_size_pretty(pg_tota
 %psql
 # Show size of the databases
 SELECT pg_database.datname as "database_name", pg_database_size(pg_database.datname)/1024/1024 AS size_in_mb FROM pg_database ORDER by size_in_mb DESC;
+
+%psql
+# Select long running queries
+SELECT pid, now() - query_start as "runtime", usename, datname, waiting, state, query FROM pg_stat_activity WHERE now() - query_start > '2 minutes'::interval and state = 'active' ORDER BY runtime DESC;
+
+%psql
+# Show dead vs live tuples
+select relname, n_live_tup, n_dead_tup from pg_stat_user_tables group by 1, 2, 3 order by 2, 3 desc;
+
+%psql
+# Show dead tuples
+select relname, n_dead_tup, last_vacuum, last_autovacuum from pg_catalog.pg_stat_all_tables where n_dead_tup > 0 order by n_dead_tup desc;
