@@ -1,15 +1,6 @@
 local _M = {}
 
-_M.colorscheme = function()
-    vim.cmd('silent! colorscheme hemisu')
-end
-
 _M.statusline = function()
-    --     local present, feline = pcall(require, 'feline')
-    --     if not present then
-    --         return
-    --     end
-
     vim.cmd([[
     augroup felineReset
     autocmd!
@@ -18,36 +9,21 @@ _M.statusline = function()
     augroup END
     ]])
 
-    local hemisu_c = require('lush_theme.hemisu_colors')
+    local c = require('igTermColors').getColors()
     local colors = {
-        bg = hemisu_c.bg.hex,
-        fg = hemisu_c.norm.hex,
-        yellow = '#503d15',
-        cyan = '#538192',
-        darkblue = hemisu_c.faintBlue.hex,
-        green = hemisu_c.normGreen.hex,
-        orange = '#d19a66',
-        violet = '#b294bb',
-        magenta = '#ff80ff',
-        blue = hemisu_c.normBlue.hex,
-        red = hemisu_c.normRed.hex,
-    }
-
-    local vi_mode_colors = {
-        NORMAL = colors.green,
-        OP = colors.green,
-        INSERT = colors.blue,
-        VISUAL = colors.violet,
-        BLOCK = colors.blue,
-        REPLACE = colors.red,
-        ['V-REPLACE'] = colors.red,
-        ENTER = colors.cyan,
-        MORE = colors.cyan,
-        SELECT = colors.orange,
-        COMMAND = colors.magenta,
-        SHELL = colors.green,
-        TERM = colors.blue,
-        NONE = colors.yellow,
+        fg = c.foreground,
+        bg = '#e4e4e4',
+        black = c.color0,
+        skyblue = c.color12,
+        cyan = c.color6,
+        green = c.color2,
+        oceanblue = c.color4,
+        magenta = c.color5,
+        orange = '#FF9000',
+        red = c.color9,
+        violet = '#9E93E8',
+        white = c.color15,
+        yellow = c.color3,
     }
 
     local function file_osinfo()
@@ -63,7 +39,6 @@ _M.statusline = function()
         return icon
     end
 
-    local lsp = require('feline.providers.lsp')
     local vi_mode_utils = require('feline.providers.vi_mode')
 
     local comps = {
@@ -84,9 +59,13 @@ _M.statusline = function()
         },
         file = {
             info = {
-                provider = 'file_info',
-                file_modified_icon = '+',
-                type = 'unique',
+                provider = {
+                    name = 'file_info',
+                    opts = {
+                        type = 'unique',
+                        file_modified_icon = '+',
+                    },
+                },
                 hl = {
                     fg = colors.blue,
                     style = 'bold',
@@ -142,36 +121,24 @@ _M.statusline = function()
         diagnos = {
             err = {
                 provider = 'diagnostic_errors',
-                enabled = function()
-                    return lsp.diagnostics_exist('Error')
-                end,
                 hl = {
                     fg = colors.red,
                 },
             },
             warn = {
                 provider = 'diagnostic_warnings',
-                enabled = function()
-                    return lsp.diagnostics_exist('Warning')
-                end,
                 hl = {
                     fg = colors.yellow,
                 },
             },
             hint = {
                 provider = 'diagnostic_hints',
-                enabled = function()
-                    return lsp.diagnostics_exist('Hint')
-                end,
                 hl = {
                     fg = colors.cyan,
                 },
             },
             info = {
                 provider = 'diagnostic_info',
-                enabled = function()
-                    return lsp.diagnostics_exist('Information')
-                end,
                 hl = {
                     fg = colors.blue,
                 },
@@ -179,19 +146,7 @@ _M.statusline = function()
         },
         lsp = {
             name = {
-                provider = function(component)
-                    local clients = {}
-                    local icon = component.icon or ' '
-
-                    for _, client in pairs(vim.lsp.buf_get_clients(vim.api.nvim_get_current_win())) do
-                        clients[#clients + 1] = client.name
-                    end
-
-                    return icon .. table.concat(clients, ',')
-                end,
-                enabled = function()
-                    return lsp.is_lsp_attached()
-                end,
+                provider = 'lsp_client_names',
                 left_sep = ' ',
                 hl = {
                     fg = colors.yellow,
@@ -235,11 +190,11 @@ _M.statusline = function()
                 comps.vi_mode.left,
                 comps.file.info,
                 comps.file.size,
---                 comps.lsp.name,
---                 comps.diagnos.err,
---                 comps.diagnos.warn,
---                 comps.diagnos.hint,
---                 comps.diagnos.info,
+                comps.lsp.name,
+                comps.diagnos.err,
+                comps.diagnos.warn,
+                comps.diagnos.hint,
+                comps.diagnos.info,
             },
             {},
             {
@@ -265,19 +220,7 @@ _M.statusline = function()
 
     require('feline').setup({
         components = components,
-        vi_mode_colors = vi_mode_colors,
-        force_inactive = {
-            filetypes = {
-                'NvimTree',
-                'dbui',
-                'packer',
-                'startify',
-                'fugitive',
-                'fugitiveblame',
-            },
-            buftypes = { 'terminal' },
-            bufnames = {},
-        },
+        colors = colors
     })
 end
 

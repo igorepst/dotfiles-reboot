@@ -54,6 +54,7 @@ _M.setup = function()
             widget = wibox.widget.textbox(),
         },
         layout = wibox.layout.fixed.horizontal,
+        spacing = 2,
     })
     local update = function(upd)
         for _, bn in ipairs(upd) do

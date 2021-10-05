@@ -94,7 +94,6 @@ screen.connect_signal('request::wallpaper', function(s)
     -- Wallpaper
     if beautiful.wallpaper then
         local wallpaper = beautiful.wallpaper
-        -- If wallpaper is a function, call it with the screen
         if type(wallpaper) == 'function' then
             wallpaper = wallpaper(s)
         end
@@ -198,7 +197,7 @@ screen.connect_signal('request::desktop_decoration', function(s)
         s.mytasklist,
         {
             layout = wibox.layout.fixed.horizontal,
-            spacing = 5,
+            spacing = 7,
             mykeyboardlayout,
             volume_widget({
                 widget_type = 'icon_and_text',
@@ -519,7 +518,7 @@ client.connect_signal('request::default_keybindings', function()
                     {
                         'Max hori&z',
                         function()
-            c.maximized_horizontal = not c.maximized_horizontal
+                            c.maximized_horizontal = not c.maximized_horizontal
                             c:raise()
                         end,
                         beautiful.titlebar_maximized_button_normal_active,
@@ -530,14 +529,14 @@ client.connect_signal('request::default_keybindings', function()
                             c.ontop = not c.ontop
                         end,
                         beautiful.titlebar_ontop_button_normal_active,
-                    },{
+                    },
+                    {
                         '&Sticky',
                         function()
                             c.sticky = not c.sticky
                         end,
                         beautiful.titlebar_sticky_button_normal_active,
                     },
-
                 },
             })
             clientMenu:toggle()

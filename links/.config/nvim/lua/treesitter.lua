@@ -1,45 +1,24 @@
-local present, ts_config = pcall(require, 'nvim-treesitter.configs')
-if not present then
-    return
+local treesitter = {}
+
+treesitter.config = function()
+    require('nvim-treesitter.configs').setup({
+        ensure_installed = "maintained",
+        highlight = {
+            enable = true,
+        },
+        incremental_selection = {
+            enable = true,
+            keymaps = {
+                init_selection = '<Leader>n',
+                node_incremental = 'n',
+                scope_incremental = '<Leader>m',
+                node_decremental = 'm',
+            },
+        },
+        indent = {
+            enable = true,
+        },
+    })
 end
 
-ts_config.setup({
-    ensure_installed = {
-        'bash',
-        'c',
-        'comment',
-        'cpp',
-        'css',
-        'dockerfile',
-        'go',
-        'gomod',
-        'haskell',
-        'html',
-        'java',
-        'javascript',
-        'json',
-        'lua',
-        'python',
-        'regex',
-        'rust',
-        'scss',
-        'toml',
-        'typescript',
-        'yaml',
-    },
-    highlight = {
-        enable = true,
-    },
-    incremental_selection = {
-        enable = true,
-        keymaps = {
-            init_selection = 'gnn',
-            node_incremental = 'grn',
-            scope_incremental = 'grc',
-            node_decremental = 'grm',
-        },
-    },
-    indent = {
-        enable = true,
-    },
-})
+return treesitter

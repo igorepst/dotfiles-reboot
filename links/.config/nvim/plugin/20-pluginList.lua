@@ -5,19 +5,21 @@ vim.cmd([[
     augroup END
 ]])
 
-function FindFileInRuntime()
-    require('fzf-lua').files({ raw_cmd = 'fd --type file . ' .. vim.fn.stdpath('config') .. ' ' .. vim.fn.stdpath('data') .. ' ' .. vim.fn.getenv('VIMRUNTIME') })
-end
-
-function SearchInRuntime()
-    require('fzf-lua').live_grep({ filespec = 'hjgjhjhkjhj' })
---require('fzf-lua').live_grep({ filespec = '~/.config/nvim ~/.local/share/nvim/site' })
---     require('fzf-lua').live_grep({ filespec = '-- ' .. vim.fn.stdpath('config') .. ' ' .. vim.fn.stdpath('data') .. ' ' .. vim.fn.getenv('VIMRUNTIME') })
-end
-
 return require('packer').startup({
     function(use)
         use({ 'wbthomason/packer.nvim' })
+        use({
+            'igorepst/igTermColors.nvim',
+            config = function()
+                local color_overrides = nil
+                local f = loadfile(vim.fn.expand('~/.theme/nvimThemeColors.lua'))
+                if f then
+                    color_overrides = f()
+                end
+                require('igTermColors').setup({ color_overrides = color_overrides, invert_for_dark = true })
+                vim.cmd([[colorscheme igTermColors]])
+            end,
+        })
         use({ 'igorepst/igToggleComment.nvim', keys = { '<Plug>(IgToggleComment)' } })
         use({
             'igorepst/igCommands.nvim',
@@ -25,7 +27,11 @@ return require('packer').startup({
                 require('igCommands').setup({
                     prefix = 'ig',
                     commands = {
-                        { name = 'Toggle list', cmd = 'lua vim.opt.list = not vim.opt.list:get()', key = '<Leader>tl' },
+                        {
+                            name = 'Toggle list',
+                            cmd = 'lua vim.opt.list = not vim.opt.list:get()',
+                            key = '<Leader>tl',
+                        },
                         { name = 'Toggle wrap', cmd = 'lua vim.opt.wrap = not vim.opt.wrap:get()' },
                         { name = 'Toggle hlsearch', cmd = 'lua vim.opt.hlsearch = not vim.opt.hlsearch:get()' },
                         { name = 'Convert to DOS', cmd = 'set ff=dos' },
@@ -39,89 +45,24 @@ return require('packer').startup({
                             name = 'Diff saved',
                             cmd = 'vert new | set bt=nofile | r ++edit # | 0d_ | diffthis | wincmd p | diffthis',
                         },
+                        { name = 'Find file in runtime', cmd = 'lua FindFileInRuntime()' },
+                        { name = 'Search in runtime', cmd = 'lua SearchInRuntime()' },
                     },
                 })
             end,
         })
         use({
-            'igorepst/hemisu.nvim',
-            requires = { 'rktjmp/lush.nvim' },
-            config = function()
-                require('theme').colorscheme()
-            end,
-        })
-        use({'ibhagwan/fzf-lua',
-  requires = {
-    'vijaymarupudi/nvim-fzf',
-    'kyazdani42/nvim-web-devicons' }})
---         use({'jsit/disco.vim', config = function() vim.cmd[[colorscheme disco]] end})
-        --         use({'rakr/vim-one', config = function()
-        --             vim.cmd[[
-        --                 let g:one_allow_italics = 1
-        --                 colorscheme one]]
-        --         end})
-        --       use({'kaicataldo/material.vim', config = function()
-        --        vim.cmd[[
-        --            let g:material_terminal_italics = 1
-        --            let g:material_theme_style = 'lighter'
-        --         colorscheme material
-        --         ]]
-        --             end
-        --         })
-        use({
-            'Pocco81/Catppuccino.nvim',
-            config = function()
-                local catppuccino = require('catppuccino')
-
-                -- configure it
-                catppuccino.setup({
-                    colorscheme = 'light_melya',
-                    transparency = false,
-                    styles = {
-                        comments = 'italic',
-                        functions = 'italic',
-                        keywords = 'italic',
-                        strings = 'NONE',
-                        variables = 'NONE',
-                    },
-                    integrations = {
-                        treesitter = true,
-                        native_lsp = {
-                            enabled = true,
-                            styles = {
-                                errors = 'italic',
-                                hints = 'italic',
-                                warnings = 'italic',
-                                information = 'italic',
-                            },
-                        },
-                        lsp_trouble = false,
-                        lsp_saga = false,
-                        gitgutter = false,
-                        gitsigns = false,
-                        telescope = false,
-                        nvimtree = false,
-                        which_key = false,
-                        indent_blankline = false,
-                        dashboard = false,
-                        neogit = false,
-                        vim_sneak = false,
-                        fern = false,
-                        barbar = false,
-                        bufferline = false,
-                        markdown = false,
-                    },
-                })
-
-                -- load it
-                -- catppuccino.load()
-            end,
+            'ibhagwan/fzf-lua',
+            requires = {
+                'vijaymarupudi/nvim-fzf',
+                'kyazdani42/nvim-web-devicons',
+            },
         })
         use({
             'nvim-treesitter/nvim-treesitter',
             run = ':TSUpdate',
             config = function()
-                require('treesitter')
+                require('treesitter').config()
             end,
         })
         use({
@@ -131,16 +72,20 @@ return require('packer').startup({
         })
         use({
             'neovim/nvim-lspconfig',
-            requires = { 'kabouzeid/nvim-lspinstall' },
             config = function()
                 require('lsp')
             end,
         })
+        use('hrsh7th/nvim-cmp')
+        use('hrsh7th/cmp-nvim-lsp')
         use({
             'lewis6991/gitsigns.nvim',
             requires = { 'nvim-lua/plenary.nvim' },
             config = function()
-                require('gitsigns').setup()
+                require('gitsigns').setup({
+                    numhl = true,
+                    signcolumn = false,
+                })
             end,
         })
         use({
@@ -165,6 +110,7 @@ return require('packer').startup({
                 })
                 require('lspconfig')['null-ls'].setup({
                     on_attach = require('lsp').on_attach,
+                    capabilities = require('lsp').capabilities,
                 })
             end,
         })

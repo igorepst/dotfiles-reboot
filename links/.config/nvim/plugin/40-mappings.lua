@@ -14,9 +14,13 @@ map('n', '<C-_>', '<Plug>(IgToggleComment)', { noremap = false })
 map('v', '<C-_>', '<Plug>(IgToggleComment)', { noremap = false })
 map('i', '<C-_>', '<Plug>(IgToggleComment)', { noremap = false })
 
-map('c', 'ee<Space>', '(getcmdtype() == \':\' && getcmdline() == \'\')? \'edit **/*\' : \'ee<Space>\'', { expr = true })
+map('c', 'ee<Space>', '(getcmdtype() == \':\' && getcmdline() == \'\')? \'edit **/*\' : \'ee<Space>\'', {
+    expr = true,
+})
 
 map('n', '[b', ':<C-U>exe v:count1 . "bprevious!"<CR>', { silent = true })
 map('n', ']b', ':<C-U>exe v:count1 . "bnext!"<CR>', { silent = true })
 map('n', '[q', ':<C-U>exe v:count1 . "cprevious!"<CR>', { silent = true })
 map('n', ']q', ':<C-U>exe v:count1 . "cnext!"<CR>', { silent = true })
+
+map('n', '<F8>', ':lua ShowCurrentWordHighlight()<CR>', { silent = true })

@@ -68,6 +68,7 @@ function updateDots(){
     rehash
     local packerDir=~/.local/share/nvim/site/pack/packer/start/packer.nvim
     [ ! -d "${packerDir}" ] && git clone https://github.com/wbthomason/packer.nvim "${packerDir}" 
+    _install_nvim_lsp
     nvim --headless -c 'autocmd User PackerComplete quitall' -c 'PackerSync'
     nvim --headless -c 'TSUpdateSync' -c 'quitall'
     rm -f ~/.zsh/volatile/zcompdump*
@@ -83,4 +84,30 @@ function _get_gh_releases() {
     get_gh_release --repo mvdan/sh --arch linux_amd64 --toPath shfmt --unarchive 0 --rn shfmt
     get_gh_release --repo JohnnyMorganz/StyLua --arch linux.zip --toPath stylua
     get_gh_release --repo neovim/neovim --arch linux64.tar.gz --toPath bin/nvim --tag nightly
+}
+
+function _install_nvim_lsp() {
+    emulate -L zsh
+    setopt no_autopushd
+    local parentDir=~/.cache/nvim/lspServers
+    # Bash
+    if [ ! -d "${parentDir}/bash" ]; then
+        echo 'Installing Bash LSP for Neovim'
+        mkdir -p "${parentDir}/bash"
+        pushd "${parentDir}/bash" > /dev/null
+        npm install bash-language-server
+        popd > /dev/null
+    fi
+    # Lua
+    if [ ! -d "${parentDir}/lua" ]; then
+        echo 'Installing Lua LSP for Neovim'
+        mkdir -p "${parentDir}/lua"
+        pushd "${parentDir}/lua" > /dev/null
+        curl -L -o sumneko-lua.vsix $(curl -s https://api.github.com/repos/sumneko/vscode-lua/releases/latest | grep 'browser_' | cut -d\" -f4)
+        rm -rf sumneko-lua
+        unzip sumneko-lua.vsix -d sumneko-lua
+        rm sumneko-lua.vsix
+        chmod +x sumneko-lua/extension/server/bin/Linux/lua-language-server
+        popd > /dev/null
+    fi
 }

@@ -29,6 +29,21 @@ function doWork() {
     } > "${destf}"
     xrdb -override "${destf}"
 
+    destf=~/.theme/nvimThemeColors.lua
+    {
+        echo 'return {'
+        local cnt
+        for cnt in {0..15}; do
+            echo "color${cnt} = '${colors[color${cnt}]}',"
+        done
+        echo "background = '${colors[background]}',"
+        echo "foreground = '${colors[foreground]}',"
+        echo "cursor = '${colors[cursor]}',"
+        echo "selectionBackground = '${colors[selection_background]}',"
+        echo "selectionForeground = '${colors[selection_foreground]}'"
+        echo '}'
+    } > "${destf}"
+
 }
 
 doWork $@
