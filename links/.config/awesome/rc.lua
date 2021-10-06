@@ -26,40 +26,40 @@ naughty.connect_signal('request::display_error', function(message, startup)
     })
 end)
 
-beautiful.init(gears.filesystem.get_configuration_dir() .. 'theme/mine/theme.lua')
+beautiful.init(gears.filesystem.get_configuration_dir() .. 'theme/gtk/theme.lua')
 
 -- This is used later as the default terminal and editor to run.
 local terminal = os.getenv('MYTERM')
-local editor = os.getenv('EDITOR')
-local editor_cmd = terminal .. ' -e ' .. editor
+-- local editor = os.getenv('EDITOR')
+-- local editor_cmd = terminal .. ' -e ' .. editor
 local modkey = 'Mod4'
 
-local myawesomemenu = {
-    {
-        'hotkeys',
-        function()
-            hotkeys_popup.show_help(nil, awful.screen.focused())
-        end,
-    },
-    { 'manual', terminal .. ' -e man awesome' },
-    { 'edit config', editor_cmd .. ' ' .. awesome.conffile },
-    { 'restart', awesome.restart },
-    {
-        'quit',
-        function()
-            awesome.quit()
-        end,
-    },
-}
+-- local myawesomemenu = {
+--     {
+--         'hotkeys',
+--         function()
+--             hotkeys_popup.show_help(nil, awful.screen.focused())
+--         end,
+--     },
+--     { 'manual', terminal .. ' -e man awesome' },
+--     { 'edit config', editor_cmd .. ' ' .. awesome.conffile },
+--     { 'restart', awesome.restart },
+--     {
+--         'quit',
+--         function()
+--             awesome.quit()
+--         end,
+--     },
+-- }
 
-local mymainmenu = awful.menu({
-    items = {
-        { 'awesome', myawesomemenu, beautiful.awesome_icon },
-        { 'open terminal', terminal },
-    },
-})
+-- local mymainmenu = awful.menu({
+--     items = {
+--         { 'awesome', myawesomemenu, beautiful.awesome_icon },
+--         { 'open terminal', terminal },
+--     },
+-- })
 
-local mylauncher = awful.widget.launcher({ image = beautiful.awesome_icon, menu = mymainmenu })
+-- local mylauncher = awful.widget.launcher({ image = beautiful.awesome_icon, menu = mymainmenu })
 
 menubar.utils.terminal = terminal -- Set the terminal for applications that require it
 
@@ -183,6 +183,8 @@ screen.connect_signal('request::desktop_decoration', function(s)
 
     local volume_widget = require('awesome-wm-widgets.volume-widget.volume')
     local upower_bat = require('widgets.battery.battery')
+    local systray = wibox.widget.systray()
+    systray:set_base_size(24)
 
     s.mywibox = awful.wibar({ position = 'bottom', screen = s })
 
@@ -190,7 +192,7 @@ screen.connect_signal('request::desktop_decoration', function(s)
         layout = wibox.layout.align.horizontal,
         {
             layout = wibox.layout.fixed.horizontal,
-            mylauncher,
+--             mylauncher,
             s.mytaglist,
             s.mypromptbox,
         },
@@ -203,7 +205,7 @@ screen.connect_signal('request::desktop_decoration', function(s)
                 widget_type = 'icon_and_text',
             }),
             upower_bat(),
-            wibox.widget.systray(),
+            wibox.container.margin(systray, 0, 0, 3, 0),
             wibox.widget({
                 format = '%a %d/%m,%H:%M',
                 widget = wibox.widget.textclock,
@@ -214,21 +216,21 @@ screen.connect_signal('request::desktop_decoration', function(s)
 end)
 
 awful.mouse.append_global_mousebindings({
-    awful.button({}, 3, function()
-        mymainmenu:toggle()
-    end),
+--     awful.button({}, 3, function()
+--         mymainmenu:toggle()
+--     end),
     awful.button({}, 4, awful.tag.viewprev),
     awful.button({}, 5, awful.tag.viewnext),
 })
 
 awful.keyboard.append_global_keybindings({
     awful.key({ modkey }, 's', hotkeys_popup.show_help, { description = 'show help', group = 'awesome' }),
-    awful.key({ modkey }, 'w', function()
-        mymainmenu:show()
-    end, {
-        description = 'show main menu',
-        group = 'awesome',
-    }),
+--     awful.key({ modkey }, 'w', function()
+--         mymainmenu:show()
+--     end, {
+--         description = 'show main menu',
+--         group = 'awesome',
+--     }),
     awful.key({ modkey, 'Control' }, 'r', awesome.restart, { description = 'reload awesome', group = 'awesome' }),
     awful.key({ modkey, 'Shift' }, 'q', awesome.quit, { description = 'quit awesome', group = 'awesome' }),
     awful.key({ modkey }, 'x', function()
@@ -267,7 +269,7 @@ awful.keyboard.append_global_keybindings({
         group = 'launcher',
     }),
     awful.key({}, 'XF86PowerOff', function()
-        require('awesome-wm-widgets.logout-popup-widget.logout-popup').launch()
+        require('awesome-wm-widgets.logout-popup-widget.logout-popup').launch({label_color = '#000000'})
     end, {
         description = 'Show logout screen',
         group = 'custom',

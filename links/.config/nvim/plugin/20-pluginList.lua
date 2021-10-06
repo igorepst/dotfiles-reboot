@@ -93,9 +93,11 @@ return require('packer').startup({
             after = 'nvim-lspconfig',
             requires = { 'nvim-lua/plenary.nvim', 'neovim/nvim-lspconfig' },
             config = function()
-                require('null-ls').config({
+                local null_ls = require('null-ls')
+                null_ls.config({
                     sources = {
-                        require('null-ls').builtins.formatting.stylua.with({
+                        null_ls.builtins.code_actions.gitsigns,
+                        null_ls.builtins.formatting.stylua.with({
                             args = {
                                 '--quote-style',
                                 'ForceSingle',
