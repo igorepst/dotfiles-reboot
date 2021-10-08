@@ -78,7 +78,6 @@ lspconfig.sumneko_lua.setup({
     capabilities = capabilities,
     root_dir = function(fname)
         local dirname = lspconfig.util.path.dirname(fname)
-        print('dirname='..dirname)
         local cand = find_and_trim(dirname, '.config/awesome') or find_and_trim(dirname, '.config/nvim')
         if cand then
             return cand
@@ -111,7 +110,7 @@ lspconfig.sumneko_lua.setup({
         if ends_with(new_root_dir, '.config/awesome') then
             new_config.settings.Lua.diagnostics.globals = { 'awesome', 'client', 'screen', 'tag', 'mouse', 'keygrabber' }
             new_config.settings.Lua.workspace.library = { new_root_dir, '/usr/share/awesome/lib' }
-            -- TODO runtime path
+--             TODO runtime path
         elseif ends_with(new_root_dir, '.config/nvim') then
             new_config.settings.Lua.diagnostics.globals = { 'vim' }
             new_config.settings.Lua.workspace.library = vim.api.nvim_get_runtime_file('', true)

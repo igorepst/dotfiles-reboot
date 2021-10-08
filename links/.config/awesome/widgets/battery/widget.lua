@@ -24,7 +24,7 @@ end
 
 local bat_color = { good = '#00ff00', low = '#ffff00', empty = '#ff0000' }
 
-_M.setup = function()
+local setup = function()
     local pp = popup({
         widget = {
             {
@@ -113,6 +113,6 @@ end
 
 return setmetatable(_M, {
     __call = function(_)
-        return _M.setup()
+        return setup()
     end,
 })

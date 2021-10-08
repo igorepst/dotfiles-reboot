@@ -81,14 +81,15 @@ tag.connect_signal('request::default_layouts', function()
     })
 end)
 
-local mykeyboardlayout = awful.widget.keyboardlayout()
+local mykeyboardlayout = require('widgets.keyboardlayout.widget')
+-- local mykeyboardlayout = awful.widget.keyboardlayout()
 -- local gdb = require('gears.debug')
-mykeyboardlayout.layout_name = function(v)
-    return v.file
-end
-local capi = { awesome = awesome }
-capi.awesome.emit_signal('xkb::map_changed')
--- naughty.notification({message=gdb.dump_return(mykeyboardlayout, 'mkl')})
+-- mykeyboardlayout.layout_name = function(v)
+--     return v.file
+-- end
+-- mykeyboardlayout.widget.forced_width = 25
+-- local capi = { awesome = awesome }
+-- capi.awesome.emit_signal('xkb::map_changed')
 
 screen.connect_signal('request::wallpaper', function(s)
     -- Wallpaper
@@ -159,6 +160,36 @@ screen.connect_signal('request::desktop_decoration', function(s)
         },
     })
 
+    local wmargin = require('wibox.container.margin')
+    local wtextbox = require('wibox.widget.textbox')
+    local wbackground = require('wibox.container.background')
+    local wfixed = require('wibox.layout.fixed')
+    local dpi = require('beautiful').xresources.apply_dpi
+
+    local default_template = {
+        {
+            {
+                awful.widget.clienticon,
+                margins = dpi(3),
+                widget = wibox.container.margin,
+            },
+            {
+                {
+                    id = 'text_role',
+                    widget = wtextbox,
+                },
+                id = 'text_margin_role',
+                left = dpi(4),
+                right = dpi(4),
+                widget = wmargin,
+            },
+            fill_space = true,
+            layout = wfixed.horizontal,
+        },
+        id = 'background_role',
+        widget = wbackground,
+    }
+
     s.mytasklist = awful.widget.tasklist({
         screen = s,
         filter = awful.widget.tasklist.filter.currenttags,
@@ -179,12 +210,13 @@ screen.connect_signal('request::desktop_decoration', function(s)
         style = {
             font_focus = beautiful.font_bold,
         },
+        widget_template = default_template,
     })
 
     local volume_widget = require('awesome-wm-widgets.volume-widget.volume')
-    local upower_bat = require('widgets.battery.battery')
+    local upower_bat = require('widgets.battery.widget')
     local systray = wibox.widget.systray()
-    systray:set_base_size(24)
+    systray:set_base_size(dpi(24))
 
     s.mywibox = awful.wibar({ position = 'bottom', screen = s })
 
@@ -192,20 +224,20 @@ screen.connect_signal('request::desktop_decoration', function(s)
         layout = wibox.layout.align.horizontal,
         {
             layout = wibox.layout.fixed.horizontal,
---             mylauncher,
+            --             mylauncher,
             s.mytaglist,
             s.mypromptbox,
         },
         s.mytasklist,
         {
             layout = wibox.layout.fixed.horizontal,
-            spacing = 7,
-            mykeyboardlayout,
+            spacing = dpi(7),
+            mykeyboardlayout(),
             volume_widget({
                 widget_type = 'icon_and_text',
             }),
             upower_bat(),
-            wibox.container.margin(systray, 0, 0, 3, 0),
+            wibox.container.margin(systray, 0, 0, dpi(3), 0),
             wibox.widget({
                 format = '%a %d/%m,%H:%M',
                 widget = wibox.widget.textclock,
@@ -216,21 +248,21 @@ screen.connect_signal('request::desktop_decoration', function(s)
 end)
 
 awful.mouse.append_global_mousebindings({
---     awful.button({}, 3, function()
---         mymainmenu:toggle()
---     end),
+    --     awful.button({}, 3, function()
+    --         mymainmenu:toggle()
+    --     end),
     awful.button({}, 4, awful.tag.viewprev),
     awful.button({}, 5, awful.tag.viewnext),
 })
 
 awful.keyboard.append_global_keybindings({
     awful.key({ modkey }, 's', hotkeys_popup.show_help, { description = 'show help', group = 'awesome' }),
---     awful.key({ modkey }, 'w', function()
---         mymainmenu:show()
---     end, {
---         description = 'show main menu',
---         group = 'awesome',
---     }),
+    --     awful.key({ modkey }, 'w', function()
+    --         mymainmenu:show()
+    --     end, {
+    --         description = 'show main menu',
+    --         group = 'awesome',
+    --     }),
     awful.key({ modkey, 'Control' }, 'r', awesome.restart, { description = 'reload awesome', group = 'awesome' }),
     awful.key({ modkey, 'Shift' }, 'q', awesome.quit, { description = 'quit awesome', group = 'awesome' }),
     awful.key({ modkey }, 'x', function()
@@ -269,7 +301,7 @@ awful.keyboard.append_global_keybindings({
         group = 'launcher',
     }),
     awful.key({}, 'XF86PowerOff', function()
-        require('awesome-wm-widgets.logout-popup-widget.logout-popup').launch({label_color = '#000000'})
+        require('awesome-wm-widgets.logout-popup-widget.logout-popup').launch({ label_color = '#000000' })
     end, {
         description = 'Show logout screen',
         group = 'custom',
@@ -610,11 +642,11 @@ ruled.client.connect_signal('request::rules', function()
         properties = { floating = true },
     })
 
-    --         ruled.client.append_rule({
-    --             id = 'kitty',
-    --             rule_any = { class = { 'kitty' } },
-    --             properties = { titlebars_enabled = false },
-    --         })
+--             ruled.client.append_rule({
+--                 id = 'kitty',
+--                 rule_any = { class = { 'kitty' } },
+--                 properties = { maximized = true },
+--             })
 
     ruled.client.append_rule({
         id = 'notetaker',
