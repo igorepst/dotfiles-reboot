@@ -301,7 +301,9 @@ awful.keyboard.append_global_keybindings({
         group = 'launcher',
     }),
     awful.key({}, 'XF86PowerOff', function()
-        require('awesome-wm-widgets.logout-popup-widget.logout-popup').launch({ label_color = '#000000' })
+        local logoutw =  require('widgets.logout.widget');
+        logoutw.setup()
+        logoutw.show()
     end, {
         description = 'Show logout screen',
         group = 'custom',
