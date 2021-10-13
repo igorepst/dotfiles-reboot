@@ -44,6 +44,12 @@ function doWork() {
         echo '}'
     } > "${destf}"
 
+    destf=~/.theme/fzfColors
+    {
+        echo '#!/bin/zsh'
+        echo "export FZF_COLORS=\"fg:0,bg:15,hl:1,fg+:${colors[selection_foreground]},bg+:${colors[selection_background]},hl+:1,info:6,prompt:4,pointer:5,marker:6,spinner:6,header:6\""
+    } > "${destf}"
+
 }
 
 doWork $@
