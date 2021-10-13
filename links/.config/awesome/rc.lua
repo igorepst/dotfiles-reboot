@@ -228,7 +228,7 @@ screen.connect_signal('request::desktop_decoration', function(s)
             s.mytaglist,
             s.mypromptbox,
         },
-        s.mytasklist,
+        wibox.container.margin(s.mytasklist, 0, dpi(7)),
         {
             layout = wibox.layout.fixed.horizontal,
             spacing = dpi(7),
@@ -301,7 +301,7 @@ awful.keyboard.append_global_keybindings({
         group = 'launcher',
     }),
     awful.key({}, 'XF86PowerOff', function()
-        local logoutw =  require('widgets.logout.widget');
+        local logoutw = require('widgets.logout.widget')
         logoutw.setup()
         logoutw.show()
     end, {
@@ -601,6 +601,18 @@ client.connect_signal('request::default_keybindings', function()
     })
 end)
 
+function awful.rules.delayed_properties.delayed_placement(c, value, props) --luacheck: no unused
+    if props.delayed_placement then
+        awful.rules.extra_properties.placement(c, props.delayed_placement, props)
+    end
+end
+
+function awful.rules.delayed_properties.delayed_max(c, value, props) --luacheck: no unused
+        if props.delayed_max then
+        c.maximized = awful.layout.getname(awful.layout.get(c.screen)) == 'floating'
+        end
+end
+
 ruled.client.connect_signal('request::rules', function()
     ruled.client.append_rule({
         id = 'global',
@@ -644,29 +656,28 @@ ruled.client.connect_signal('request::rules', function()
         properties = { floating = true },
     })
 
---             ruled.client.append_rule({
---                 id = 'kitty',
---                 rule_any = { class = { 'kitty' } },
---                 properties = { maximized = true },
---             })
-
     ruled.client.append_rule({
         id = 'notetaker',
-        rule_any = { class = { 'notetaker' } },
+        rule = { class = 'notetaker' },
         properties = {
-            titlebars_enabled = false,
             floating = true,
             width = 800,
             height = 600,
-            placement = awful.placement.centered,
+            delayed_placement = awful.placement.centered,
             ontop = true,
         },
     })
+
+        ruled.client.append_rule({
+            id = 'kitty',
+            rule_any = { class = { 'kitty' } },
+            properties = { delayed_max = true },
+        })
 end)
 
 client.connect_signal('request::manage', function(c)
-    -- Set the windows at the slave,
-    -- i.e. put it at the end of others instead of setting it master.
+        -- Set the windows at the slave,
+        -- i.e. put it at the end of others instead of setting it master.
     if not awesome.startup then
         awful.client.setslave(c)
         --     else
@@ -743,4 +754,8 @@ local function run_once(cmd_arr)
         awful.spawn.with_shell(string.format('pgrep -u $USER -x %s > /dev/null || (%s)', findme, cmd))
     end
 end
-run_once({ 'picom -b', 'wifi' })
+local run_once_t = { 'picom -b' }
+if os.getenv('MY_PC_IS') == 'home' then
+    table.insert(run_once_t, 'wifi')
+end
+run_once(run_once_t)
