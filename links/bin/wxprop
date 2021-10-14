@@ -1,0 +1,4 @@
+#!/bin/sh
+
+out=/tmp/xprop.tmp
+xprop > "${out}" && kitty --class=wxprop nvim -c "norm gg" ${out} && rm -f "${out}"
