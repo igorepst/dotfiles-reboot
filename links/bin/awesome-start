@@ -5,4 +5,4 @@ export SSH_AUTH_SOCK
 
 export XDG_CURRENT_DESKTOP=GNOME
 
-exec awesome
+exec awesome >>/tmp/awesome-stdout 2>>/tmp/awesome-stderr

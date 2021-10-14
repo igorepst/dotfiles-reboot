@@ -28,40 +28,9 @@ end)
 
 beautiful.init(gears.filesystem.get_configuration_dir() .. 'theme/gtk/theme.lua')
 
--- This is used later as the default terminal and editor to run.
 local terminal = os.getenv('MYTERM')
--- local editor = os.getenv('EDITOR')
--- local editor_cmd = terminal .. ' -e ' .. editor
 local modkey = 'Mod4'
-
--- local myawesomemenu = {
---     {
---         'hotkeys',
---         function()
---             hotkeys_popup.show_help(nil, awful.screen.focused())
---         end,
---     },
---     { 'manual', terminal .. ' -e man awesome' },
---     { 'edit config', editor_cmd .. ' ' .. awesome.conffile },
---     { 'restart', awesome.restart },
---     {
---         'quit',
---         function()
---             awesome.quit()
---         end,
---     },
--- }
-
--- local mymainmenu = awful.menu({
---     items = {
---         { 'awesome', myawesomemenu, beautiful.awesome_icon },
---         { 'open terminal', terminal },
---     },
--- })
-
--- local mylauncher = awful.widget.launcher({ image = beautiful.awesome_icon, menu = mymainmenu })
-
-menubar.utils.terminal = terminal -- Set the terminal for applications that require it
+menubar.utils.terminal = terminal
 
 tag.connect_signal('request::default_layouts', function()
     awful.layout.append_default_layouts({
@@ -82,14 +51,6 @@ tag.connect_signal('request::default_layouts', function()
 end)
 
 local mykeyboardlayout = require('widgets.keyboardlayout.widget')
--- local mykeyboardlayout = awful.widget.keyboardlayout()
--- local gdb = require('gears.debug')
--- mykeyboardlayout.layout_name = function(v)
---     return v.file
--- end
--- mykeyboardlayout.widget.forced_width = 25
--- local capi = { awesome = awesome }
--- capi.awesome.emit_signal('xkb::map_changed')
 
 screen.connect_signal('request::wallpaper', function(s)
     -- Wallpaper
@@ -104,11 +65,19 @@ end)
 
 screen.connect_signal('request::desktop_decoration', function(s)
     -- Each screen has its own tag table.
-    awful.tag({
-        '',
-        '',
-        --         ''
-    }, s, awful.layout.layouts[1])
+    awful.tag(
+        {
+            '',
+            '',
+            '',
+        },
+        s,
+        {
+            awful.layout.layouts[1],
+            awful.layout.layouts[2],
+            awful.layout.layouts[2],
+        }
+    )
 
     -- Create a promptbox for each screen
     s.mypromptbox = awful.widget.prompt()
@@ -135,7 +104,7 @@ screen.connect_signal('request::desktop_decoration', function(s)
 
     s.mytaglist = awful.widget.taglist({
         screen = s,
-        filter = awful.widget.taglist.filter.all,
+        filter = awful.widget.taglist.filter.noempty,
         buttons = {
             awful.button({}, 1, function(t)
                 t:view_only()
@@ -218,13 +187,45 @@ screen.connect_signal('request::desktop_decoration', function(s)
     local systray = wibox.widget.systray()
     systray:set_base_size(dpi(24))
 
+    local pp = awful.popup({
+        widget = {
+            {
+                id = 'cal',
+                week_numbers = true,
+                start_sunday = true,
+                long_weekdays = true,
+                widget = wibox.widget.calendar.month,
+            },
+            margins = 10,
+            widget = wibox.container.margin,
+        },
+        hide_on_right_click = true,
+        visible = false,
+        ontop = true,
+    })
+
+    local clock = wibox.widget({
+        format = '%a %d/%m,%H:%M',
+        widget = wibox.widget.textclock,
+        buttons = {
+            awful.button({}, 1, function()
+                if pp.visible then
+                    pp.visible = false
+                else
+                    pp.widget:get_children_by_id('cal')[1].date = os.date('*t')
+                    pp:move_next_to(mouse.current_widget_geometry)
+                    pp.visible = true
+                end
+            end),
+        },
+    })
+
     s.mywibox = awful.wibar({ position = 'bottom', screen = s })
 
     s.mywibox.widget = {
         layout = wibox.layout.align.horizontal,
         {
             layout = wibox.layout.fixed.horizontal,
-            --             mylauncher,
             s.mytaglist,
             s.mypromptbox,
         },
@@ -238,31 +239,19 @@ screen.connect_signal('request::desktop_decoration', function(s)
             }),
             upower_bat(),
             wibox.container.margin(systray, 0, 0, dpi(3), 0),
-            wibox.widget({
-                format = '%a %d/%m,%H:%M',
-                widget = wibox.widget.textclock,
-            }),
+            clock,
             s.mylayoutbox,
         },
     }
 end)
 
 awful.mouse.append_global_mousebindings({
-    --     awful.button({}, 3, function()
-    --         mymainmenu:toggle()
-    --     end),
     awful.button({}, 4, awful.tag.viewprev),
     awful.button({}, 5, awful.tag.viewnext),
 })
 
 awful.keyboard.append_global_keybindings({
     awful.key({ modkey }, 's', hotkeys_popup.show_help, { description = 'show help', group = 'awesome' }),
-    --     awful.key({ modkey }, 'w', function()
-    --         mymainmenu:show()
-    --     end, {
-    --         description = 'show main menu',
-    --         group = 'awesome',
-    --     }),
     awful.key({ modkey, 'Control' }, 'r', awesome.restart, { description = 'reload awesome', group = 'awesome' }),
     awful.key({ modkey, 'Shift' }, 'q', awesome.quit, { description = 'quit awesome', group = 'awesome' }),
     awful.key({ modkey }, 'x', function()
@@ -608,9 +597,9 @@ function awful.rules.delayed_properties.delayed_placement(c, value, props) --lua
 end
 
 function awful.rules.delayed_properties.delayed_max(c, value, props) --luacheck: no unused
-        if props.delayed_max then
+    if props.delayed_max then
         c.maximized = awful.layout.getname(awful.layout.get(c.screen)) == 'floating'
-        end
+    end
 end
 
 ruled.client.connect_signal('request::rules', function()
@@ -621,7 +610,7 @@ ruled.client.connect_signal('request::rules', function()
             focus = awful.client.focus.filter,
             raise = true,
             screen = awful.screen.preferred,
-            placement = awful.placement.no_overlap + awful.placement.no_offscreen,
+            placement = awful.placement.under_mouse + awful.placement.no_overlap + awful.placement.no_offscreen,
             size_hints_honor = false,
         },
     })
@@ -668,16 +657,16 @@ ruled.client.connect_signal('request::rules', function()
         },
     })
 
-        ruled.client.append_rule({
-            id = 'kitty',
-            rule_any = { class = { 'kitty' } },
-            properties = { delayed_max = true },
-        })
+    ruled.client.append_rule({
+        id = 'kitty',
+        rule_any = { class = { 'kitty' } },
+        properties = { delayed_max = true },
+    })
 end)
 
 client.connect_signal('request::manage', function(c)
-        -- Set the windows at the slave,
-        -- i.e. put it at the end of others instead of setting it master.
+    -- Set the windows at the slave,
+    -- i.e. put it at the end of others instead of setting it master.
     if not awesome.startup then
         awful.client.setslave(c)
         --     else
@@ -700,20 +689,20 @@ client.connect_signal('request::titlebars', function(c)
     }
 
     awful.titlebar(c).widget = {
-        { -- Left
+        {
             awful.titlebar.widget.iconwidget(c),
             buttons = buttons,
             layout = wibox.layout.fixed.horizontal,
         },
-        { -- Middle
-            { -- Title
+        {
+            {
                 align = 'center',
                 widget = awful.titlebar.widget.titlewidget(c),
             },
             buttons = buttons,
             layout = wibox.layout.flex.horizontal,
         },
-        { -- Right
+        {
             awful.titlebar.widget.floatingbutton(c),
             awful.titlebar.widget.maximizedbutton(c),
             awful.titlebar.widget.stickybutton(c),
