@@ -52,15 +52,22 @@ end)
 
 local mykeyboardlayout = require('widgets.keyboardlayout.widget')
 
-screen.connect_signal('request::wallpaper', function(s)
-    -- Wallpaper
-    if beautiful.wallpaper then
-        local wallpaper = beautiful.wallpaper
-        if type(wallpaper) == 'function' then
-            wallpaper = wallpaper(s)
-        end
-        gears.wallpaper.maximized(wallpaper, s, true)
-    end
+screen.connect_signal("request::wallpaper", function(s)
+    awful.wallpaper {
+        screen = s,
+        widget = {
+            {
+                image     = beautiful.wallpaper,
+                upscale   = false,
+                downscale = false,
+                widget    = wibox.widget.imagebox,
+            },
+            valign = "center",
+            halign = "center",
+            tiled  = false,
+            widget = wibox.container.tile,
+        }
+    }
 end)
 
 screen.connect_signal('request::desktop_decoration', function(s)
@@ -603,13 +610,13 @@ end)
 -- awful.key({ modkey, "Shift" }, "h", function () awful.client.incwfact( 0.05) end),
 
 
-function awful.rules.delayed_properties.delayed_placement(c, value, props) --luacheck: no unused
+function awful.rules.delayed_properties.delayed_placement(c, _, props)
     if props.delayed_placement then
         awful.rules.extra_properties.placement(c, props.delayed_placement, props)
     end
 end
 
-function awful.rules.delayed_properties.delayed_max(c, value, props) --luacheck: no unused
+function awful.rules.delayed_properties.delayed_max(c, _, props)
     if props.delayed_max then
         c.maximized = awful.layout.getname(awful.layout.get(c.screen)) == 'floating'
     end
