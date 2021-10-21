@@ -72,32 +72,33 @@ genco.focus_selection_ui.style.fg = nil
 genco.sort_and_filter_ui.default_identifier.style.add_modifiers = nil
 
 ---- Node types
------- Directory
-xplr.config.node_types.directory.meta.icon = 'ð'
+xplr.config.node_types.directory.meta.icon = ''
 xplr.config.node_types.directory.style.add_modifiers = { 'Bold' }
-xplr.config.node_types.directory.style.sub_modifiers = nil
-xplr.config.node_types.directory.style.bg = nil
 xplr.config.node_types.directory.style.fg = 'Cyan'
-
------- File
-xplr.config.node_types.file.meta.icon = 'ƒ'
-xplr.config.node_types.file.style.add_modifiers = nil
-xplr.config.node_types.file.style.sub_modifiers = nil
-xplr.config.node_types.file.style.bg = nil
-xplr.config.node_types.file.style.fg = nil
-
------- Symlink
-xplr.config.node_types.symlink.meta.icon = '§'
+xplr.config.node_types.file.meta.icon = ''
+xplr.config.node_types.symlink.meta.icon = ''
 xplr.config.node_types.symlink.style.add_modifiers = { 'Italic' }
-xplr.config.node_types.symlink.style.sub_modifiers = nil
-xplr.config.node_types.symlink.style.bg = nil
 xplr.config.node_types.symlink.style.fg = 'Magenta'
-
------- Mime essence
-xplr.config.node_types.mime_essence = {}
+xplr.config.node_types.mime_essence = {
+    application = {
+        pdf = { meta = { icon = '' } },
+        zip = { meta = { icon = '' } },
+    },
+    video = {
+        ['*'] = { meta = { icon = '' } },
+    },
+    audio = {
+        ['*'] = { meta = { icon = '' } },
+    },
+    image = {
+        ['*'] = { meta = { icon = '' } },
+    },
+}
 
 ------ Extension
-xplr.config.node_types.extension = {}
+xplr.config.node_types.extension = {
+    fb2 = { meta = { icon = '' } },
+}
 
 ------ Special
 xplr.config.node_types.special = {}
