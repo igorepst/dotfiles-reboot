@@ -83,6 +83,7 @@ function _get_gh_releases() {
     get_gh_release --repo koalaman/shellcheck --arch linux.x86_64.tar.xz --toPath shellcheck
     get_gh_release --repo mvdan/sh --arch linux_amd64 --toPath shfmt --unarchive 0 --rn shfmt
     get_gh_release --repo JohnnyMorganz/StyLua --arch linux.zip --toPath stylua
+    get_gh_release --repo sayanarijit/xplr --arch linux.tar.gz --toPath xplr
     get_gh_release --repo neovim/neovim --arch linux64.tar.gz --toPath bin/nvim --tag nightly
 }
 
