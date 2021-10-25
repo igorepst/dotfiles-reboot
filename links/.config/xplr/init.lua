@@ -262,8 +262,8 @@ xplr.config.modes.builtin.default = {
                 messages = { 'FocusNext' },
             },
             enter = {
-                help = 'quit with result',
-                messages = { 'PrintResultAndQuit' },
+                help = 'enter',
+                messages = { { CallLuaSilently = 'custom.opener' } },
             },
             esc = {
                 help = nil,
@@ -305,7 +305,7 @@ xplr.config.modes.builtin.default = {
             },
             right = {
                 help = 'enter',
-                messages = { 'Enter' },
+                messages = { { CallLuaSilently = 'custom.opener' } },
             },
             ['s'] = {
                 help = 'sort',
@@ -1778,5 +1778,23 @@ xplr.fn.builtin.fmt_general_table_row_cols_4 = function(m)
     end
 end
 
----- Custom
-xplr.fn.custom = {}
+xplr.fn.custom.opener = function(a)
+    local c = a.focused_node.canonical
+    return c.is_dir and { 'Enter' }
+        or {
+            {
+                Call = {
+                    command = 'kitty',
+                    args = {
+                        '@launch',
+                        '--type=tab',
+                        '--no-response',
+                        '--location=after',
+                        '--cwd=' .. a.focused_node.parent,
+                        'nvim',
+                        c.absolute_path,
+                    },
+                },
+            },
+        }
+end
