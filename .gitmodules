@@ -28,3 +28,6 @@
 [submodule "links/.config/awesome/awesome-buttons"]
 	path = links/.config/awesome/awesome-buttons
 	url = https://github.com/streetturtle/awesome-buttons
+[submodule "links/.config/xplr/plugins/xclip"]
+	path = links/.config/xplr/plugins/xclip
+	url = https://github.com/sayanarijit/xclip.xplr

@@ -1,8 +1,11 @@
 -- You need to define the script version for compatibility check.
 -- See https://github.com/sayanarijit/xplr/wiki/Upgrade-Guide.
-version = '0.15.0'
 
+---@diagnostic disable
+version = '0.15.0'
 local xplr = xplr
+---@diagnostic enable
+
 local genco = xplr.config.general
 
 genco.enable_mouse = true
@@ -15,30 +18,12 @@ genco.initial_sorting = {
     { sorter = 'ByIRelativePath', reverse = false },
 }
 genco.table.col_widths = {
-    { Percentage = 8 },
-    { Percentage = 61 },
-    { Percentage = 8 },
+    { Percentage = 73 },
+    { Percentage = 4 },
     { Percentage = 8 },
     { Percentage = 15 },
 }
-genco.table.header.style.add_modifiers = { 'Bold' }
-genco.table.header.cols = {
-    {
-        format = '  Index',
-    },
-    {
-        format = '  Path',
-    },
-    {
-        format = 'Permissions',
-    },
-    {
-        format = 'Size',
-    },
-    {
-        format = 'Type',
-    },
-}
+genco.table.header.height = 0
 genco.table.tree = {
     {
         format = '',
@@ -103,60 +88,89 @@ xplr.config.node_types.extension = {
 ------ Special
 xplr.config.node_types.special = {}
 
-xplr.config.layouts.custom = {
-    mine = {
-        Vertical = {
-            config = {
-                constraints = {
-                    {
-                        Percentage = 80,
-                    },
-                    {
-                        Percentage = 20,
-                    },
+xplr.config.layouts.custom.mine = {
+    Vertical = {
+        config = {
+            constraints = {
+                {
+                    Percentage = 80,
+                },
+                {
+                    Percentage = 20,
                 },
             },
-            splits = {
-                'Table',
-                {
-                    Horizontal = {
-                        config = {
-                            constraints = {
-                                {
-                                    Percentage = 50,
-                                },
-                                {
-                                    Percentage = 50,
-                                },
+        },
+        splits = {
+            'Table',
+            {
+                Horizontal = {
+                    config = {
+                        constraints = {
+                            {
+                                Percentage = 50,
+                            },
+                            {
+                                Percentage = 50,
                             },
                         },
-                        splits = {
-                            {
-                                Vertical = {
-                                    config = {
-                                        constraints = {
-                                            {
-                                                Percentage = 50,
-                                            },
-                                            {
-                                                Percentage = 50,
-                                            },
+                    },
+                    splits = {
+                        {
+                            Vertical = {
+                                config = {
+                                    constraints = {
+                                        {
+                                            Percentage = 50,
+                                        },
+                                        {
+                                            Percentage = 50,
                                         },
                                     },
-                                    splits = {
-                                        'SortAndFilter',
-                                        'InputAndLogs',
-                                    },
+                                },
+                                splits = {
+                                    'SortAndFilter',
+                                    'InputAndLogs',
                                 },
                             },
-                            'Selection',
                         },
+                        'Selection',
                     },
                 },
             },
         },
     },
 }
+
+local function copy(obj, seen)
+    if type(obj) ~= 'table' then
+        return obj
+    end
+    if seen and seen[obj] then
+        return seen[obj]
+    end
+    local s = seen or {}
+    local res = setmetatable({}, getmetatable(obj))
+    s[obj] = res
+    for k, v in pairs(obj) do
+        res[copy(k, s)] = copy(v, s)
+    end
+    return res
+end
+
+local m2 = copy(xplr.config.layouts.custom.mine, nil)
+m2.Vertical.config.constraints = {
+    {
+        Percentage = 60,
+    },
+    {
+        Percentage = 20,
+    },
+    {
+        Percentage = 20,
+    },
+}
+table.insert(m2.Vertical.splits, 'HelpMenu')
+xplr.config.layouts.custom.mine2 = m2
 
 -- Modes
 ---- Builtin
@@ -1613,6 +1627,15 @@ xplr.config.modes.builtin.switch_layout = {
                 },
             },
             ['2'] = {
+                help = 'mine2',
+                messages = {
+                    {
+                        SwitchLayoutCustom = 'mine2',
+                    },
+                    'PopMode',
+                },
+            },
+            ['3'] = {
                 help = 'default',
                 messages = {
                     {
@@ -1636,16 +1659,8 @@ xplr.config.modes.builtin.switch_layout = {
 ---- Custom
 xplr.config.modes.custom = {}
 
--- Function
----- Builtin
------- Formaters
--------- Format index column
-xplr.fn.builtin.fmt_general_table_row_cols_0 = function(m)
-    return (m.is_before_focus and ' -' or '  ') .. m.relative_index .. '│' .. m.index
-end
-
 -------- Format path column
-xplr.fn.builtin.fmt_general_table_row_cols_1 = function(m)
+xplr.fn.builtin.fmt_general_table_row_cols_0 = function(m)
     local r = m.tree .. m.prefix
 
     if m.meta.icon == nil then
@@ -1680,97 +1695,27 @@ xplr.fn.builtin.fmt_general_table_row_cols_1 = function(m)
 end
 
 -------- Format permissions column
-xplr.fn.builtin.fmt_general_table_row_cols_2 = function(m)
-    local no_color = os.getenv('NO_COLOR')
-
-    local function green(x)
-        if no_color == nil then
-            return '\x1b[32m' .. x .. '\x1b[0m'
-        else
-            return x
-        end
-    end
-
-    local function yellow(x)
-        if no_color == nil then
-            return '\x1b[33m' .. x .. '\x1b[0m'
-        else
-            return x
-        end
-    end
-
-    local function red(x)
-        if no_color == nil then
-            return '\x1b[31m' .. x .. '\x1b[0m'
-        else
-            return x
-        end
-    end
-
-    local function bit(x, color, cond)
-        if cond then
-            return color(x)
-        else
-            return color('-')
-        end
+xplr.fn.builtin.fmt_general_table_row_cols_1 = function(m)
+    local function num(x, y, z)
+        return 4 * (x and 1 or 0) + 2 * (y and 1 or 0) + (z and 1 or 0)
     end
 
     local p = m.permissions
-
     local r = ''
-
-    -- User
-    r = r .. bit('r', green, p.user_read)
-    r = r .. bit('w', yellow, p.user_write)
-
-    if p.user_execute == false and p.setuid == false then
-        r = r .. bit('-', red, p.user_execute)
-    elseif p.user_execute == true and p.setuid == false then
-        r = r .. bit('x', red, p.user_execute)
-    elseif p.user_execute == false and p.setuid == true then
-        r = r .. bit('S', red, p.user_execute)
-    else
-        r = r .. bit('s', red, p.user_execute)
-    end
-
-    -- Group
-    r = r .. bit('r', green, p.group_read)
-    r = r .. bit('w', yellow, p.group_write)
-
-    if p.group_execute == false and p.setuid == false then
-        r = r .. bit('-', red, p.group_execute)
-    elseif p.group_execute == true and p.setuid == false then
-        r = r .. bit('x', red, p.group_execute)
-    elseif p.group_execute == false and p.setuid == true then
-        r = r .. bit('S', red, p.group_execute)
-    else
-        r = r .. bit('s', red, p.group_execute)
-    end
-
-    -- Other
-    r = r .. bit('r', green, p.other_read)
-    r = r .. bit('w', yellow, p.other_write)
-
-    if p.other_execute == false and p.setuid == false then
-        r = r .. bit('-', red, p.other_execute)
-    elseif p.other_execute == true and p.setuid == false then
-        r = r .. bit('x', red, p.other_execute)
-    elseif p.other_execute == false and p.setuid == true then
-        r = r .. bit('T', red, p.other_execute)
-    else
-        r = r .. bit('t', red, p.other_execute)
-    end
-
+    r = r .. num(p.setuid, p.setgid, p.sticky)
+    r = r .. num(p.user_read, p.user_write, p.user_execute)
+    r = r .. num(p.group_read, p.group_write, p.group_execute)
+    r = r .. num(p.other_read, p.other_write, p.other_execute)
     return r
 end
 
 -------- Format size column
-xplr.fn.builtin.fmt_general_table_row_cols_3 = function(m)
+xplr.fn.builtin.fmt_general_table_row_cols_2 = function(m)
     return m.is_dir and '' or m.human_size
 end
 
 -------- Format mime column
-xplr.fn.builtin.fmt_general_table_row_cols_4 = function(m)
+xplr.fn.builtin.fmt_general_table_row_cols_3 = function(m)
     if m.is_symlink and not m.is_broken then
         return m.symlink.mime_essence
     else
@@ -1798,3 +1743,11 @@ xplr.fn.custom.opener = function(a)
             },
         }
 end
+
+package.path = os.getenv('HOME') .. '/.config/xplr/plugins/?/src/init.lua'
+require('xclip').setup({
+    copy_command = 'xclip-copyfile',
+    copy_paths_command = 'xclip -sel clip',
+    paste_command = 'xclip-pastefile',
+    keep_selection = false,
+})
