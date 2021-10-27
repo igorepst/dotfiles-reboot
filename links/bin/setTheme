@@ -3,7 +3,7 @@
 function doWork() {
     local srcf=~/.config/kitty/current-theme.conf
     if [[ ! -f ${srcf} ]]; then
-        echo "Source file ${srcf} doesn't exist"
+        echo $(tput setaf 1)"Source file ${srcf} doesn't exist"$(tput sgr0)
         exit 1
     fi
     local line name val
@@ -14,6 +14,7 @@ function doWork() {
         ( [[ -z "${name}" ]] || ! [[ "${val}" =~ ^# ]] ) && continue 
         colors["${name}"]="${val}"
     done < "${srcf}"
+    mkdir -p ~/.theme
     local destf=~/.theme/currentTheme.Xresources
     {
         echo '! vim: filetype=xdefaults:'

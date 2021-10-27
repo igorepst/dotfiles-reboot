@@ -3,6 +3,7 @@
 function doWork(){
     echo ${GREEN}'Setting Xorg'${RESET}
     echo
+    [[ ! -d /etc/X11/xorg.conf.d ]] && sudo mkdir -p /etc/X11/xorg.conf.d
     local XORG_CONF=/etc/X11/xorg.conf.d/99-custom.conf
     if [[ ! -f "${XORG_CONF}" ]]; then
         echo "${RED}Setting ${XORG_CONF}${RESET}"

@@ -30,8 +30,6 @@ function doWork(){
     link ".xprofile"
     link ".Xresources"
     link ".config/bat"
-    bat cache --build 
-    link ".config/pet"
     link ".config/mpv"
     link ".config/ripgrep"
     link ".config/vifm"

@@ -13,11 +13,6 @@ case "${MY_PC_IS}" in
     home)
         exec startplasma-x11
         ;;
-    vm)
-        VBoxClient-all
-        xrandr --output Virtual1 --mode 1440x900
-        exec startplasma-x11
-        ;;
     *)
         ;;
 esac

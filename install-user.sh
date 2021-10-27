@@ -5,6 +5,15 @@ function doWork(){
     export GREEN=$(tput setaf 2)
     export RESET=$(tput sgr0)
 
+    echo ${GREEN}'Checking OS'${RESET}
+    OS_ID=$(sed -ne 's/^ID=\(.*\)/\1/p' /etc/os-release)
+    case "$OS_ID" in
+        arch|ubuntu) export OS_ID;;
+        *) 
+            echo "Unsupported OS: ${OS_ID}"
+            exit 1;;
+    esac
+
     echo ${GREEN}'Installing common configuration'${RESET}
 
     DOTFILES_DIR="$(
@@ -21,13 +30,11 @@ function doWork(){
         local MY_PC_IS_H
         echo
         echo ${RED}'Checking environment'${RESET}
-        read -p "Is it a home (h), work (w) PC or virtual machine (v)? " MY_PC_IS_H
+        read -p "Is it a home (h) or work (w) PC? " MY_PC_IS_H
         if [[ "${MY_PC_IS_H}" =~ ^[Hh]$ ]]; then
             MY_PC_IS="home"
         elif [[ "${MY_PC_IS_H}" =~ ^[Ww]$ ]]; then
             MY_PC_IS="work"	
-        else
-            MY_PC_IS="vm"
         fi
         echo 'export MY_PC_IS='${MY_PC_IS}>${MY_PC_ANSWER_FILE}
     fi

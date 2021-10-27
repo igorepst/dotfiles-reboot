@@ -21,8 +21,10 @@ function doWork(){
     [ -f "${HOME}"/.pathmarks ] && mv "${HOME}"/.pathmarks "${PMFILE}"
     if [ ! -f "${PMFILE}" ]; then
         echo 'dotfiles:' ${DOTFILES_DIR}>"${PMFILE}"
-        [[ "${MY_PC_IS}" = "home" ]] || [[ "${MY_PC_IS}" = "vm" ]] && echo 'inner: /mnt/Inner'>>"${PMFILE}"
+        [[ "${MY_PC_IS}" = "home" ]] && echo 'inner: /mnt/Inner'>>"${PMFILE}"
     fi
+
+    zsh -i -c "_updateDots && bat cache --build"
 }
 
 doWork

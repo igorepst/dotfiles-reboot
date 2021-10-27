@@ -1751,3 +1751,12 @@ require('xclip').setup({
     paste_command = 'xclip-pastefile',
     keep_selection = false,
 })
+require('term').setup({
+    mode = 'default',
+    key = 'ctrl-n',
+    send_focus = true,
+    send_selection = false,
+    exe = 'kitty',
+    extra_term_args = '@launch --no-response --location=vsplit',
+    extra_xplr_args = '',
+})

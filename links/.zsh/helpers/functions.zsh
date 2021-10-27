@@ -54,6 +54,11 @@ function ssh(){
 }
 
 function updateDots(){
+    _updateDots
+    exec zsh
+}
+
+function _updateDots(){
     emulate zsh; setopt localoptions
     echo 'Updating Git code and submodules'
     setopt no_pushd_ignore_dups 
@@ -72,7 +77,6 @@ function updateDots(){
     nvim --headless -c 'autocmd User PackerComplete quitall' -c 'PackerSync'
     nvim --headless -c 'TSUpdateSync' -c 'quitall'
     rm -f ~/.zsh/volatile/zcompdump*
-    exec zsh
 }
 
 function _get_gh_releases() {
