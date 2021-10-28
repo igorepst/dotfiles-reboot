@@ -12,7 +12,7 @@ function doWork() {
     echo ${GREEN}'Checking prerequisites packages to install:'${RESET}
     echo
 
-    local arr=(git zsh mpv xclip curl jq fontforge)
+    local arr=(git zsh mpv xclip curl jq fontforge npm)
 
     local add_arr
     case "${OS_ID}" in
