@@ -3,6 +3,8 @@
 function doWork(){
     echo ${GREEN}'Completing installation'${RESET}
     echo
+    zsh -i -c "_updateDots && bat cache --build"
+
     local ZSH_PLUGINS="${HOME}"/.zsh/plugins
     ln -sf "${ZSH_PLUGINS}"/archive/archive "${HOME}"/bin/archive
     chmod +x "${HOME}"/bin/archive
@@ -23,8 +25,6 @@ function doWork(){
         echo 'dotfiles:' ${DOTFILES_DIR}>"${PMFILE}"
         [[ "${MY_PC_IS}" = "home" ]] && echo 'inner: /mnt/Inner'>>"${PMFILE}"
     fi
-
-    zsh -i -c "_updateDots && bat cache --build"
 }
 
 doWork

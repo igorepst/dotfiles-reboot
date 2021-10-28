@@ -3,7 +3,7 @@
 function checkp() {
     case "${OS_ID}" in
         arch) /usr/bin/pacman -Qs '^'"${1}"'$' >/dev/null;;
-        ubuntu) /usr/bin/dpkg-query -l "${1}" >/dev/null;;
+        ubuntu) /usr/bin/dpkg -s "${1}" >/dev/null 2>&1;;
     esac
 }
 
