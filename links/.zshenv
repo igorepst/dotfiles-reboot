@@ -1,0 +1,1 @@
+unsetopt GLOBAL_RCS

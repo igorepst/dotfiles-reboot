@@ -24,6 +24,7 @@ function doWork(){
 	exit 1
     fi
     link ".zsh"
+    link ".zshenv"
     link ".zprofile"
     link ".zshrc"
     link ".xinitrc"
