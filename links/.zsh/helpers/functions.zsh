@@ -45,8 +45,8 @@ function up(){
             get_parent_dirs $(dirname "$1")
         fi
     }
-local DIR=$(get_parent_dirs $(realpath "${1:-$PWD}") | fzf-tmux --tac)
-cd "$DIR"
+    local DIR=$(get_parent_dirs $(realpath "${1:-$PWD}") | fzf-tmux --tac)
+    cd "$DIR"
 }
 
 function ssh(){
@@ -68,14 +68,17 @@ function _updateDots(){
     popd >/dev/null
     echo 'Updating GH releases'
     source ${(%):-%x}
-    _get_gh_releases
-    echo 'Updating nvim plugins'
-    rehash
-    local packerDir=~/.local/share/nvim/site/pack/packer/start/packer.nvim
-    [ ! -d "${packerDir}" ] && git clone https://github.com/wbthomason/packer.nvim "${packerDir}" 
-    _install_nvim_lsp
-    nvim --headless -c 'autocmd User PackerComplete quitall' -c 'PackerSync'
-    nvim --headless -c 'TSUpdateSync' -c 'quitall'
+    if _get_gh_releases; then
+        echo 'Updating nvim plugins'
+        rehash
+        local packerDir=~/.local/share/nvim/site/pack/packer/start/packer.nvim
+        [ ! -d "${packerDir}" ] && git clone https://github.com/wbthomason/packer.nvim "${packerDir}" 
+        _install_nvim_lsp
+        nvim --headless -c 'autocmd User PackerComplete quitall' -c 'PackerSync'
+        nvim --headless -c 'TSUpdateSync' -c 'quitall'
+    else
+        rehash
+    fi
     rm -f ~/.zsh/volatile/zcompdump*
 }
 
@@ -88,6 +91,34 @@ function _get_gh_releases() {
     get_gh_release --repo mvdan/sh --arch linux_amd64 --toPath shfmt --unarchive 0 --rn shfmt
     get_gh_release --repo JohnnyMorganz/StyLua --arch linux.zip --toPath stylua
     get_gh_release --repo sayanarijit/xplr --arch linux.tar.gz --toPath xplr
+    get_gh_release --repo BurntSushi/ripgrep --arch linux-musl.tar.gz --toPath rg --toCompletionPath complete/_rg
+    if get_gh_release --repo junegunn/fzf --arch linux_amd64.tar.gz --toPath fzf; then
+        echo 'Downloading FZF scripts'
+        curl -k -L https://raw.githubusercontent.com/junegunn/fzf/master/shell/completion.zsh -o ~/.zsh/volatile/igorepst/_gh_release/junegunn/fzf/completion.zsh
+        curl -k -L https://raw.githubusercontent.com/junegunn/fzf/master/shell/key-bindings.zsh -o ~/.zsh/volatile/igorepst/_gh_release/junegunn/fzf/key-bindings.zsh
+    fi
+    if get_gh_release --repo sharkdp/bat --arch x86_64-unknown-linux-gnu.tar.gz --toPath bat --toCompletionPath autocomplete/bat.zsh --rnc _bat; then
+        rehash
+        bat cache --build
+    fi
+    get_gh_release --repo sharkdp/fd --arch x86_64-unknown-linux-gnu.tar.gz --toPath fd --toCompletionPath autocomplete/_fd
+    if get_gh_release --repo kovidgoyal/kitty --arch x86_64.txz --toPath bin/kitty; then
+        cat >~/.zsh/volatile/igorepst/_gh_release/_cache/_compl/_kitty <<'EOM'
+#compdef kitty
+
+_kitty() {
+    local src
+    # Send all words up to the word the cursor is currently on
+    src=$(printf "%s
+" "${(@)words[1,$CURRENT]}" | kitty +complete zsh)
+    if [[ $? == 0 ]]; then
+        eval ${src}
+    fi
+}
+compdef _kitty kitty
+EOM
+    fi
+    # Should be the last one to use its exit code
     get_gh_release --repo neovim/neovim --arch linux64.tar.gz --toPath bin/nvim --tag nightly
 }
 

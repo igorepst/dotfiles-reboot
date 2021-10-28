@@ -1,5 +1,5 @@
-source /usr/share/fzf/completion.zsh
-source /usr/share/fzf/key-bindings.zsh
+source ~/.zsh/volatile/igorepst/_gh_release/junegunn/fzf/completion.zsh
+source ~/.zsh/volatile/igorepst/_gh_release/junegunn/fzf/key-bindings.zsh
 
 source ~/.theme/fzfColors
 export FZF_DEFAULT_OPTS="$FZF_DEFAULT_OPTS --reverse --color=$FZF_COLORS"

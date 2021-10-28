@@ -1,22 +1,26 @@
 workd_prefix="${HOME}/.zsh/volatile/igorepst/_gh_release"
 workd_cache="${workd_prefix}/_cache"
 
+# returns 0 if the install/update was done
+# 1 - in case of failure
+# 2 - application exists and no force update was requested
+# 3 - application exists, force update was requested, but there is no new version published 
 function get_gh_release() {
     emulate -L zsh
     setopt no_autopushd
     zmodload zsh/zutil
-    zparseopts -A _GET_GH_REL_ARGS -repo: -arch: -update:: -toPath:: -toCompletionPath:: -tag:: -unarchive:: -rn::
+    zparseopts -A _GET_GH_REL_ARGS -repo: -arch: -update:: -toPath:: -toCompletionPath:: -tag:: -unarchive:: -rn:: -rnc::
     local workd=${workd_prefix}/${_GET_GH_REL_ARGS[--repo]}
     if [ -d ${workd} ] && [ -z "${IG_GH_REL_UPDATE}" ] && [ "${_GET_GH_REL_ARGS[--update]}" != "1" ]; then
-        _set_path ${workd} ${_GET_GH_REL_ARGS[--toPath]} ${_GET_GH_REL_ARGS[--toCompletionPath]}
-        return
+        _set_path ${workd} ${_GET_GH_REL_ARGS[--toPath]} ${_GET_GH_REL_ARGS[--toCompletionPath]} ${_GET_GH_REL_ARGS[--rnc]}
+        return 2
     fi
     print "\033[32mFetching ${_GET_GH_REL_ARGS[--arch]} from ${_GET_GH_REL_ARGS[--repo]}\033[0m"
     local release_postfix=latest
     local tag_name=${_GET_GH_REL_ARGS[--tag]}
     [ -n "${tag_name}" ] && release_postfix=tags/${tag_name}
     local curlo=$(curl -s https://api.github.com/repos/${_GET_GH_REL_ARGS[--repo]}/releases/${release_postfix})
-    [ -z ${curlo} ] && print "Empty output received" && return
+    [ -z ${curlo} ] && print "Empty output received" && return 1
     local new_ver=$(echo ${curlo} | grep -Po '"tag_name": "\K.*?(?=")')
     local new_published_at=$(echo ${curlo} | grep -Po '"published_at": "\K.*?(?=")')
     local cur_version_dir="${workd_cache}/${_GET_GH_REL_ARGS[--repo]}"
@@ -28,26 +32,26 @@ function get_gh_release() {
         local cur_published_at="${cur_version_array[2]}"
         print "Current version = '${cur_ver}', published at ${cur_published_at}"
         if [ "${cur_published_at}" = "${new_published_at}" ]; then
-            _set_path ${workd} ${_GET_GH_REL_ARGS[--toPath]} ${_GET_GH_REL_ARGS[--toCompletionPath]}
-            return
+            _set_path ${workd} ${_GET_GH_REL_ARGS[--toPath]} ${_GET_GH_REL_ARGS[--toCompletionPath]} ${_GET_GH_REL_ARGS[--rnc]}
+            return 3
         fi
     else
         print "Current version does not exist"
     fi
     local binf=$(echo ${curlo} | grep -Po '"browser_download_url": "\K.*'${(q)_GET_GH_REL_ARGS[--arch]}'?(?=")')
-    [ -z ${binf} ] && print "Cannot find requested architecture" && return
+    [ -z ${binf} ] && print "\033[31mCannot find requested architecture\033[0m" && return 1
     print "New version     = '${new_ver}', published at ${new_published_at}"
     local tmpd=$(mktemp -d)
     pushd ${tmpd} >/dev/null
     local workf
     [ -n "${_GET_GH_REL_ARGS[--rn]}" ] && workf="${_GET_GH_REL_ARGS[--rn]}" || workf="bin${_GET_GH_REL_ARGS[--arch]}"
     curl -k -L ${binf} -o ${workf}
-    [ $? -ne 0 ] && print "Cannot download requested file. URL: ${binf}" && return
+    [ $? -ne 0 ] && print "\033[31mCannot download requested file. URL: ${binf}\033[0m" && return 1
     rm -rf ${workd}
     mkdir -p ${workd}
     if [ -z "${_GET_GH_REL_ARGS[--unarchive]}" ] || [ "${_GET_GH_REL_ARGS[--unarchive]}" = "1" ]; then
         ~/.zsh/plugins/archive/unarchive ${workf} >/dev/null
-        [ $? -ne 0 ] && print "Cannot extract the file: ${workf}" && return
+        [ $? -ne 0 ] && print "\033[31mCannot extract the file: ${workf}\033[0m" && return 1
         rm ${workf}
     fi
     local dir_name=$(_check_dirs ${tmpd})
@@ -59,10 +63,11 @@ function get_gh_release() {
     zmv '*' ${workd}
     popd >/dev/null
     rm -rf ${tmpd}
-    _set_path ${workd} ${_GET_GH_REL_ARGS[--toPath]} ${_GET_GH_REL_ARGS[--toCompletionPath]}
+    _set_path ${workd} ${_GET_GH_REL_ARGS[--toPath]} ${_GET_GH_REL_ARGS[--toCompletionPath]} ${_GET_GH_REL_ARGS[--rnc]}
     mkdir -p "${cur_version_dir}"
     >"${cur_version_file}" echo "${new_ver}"
     >>"${cur_version_file}" echo "${new_published_at}"
+    return 0
 }
 
 function _check_dirs() {
@@ -94,7 +99,11 @@ function _set_path(){
         if [ -f "${tfop}" ]; then
             local cind="${workd_cache}/_compl"
             mkdir -p "${cind}"
-            ln -sf "${tfop}" "${cind}"
+            if [ -n "${4}" ]; then
+                ln -sf "${tfop}" "${cind}/${4}"
+            else
+                ln -sf "${tfop}" "${cind}"
+            fi
         fi
     fi
 }

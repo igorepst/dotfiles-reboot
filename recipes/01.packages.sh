@@ -21,7 +21,7 @@ function doWork() {
     esac
 
     arr=("${arr[@]}" "${add_arr[@]}")
-    #local arr=(ripgrep fzf bat fd rofi kitty acpilight picom)
+    #local arr=(rofi acpilight picom)
     # Vifm + atool + img. support
     #arr+=(vifm ueberzug ffmpegthumbnailer imagemagick poppler mediainfo \
     #    atool rpm-tools bzip2 cpio gzip lha xz lzop p7zip tar unace unrar zip unzip)
@@ -33,8 +33,8 @@ function doWork() {
         echo ${RED}'Installing the following packages:'${RESET}
         echo ${pnames}
         case "${OS_ID}" in
-            arch) yes | sudo /usr/bin/pacman -Sy ${pnames}
-            ubuntu) sudo /usr/bin/apt-get update && sudo /usr/bin/apt-get install -y ${pnames}
+            arch) yes | sudo /usr/bin/pacman -Sy ${pnames};;
+            ubuntu) sudo /usr/bin/apt-get update && sudo /usr/bin/apt-get install -y ${pnames};;
         esac
     else
         echo ${GREEN}'All packages are installed'${RESET}
