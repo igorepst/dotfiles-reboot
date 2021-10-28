@@ -5,6 +5,8 @@ fi
 # automatically remove duplicates from these arrays
 typeset -U path PATH cdpath CDPATH fpath FPATH manpath MANPATH
 
+export FPATH=~/.zsh/volatile/igorepst/_gh_release/_cache/_compl:$FPATH
+
 source ~/.zsh/helpers/p10k.zsh
 source ~/.zsh/plugins/powerlevel10k/powerlevel10k.zsh-theme
 

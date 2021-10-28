@@ -3,7 +3,7 @@
 function doWork(){
     echo ${GREEN}'Completing installation'${RESET}
     echo
-    zsh -i -c "_updateDots && bat cache --build"
+    zsh -i -c "_updateDots && echo 'Rebuilding bat\'s cache' && bat cache --build"
 
     local ZSH_PLUGINS="${HOME}"/.zsh/plugins
     ln -sf "${ZSH_PLUGINS}"/archive/archive "${HOME}"/bin/archive
