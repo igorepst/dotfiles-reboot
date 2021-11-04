@@ -1745,18 +1745,15 @@ xplr.fn.custom.opener = function(a)
 end
 
 package.path = os.getenv('HOME') .. '/.config/xplr/plugins/?/src/init.lua'
+
 require('xclip').setup({
     copy_command = 'xclip-copyfile',
     copy_paths_command = 'xclip -sel clip',
     paste_command = 'xclip-pastefile',
     keep_selection = false,
 })
-require('term').setup({
-    mode = 'default',
-    key = 'ctrl-n',
-    send_focus = true,
-    send_selection = false,
-    exe = 'kitty',
-    extra_term_args = '@launch --no-response --location=vsplit',
-    extra_xplr_args = '',
-})
+
+local term = require('term')
+local k_hsplit = term.profile_kitty_hsplit()
+k_hsplit.key = 'ctrl-h'
+term.setup({term.profile_kitty_vsplit(), k_hsplit})
