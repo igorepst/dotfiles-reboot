@@ -1,13 +1,5 @@
 #!/bin/sh
 
-# Clear all
-xrdb -remove
-
-sysresources=/etc/X11/xinit/.Xresources
-if [ -f "${sysresources}" ]; then
-    xrdb -merge "${sysresources}"
-fi
-
 userresources=$HOME/.Xresources
 if [ -f "${userresources}" ]; then
     xrdb -merge "${userresources}"

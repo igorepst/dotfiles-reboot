@@ -21,12 +21,18 @@ function doWork() {
         local cnt
         for cnt in {0..15}; do 
             echo "*color${cnt}: ${colors[color${cnt}]}"
+            echo "*VT100*color${cnt}: ${colors[color${cnt}]}"
         done
         echo "*background: ${colors[background]}"
+        echo "*VT100*background: ${colors[background]}"
         echo "*foreground: ${colors[foreground]}"
+        echo "*VT100*foreground: ${colors[foreground]}"
         echo "*cursorColor: ${colors[cursor]}"
+        echo "*VT100*cursorColor: ${colors[cursor]}"
         echo "*highlightColor: ${colors[selection_background]}"
+        echo "*VT100*highlightColor: ${colors[selection_background]}"
         echo "*highlightTextColor: ${colors[selection_foreground]}"
+        echo "*VT100*highlightTextColor: ${colors[selection_foreground]}"
     } > "${destf}"
     xrdb -override "${destf}"
 
