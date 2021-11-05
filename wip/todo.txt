@@ -1,1 +1,0 @@
-Ubuntu: xrdb merge doesn't work

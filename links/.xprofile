@@ -1,16 +1,14 @@
 #!/bin/sh
 
-# Sourced by display manager and .xinitrc
+# Clear all
+xrdb -remove
 
-userresources=$HOME/.Xresources
 sysresources=/etc/X11/xinit/.Xresources
-
-# merge in defaults and keymaps
-
 if [ -f "${sysresources}" ]; then
     xrdb -merge "${sysresources}"
 fi
 
+userresources=$HOME/.Xresources
 if [ -f "${userresources}" ]; then
     xrdb -merge "${userresources}"
 fi
