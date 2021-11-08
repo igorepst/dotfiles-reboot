@@ -1,0 +1,2 @@
+# Check support with python -c "import mimetypes; print(mimetypes.guess_type('a.zsh'))"
+text/plain zsh

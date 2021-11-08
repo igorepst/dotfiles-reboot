@@ -11,7 +11,7 @@ function doWork() {
     local pnames=""
     printf "${GREEN}Checking prerequisites packages to install:${RESET}\n\n"
 
-    local arr=(git zsh mpv xclip curl jq fontforge npm)
+    local arr=(git zsh mpv xclip curl jq fontforge npm imagemagick) 
 
     local add_arr
     case "${OS_ID}" in
