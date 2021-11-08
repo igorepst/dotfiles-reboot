@@ -48,7 +48,7 @@ function doWork(){
     done
 
     popd >/dev/null
-    printf "${GREEN}Setting ${MY_PC_IS} environment finished. Please reboot${RESET}\n"
+    printf "\n${GREEN}Setting ${MY_PC_IS} environment finished. Please reboot${RESET}\n"
 }
 
 doWork
