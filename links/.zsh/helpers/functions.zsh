@@ -81,7 +81,7 @@ function _updateDots(){
     else
         rehash
     fi
-    rm -f ~/.zsh/volatile/zcompdump*
+    rm -f ~/.zsh/volatile/zcompdump* 2>/dev/null
 }
 
 function _get_gh_releases() {
