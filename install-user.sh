@@ -1,9 +1,9 @@
 #!/usr/bin/env bash
 
 function doWork(){
-    export RED=$(tput setaf 1)
-    export GREEN=$(tput setaf 2)
-    export RESET=$(tput sgr0)
+    export RED='\033[0;31m'
+    export GREEN='\033[0;32m'
+    export RESET='\033[0m'
 
     echo ${GREEN}'Checking OS'${RESET}
     OS_ID=$(sed -ne 's/^ID=\(.*\)/\1/p' /etc/os-release)

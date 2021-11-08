@@ -1,6 +1,9 @@
 #!/usr/bin/env bash
 
 function doWork(){
+    local ZSH_VOLATILE="${HOME}"/.zsh/volatile
+    mkdir -p "${ZSH_VOLATILE}"
+
     echo ${GREEN}'Completing installation'${RESET}
     echo
     zsh -i -c "_updateDots"
@@ -13,8 +16,6 @@ function doWork(){
     ln -sf "${ZSH_PLUGINS}"/archive/unarchive "${HOME}"/bin/unarchive
     chmod +x "${HOME}"/bin/unarchive
 
-    local ZSH_VOLATILE="${HOME}"/.zsh/volatile
-    mkdir -p "${ZSH_VOLATILE}"
     if [[ -f "${HOME}"/.zsh_history ]] && [[ ! -f "${ZSH_VOLATILE}"/zsh_history ]]; then
         # Moving the file is problematic if called from existing ZSH session
         cp "${HOME}"/.zsh_history "${ZSH_VOLATILE}"/zsh_history
