@@ -90,7 +90,12 @@ function _get_gh_releases() {
     get_gh_release --repo koalaman/shellcheck --arch linux.x86_64.tar.xz --toPath shellcheck
     get_gh_release --repo mvdan/sh --arch linux_amd64 --toPath shfmt --unarchive 0 --rn shfmt
     get_gh_release --repo JohnnyMorganz/StyLua --arch linux.zip --toPath stylua
-    get_gh_release --repo sayanarijit/xplr --arch linux.tar.gz --toPath xplr
+    if get_gh_release --repo sayanarijit/xplr --arch linux.tar.gz --toPath xplr; then
+        local nnnp=~/.config/xplr/volatile/nnn/plugins
+        mkdir -p ${nnnp}
+        curl -k -L https://raw.githubusercontent.com/jarun/nnn/master/plugins/preview-tui -o ${nnnp}/preview-tui
+        chmod +x ${nnnp}/preview-tui
+    fi
     get_gh_release --repo BurntSushi/ripgrep --arch linux-musl.tar.gz --toPath rg --toCompletionPath complete/_rg
     if get_gh_release --repo junegunn/fzf --arch linux_amd64.tar.gz --toPath fzf; then
         echo 'Downloading FZF scripts'

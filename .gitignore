@@ -2,6 +2,7 @@ links/.vim/volatile
 links/.vim/autoload/plug.vim*
 links/.vim/sessions
 links/.zsh/volatile
+links/.config/xplr/volatile
 links/.config/vifm/vifminfo*
 links/.config/vifm/vifmimgpdf*
 links/.config/nvim/plugin/packer_compiled*

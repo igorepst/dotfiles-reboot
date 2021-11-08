@@ -275,6 +275,10 @@ xplr.config.modes.builtin.default = {
                 help = 'down',
                 messages = { 'FocusNext' },
             },
+            ['f4'] = {
+                help = 'edit file',
+                messages = { { CallLuaSilently = 'custom.edit_file' } },
+            },
             enter = {
                 help = 'enter',
                 messages = { { CallLuaSilently = 'custom.opener' } },
@@ -1723,22 +1727,33 @@ xplr.fn.builtin.fmt_general_table_row_cols_3 = function(m)
     end
 end
 
+xplr.fn.custom.edit_file = function(a)
+    return {
+        {
+            Call = {
+                command = 'kitty',
+                args = {
+                    '@launch',
+                    '--type=tab',
+                    '--no-response',
+                    '--location=after',
+                    '--cwd=' .. a.focused_node.parent,
+                    'nvim',
+                    a.focused_node.canonical.absolute_path,
+                },
+            },
+        },
+    }
+end
+
 xplr.fn.custom.opener = function(a)
     local c = a.focused_node.canonical
     return c.is_dir and { 'Enter' }
         or {
             {
-                Call = {
-                    command = 'kitty',
-                    args = {
-                        '@launch',
-                        '--type=tab',
-                        '--no-response',
-                        '--location=after',
-                        '--cwd=' .. a.focused_node.parent,
-                        'nvim',
-                        c.absolute_path,
-                    },
+                CallSilently = {
+                    command = 'xdg-open',
+                    args = { c.absolute_path },
                 },
             },
         }
@@ -1756,4 +1771,10 @@ require('xclip').setup({
 local term = require('term')
 local k_hsplit = term.profile_kitty_hsplit()
 k_hsplit.key = 'ctrl-h'
-term.setup({term.profile_kitty_vsplit(), k_hsplit})
+term.setup({ term.profile_kitty_vsplit(), k_hsplit })
+
+require('preview-tabbed').setup({
+    mode = 'default',
+    key = 'f3',
+    previewer = os.getenv('HOME') .. '/.config/xplr/volatile/nnn/plugins/preview-tui',
+})
