@@ -17,10 +17,10 @@ function link() {
 }
 
 function doWork(){
-    echo ${GREEN}'Setting links'${RESET}
-    echo
+    printf "${GREEN}Setting links${RESET}\n\n"
+
     if [[ -z "${DOTFILES_DIR}" ]]; then
-	echo ${RED}'Dotfiles directory is not defined. Aborting...'${RESET}
+	printf "${RED}Dotfiles directory is not defined. Aborting...${RESET}"
 	exit 1
     fi
     link ".zsh"

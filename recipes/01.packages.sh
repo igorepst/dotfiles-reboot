@@ -9,8 +9,7 @@ function checkp() {
 
 function doWork() {
     local pnames=""
-    echo ${GREEN}'Checking prerequisites packages to install:'${RESET}
-    echo
+    printf "${GREEN}Checking prerequisites packages to install:${RESET}\n\n"
 
     local arr=(git zsh mpv xclip curl jq fontforge npm)
 
@@ -27,17 +26,16 @@ function doWork() {
     #    atool rpm-tools bzip2 cpio gzip lha xz lzop p7zip tar unace unrar zip unzip)
 
     for i in "${arr[@]}"; do
-        checkp "${i}" && echo "${GREEN}*${RESET} $i ${GREEN}is installed${RESET}" || pnames="${pnames} $i"
+        checkp "${i}" && printf "${GREEN}*${RESET} $i ${GREEN}is installed${RESET}\n" || pnames="${pnames} $i"
     done
     if [ ! -z "${pnames}" ]; then
-        echo ${RED}'Installing the following packages:'${RESET}
-        echo ${pnames}
+        printf "${RED}Installing the following packages:${RESET}\n${pnames}\n"
         case "${OS_ID}" in
             arch) yes | sudo /usr/bin/pacman -Sy ${pnames};;
             ubuntu) sudo /usr/bin/apt-get update && sudo /usr/bin/apt-get install -y ${pnames};;
         esac
     else
-        echo ${GREEN}'All packages are installed'${RESET}
+        printf "${GREEN}All packages are installed${RESET}"
     fi
 }
 
@@ -55,12 +53,12 @@ function doAurWork() {
             pushd "${dir}" >/dev/null
             git pull origin master 2>&1 | grep -q 'Already up to date' || changed=1
             if [ "${changed}" = "1" ]; then
-                echo ${RED}'Installing or updating the following package from AUR: '${dir}${RESET}
+                printf "${RED}Installing or updating the following package from AUR: ${dir}${RESET}\n"
             else
                 popd >/dev/null
             fi
         else
-            echo ${RED}'Installing or updating the following package from AUR: '${dir}${RESET}
+            printf "${RED}Installing or updating the following package from AUR: ${dir}${RESET}\n"
             git clone "${url}"
             pushd "${dir}" >/dev/null
             changed=1
@@ -69,17 +67,16 @@ function doAurWork() {
             makepkg -si
             popd >/dev/null
         else
-            echo ${GREEN}'The following package from AUR is up to date: '${dir}${RESET}
+            printf "${GREEN}The following package from AUR is up to date: ${dir}${RESET}\n"
         fi
     done
     popd >/dev/null
 }
 
 function change_shell() {
-    echo ${GREEN}'Checking current shell'${RESET}
-    echo "Current shell is ${SHELL}"
+    printf "${GREEN}Checking current shell${RESET}\nCurrent shell is ${SHELL}\n"
     [[ "${SHELL}" = '/bin/zsh' ]] && return 0
-    echo 'Changing shell to /bin/zsh'
+    printf "Changing shell to /bin/zsh\n"
     chsh -s /bin/zsh
 }
 

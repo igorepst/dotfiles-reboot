@@ -5,16 +5,16 @@ function doWork(){
     export GREEN='\033[0;32m'
     export RESET='\033[0m'
 
-    echo ${GREEN}'Checking OS'${RESET}
+    printf "${GREEN}Checking OS${RESET}\n"
     OS_ID=$(sed -ne 's/^ID=\(.*\)/\1/p' /etc/os-release)
     case "$OS_ID" in
         arch|ubuntu) export OS_ID;;
         *) 
-            echo "Unsupported OS: ${OS_ID}"
+            printf "${RED}Unsupported OS: ${OS_ID}${RESET}\n"
             exit 1;;
     esac
 
-    echo ${GREEN}'Installing common configuration'${RESET}
+    printf "${GREEN}Installing common configuration${RESET}\n"
 
     DOTFILES_DIR="$(
     cd "$(dirname "$0")"
@@ -28,8 +28,7 @@ function doWork(){
     [ -f ${MY_PC_ANSWER_FILE} ] && source ${MY_PC_ANSWER_FILE}
     if [ -z ${MY_PC_IS} ]; then
         local MY_PC_IS_H
-        echo
-        echo ${RED}'Checking environment'${RESET}
+        printf "\n${RED}Checking environment${RESET}\n"
         read -p "Is it a home (h) or work (w) PC? " MY_PC_IS_H
         if [[ "${MY_PC_IS_H}" =~ ^[Hh]$ ]]; then
             MY_PC_IS="home"
@@ -43,14 +42,13 @@ function doWork(){
     local RECIPES_DIR="${DOTFILES_DIR}/recipes"
     for recipe in ${RECIPES_DIR}/[0-9]*.sh; do
         if [ -x "${recipe}" ]; then
-            echo
-            echo ${GREEN}'*********************'${RESET}
+            printf "${GREEN}*********************${RESET}\n"
             "${recipe}"
         fi
     done
 
     popd >/dev/null
-    echo "${GREEN}Setting ${MY_PC_IS} environment finished. Please reboot${RESET}"
+    printf "${GREEN}Setting ${MY_PC_IS} environment finished. Please reboot${RESET}\n"
 }
 
 doWork

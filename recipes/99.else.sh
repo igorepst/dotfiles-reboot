@@ -1,11 +1,10 @@
 #!/usr/bin/env bash
 
 function doWork(){
+    printf "${GREEN}Completing installation${RESET}\n\n"
+
     local ZSH_VOLATILE="${HOME}"/.zsh/volatile
     mkdir -p "${ZSH_VOLATILE}"
-
-    echo ${GREEN}'Completing installation'${RESET}
-    echo
     zsh -i -c "_updateDots"
 
     local ZSH_PLUGINS="${HOME}"/.zsh/plugins

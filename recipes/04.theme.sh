@@ -1,8 +1,8 @@
 #!/usr/bin/env bash
 
 function doWork(){
-    echo ${GREEN}'Setting theme colors'${RESET}
-    echo
+    printf "${GREEN}Setting theme colors${RESET}\n\n"
+
     ~/bin/setTheme
 }
 

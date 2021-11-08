@@ -1,10 +1,9 @@
 #!/usr/bin/env bash
 
 function doWorkKDE(){
-    echo ${GREEN}'Installing KDE settings'${RESET}
-    echo
+    printf "${GREEN}Installing KDE settings${RESET}\n"
 
-    echo Processing shortcuts
+    printf "Processing shortcuts\n"
     local SH_RC="$HOME/.config/kglobalshortcutsrc"
     kwriteconfig5 --file "${SH_RC}" --group "krunner.desktop" --key "RunClipboard" "none,none,Run command on clipboard contents"
     kwriteconfig5 --file "${SH_RC}" --group "krunner.desktop" --key "_launch" "none,none,KRunner"
@@ -16,11 +15,11 @@ function doWorkKDE(){
     # The name 'kglobalaccel' should have '5' only in the second case
     [ "$TERM" != "linux" ] && kquitapp5 kglobalaccel && sleep 2s && kglobalaccel5 &
 
-    echo Disabling Baloo indexing
+    printf "Disabling Baloo indexing\n"
     kwriteconfig5 --file baloofilerc --group 'Basic Settings' --key 'Indexing-Enabled' false
 
     if [ -n "${DOTFILES_DIR}" ]; then
-        echo Setting Xresources for KDE
+        printf "Setting Xresources for KDE\n"
         # KDE overrides various aspects
         local SRC_XPROF="${HOME}/.config/autostart-scripts/srcXprofile"
         cat >"${SRC_XPROF}" <<"EOF"
@@ -32,8 +31,7 @@ EOF
 }
 
 function doWorkGnome() {
-    echo ${GREEN}'Installing Gnome settings'${RESET}
-    echo
+    printf "${GREEN}Installing Gnome settings${RESET}\n\n"
 
     while read line
 do
@@ -165,14 +163,12 @@ EOM
 if command -v kwriteconfig5 &> /dev/null; then
     doWorkKDE
 else
-    echo ${GREEN}'Skipping KDE configuration'${RESET}
-    echo
+    printf "${GREEN}Skipping KDE configuration${RESET}\n\n"
 fi
 
 if command -v gsettings &> /dev/null; then
     doWorkGnome
 else
-    echo ${GREEN}'Skipping Gnome configuration'${RESET}
-    echo
+    printf "${GREEN}Skipping Gnome configuration${RESET}\n\n"
 fi
 

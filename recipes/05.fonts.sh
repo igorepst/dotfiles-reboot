@@ -1,8 +1,8 @@
 #!/usr/bin/env bash
 
 function doWork(){
-    echo ${GREEN}'Installing fonts:'${RESET}
-    echo
+    printf "${GREEN}Installing fonts:${RESET}\n\n"
+
     local FONTS_DIR=${HOME}/.local/share/fonts
     mkdir -p "${FONTS_DIR}"
     declare -A FARR=( 
@@ -19,15 +19,15 @@ function doWork(){
         local URL=${FARR[$FNAME]}
         if [ ! -f "${FONTS_DIR}/${FNAME}.ttf" ] || [ -n "${DOT_UPDATE_FONTS}" ]; then
             CONV_NEEDED=1
-            echo "${GREEN}Installing ${FNAME}.ttf"${RESET}
+            printf "${GREEN}Installing ${FNAME}.ttf${RESET}\n"
             curl -o "${FONTS_DIR}/${FNAME}.ttf" -L -O "$URL"
         else
-            echo "${GREEN}${FNAME}.ttf is installed${RESET}"
+            printf "${GREEN}${FNAME}.ttf is installed${RESET}\n"
             [ ! -f "${FONTS_DIR}/${FNAME}.otf" ] && CONV_NEEDED=1
         fi
     done
     if [ "${CONV_NEEDED}" -eq "1" ]; then
-        echo ${GREEN}'Converting TTF to OTF for pango'${RESET}
+        printf "${GREEN}Converting TTF to OTF for pango${RESET}\n"
         local CONV_SCRIPT=convertFonts.py
         cat >"${FONTS_DIR}/${CONV_SCRIPT}" <<"EOF"
 import fontforge
@@ -42,7 +42,7 @@ EOF
         rm "./${CONV_SCRIPT}"
         popd >/dev/null
     else
-        echo ${GREEN}'OTF fonts exist'${RESET}
+        printf "${GREEN}OTF fonts exist${RESET}"
     fi
 
     fc-cache
@@ -57,12 +57,12 @@ configuration {
 }
 EOF
 
-    echo 'Setting Fontconfig'
+    printf 'Setting Fontconfig\n'
     local FONTCONFIG_DIR=${HOME}/.config/fontconfig
     mkdir -p "${FONTCONFIG_DIR}"
     local FONTCONFIG_CONF="${FONTCONFIG_DIR}/fonts.conf"
     if [[ -f "${FONTCONFIG_CONF}" ]] && [[ ! -f "${FONTCONFIG_CONF}.bak" ]]; then
-        echo "Backing up ${FONTCONFIG_CONF} as ${FONTCONFIG_CONF}.bak"
+        printf "Backing up ${FONTCONFIG_CONF} as ${FONTCONFIG_CONF}.bak\n"
         mv "${FONTCONFIG_CONF}" "${FONTCONFIG_CONF}.bak"
     fi
     cat >"${FONTCONFIG_CONF}" <<'EOF'
@@ -82,7 +82,7 @@ EOF
 function vcons(){
     local VCONS=/etc/vconsole.conf
     [ -f "${VCONS}" ] && return
-    echo "${RED}Setting ${VCONS}${RESET}"
+    printf "${RED}Setting ${VCONS}${RESET}\n"
     sudo sh -c "cat >${VCONS}" <<'EOF'
 KEYMAP=us
 FONT=ter-122n
