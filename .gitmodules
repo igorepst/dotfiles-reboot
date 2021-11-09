@@ -37,3 +37,6 @@
 [submodule "links/.config/xplr/plugins/preview-tabbed.xplr"]
 	path = links/.config/xplr/plugins/preview-tabbed
 	url = https://github.com/sayanarijit/preview-tabbed.xplr
+[submodule "links/.config/xplr/plugins/context-switch"]
+	path = links/.config/xplr/plugins/context-switch
+	url = https://github.com/igorepst/context-switch.xplr

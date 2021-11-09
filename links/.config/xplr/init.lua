@@ -128,7 +128,33 @@ xplr.config.layouts.custom.mine = {
                                     },
                                 },
                                 splits = {
-                                    'SortAndFilter',
+                                    {
+                                        Horizontal = {
+                                            config = {
+                                                constraints = {
+                                                    {
+                                                        Percentage = 10,
+                                                    },
+                                                    {
+                                                        Percentage = 90,
+                                                    },
+                                                },
+                                            },
+                                            splits = {
+                                                {
+                                                    CustomContent = {
+                                                        title = 'Ctx',
+                                                        body = {
+                                                            DynamicParagraph = {
+                                                                render = 'custom.render_context_num',
+                                                            },
+                                                        },
+                                                    },
+                                                },
+                                                'SortAndFilter',
+                                            },
+                                        },
+                                    },
                                     'InputAndLogs',
                                 },
                             },
@@ -1778,3 +1804,9 @@ require('preview-tabbed').setup({
     key = 'f3',
     previewer = os.getenv('HOME') .. '/.config/xplr/volatile/nnn/plugins/preview-tui',
 })
+
+local csw = require('context-switch')
+csw.setup()
+xplr.fn.custom.render_context_num = function(_)
+    return '  ' .. tostring(csw.get_current_context_num())
+end
