@@ -2,7 +2,7 @@
 -- See https://github.com/sayanarijit/xplr/wiki/Upgrade-Guide.
 
 ---@diagnostic disable
-version = '0.15.0'
+version = '0.16.0'
 local xplr = xplr
 ---@diagnostic enable
 
@@ -10,8 +10,6 @@ local genco = xplr.config.general
 
 genco.enable_mouse = true
 genco.show_hidden = true
-genco.cursor.style.bg = { Rgb = { 255, 255, 250 } }
-genco.cursor.style.fg = { Rgb = { 252, 151, 30 } }
 genco.initial_layout = 'mine'
 genco.initial_sorting = {
     { sorter = 'ByCanonicalIsDir', reverse = true },

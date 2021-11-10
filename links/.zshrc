@@ -5,8 +5,6 @@ fi
 # automatically remove duplicates from these arrays
 typeset -U path PATH cdpath CDPATH fpath FPATH manpath MANPATH
 
-export FPATH=~/.zsh/volatile/igorepst/_gh_release/_cache/_compl:$FPATH
-
 source ~/.zsh/helpers/p10k.zsh
 source ~/.zsh/plugins/powerlevel10k/powerlevel10k.zsh-theme
 
@@ -26,7 +24,7 @@ if [[ $BUFFER != sudo\ * ]]; then
 fi
 }
 zle -N sudo-command-line
-#Alt+s
+# Alt+s
 bindkey 's' sudo-command-line
 
 # only slash should be considered as a word separator:
@@ -35,13 +33,13 @@ function slash-backward-kill-word () {
     zle backward-kill-word
 }
 zle -N slash-backward-kill-word
-#Alt+v
+# Alt+v
 bindkey 'v' slash-backward-kill-word
 
 # Without the first one, backspace doesn't work properly when returning from normal mode
 bindkey "" backward-delete-char
-bindkey "" backward-kill-word
 bindkey "" backward-kill-line
+bindkey "^ " vi-forward-word
 
 autoload -Uz copy-earlier-word edit-command-line
 zle -N copy-earlier-word
@@ -72,10 +70,10 @@ SAVEHIST=10000000
 bindkey '[A' history-beginning-search-backward
 bindkey '[B' history-beginning-search-forward
 
-# Ctrl+/ to 'suspend' the half typed command
+# Ctrl+/ to 'suspend' the half typed command. Restores on the next fresh prompt
 bindkey '' push-input
 
-fpath=($fpath ~/.zsh/plugins/archive ~/.zsh/plugins/zsh-completions/src)
+fpath=($fpath ~/.zsh/volatile/igorepst/_gh_release/_cache/_compl ~/.zsh/plugins/archive ~/.zsh/plugins/zsh-completions/src)
 
 setopt glob_dots extended_glob auto_cd auto_pushd pushd_ignore_dups nomatch unset rm_star_silent
 setopt inc_append_history share_history extended_history hist_ignore_all_dups hist_ignore_space hist_save_no_dups
