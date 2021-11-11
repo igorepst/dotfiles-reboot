@@ -1,4 +1,3 @@
--- You need to define the script version for compatibility check.
 -- See https://github.com/sayanarijit/xplr/wiki/Upgrade-Guide.
 
 ---@diagnostic disable
@@ -6,7 +5,8 @@ version = '0.16.0'
 local xplr = xplr
 ---@diagnostic enable
 
-local genco = xplr.config.general
+local co = xplr.config
+local genco = co.general
 
 genco.enable_mouse = true
 genco.show_hidden = true
@@ -23,15 +23,9 @@ genco.table.col_widths = {
 }
 genco.table.header.height = 0
 genco.table.tree = {
-    {
-        format = '',
-    },
-    {
-        format = '',
-    },
-    {
-        format = '',
-    },
+    { format = '' },
+    { format = '' },
+    { format = '' },
 }
 
 genco.default_ui.prefix = ' '
@@ -54,48 +48,88 @@ genco.focus_selection_ui.style.bg = 'Gray'
 genco.focus_selection_ui.style.fg = nil
 genco.sort_and_filter_ui.default_identifier.style.add_modifiers = nil
 
----- Node types
-xplr.config.node_types.directory.meta.icon = ''
-xplr.config.node_types.directory.style.add_modifiers = { 'Bold' }
-xplr.config.node_types.directory.style.fg = 'Cyan'
-xplr.config.node_types.file.meta.icon = ''
-xplr.config.node_types.symlink.meta.icon = ''
-xplr.config.node_types.symlink.style.add_modifiers = { 'Italic' }
-xplr.config.node_types.symlink.style.fg = 'Magenta'
-xplr.config.node_types.mime_essence = {
-    application = {
-        pdf = { meta = { icon = '' } },
-        zip = { meta = { icon = '' } },
-    },
+local con = co.node_types
+con.directory.meta.icon = ''
+con.directory.style.add_modifiers = { 'Bold' }
+con.directory.style.fg = 'Cyan'
+con.file.meta.icon = ''
+con.symlink.meta.icon = ''
+con.symlink.style.add_modifiers = { 'Italic' }
+con.symlink.style.fg = 'Magenta'
+
+local function mic(s)
+    return { meta = { icon = s } }
+end
+con.mime_essence = {
     video = {
-        ['*'] = { meta = { icon = '' } },
+        ['*'] = mic(''),
     },
     audio = {
-        ['*'] = { meta = { icon = '' } },
+        ['*'] = mic(''),
     },
     image = {
-        ['*'] = { meta = { icon = '' } },
+        ['*'] = mic(''),
     },
 }
 
------- Extension
-xplr.config.node_types.extension = {
-    fb2 = { meta = { icon = '' } },
+con.extension = {
+    fb2 = mic(''),
+    vim = mic(''),
+    sql = mic(''),
+    rc = mic(''),
+    sh = mic(''),
+    zsh = mic(''),
+    js = mic(''),
+    ts = mic(''),
+    pub = mic(''),
+    pgp = mic(''),
+    sig = mic(''),
+    css = mic(''),
+    scss = mic(''),
+    py = mic(''),
+    md = mic(''),
+    json = mic(''),
+    lua = mic(''),
+    java = mic(''),
+    jar = mic(''),
+    class = mic(''),
+    pdf = mic(''),
+    zip = mic(''),
+    rar = mic(''),
+    bz2 = mic(''),
+    cab = mic(''),
+    deb = mic(''),
+    gz = mic(''),
+    gzip = mic(''),
+    rpm = mic(''),
+    tar = mic(''),
+    xz = mic(''),
+    zst = mic(''),
+    log = mic(''),
+    doc = mic(''),
+    docx = mic(''),
 }
 
------- Special
-xplr.config.node_types.special = {}
+con.special = {
+    Downloads = mic(''),
+    Documents = mic(''),
+    Desktop = mic(''),
+}
+con.special['.git'] = mic('')
+con.special['.ssh'] = mic('')
+con.special['lost+found'] = mic('')
+con.special['.npm'] = mic('')
+con.special['node_modules'] = mic('')
+con.special['package.json'] = mic('')
+con.special['package-lock.json'] = mic('')
+con.special['7z'] = mic('')
 
-xplr.config.layouts.custom.mine = {
+co.layouts.custom.mine = {
     Vertical = {
         config = {
             constraints = {
-                {
-                    Percentage = 80,
-                },
-                {
-                    Percentage = 20,
-                },
+                { Percentage = 80 },
+                { Percentage = 20 },
             },
         },
         splits = {
@@ -104,12 +138,8 @@ xplr.config.layouts.custom.mine = {
                 Horizontal = {
                     config = {
                         constraints = {
-                            {
-                                Percentage = 50,
-                            },
-                            {
-                                Percentage = 50,
-                            },
+                            { Percentage = 50 },
+                            { Percentage = 50 },
                         },
                     },
                     splits = {
@@ -117,12 +147,8 @@ xplr.config.layouts.custom.mine = {
                             Vertical = {
                                 config = {
                                     constraints = {
-                                        {
-                                            Percentage = 50,
-                                        },
-                                        {
-                                            Percentage = 50,
-                                        },
+                                        { Percentage = 50 },
+                                        { Percentage = 50 },
                                     },
                                 },
                                 splits = {
@@ -130,12 +156,8 @@ xplr.config.layouts.custom.mine = {
                                         Horizontal = {
                                             config = {
                                                 constraints = {
-                                                    {
-                                                        Percentage = 10,
-                                                    },
-                                                    {
-                                                        Percentage = 90,
-                                                    },
+                                                    { Percentage = 10 },
+                                                    { Percentage = 90 },
                                                 },
                                             },
                                             splits = {
@@ -165,41 +187,7 @@ xplr.config.layouts.custom.mine = {
     },
 }
 
-local function copy(obj, seen)
-    if type(obj) ~= 'table' then
-        return obj
-    end
-    if seen and seen[obj] then
-        return seen[obj]
-    end
-    local s = seen or {}
-    local res = setmetatable({}, getmetatable(obj))
-    s[obj] = res
-    for k, v in pairs(obj) do
-        res[copy(k, s)] = copy(v, s)
-    end
-    return res
-end
-
-local m2 = copy(xplr.config.layouts.custom.mine, nil)
-m2.Vertical.config.constraints = {
-    {
-        Percentage = 60,
-    },
-    {
-        Percentage = 20,
-    },
-    {
-        Percentage = 20,
-    },
-}
-table.insert(m2.Vertical.splits, 'HelpMenu')
-xplr.config.layouts.custom.mine2 = m2
-
--- Modes
----- Builtin
------- Default
-xplr.config.modes.builtin.default = {
+co.modes.builtin.default = {
     name = 'default',
     help = nil,
     extra_help = nil,
@@ -212,12 +200,7 @@ xplr.config.modes.builtin.default = {
             ['.'] = {
                 help = 'show hidden',
                 messages = {
-                    {
-                        ToggleNodeFilter = {
-                            filter = 'RelativePathDoesNotStartWith',
-                            input = '.',
-                        },
-                    },
+                    { ToggleNodeFilter = { filter = 'RelativePathDoesNotStartWith', input = '.' } },
                     'ExplorePwdAsync',
                 },
             },
@@ -225,9 +208,7 @@ xplr.config.modes.builtin.default = {
                 help = 'action',
                 messages = {
                     'PopMode',
-                    {
-                        SwitchModeBuiltin = 'action',
-                    },
+                    { SwitchModeBuiltin = 'action' },
                 },
             },
             ['?'] = {
@@ -253,7 +234,7 @@ xplr.config.modes.builtin.default = {
                 help = 'terminate',
                 messages = { 'Terminate' },
             },
-            ['ctrl-f'] = {
+            ['/'] = {
                 help = 'search',
                 messages = {
                     'PopMode',
@@ -281,18 +262,14 @@ xplr.config.modes.builtin.default = {
             ['ctrl-w'] = {
                 help = 'switch layout',
                 messages = {
-                    {
-                        SwitchModeBuiltin = 'switch_layout',
-                    },
+                    { SwitchModeBuiltin = 'switch_layout' },
                 },
             },
             ['d'] = {
                 help = 'delete',
                 messages = {
                     'PopMode',
-                    {
-                        SwitchModeBuiltin = 'delete',
-                    },
+                    { SwitchModeBuiltin = 'delete' },
                 },
             },
             down = {
@@ -389,27 +366,22 @@ xplr.config.modes.builtin.default = {
     },
 }
 
-xplr.config.modes.builtin.default.key_bindings.on_key['tab'] =
-    xplr.config.modes.builtin.default.key_bindings.on_key['ctrl-i']
+co.modes.builtin.default.key_bindings.on_key['tab'] = co.modes.builtin.default.key_bindings.on_key['ctrl-i']
 
-xplr.config.modes.builtin.default.key_bindings.on_key['v'] = xplr.config.modes.builtin.default.key_bindings.on_key.space
+co.modes.builtin.default.key_bindings.on_key['v'] = co.modes.builtin.default.key_bindings.on_key.space
 
-xplr.config.modes.builtin.default.key_bindings.on_key['V'] =
-    xplr.config.modes.builtin.default.key_bindings.on_key['ctrl-a']
+co.modes.builtin.default.key_bindings.on_key['V'] = co.modes.builtin.default.key_bindings.on_key['ctrl-a']
 
-xplr.config.modes.builtin.default.key_bindings.on_key['/'] =
-    xplr.config.modes.builtin.default.key_bindings.on_key['ctrl-f']
+co.modes.builtin.default.key_bindings.on_key['h'] = co.modes.builtin.default.key_bindings.on_key.left
 
-xplr.config.modes.builtin.default.key_bindings.on_key['h'] = xplr.config.modes.builtin.default.key_bindings.on_key.left
+co.modes.builtin.default.key_bindings.on_key['j'] = co.modes.builtin.default.key_bindings.on_key.down
 
-xplr.config.modes.builtin.default.key_bindings.on_key['j'] = xplr.config.modes.builtin.default.key_bindings.on_key.down
+co.modes.builtin.default.key_bindings.on_key['k'] = co.modes.builtin.default.key_bindings.on_key.up
 
-xplr.config.modes.builtin.default.key_bindings.on_key['k'] = xplr.config.modes.builtin.default.key_bindings.on_key.up
-
-xplr.config.modes.builtin.default.key_bindings.on_key['l'] = xplr.config.modes.builtin.default.key_bindings.on_key.right
+co.modes.builtin.default.key_bindings.on_key['l'] = co.modes.builtin.default.key_bindings.on_key.right
 
 ------ Selection ops
-xplr.config.modes.builtin.selection_ops = {
+co.modes.builtin.selection_ops = {
     name = 'selection ops',
     help = nil,
     extra_help = nil,
@@ -495,7 +467,7 @@ xplr.config.modes.builtin.selection_ops = {
 }
 
 ------ Create
-xplr.config.modes.builtin.create = {
+co.modes.builtin.create = {
     name = 'create',
     help = nil,
     extra_help = nil,
@@ -509,12 +481,8 @@ xplr.config.modes.builtin.create = {
                 help = 'create directory',
                 messages = {
                     'PopMode',
-                    {
-                        SwitchModeBuiltin = 'create directory',
-                    },
-                    {
-                        SetInputBuffer = '',
-                    },
+                    { SwitchModeBuiltin = 'create directory' },
+                    { SetInputBuffer = '' },
                 },
             },
             esc = {
@@ -525,12 +493,8 @@ xplr.config.modes.builtin.create = {
                 help = 'create file',
                 messages = {
                     'PopMode',
-                    {
-                        SwitchModeBuiltin = 'create file',
-                    },
-                    {
-                        SetInputBuffer = '',
-                    },
+                    { SwitchModeBuiltin = 'create file' },
+                    { SetInputBuffer = '' },
                 },
             },
         },
@@ -542,7 +506,7 @@ xplr.config.modes.builtin.create = {
 }
 
 ------ Create directory
-xplr.config.modes.builtin.create_directory = {
+co.modes.builtin.create_directory = {
     name = 'create directory',
     help = nil,
     extra_help = nil,
@@ -603,7 +567,7 @@ xplr.config.modes.builtin.create_directory = {
 }
 
 ------ Create file
-xplr.config.modes.builtin.create_file = {
+co.modes.builtin.create_file = {
     name = 'create file',
     help = nil,
     extra_help = nil,
@@ -664,7 +628,7 @@ xplr.config.modes.builtin.create_file = {
 }
 
 ------ Number
-xplr.config.modes.builtin.number = {
+co.modes.builtin.number = {
     name = 'number',
     help = nil,
     extra_help = nil,
@@ -717,11 +681,11 @@ xplr.config.modes.builtin.number = {
     },
 }
 
-xplr.config.modes.builtin.number.key_bindings.on_key['j'] = xplr.config.modes.builtin.number.key_bindings.on_key.down
-xplr.config.modes.builtin.number.key_bindings.on_key['k'] = xplr.config.modes.builtin.number.key_bindings.on_key.up
+co.modes.builtin.number.key_bindings.on_key['j'] = co.modes.builtin.number.key_bindings.on_key.down
+co.modes.builtin.number.key_bindings.on_key['k'] = co.modes.builtin.number.key_bindings.on_key.up
 
 ------ Go to
-xplr.config.modes.builtin.go_to = {
+co.modes.builtin.go_to = {
     name = 'go to',
     help = nil,
     extra_help = nil,
@@ -774,7 +738,7 @@ xplr.config.modes.builtin.go_to = {
 }
 
 ------ Rename
-xplr.config.modes.builtin.rename = {
+co.modes.builtin.rename = {
     name = 'rename',
     help = nil,
     extra_help = nil,
@@ -832,7 +796,7 @@ xplr.config.modes.builtin.rename = {
 }
 
 ------ Delete
-xplr.config.modes.builtin.delete = {
+co.modes.builtin.delete = {
     name = 'delete',
     help = nil,
     extra_help = nil,
@@ -901,7 +865,7 @@ xplr.config.modes.builtin.delete = {
 }
 
 ------ Action
-xplr.config.modes.builtin.action = {
+co.modes.builtin.action = {
     name = 'action to',
     help = nil,
     extra_help = nil,
@@ -910,12 +874,7 @@ xplr.config.modes.builtin.action = {
             ['!'] = {
                 help = 'shell',
                 messages = {
-                    {
-                        Call = {
-                            command = 'zsh',
-                            args = { '-i' },
-                        },
-                    },
+                    { Call = { command = 'zsh', args = { '-i' } } },
                     'ExplorePwdAsync',
                     'PopMode',
                 },
@@ -924,9 +883,7 @@ xplr.config.modes.builtin.action = {
                 help = 'create',
                 messages = {
                     'PopMode',
-                    {
-                        SwitchModeBuiltin = 'create',
-                    },
+                    { SwitchModeBuiltin = 'create' },
                 },
             },
             ['ctrl-c'] = {
@@ -969,13 +926,6 @@ xplr.config.modes.builtin.action = {
                     },
                 },
             },
-            ['m'] = {
-                help = 'toggle mouse',
-                messages = {
-                    'PopMode',
-                    'ToggleMouse',
-                },
-            },
             ['q'] = {
                 help = 'quit options',
                 messages = {
@@ -1001,7 +951,7 @@ xplr.config.modes.builtin.action = {
 }
 
 ------ Quit
-xplr.config.modes.builtin.quit = {
+co.modes.builtin.quit = {
     name = 'quit',
     help = nil,
     extra_help = nil,
@@ -1054,7 +1004,7 @@ xplr.config.modes.builtin.quit = {
 }
 
 ------ Search
-xplr.config.modes.builtin.search = {
+co.modes.builtin.search = {
     name = 'search',
     help = nil,
     extra_help = nil,
@@ -1080,28 +1030,18 @@ xplr.config.modes.builtin.search = {
             ['ctrl-u'] = {
                 help = 'remove line',
                 messages = {
-                    {
-                        RemoveNodeFilterFromInput = 'IRelativePathDoesContain',
-                    },
-                    {
-                        SetInputBuffer = '',
-                    },
-                    {
-                        AddNodeFilterFromInput = 'IRelativePathDoesContain',
-                    },
+                    { RemoveNodeFilterFromInput = 'IRelativePathDoesContain' },
+                    { SetInputBuffer = '' },
+                    { AddNodeFilterFromInput = 'IRelativePathDoesContain' },
                     'ExplorePwdAsync',
                 },
             },
             ['ctrl-w'] = {
                 help = 'remove last word',
                 messages = {
-                    {
-                        RemoveNodeFilterFromInput = 'IRelativePathDoesContain',
-                    },
+                    { RemoveNodeFilterFromInput = 'IRelativePathDoesContain' },
                     'RemoveInputBufferLastWord',
-                    {
-                        AddNodeFilterFromInput = 'IRelativePathDoesContain',
-                    },
+                    { AddNodeFilterFromInput = 'IRelativePathDoesContain' },
                     'ExplorePwdAsync',
                 },
             },
@@ -1112,9 +1052,7 @@ xplr.config.modes.builtin.search = {
             enter = {
                 help = 'focus',
                 messages = {
-                    {
-                        RemoveNodeFilterFromInput = 'IRelativePathDoesContain',
-                    },
+                    { RemoveNodeFilterFromInput = 'IRelativePathDoesContain' },
                     'PopMode',
                     'ExplorePwdAsync',
                 },
@@ -1122,26 +1060,18 @@ xplr.config.modes.builtin.search = {
             left = {
                 help = 'back',
                 messages = {
-                    {
-                        RemoveNodeFilterFromInput = 'IRelativePathDoesContain',
-                    },
+                    { RemoveNodeFilterFromInput = 'IRelativePathDoesContain' },
                     'Back',
-                    {
-                        SetInputBuffer = '',
-                    },
+                    { SetInputBuffer = '' },
                     'ExplorePwdAsync',
                 },
             },
             right = {
                 help = 'enter',
                 messages = {
-                    {
-                        RemoveNodeFilterFromInput = 'IRelativePathDoesContain',
-                    },
+                    { RemoveNodeFilterFromInput = 'IRelativePathDoesContain' },
                     'Enter',
-                    {
-                        SetInputBuffer = '',
-                    },
+                    { SetInputBuffer = '' },
                     'ExplorePwdAsync',
                 },
             },
@@ -1173,13 +1103,12 @@ xplr.config.modes.builtin.search = {
     },
 }
 
-xplr.config.modes.builtin.search.key_bindings.on_key['esc'] = xplr.config.modes.builtin.search.key_bindings.on_key.enter
-xplr.config.modes.builtin.search.key_bindings.on_key['ctrl-n'] =
-    xplr.config.modes.builtin.search.key_bindings.on_key.down
-xplr.config.modes.builtin.search.key_bindings.on_key['ctrl-p'] = xplr.config.modes.builtin.search.key_bindings.on_key.up
+co.modes.builtin.search.key_bindings.on_key['esc'] = co.modes.builtin.search.key_bindings.on_key.enter
+co.modes.builtin.search.key_bindings.on_key['ctrl-n'] = co.modes.builtin.search.key_bindings.on_key.down
+co.modes.builtin.search.key_bindings.on_key['ctrl-p'] = co.modes.builtin.search.key_bindings.on_key.up
 
 ------ Filter
-xplr.config.modes.builtin.filter = {
+co.modes.builtin.filter = {
     name = 'filter',
     help = nil,
     extra_help = nil,
@@ -1243,10 +1172,10 @@ xplr.config.modes.builtin.filter = {
     },
 }
 
-xplr.config.modes.builtin.filter.key_bindings.on_key['esc'] = xplr.config.modes.builtin.filter.key_bindings.on_key.enter
+co.modes.builtin.filter.key_bindings.on_key['esc'] = co.modes.builtin.filter.key_bindings.on_key.enter
 
 ------ Relative path does contain
-xplr.config.modes.builtin.relative_path_does_contain = {
+co.modes.builtin.relative_path_does_contain = {
     name = 'relative path does contain',
     help = nil,
     extra_help = nil,
@@ -1332,7 +1261,7 @@ xplr.config.modes.builtin.relative_path_does_contain = {
 }
 
 ------ Relative path does not contain
-xplr.config.modes.builtin.relative_path_does_not_contain = {
+co.modes.builtin.relative_path_does_not_contain = {
     name = 'relative path does not contain',
     help = nil,
     extra_help = nil,
@@ -1418,7 +1347,7 @@ xplr.config.modes.builtin.relative_path_does_not_contain = {
 }
 
 ------ Sort
-xplr.config.modes.builtin.sort = {
+co.modes.builtin.sort = {
     name = 'sort',
     help = nil,
     extra_help = nil,
@@ -1432,10 +1361,7 @@ xplr.config.modes.builtin.sort = {
                 help = 'by canonical extension reverse',
                 messages = {
                     {
-                        AddNodeSorter = {
-                            sorter = 'ByCanonicalExtension',
-                            reverse = true,
-                        },
+                        AddNodeSorter = { sorter = 'ByCanonicalExtension', reverse = true },
                     },
                     'ExplorePwdAsync',
                 },
@@ -1444,10 +1370,7 @@ xplr.config.modes.builtin.sort = {
                 help = 'by canonical mime essence reverse',
                 messages = {
                     {
-                        AddNodeSorter = {
-                            sorter = 'ByCanonicalMimeEssence',
-                            reverse = true,
-                        },
+                        AddNodeSorter = { sorter = 'ByCanonicalMimeEssence', reverse = true },
                     },
                     'ExplorePwdAsync',
                 },
@@ -1456,22 +1379,13 @@ xplr.config.modes.builtin.sort = {
                 help = 'by node type reverse',
                 messages = {
                     {
-                        AddNodeSorter = {
-                            sorter = 'ByCanonicalIsDir',
-                            reverse = true,
-                        },
+                        AddNodeSorter = { sorter = 'ByCanonicalIsDir', reverse = true },
                     },
                     {
-                        AddNodeSorter = {
-                            sorter = 'ByCanonicalIsFile',
-                            reverse = true,
-                        },
+                        AddNodeSorter = { sorter = 'ByCanonicalIsFile', reverse = true },
                     },
                     {
-                        AddNodeSorter = {
-                            sorter = 'ByIsSymlink',
-                            reverse = true,
-                        },
+                        AddNodeSorter = { sorter = 'ByIsSymlink', reverse = true },
                     },
                     'ExplorePwdAsync',
                 },
@@ -1480,10 +1394,7 @@ xplr.config.modes.builtin.sort = {
                 help = 'by relative path reverse',
                 messages = {
                     {
-                        AddNodeSorter = {
-                            sorter = 'ByIRelativePath',
-                            reverse = true,
-                        },
+                        AddNodeSorter = { sorter = 'ByIRelativePath', reverse = true },
                     },
                     'ExplorePwdAsync',
                 },
@@ -1492,10 +1403,7 @@ xplr.config.modes.builtin.sort = {
                 help = 'by size reverse',
                 messages = {
                     {
-                        AddNodeSorter = {
-                            sorter = 'BySize',
-                            reverse = true,
-                        },
+                        AddNodeSorter = { sorter = 'BySize', reverse = true },
                     },
                     'ExplorePwdAsync',
                 },
@@ -1520,10 +1428,7 @@ xplr.config.modes.builtin.sort = {
                 help = 'by canonical extension',
                 messages = {
                     {
-                        AddNodeSorter = {
-                            sorter = 'ByCanonicalExtension',
-                            reverse = false,
-                        },
+                        AddNodeSorter = { sorter = 'ByCanonicalExtension', reverse = false },
                     },
                     'ExplorePwdAsync',
                 },
@@ -1536,10 +1441,7 @@ xplr.config.modes.builtin.sort = {
                 help = 'by canonical mime essence',
                 messages = {
                     {
-                        AddNodeSorter = {
-                            sorter = 'ByCanonicalMimeEssence',
-                            reverse = false,
-                        },
+                        AddNodeSorter = { sorter = 'ByCanonicalMimeEssence', reverse = false },
                     },
                     'ExplorePwdAsync',
                 },
@@ -1548,22 +1450,13 @@ xplr.config.modes.builtin.sort = {
                 help = 'by node type',
                 messages = {
                     {
-                        AddNodeSorter = {
-                            sorter = 'ByCanonicalIsDir',
-                            reverse = false,
-                        },
+                        AddNodeSorter = { sorter = 'ByCanonicalIsDir', reverse = false },
                     },
                     {
-                        AddNodeSorter = {
-                            sorter = 'ByCanonicalIsFile',
-                            reverse = false,
-                        },
+                        AddNodeSorter = { sorter = 'ByCanonicalIsFile', reverse = false },
                     },
                     {
-                        AddNodeSorter = {
-                            sorter = 'ByIsSymlink',
-                            reverse = false,
-                        },
+                        AddNodeSorter = { sorter = 'ByIsSymlink', reverse = false },
                     },
                     'ExplorePwdAsync',
                 },
@@ -1571,12 +1464,7 @@ xplr.config.modes.builtin.sort = {
             ['r'] = {
                 help = 'by relative path',
                 messages = {
-                    {
-                        AddNodeSorter = {
-                            sorter = 'ByIRelativePath',
-                            reverse = false,
-                        },
-                    },
+                    { AddNodeSorter = { sorter = 'ByIRelativePath', reverse = false } },
                     'ExplorePwdAsync',
                 },
             },
@@ -1584,10 +1472,7 @@ xplr.config.modes.builtin.sort = {
                 help = 'by size',
                 messages = {
                     {
-                        AddNodeSorter = {
-                            sorter = 'BySize',
-                            reverse = false,
-                        },
+                        AddNodeSorter = { sorter = 'BySize', reverse = false },
                     },
                     'ExplorePwdAsync',
                 },
@@ -1600,10 +1485,10 @@ xplr.config.modes.builtin.sort = {
     },
 }
 
-xplr.config.modes.builtin.sort.key_bindings.on_key['esc'] = xplr.config.modes.builtin.sort.key_bindings.on_key.enter
+co.modes.builtin.sort.key_bindings.on_key['esc'] = co.modes.builtin.sort.key_bindings.on_key.enter
 
 ------ Switch layout
-xplr.config.modes.builtin.switch_layout = {
+co.modes.builtin.switch_layout = {
     name = 'switch layout',
     help = nil,
     extra_help = nil,
@@ -1612,27 +1497,14 @@ xplr.config.modes.builtin.switch_layout = {
             ['1'] = {
                 help = 'mine',
                 messages = {
-                    {
-                        SwitchLayoutCustom = 'mine',
-                    },
+                    { SwitchLayoutCustom = 'mine' },
                     'PopMode',
                 },
             },
             ['2'] = {
-                help = 'mine2',
-                messages = {
-                    {
-                        SwitchLayoutCustom = 'mine2',
-                    },
-                    'PopMode',
-                },
-            },
-            ['3'] = {
                 help = 'default',
                 messages = {
-                    {
-                        SwitchLayoutBuiltin = 'default',
-                    },
+                    { SwitchLayoutBuiltin = 'default' },
                     'PopMode',
                 },
             },
@@ -1649,7 +1521,7 @@ xplr.config.modes.builtin.switch_layout = {
 }
 
 ---- Custom
-xplr.config.modes.custom = {}
+co.modes.custom = {}
 
 -------- Format path column
 xplr.fn.builtin.fmt_general_table_row_cols_0 = function(m)
