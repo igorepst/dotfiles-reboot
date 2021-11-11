@@ -1,2 +1,0 @@
-#!/bin/sh
-BAT_CONFIG_PATH=~/.config/vifm/bat.config $MYTERM -e vifmrun
