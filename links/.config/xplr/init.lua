@@ -408,42 +408,6 @@ xplr.config.modes.builtin.default.key_bindings.on_key['k'] = xplr.config.modes.b
 
 xplr.config.modes.builtin.default.key_bindings.on_key['l'] = xplr.config.modes.builtin.default.key_bindings.on_key.right
 
------- Recover
-xplr.config.modes.builtin.recover = {
-    name = 'recover',
-    layout = {
-        CustomContent = {
-            title = ' recover ',
-            body = {
-                StaticParagraph = {
-                    render = [[
-
-  You pressed an invalid key and went into "recover" mode.
-  This mode saves you from performing unwanted actions.
-
-  Let's calm down, press `escape`, and try again.
-          ]],
-                },
-            },
-        },
-    },
-    key_bindings = {
-        on_key = {
-            ['ctrl-c'] = {
-                help = 'terminate',
-                messages = { 'Terminate' },
-            },
-            esc = {
-                help = 'escape',
-                messages = { 'PopMode' },
-            },
-        },
-        default = {
-            messages = {},
-        },
-    },
-}
-
 ------ Selection ops
 xplr.config.modes.builtin.selection_ops = {
     name = 'selection ops',
