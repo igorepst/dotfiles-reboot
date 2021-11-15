@@ -3,7 +3,7 @@
 export LC_ALL=en_US.UTF-8
 export LANG=en_US.UTF-8
 export EDITOR=nvim
-export PATH=~/bin:~/.zsh/volatile/igorepst/_gh_release/_cache/_bin:~/.local/bin:$PATH
+export PATH=~/bin:~/.zsh/volatile/igorepst/_gh_release/_cache/_bin:~/.local/bin:~/.cargo/bin:$PATH
 export MYTERM=kitty
 export MYFEXP=xplr
 export _JAVA_OPTIONS='-Dawt.useSystemAAFontSettings=on'
@@ -12,4 +12,3 @@ export _JAVA_OPTIONS='-Dawt.useSystemAAFontSettings=on'
 #  if [[ "${MY_PC_IS}" = "vm" ]] && systemctl -q is-active graphical.target && [[ ! ${DISPLAY} && ${XDG_VTNR} -eq 1 ]]; then
 #  	 exec startx
 #  fi
-

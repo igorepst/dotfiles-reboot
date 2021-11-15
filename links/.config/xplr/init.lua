@@ -108,6 +108,8 @@ con.extension = {
     log = mic(''),
     doc = mic(''),
     docx = mic(''),
+    rs = mic(''),
+    rlib = mic(''),
 }
 
 con.special = {
@@ -116,6 +118,8 @@ con.special = {
     Desktop = mic(''),
 }
 con.special['.git'] = mic('')
+con.special['.github'] = mic('')
+con.special['.gitignore'] = mic('')
 con.special['.ssh'] = mic('')
 con.special['lost+found'] = mic('')
 con.special['.npm'] = mic('')
@@ -123,6 +127,10 @@ con.special['node_modules'] = mic('')
 con.special['package.json'] = mic('')
 con.special['package-lock.json'] = mic('')
 con.special['7z'] = mic('')
+con.special['.rustup'] = mic('')
+con.special['.cargo'] = mic('')
+con.special['Cargo.toml'] = mic('')
+con.special['Cargo.lock'] = mic('')
 
 co.layouts.custom.mine = {
     Vertical = {
