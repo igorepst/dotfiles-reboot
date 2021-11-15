@@ -134,40 +134,20 @@ con.special['Cargo.lock'] = mic('')
 
 co.layouts.custom.mine = {
     Vertical = {
-        config = {
-            constraints = {
-                { Percentage = 80 },
-                { Percentage = 20 },
-            },
-        },
+        config = { constraints = { { Percentage = 80 }, { Percentage = 20 } } },
         splits = {
             'Table',
             {
                 Horizontal = {
-                    config = {
-                        constraints = {
-                            { Percentage = 50 },
-                            { Percentage = 50 },
-                        },
-                    },
+                    config = { constraints = { { Percentage = 50 }, { Percentage = 50 } } },
                     splits = {
                         {
                             Vertical = {
-                                config = {
-                                    constraints = {
-                                        { Percentage = 50 },
-                                        { Percentage = 50 },
-                                    },
-                                },
+                                config = { constraints = { { Percentage = 50 }, { Percentage = 50 } } },
                                 splits = {
                                     {
                                         Horizontal = {
-                                            config = {
-                                                constraints = {
-                                                    { Percentage = 10 },
-                                                    { Percentage = 90 },
-                                                },
-                                            },
+                                            config = { constraints = { { Percentage = 10 }, { Percentage = 90 } } },
                                             splits = {
                                                 {
                                                     CustomContent = {
@@ -201,10 +181,7 @@ co.modes.builtin.default = {
     extra_help = nil,
     key_bindings = {
         on_key = {
-            ['#'] = {
-                help = nil,
-                messages = { 'PrintAppStateAndQuit' },
-            },
+            ['#'] = { help = nil, messages = { 'PrintAppStateAndQuit' } },
             ['.'] = {
                 help = 'show hidden',
                 messages = {
@@ -214,34 +191,22 @@ co.modes.builtin.default = {
             },
             [':'] = {
                 help = 'action',
-                messages = {
-                    'PopMode',
-                    { SwitchModeBuiltin = 'action' },
-                },
+                messages = { 'PopMode', { SwitchModeBuiltin = 'action' } },
             },
             ['?'] = {
                 help = 'global help menu',
                 messages = {
                     {
-                        BashExec = [===[
-            [ -z "$PAGER" ] && PAGER="less -+F"
-            cat -- "${XPLR_PIPE_GLOBAL_HELP_MENU_OUT}" | ${PAGER:?}
-            ]===],
+                        Call = {
+                            command = 'zsh',
+                            args = { '-c', [[cat -- "${XPLR_PIPE_GLOBAL_HELP_MENU_OUT}" | nvim -R]] },
+                        },
                     },
                 },
             },
-            ['G'] = {
-                help = 'go to bottom',
-                messages = { 'PopMode', 'FocusLast' },
-            },
-            ['ctrl-a'] = {
-                help = 'select/unselect all',
-                messages = { 'ToggleSelectAll' },
-            },
-            ['ctrl-c'] = {
-                help = 'terminate',
-                messages = { 'Terminate' },
-            },
+            ['G'] = { help = 'go to bottom', messages = { 'PopMode', 'FocusLast' } },
+            ['ctrl-a'] = { help = 'select/unselect all', messages = { 'ToggleSelectAll' } },
+            ['ctrl-c'] = { help = 'terminate', messages = { 'Terminate' } },
             ['/'] = {
                 help = 'search',
                 messages = {
@@ -251,51 +216,16 @@ co.modes.builtin.default = {
                     'ExplorePwdAsync',
                 },
             },
-            ['ctrl-i'] = {
-                help = 'next visited path',
-                messages = { 'NextVisitedPath' },
-            },
-            ['ctrl-o'] = {
-                help = 'last visited path',
-                messages = { 'LastVisitedPath' },
-            },
-            ['ctrl-r'] = {
-                help = 'refresh screen',
-                messages = { 'ClearScreen' },
-            },
-            ['ctrl-u'] = {
-                help = 'clear selection',
-                messages = { 'ClearSelection' },
-            },
-            ['ctrl-w'] = {
-                help = 'switch layout',
-                messages = {
-                    { SwitchModeBuiltin = 'switch_layout' },
-                },
-            },
-            ['d'] = {
-                help = 'delete',
-                messages = {
-                    'PopMode',
-                    { SwitchModeBuiltin = 'delete' },
-                },
-            },
-            down = {
-                help = 'down',
-                messages = { 'FocusNext' },
-            },
-            ['f4'] = {
-                help = 'edit file',
-                messages = { { CallLuaSilently = 'custom.edit_file' } },
-            },
-            enter = {
-                help = 'enter',
-                messages = { { CallLuaSilently = 'custom.opener' } },
-            },
-            esc = {
-                help = nil,
-                messages = {},
-            },
+            ['ctrl-i'] = { help = 'next visited path', messages = { 'NextVisitedPath' } },
+            ['ctrl-o'] = { help = 'last visited path', messages = { 'LastVisitedPath' } },
+            ['ctrl-r'] = { help = 'refresh screen', messages = { 'ClearScreen' } },
+            ['ctrl-u'] = { help = 'clear selection', messages = { 'ClearSelection' } },
+            ['ctrl-w'] = { help = 'switch layout', messages = { { SwitchModeBuiltin = 'switch_layout' } } },
+            ['d'] = { help = 'delete', messages = { 'PopMode', { SwitchModeBuiltin = 'delete' } } },
+            down = { help = 'down', messages = { 'FocusNext' } },
+            ['f4'] = { help = 'edit file', messages = { { CallLuaSilently = 'custom.edit_file' } } },
+            enter = { help = 'enter', messages = { { CallLuaSilently = 'custom.opener' } } },
+            esc = { help = nil, messages = {} },
             ['f'] = {
                 help = 'filter',
                 messages = {
@@ -303,21 +233,9 @@ co.modes.builtin.default = {
                     { SwitchModeBuiltin = 'filter' },
                 },
             },
-            ['g'] = {
-                help = 'go to',
-                messages = {
-                    'PopMode',
-                    { SwitchModeBuiltin = 'go_to' },
-                },
-            },
-            left = {
-                help = 'back',
-                messages = { 'Back' },
-            },
-            ['q'] = {
-                help = 'quit',
-                messages = { 'Quit' },
-            },
+            ['g'] = { help = 'go to', messages = { 'PopMode', { SwitchModeBuiltin = 'go_to' } } },
+            left = { help = 'back', messages = { 'Back' } },
+            ['q'] = { help = 'quit', messages = { 'Quit' } },
             ['r'] = {
                 help = 'rename',
                 messages = {
@@ -330,25 +248,10 @@ co.modes.builtin.default = {
                     },
                 },
             },
-            right = {
-                help = 'enter',
-                messages = { { CallLuaSilently = 'custom.opener' } },
-            },
-            ['s'] = {
-                help = 'sort',
-                messages = {
-                    'PopMode',
-                    { SwitchModeBuiltin = 'sort' },
-                },
-            },
-            space = {
-                help = 'toggle selection',
-                messages = { 'ToggleSelection', 'FocusNext' },
-            },
-            up = {
-                help = 'up',
-                messages = { 'FocusPrevious' },
-            },
+            right = { help = 'enter', messages = { { CallLuaSilently = 'custom.opener' } } },
+            ['s'] = { help = 'sort', messages = { 'PopMode', { SwitchModeBuiltin = 'sort' } } },
+            space = { help = 'toggle selection', messages = { 'ToggleSelection', 'FocusNext' } },
+            up = { help = 'up', messages = { 'FocusPrevious' } },
             ['~'] = {
                 help = 'go home',
                 messages = {
@@ -363,11 +266,7 @@ co.modes.builtin.default = {
         on_alphabet = nil,
         on_number = {
             help = 'input',
-            messages = {
-                'PopMode',
-                { SwitchModeBuiltin = 'number' },
-                'BufferInputFromKey',
-            },
+            messages = { 'PopMode', { SwitchModeBuiltin = 'number' }, 'BufferInputFromKey' },
         },
         on_special_character = nil,
         default = nil,
@@ -415,14 +314,8 @@ co.modes.builtin.selection_ops = {
                     'PopMode',
                 },
             },
-            ['ctrl-c'] = {
-                help = 'terminate',
-                messages = { 'Terminate' },
-            },
-            esc = {
-                help = 'cancel',
-                messages = { 'PopMode' },
-            },
+            ['ctrl-c'] = { help = 'terminate', messages = { 'Terminate' } },
+            esc = { help = 'cancel', messages = { 'PopMode' } },
             ['m'] = {
                 help = 'move here',
                 messages = {
@@ -481,29 +374,15 @@ co.modes.builtin.create = {
     extra_help = nil,
     key_bindings = {
         on_key = {
-            ['ctrl-c'] = {
-                help = 'terminate',
-                messages = { 'Terminate' },
-            },
+            ['ctrl-c'] = { help = 'terminate', messages = { 'Terminate' } },
+            esc = { help = 'cancel', messages = { 'PopMode' } },
             ['d'] = {
                 help = 'create directory',
-                messages = {
-                    'PopMode',
-                    { SwitchModeBuiltin = 'create directory' },
-                    { SetInputBuffer = '' },
-                },
-            },
-            esc = {
-                help = 'cancel',
-                messages = { 'PopMode' },
+                messages = { 'PopMode', { SwitchModeBuiltin = 'create directory' }, { SetInputBuffer = '' } },
             },
             ['f'] = {
                 help = 'create file',
-                messages = {
-                    'PopMode',
-                    { SwitchModeBuiltin = 'create file' },
-                    { SetInputBuffer = '' },
-                },
+                messages = { 'PopMode', { SwitchModeBuiltin = 'create file' }, { SetInputBuffer = '' } },
             },
         },
         on_alphabet = nil,
@@ -520,26 +399,10 @@ co.modes.builtin.create_directory = {
     extra_help = nil,
     key_bindings = {
         on_key = {
-            backspace = {
-                help = 'remove last character',
-                messages = { 'RemoveInputBufferLastCharacter' },
-            },
-            ['ctrl-c'] = {
-                help = 'terminate',
-                messages = { 'Terminate' },
-            },
-            ['ctrl-u'] = {
-                help = 'remove line',
-                messages = {
-                    {
-                        SetInputBuffer = '',
-                    },
-                },
-            },
-            ['ctrl-w'] = {
-                help = 'remove last word',
-                messages = { 'RemoveInputBufferLastWord' },
-            },
+            backspace = { help = 'remove last character', messages = { 'RemoveInputBufferLastCharacter' } },
+            ['ctrl-c'] = { help = 'terminate', messages = { 'Terminate' } },
+            ['ctrl-u'] = { help = 'remove line', messages = { { SetInputBuffer = '' } } },
+            ['ctrl-w'] = { help = 'remove last word', messages = { 'RemoveInputBufferLastWord' } },
             enter = {
                 help = 'create directory',
                 messages = {
@@ -559,18 +422,12 @@ co.modes.builtin.create_directory = {
                     },
                 },
             },
-            esc = {
-                help = 'cancel',
-                messages = { 'PopMode' },
-            },
+            esc = { help = 'cancel', messages = { 'PopMode' } },
         },
         on_alphabet = nil,
         on_number = nil,
         on_special_character = nil,
-        default = {
-            help = nil,
-            messages = { 'BufferInputFromKey' },
-        },
+        default = { help = nil, messages = { 'BufferInputFromKey' } },
     },
 }
 
@@ -581,26 +438,10 @@ co.modes.builtin.create_file = {
     extra_help = nil,
     key_bindings = {
         on_key = {
-            backspace = {
-                help = 'remove last character',
-                messages = { 'RemoveInputBufferLastCharacter' },
-            },
-            ['ctrl-c'] = {
-                help = 'terminate',
-                messages = { 'Terminate' },
-            },
-            ['ctrl-u'] = {
-                help = 'remove line',
-                messages = {
-                    {
-                        SetInputBuffer = '',
-                    },
-                },
-            },
-            ['ctrl-w'] = {
-                help = 'remove last word',
-                messages = { 'RemoveInputBufferLastWord' },
-            },
+            backspace = { help = 'remove last character', messages = { 'RemoveInputBufferLastCharacter' } },
+            ['ctrl-c'] = { help = 'terminate', messages = { 'Terminate' } },
+            ['ctrl-u'] = { help = 'remove line', messages = { { SetInputBuffer = '' } } },
+            ['ctrl-w'] = { help = 'remove last word', messages = { 'RemoveInputBufferLastWord' } },
             enter = {
                 help = 'create file',
                 messages = {
@@ -620,18 +461,12 @@ co.modes.builtin.create_file = {
                     },
                 },
             },
-            esc = {
-                help = 'cancel',
-                messages = { 'PopMode' },
-            },
+            esc = { help = 'cancel', messages = { 'PopMode' } },
         },
         on_alphabet = nil,
         on_number = nil,
         on_special_character = nil,
-        default = {
-            help = nil,
-            messages = { 'BufferInputFromKey' },
-        },
+        default = { help = nil, messages = { 'BufferInputFromKey' } },
     },
 }
 
@@ -642,48 +477,17 @@ co.modes.builtin.number = {
     extra_help = nil,
     key_bindings = {
         on_key = {
-            backspace = {
-                help = 'remove last character',
-                messages = { 'RemoveInputBufferLastCharacter' },
-            },
-            ['ctrl-c'] = {
-                help = 'terminate',
-                messages = { 'Terminate' },
-            },
-            ['ctrl-u'] = {
-                help = 'remove line',
-                messages = {
-                    {
-                        SetInputBuffer = '',
-                    },
-                },
-            },
-            ['ctrl-w'] = {
-                help = 'remove last word',
-                messages = { 'RemoveInputBufferLastWord' },
-            },
-            down = {
-                help = 'to down',
-                messages = { 'FocusNextByRelativeIndexFromInput', 'PopMode' },
-            },
-            enter = {
-                help = 'to index',
-                messages = { 'FocusByIndexFromInput', 'PopMode' },
-            },
-            esc = {
-                help = 'cancel',
-                messages = { 'PopMode' },
-            },
-            up = {
-                help = 'to up',
-                messages = { 'FocusPreviousByRelativeIndexFromInput', 'PopMode' },
-            },
+            backspace = { help = 'remove last character', messages = { 'RemoveInputBufferLastCharacter' } },
+            ['ctrl-c'] = { help = 'terminate', messages = { 'Terminate' } },
+            ['ctrl-u'] = { help = 'remove line', messages = { { SetInputBuffer = '' } } },
+            ['ctrl-w'] = { help = 'remove last word', messages = { 'RemoveInputBufferLastWord' } },
+            down = { help = 'to down', messages = { 'FocusNextByRelativeIndexFromInput', 'PopMode' } },
+            enter = { help = 'to index', messages = { 'FocusByIndexFromInput', 'PopMode' } },
+            esc = { help = 'cancel', messages = { 'PopMode' } },
+            up = { help = 'to up', messages = { 'FocusPreviousByRelativeIndexFromInput', 'PopMode' } },
         },
         on_alphabet = nil,
-        on_number = {
-            help = 'input',
-            messages = { 'BufferInputFromKey' },
-        },
+        on_number = { help = 'input', messages = { 'BufferInputFromKey' } },
         on_special_character = nil,
         default = nil,
     },
@@ -699,22 +503,10 @@ co.modes.builtin.go_to = {
     extra_help = nil,
     key_bindings = {
         on_key = {
-            ['ctrl-c'] = {
-                help = 'terminate',
-                messages = { 'Terminate' },
-            },
-            esc = {
-                help = 'cancel',
-                messages = { 'PopMode' },
-            },
-            ['f'] = {
-                help = 'follow symlink',
-                messages = { 'FollowSymlink', 'PopMode' },
-            },
-            ['g'] = {
-                help = 'top',
-                messages = { 'FocusFirst', 'PopMode' },
-            },
+            ['ctrl-c'] = { help = 'terminate', messages = { 'Terminate' } },
+            esc = { help = 'cancel', messages = { 'PopMode' } },
+            ['f'] = { help = 'follow symlink', messages = { 'FollowSymlink', 'PopMode' } },
+            ['g'] = { help = 'top', messages = { 'FocusFirst', 'PopMode' } },
             ['x'] = {
                 help = 'open in gui',
                 messages = {
@@ -752,26 +544,10 @@ co.modes.builtin.rename = {
     extra_help = nil,
     key_bindings = {
         on_key = {
-            backspace = {
-                help = 'remove last character',
-                messages = { 'RemoveInputBufferLastCharacter' },
-            },
-            ['ctrl-c'] = {
-                help = 'terminate',
-                messages = { 'Terminate' },
-            },
-            ['ctrl-u'] = {
-                help = 'remove line',
-                messages = {
-                    {
-                        SetInputBuffer = '',
-                    },
-                },
-            },
-            ['ctrl-w'] = {
-                help = 'remove last word',
-                messages = { 'RemoveInputBufferLastWord' },
-            },
+            backspace = { help = 'remove last character', messages = { 'RemoveInputBufferLastCharacter' } },
+            ['ctrl-c'] = { help = 'terminate', messages = { 'Terminate' } },
+            ['ctrl-u'] = { help = 'remove line', messages = { { SetInputBuffer = '' } } },
+            ['ctrl-w'] = { help = 'remove last word', messages = { 'RemoveInputBufferLastWord' } },
             enter = {
                 help = 'rename',
                 messages = {
@@ -788,18 +564,12 @@ co.modes.builtin.rename = {
                     'PopMode',
                 },
             },
-            esc = {
-                help = 'cancel',
-                messages = { 'PopMode' },
-            },
+            esc = { help = 'cancel', messages = { 'PopMode' } },
         },
         on_alphabet = nil,
         on_number = nil,
         on_special_character = nil,
-        default = {
-            help = nil,
-            messages = { 'BufferInputFromKey' },
-        },
+        default = { help = nil, messages = { 'BufferInputFromKey' } },
     },
 }
 
@@ -829,10 +599,7 @@ co.modes.builtin.delete = {
                     'PopMode',
                 },
             },
-            ['ctrl-c'] = {
-                help = 'terminate',
-                messages = { 'Terminate' },
-            },
+            ['ctrl-c'] = { help = 'terminate', messages = { 'Terminate' } },
             ['d'] = {
                 help = 'delete',
                 messages = {
@@ -860,10 +627,7 @@ co.modes.builtin.delete = {
                     'PopMode',
                 },
             },
-            esc = {
-                help = 'cancel',
-                messages = { 'PopMode' },
-            },
+            esc = { help = 'cancel', messages = { 'PopMode' } },
         },
         on_alphabet = nil,
         on_number = nil,
@@ -887,17 +651,8 @@ co.modes.builtin.action = {
                     'PopMode',
                 },
             },
-            ['c'] = {
-                help = 'create',
-                messages = {
-                    'PopMode',
-                    { SwitchModeBuiltin = 'create' },
-                },
-            },
-            ['ctrl-c'] = {
-                help = 'terminate',
-                messages = { 'Terminate' },
-            },
+            ['c'] = { help = 'create', messages = { 'PopMode', { SwitchModeBuiltin = 'create' } } },
+            ['ctrl-c'] = { help = 'terminate', messages = { 'Terminate' } },
             ['e'] = {
                 help = 'open in editor',
                 messages = {
@@ -909,49 +664,24 @@ co.modes.builtin.action = {
                     'PopMode',
                 },
             },
-            esc = {
-                help = 'cancel',
-                messages = { 'PopMode' },
-            },
+            esc = { help = 'cancel', messages = { 'PopMode' } },
             ['l'] = {
                 help = 'logs',
                 messages = {
-                    {
-                        BashExec = [===[
-            [ -z "$PAGER" ] && PAGER="less -+F"
-            cat -- "${XPLR_PIPE_LOGS_OUT}" | ${PAGER:?}
-            ]===],
-                    },
+                    { Call = { command = 'zsh', args = { '-c', [[cat -- "${XPLR_PIPE_LOGS_OUT}" | nvim -R]] } } },
                     'PopMode',
                 },
             },
             ['s'] = {
                 help = 'selection operations',
-                messages = {
-                    'PopMode',
-                    {
-                        SwitchModeBuiltin = 'selection_ops',
-                    },
-                },
+                messages = { 'PopMode', { SwitchModeBuiltin = 'selection_ops' } },
             },
-            ['q'] = {
-                help = 'quit options',
-                messages = {
-                    'PopMode',
-                    { SwitchModeBuiltin = 'quit' },
-                },
-            },
+            ['q'] = { help = 'quit options', messages = { 'PopMode', { SwitchModeBuiltin = 'quit' } } },
         },
         on_alphabet = nil,
         on_number = {
             help = 'go to index',
-            messages = {
-                'PopMode',
-                {
-                    SwitchModeBuiltin = 'number',
-                },
-                'BufferInputFromKey',
-            },
+            messages = { 'PopMode', { SwitchModeBuiltin = 'number' }, 'BufferInputFromKey' },
         },
         on_special_character = nil,
         default = nil,
@@ -965,48 +695,13 @@ co.modes.builtin.quit = {
     extra_help = nil,
     key_bindings = {
         on_key = {
-            enter = {
-                help = 'just quit',
-                messages = {
-                    'Quit',
-                },
-            },
-            p = {
-                help = 'quit printing pwd',
-                messages = {
-                    'PrintPwdAndQuit',
-                },
-            },
-            f = {
-                help = 'quit printing focus',
-                messages = {
-                    'PrintFocusPathAndQuit',
-                },
-            },
-            s = {
-                help = 'quit printing selection',
-                messages = {
-                    'PrintSelectionAndQuit',
-                },
-            },
-            r = {
-                help = 'quit printing result',
-                messages = {
-                    'PrintResultAndQuit',
-                },
-            },
-            esc = {
-                help = 'cancel',
-                messages = {
-                    'PopMode',
-                },
-            },
-            ['ctrl-c'] = {
-                help = 'terminate',
-                messages = {
-                    'Terminate',
-                },
-            },
+            enter = { help = 'just quit', messages = { 'Quit' } },
+            p = { help = 'quit printing pwd', messages = { 'PrintPwdAndQuit' } },
+            f = { help = 'quit printing focus', messages = { 'PrintFocusPathAndQuit' } },
+            s = { help = 'quit printing selection', messages = { 'PrintSelectionAndQuit' } },
+            r = { help = 'quit printing result', messages = { 'PrintResultAndQuit' } },
+            esc = { help = 'cancel', messages = { 'PopMode' } },
+            ['ctrl-c'] = { help = 'terminate', messages = { 'Terminate' } },
         },
     },
 }
@@ -1021,20 +716,13 @@ co.modes.builtin.search = {
             backspace = {
                 help = 'remove last character',
                 messages = {
-                    {
-                        RemoveNodeFilterFromInput = 'IRelativePathDoesContain',
-                    },
+                    { RemoveNodeFilterFromInput = 'IRelativePathDoesContain' },
                     'RemoveInputBufferLastCharacter',
-                    {
-                        AddNodeFilterFromInput = 'IRelativePathDoesContain',
-                    },
+                    { AddNodeFilterFromInput = 'IRelativePathDoesContain' },
                     'ExplorePwdAsync',
                 },
             },
-            ['ctrl-c'] = {
-                help = 'terminate',
-                messages = { 'Terminate' },
-            },
+            ['ctrl-c'] = { help = 'terminate', messages = { 'Terminate' } },
             ['ctrl-u'] = {
                 help = 'remove line',
                 messages = {
@@ -1053,10 +741,7 @@ co.modes.builtin.search = {
                     'ExplorePwdAsync',
                 },
             },
-            down = {
-                help = 'down',
-                messages = { 'FocusNext' },
-            },
+            down = { help = 'down', messages = { 'FocusNext' } },
             enter = {
                 help = 'focus',
                 messages = {
@@ -1083,14 +768,8 @@ co.modes.builtin.search = {
                     'ExplorePwdAsync',
                 },
             },
-            tab = {
-                help = 'toggle selection',
-                messages = { 'ToggleSelection', 'FocusNext' },
-            },
-            up = {
-                help = 'up',
-                messages = { 'FocusPrevious' },
-            },
+            tab = { help = 'toggle selection', messages = { 'ToggleSelection', 'FocusNext' } },
+            up = { help = 'up', messages = { 'FocusPrevious' } },
         },
         on_alphabet = nil,
         on_number = nil,
@@ -1098,13 +777,9 @@ co.modes.builtin.search = {
         default = {
             help = nil,
             messages = {
-                {
-                    RemoveNodeFilterFromInput = 'IRelativePathDoesContain',
-                },
+                { RemoveNodeFilterFromInput = 'IRelativePathDoesContain' },
                 'BufferInputFromKey',
-                {
-                    AddNodeFilterFromInput = 'IRelativePathDoesContain',
-                },
+                { AddNodeFilterFromInput = 'IRelativePathDoesContain' },
                 'ExplorePwdAsync',
             },
         },
@@ -1125,50 +800,23 @@ co.modes.builtin.filter = {
             ['R'] = {
                 help = 'relative does not contain',
                 messages = {
-                    {
-                        SwitchModeBuiltin = 'relative_path_does_not_contain',
-                    },
-                    {
-                        SetInputBuffer = '',
-                    },
-                    {
-                        AddNodeFilterFromInput = 'IRelativePathDoesNotContain',
-                    },
+                    { SwitchModeBuiltin = 'relative_path_does_not_contain' },
+                    { SetInputBuffer = '' },
+                    { AddNodeFilterFromInput = 'IRelativePathDoesNotContain' },
                     'ExplorePwdAsync',
                 },
             },
-            backspace = {
-                help = 'remove last filter',
-                messages = { 'RemoveLastNodeFilter', 'ExplorePwdAsync' },
-            },
-            ['ctrl-c'] = {
-                help = 'terminate',
-                messages = { 'Terminate' },
-            },
-            ['ctrl-r'] = {
-                help = 'reset filters',
-                messages = { 'ResetNodeFilters', 'ExplorePwdAsync' },
-            },
-            ['ctrl-u'] = {
-                help = 'clear filters',
-                messages = { 'ClearNodeFilters', 'ExplorePwdAsync' },
-            },
-            enter = {
-                help = 'done',
-                messages = { 'PopMode' },
-            },
+            backspace = { help = 'remove last filter', messages = { 'RemoveLastNodeFilter', 'ExplorePwdAsync' } },
+            ['ctrl-c'] = { help = 'terminate', messages = { 'Terminate' } },
+            ['ctrl-r'] = { help = 'reset filters', messages = { 'ResetNodeFilters', 'ExplorePwdAsync' } },
+            ['ctrl-u'] = { help = 'clear filters', messages = { 'ClearNodeFilters', 'ExplorePwdAsync' } },
+            enter = { help = 'done', messages = { 'PopMode' } },
             ['r'] = {
                 help = 'relative does contain',
                 messages = {
-                    {
-                        SwitchModeBuiltin = 'relative_path_does_contain',
-                    },
-                    {
-                        SetInputBuffer = '',
-                    },
-                    {
-                        AddNodeFilterFromInput = 'IRelativePathDoesContain',
-                    },
+                    { SwitchModeBuiltin = 'relative_path_does_contain' },
+                    { SetInputBuffer = '' },
+                    { AddNodeFilterFromInput = 'IRelativePathDoesContain' },
                     'ExplorePwdAsync',
                 },
             },
@@ -1192,58 +840,36 @@ co.modes.builtin.relative_path_does_contain = {
             backspace = {
                 help = 'remove last character',
                 messages = {
-                    {
-                        RemoveNodeFilterFromInput = 'IRelativePathDoesContain',
-                    },
+                    { RemoveNodeFilterFromInput = 'IRelativePathDoesContain' },
                     'RemoveInputBufferLastCharacter',
-                    {
-                        AddNodeFilterFromInput = 'IRelativePathDoesContain',
-                    },
+                    { AddNodeFilterFromInput = 'IRelativePathDoesContain' },
                     'ExplorePwdAsync',
                 },
             },
-            ['ctrl-c'] = {
-                help = 'terminate',
-                messages = { 'Terminate' },
-            },
+            ['ctrl-c'] = { help = 'terminate', messages = { 'Terminate' } },
             ['ctrl-u'] = {
                 help = 'remove line',
                 messages = {
-                    {
-                        RemoveNodeFilterFromInput = 'IRelativePathDoesContain',
-                    },
-                    {
-                        SetInputBuffer = '',
-                    },
-                    {
-                        AddNodeFilterFromInput = 'IRelativePathDoesContain',
-                    },
+                    { RemoveNodeFilterFromInput = 'IRelativePathDoesContain' },
+                    { SetInputBuffer = '' },
+                    { AddNodeFilterFromInput = 'IRelativePathDoesContain' },
                     'ExplorePwdAsync',
                 },
             },
             ['ctrl-w'] = {
                 help = 'remove last word',
                 messages = {
-                    {
-                        RemoveNodeFilterFromInput = 'IRelativePathDoesContain',
-                    },
+                    { RemoveNodeFilterFromInput = 'IRelativePathDoesContain' },
                     'RemoveInputBufferLastWord',
-                    {
-                        AddNodeFilterFromInput = 'IRelativePathDoesContain',
-                    },
+                    { AddNodeFilterFromInput = 'IRelativePathDoesContain' },
                     'ExplorePwdAsync',
                 },
             },
-            enter = {
-                help = 'apply filter',
-                messages = { 'PopMode' },
-            },
+            enter = { help = 'apply filter', messages = { 'PopMode' } },
             esc = {
                 help = 'cancel',
                 messages = {
-                    {
-                        RemoveNodeFilterFromInput = 'IRelativePathDoesContain',
-                    },
+                    { RemoveNodeFilterFromInput = 'IRelativePathDoesContain' },
                     'PopMode',
                     'ExplorePwdAsync',
                 },
@@ -1255,13 +881,9 @@ co.modes.builtin.relative_path_does_contain = {
         default = {
             help = nil,
             messages = {
-                {
-                    RemoveNodeFilterFromInput = 'IRelativePathDoesContain',
-                },
+                { RemoveNodeFilterFromInput = 'IRelativePathDoesContain' },
                 'BufferInputFromKey',
-                {
-                    AddNodeFilterFromInput = 'IRelativePathDoesContain',
-                },
+                { AddNodeFilterFromInput = 'IRelativePathDoesContain' },
                 'ExplorePwdAsync',
             },
         },
@@ -1278,58 +900,36 @@ co.modes.builtin.relative_path_does_not_contain = {
             backspace = {
                 help = 'remove last character',
                 messages = {
-                    {
-                        RemoveNodeFilterFromInput = 'IRelativePathDoesNotContain',
-                    },
+                    { RemoveNodeFilterFromInput = 'IRelativePathDoesNotContain' },
                     'RemoveInputBufferLastCharacter',
-                    {
-                        AddNodeFilterFromInput = 'IRelativePathDoesNotContain',
-                    },
+                    { AddNodeFilterFromInput = 'IRelativePathDoesNotContain' },
                     'ExplorePwdAsync',
                 },
             },
-            ['ctrl-c'] = {
-                help = 'terminate',
-                messages = { 'Terminate' },
-            },
+            ['ctrl-c'] = { help = 'terminate', messages = { 'Terminate' } },
             ['ctrl-u'] = {
                 help = 'remove line',
                 messages = {
-                    {
-                        RemoveNodeFilterFromInput = 'IRelativePathDoesNotContain',
-                    },
-                    {
-                        SetInputBuffer = '',
-                    },
-                    {
-                        AddNodeFilterFromInput = 'IRelativePathDoesNotContain',
-                    },
+                    { RemoveNodeFilterFromInput = 'IRelativePathDoesNotContain' },
+                    { SetInputBuffer = '' },
+                    { AddNodeFilterFromInput = 'IRelativePathDoesNotContain' },
                     'ExplorePwdAsync',
                 },
             },
             ['ctrl-w'] = {
                 help = 'remove last word',
                 messages = {
-                    {
-                        RemoveNodeFilterFromInput = 'IRelativePathDoesNotContain',
-                    },
+                    { RemoveNodeFilterFromInput = 'IRelativePathDoesNotContain' },
                     'RemoveInputBufferLastWord',
-                    {
-                        AddNodeFilterFromInput = 'IRelativePathDoesNotContain',
-                    },
+                    { AddNodeFilterFromInput = 'IRelativePathDoesNotContain' },
                     'ExplorePwdAsync',
                 },
             },
-            enter = {
-                help = 'apply filter',
-                messages = { 'PopMode' },
-            },
+            enter = { help = 'apply filter', messages = { 'PopMode' } },
             esc = {
                 help = 'cancel',
                 messages = {
-                    {
-                        RemoveNodeFilterFromInput = 'IRelativePathDoesNotContain',
-                    },
+                    { RemoveNodeFilterFromInput = 'IRelativePathDoesNotContain' },
                     'PopMode',
                     'ExplorePwdAsync',
                 },
@@ -1341,13 +941,9 @@ co.modes.builtin.relative_path_does_not_contain = {
         default = {
             help = nil,
             messages = {
-                {
-                    RemoveNodeFilterFromInput = 'IRelativePathDoesNotContain',
-                },
+                { RemoveNodeFilterFromInput = 'IRelativePathDoesNotContain' },
                 'BufferInputFromKey',
-                {
-                    AddNodeFilterFromInput = 'IRelativePathDoesNotContain',
-                },
+                { AddNodeFilterFromInput = 'IRelativePathDoesNotContain' },
                 'ExplorePwdAsync',
             },
         },
@@ -1361,111 +957,69 @@ co.modes.builtin.sort = {
     extra_help = nil,
     key_bindings = {
         on_key = {
-            ['!'] = {
-                help = 'reverse sorters',
-                messages = { 'ReverseNodeSorters', 'ExplorePwdAsync' },
-            },
+            ['!'] = { help = 'reverse sorters', messages = { 'ReverseNodeSorters', 'ExplorePwdAsync' } },
             ['E'] = {
                 help = 'by canonical extension reverse',
                 messages = {
-                    {
-                        AddNodeSorter = { sorter = 'ByCanonicalExtension', reverse = true },
-                    },
+                    { AddNodeSorter = { sorter = 'ByCanonicalExtension', reverse = true } },
                     'ExplorePwdAsync',
                 },
             },
             ['M'] = {
                 help = 'by canonical mime essence reverse',
                 messages = {
-                    {
-                        AddNodeSorter = { sorter = 'ByCanonicalMimeEssence', reverse = true },
-                    },
+                    { AddNodeSorter = { sorter = 'ByCanonicalMimeEssence', reverse = true } },
                     'ExplorePwdAsync',
                 },
             },
             ['N'] = {
                 help = 'by node type reverse',
                 messages = {
-                    {
-                        AddNodeSorter = { sorter = 'ByCanonicalIsDir', reverse = true },
-                    },
-                    {
-                        AddNodeSorter = { sorter = 'ByCanonicalIsFile', reverse = true },
-                    },
-                    {
-                        AddNodeSorter = { sorter = 'ByIsSymlink', reverse = true },
-                    },
+                    { AddNodeSorter = { sorter = 'ByCanonicalIsDir', reverse = true } },
+                    { AddNodeSorter = { sorter = 'ByCanonicalIsFile', reverse = true } },
+                    { AddNodeSorter = { sorter = 'ByIsSymlink', reverse = true } },
                     'ExplorePwdAsync',
                 },
             },
             ['R'] = {
                 help = 'by relative path reverse',
                 messages = {
-                    {
-                        AddNodeSorter = { sorter = 'ByIRelativePath', reverse = true },
-                    },
+                    { AddNodeSorter = { sorter = 'ByIRelativePath', reverse = true } },
                     'ExplorePwdAsync',
                 },
             },
             ['S'] = {
                 help = 'by size reverse',
                 messages = {
-                    {
-                        AddNodeSorter = { sorter = 'BySize', reverse = true },
-                    },
+                    { AddNodeSorter = { sorter = 'BySize', reverse = true } },
                     'ExplorePwdAsync',
                 },
             },
-            backspace = {
-                help = 'remove last sorter',
-                messages = { 'RemoveLastNodeSorter', 'ExplorePwdAsync' },
-            },
-            ['ctrl-c'] = {
-                help = 'terminate',
-                messages = { 'Terminate' },
-            },
-            ['ctrl-r'] = {
-                help = 'reset sorters',
-                messages = { 'ResetNodeSorters', 'ExplorePwdAsync' },
-            },
-            ['ctrl-u'] = {
-                help = 'clear sorters',
-                messages = { 'ClearNodeSorters', 'ExplorePwdAsync' },
-            },
+            backspace = { help = 'remove last sorter', messages = { 'RemoveLastNodeSorter', 'ExplorePwdAsync' } },
+            ['ctrl-c'] = { help = 'terminate', messages = { 'Terminate' } },
+            ['ctrl-r'] = { help = 'reset sorters', messages = { 'ResetNodeSorters', 'ExplorePwdAsync' } },
+            ['ctrl-u'] = { help = 'clear sorters', messages = { 'ClearNodeSorters', 'ExplorePwdAsync' } },
             ['e'] = {
                 help = 'by canonical extension',
                 messages = {
-                    {
-                        AddNodeSorter = { sorter = 'ByCanonicalExtension', reverse = false },
-                    },
+                    { AddNodeSorter = { sorter = 'ByCanonicalExtension', reverse = false } },
                     'ExplorePwdAsync',
                 },
             },
-            enter = {
-                help = 'done',
-                messages = { 'PopMode' },
-            },
+            enter = { help = 'done', messages = { 'PopMode' } },
             ['m'] = {
                 help = 'by canonical mime essence',
                 messages = {
-                    {
-                        AddNodeSorter = { sorter = 'ByCanonicalMimeEssence', reverse = false },
-                    },
+                    { AddNodeSorter = { sorter = 'ByCanonicalMimeEssence', reverse = false } },
                     'ExplorePwdAsync',
                 },
             },
             ['n'] = {
                 help = 'by node type',
                 messages = {
-                    {
-                        AddNodeSorter = { sorter = 'ByCanonicalIsDir', reverse = false },
-                    },
-                    {
-                        AddNodeSorter = { sorter = 'ByCanonicalIsFile', reverse = false },
-                    },
-                    {
-                        AddNodeSorter = { sorter = 'ByIsSymlink', reverse = false },
-                    },
+                    { AddNodeSorter = { sorter = 'ByCanonicalIsDir', reverse = false } },
+                    { AddNodeSorter = { sorter = 'ByCanonicalIsFile', reverse = false } },
+                    { AddNodeSorter = { sorter = 'ByIsSymlink', reverse = false } },
                     'ExplorePwdAsync',
                 },
             },
@@ -1479,9 +1033,7 @@ co.modes.builtin.sort = {
             ['s'] = {
                 help = 'by size',
                 messages = {
-                    {
-                        AddNodeSorter = { sorter = 'BySize', reverse = false },
-                    },
+                    { AddNodeSorter = { sorter = 'BySize', reverse = false } },
                     'ExplorePwdAsync',
                 },
             },
@@ -1502,28 +1054,10 @@ co.modes.builtin.switch_layout = {
     extra_help = nil,
     key_bindings = {
         on_key = {
-            ['1'] = {
-                help = 'mine',
-                messages = {
-                    { SwitchLayoutCustom = 'mine' },
-                    'PopMode',
-                },
-            },
-            ['2'] = {
-                help = 'default',
-                messages = {
-                    { SwitchLayoutBuiltin = 'default' },
-                    'PopMode',
-                },
-            },
-            ['ctrl-c'] = {
-                help = 'terminate',
-                messages = { 'Terminate' },
-            },
-            esc = {
-                help = 'cancel',
-                messages = { 'PopMode' },
-            },
+            ['1'] = { help = 'mine', messages = { { SwitchLayoutCustom = 'mine' }, 'PopMode' } },
+            ['2'] = { help = 'default', messages = { { SwitchLayoutBuiltin = 'default' }, 'PopMode' } },
+            ['ctrl-c'] = { help = 'terminate', messages = { 'Terminate' } },
+            esc = { help = 'cancel', messages = { 'PopMode' } },
         },
     },
 }
@@ -1616,15 +1150,7 @@ end
 
 xplr.fn.custom.opener = function(a)
     local c = a.focused_node.canonical
-    return c.is_dir and { 'Enter' }
-        or {
-            {
-                CallSilently = {
-                    command = 'xdg-open',
-                    args = { c.absolute_path },
-                },
-            },
-        }
+    return c.is_dir and { 'Enter' } or { { CallSilently = { command = 'xdg-open', args = { c.absolute_path } } } }
 end
 
 package.path = os.getenv('HOME') .. '/.config/xplr/plugins/?/src/init.lua'
