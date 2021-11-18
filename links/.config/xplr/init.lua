@@ -223,7 +223,8 @@ co.modes.builtin.default = {
             ['ctrl-w'] = { help = 'switch layout', messages = { { SwitchModeBuiltin = 'switch_layout' } } },
             ['d'] = { help = 'delete', messages = { 'PopMode', { SwitchModeBuiltin = 'delete' } } },
             down = { help = 'down', messages = { 'FocusNext' } },
-            ['f4'] = { help = 'edit file', messages = { { CallLuaSilently = 'custom.edit_file' } } },
+            ['f4'] = { help = 'edit file', messages = { { CallLua = 'custom.edit_file' } } },
+            ['s'] = { help = 'open shell', messages = { { CallLuaSilently = 'custom.open_shell' } } },
             enter = { help = 'enter', messages = { { CallLuaSilently = 'custom.opener' } } },
             esc = { help = nil, messages = {} },
             ['f'] = {
@@ -249,7 +250,7 @@ co.modes.builtin.default = {
                 },
             },
             right = { help = 'enter', messages = { { CallLuaSilently = 'custom.opener' } } },
-            ['s'] = { help = 'sort', messages = { 'PopMode', { SwitchModeBuiltin = 'sort' } } },
+            ['S'] = { help = 'sort', messages = { 'PopMode', { SwitchModeBuiltin = 'sort' } } },
             space = { help = 'toggle selection', messages = { 'ToggleSelection', 'FocusNext' } },
             up = { help = 'up', messages = { 'FocusPrevious' } },
             ['~'] = {
@@ -1129,7 +1130,7 @@ xplr.fn.builtin.fmt_general_table_row_cols_3 = function(m)
     end
 end
 
-xplr.fn.custom.edit_file = function(a)
+xplr.fn.custom.open_shell = function(a)
     return {
         {
             Call = {
@@ -1139,13 +1140,21 @@ xplr.fn.custom.edit_file = function(a)
                     '--type=tab',
                     '--no-response',
                     '--location=after',
-                    '--cwd=' .. a.focused_node.parent,
-                    'nvim',
-                    a.focused_node.canonical.absolute_path,
+                    '--cwd=' .. a.pwd,
                 },
             },
         },
     }
+end
+
+xplr.fn.custom.edit_file = function(a)
+    local res = xplr.fn.custom.open_shell(a)
+--     os.execute('echo ' .. (a.focused_node and 'yes' or 'nil') .. '>>/tmp/fn 2>&1')
+    if a.focused_node then
+        table.insert(res[1].Call.args, 'nvim')
+        table.insert(res[1].Call.args, a.focused_node.canonical.absolute_path)
+    end
+    return res
 end
 
 xplr.fn.custom.opener = function(a)
