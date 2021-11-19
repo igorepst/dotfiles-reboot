@@ -181,7 +181,6 @@ co.modes.builtin.default = {
     extra_help = nil,
     key_bindings = {
         on_key = {
-            ['#'] = { help = nil, messages = { 'PrintAppStateAndQuit' } },
             ['.'] = {
                 help = 'show hidden',
                 messages = {
@@ -206,7 +205,6 @@ co.modes.builtin.default = {
             },
             ['G'] = { help = 'go to bottom', messages = { 'PopMode', 'FocusLast' } },
             ['ctrl-a'] = { help = 'select/unselect all', messages = { 'ToggleSelectAll' } },
-            ['ctrl-c'] = { help = 'terminate', messages = { 'Terminate' } },
             ['/'] = {
                 help = 'search',
                 messages = {
@@ -223,7 +221,7 @@ co.modes.builtin.default = {
             ['ctrl-w'] = { help = 'switch layout', messages = { { SwitchModeBuiltin = 'switch_layout' } } },
             ['d'] = { help = 'delete', messages = { 'PopMode', { SwitchModeBuiltin = 'delete' } } },
             down = { help = 'down', messages = { 'FocusNext' } },
-            ['f4'] = { help = 'edit file', messages = { { CallLua = 'custom.edit_file' } } },
+            ['f4'] = { help = 'edit file', messages = { { CallLuaSilently = 'custom.edit_file' } } },
             ['s'] = { help = 'open shell', messages = { { CallLuaSilently = 'custom.open_shell' } } },
             enter = { help = 'enter', messages = { { CallLuaSilently = 'custom.opener' } } },
             esc = { help = nil, messages = {} },
@@ -288,7 +286,6 @@ co.modes.builtin.default.key_bindings.on_key['k'] = co.modes.builtin.default.key
 
 co.modes.builtin.default.key_bindings.on_key['l'] = co.modes.builtin.default.key_bindings.on_key.right
 
------- Selection ops
 co.modes.builtin.selection_ops = {
     name = 'selection ops',
     help = nil,
@@ -315,7 +312,6 @@ co.modes.builtin.selection_ops = {
                     'PopMode',
                 },
             },
-            ['ctrl-c'] = { help = 'terminate', messages = { 'Terminate' } },
             esc = { help = 'cancel', messages = { 'PopMode' } },
             ['m'] = {
                 help = 'move here',
@@ -368,14 +364,12 @@ co.modes.builtin.selection_ops = {
     },
 }
 
------- Create
 co.modes.builtin.create = {
     name = 'create',
     help = nil,
     extra_help = nil,
     key_bindings = {
         on_key = {
-            ['ctrl-c'] = { help = 'terminate', messages = { 'Terminate' } },
             esc = { help = 'cancel', messages = { 'PopMode' } },
             ['d'] = {
                 help = 'create directory',
@@ -393,7 +387,6 @@ co.modes.builtin.create = {
     },
 }
 
------- Create directory
 co.modes.builtin.create_directory = {
     name = 'create directory',
     help = nil,
@@ -401,7 +394,6 @@ co.modes.builtin.create_directory = {
     key_bindings = {
         on_key = {
             backspace = { help = 'remove last character', messages = { 'RemoveInputBufferLastCharacter' } },
-            ['ctrl-c'] = { help = 'terminate', messages = { 'Terminate' } },
             ['ctrl-u'] = { help = 'remove line', messages = { { SetInputBuffer = '' } } },
             ['ctrl-w'] = { help = 'remove last word', messages = { 'RemoveInputBufferLastWord' } },
             enter = {
@@ -432,7 +424,6 @@ co.modes.builtin.create_directory = {
     },
 }
 
------- Create file
 co.modes.builtin.create_file = {
     name = 'create file',
     help = nil,
@@ -440,7 +431,6 @@ co.modes.builtin.create_file = {
     key_bindings = {
         on_key = {
             backspace = { help = 'remove last character', messages = { 'RemoveInputBufferLastCharacter' } },
-            ['ctrl-c'] = { help = 'terminate', messages = { 'Terminate' } },
             ['ctrl-u'] = { help = 'remove line', messages = { { SetInputBuffer = '' } } },
             ['ctrl-w'] = { help = 'remove last word', messages = { 'RemoveInputBufferLastWord' } },
             enter = {
@@ -471,7 +461,6 @@ co.modes.builtin.create_file = {
     },
 }
 
------- Number
 co.modes.builtin.number = {
     name = 'number',
     help = nil,
@@ -479,7 +468,6 @@ co.modes.builtin.number = {
     key_bindings = {
         on_key = {
             backspace = { help = 'remove last character', messages = { 'RemoveInputBufferLastCharacter' } },
-            ['ctrl-c'] = { help = 'terminate', messages = { 'Terminate' } },
             ['ctrl-u'] = { help = 'remove line', messages = { { SetInputBuffer = '' } } },
             ['ctrl-w'] = { help = 'remove last word', messages = { 'RemoveInputBufferLastWord' } },
             down = { help = 'to down', messages = { 'FocusNextByRelativeIndexFromInput', 'PopMode' } },
@@ -497,14 +485,12 @@ co.modes.builtin.number = {
 co.modes.builtin.number.key_bindings.on_key['j'] = co.modes.builtin.number.key_bindings.on_key.down
 co.modes.builtin.number.key_bindings.on_key['k'] = co.modes.builtin.number.key_bindings.on_key.up
 
------- Go to
 co.modes.builtin.go_to = {
     name = 'go to',
     help = nil,
     extra_help = nil,
     key_bindings = {
         on_key = {
-            ['ctrl-c'] = { help = 'terminate', messages = { 'Terminate' } },
             esc = { help = 'cancel', messages = { 'PopMode' } },
             ['f'] = { help = 'follow symlink', messages = { 'FollowSymlink', 'PopMode' } },
             ['g'] = { help = 'top', messages = { 'FocusFirst', 'PopMode' } },
@@ -538,7 +524,6 @@ co.modes.builtin.go_to = {
     },
 }
 
------- Rename
 co.modes.builtin.rename = {
     name = 'rename',
     help = nil,
@@ -546,7 +531,6 @@ co.modes.builtin.rename = {
     key_bindings = {
         on_key = {
             backspace = { help = 'remove last character', messages = { 'RemoveInputBufferLastCharacter' } },
-            ['ctrl-c'] = { help = 'terminate', messages = { 'Terminate' } },
             ['ctrl-u'] = { help = 'remove line', messages = { { SetInputBuffer = '' } } },
             ['ctrl-w'] = { help = 'remove last word', messages = { 'RemoveInputBufferLastWord' } },
             enter = {
@@ -574,7 +558,6 @@ co.modes.builtin.rename = {
     },
 }
 
------- Delete
 co.modes.builtin.delete = {
     name = 'delete',
     help = nil,
@@ -600,7 +583,6 @@ co.modes.builtin.delete = {
                     'PopMode',
                 },
             },
-            ['ctrl-c'] = { help = 'terminate', messages = { 'Terminate' } },
             ['d'] = {
                 help = 'delete',
                 messages = {
@@ -637,7 +619,6 @@ co.modes.builtin.delete = {
     },
 }
 
------- Action
 co.modes.builtin.action = {
     name = 'action to',
     help = nil,
@@ -653,7 +634,6 @@ co.modes.builtin.action = {
                 },
             },
             ['c'] = { help = 'create', messages = { 'PopMode', { SwitchModeBuiltin = 'create' } } },
-            ['ctrl-c'] = { help = 'terminate', messages = { 'Terminate' } },
             ['e'] = {
                 help = 'open in editor',
                 messages = {
@@ -689,7 +669,6 @@ co.modes.builtin.action = {
     },
 }
 
------- Quit
 co.modes.builtin.quit = {
     name = 'quit',
     help = nil,
@@ -703,11 +682,11 @@ co.modes.builtin.quit = {
             r = { help = 'quit printing result', messages = { 'PrintResultAndQuit' } },
             esc = { help = 'cancel', messages = { 'PopMode' } },
             ['ctrl-c'] = { help = 'terminate', messages = { 'Terminate' } },
+            ['#'] = { help = nil, messages = { 'PrintAppStateAndQuit' } },
         },
     },
 }
 
------- Search
 co.modes.builtin.search = {
     name = 'search',
     help = nil,
@@ -723,7 +702,6 @@ co.modes.builtin.search = {
                     'ExplorePwdAsync',
                 },
             },
-            ['ctrl-c'] = { help = 'terminate', messages = { 'Terminate' } },
             ['ctrl-u'] = {
                 help = 'remove line',
                 messages = {
@@ -791,7 +769,6 @@ co.modes.builtin.search.key_bindings.on_key['esc'] = co.modes.builtin.search.key
 co.modes.builtin.search.key_bindings.on_key['ctrl-n'] = co.modes.builtin.search.key_bindings.on_key.down
 co.modes.builtin.search.key_bindings.on_key['ctrl-p'] = co.modes.builtin.search.key_bindings.on_key.up
 
------- Filter
 co.modes.builtin.filter = {
     name = 'filter',
     help = nil,
@@ -808,7 +785,6 @@ co.modes.builtin.filter = {
                 },
             },
             backspace = { help = 'remove last filter', messages = { 'RemoveLastNodeFilter', 'ExplorePwdAsync' } },
-            ['ctrl-c'] = { help = 'terminate', messages = { 'Terminate' } },
             ['ctrl-r'] = { help = 'reset filters', messages = { 'ResetNodeFilters', 'ExplorePwdAsync' } },
             ['ctrl-u'] = { help = 'clear filters', messages = { 'ClearNodeFilters', 'ExplorePwdAsync' } },
             enter = { help = 'done', messages = { 'PopMode' } },
@@ -831,7 +807,6 @@ co.modes.builtin.filter = {
 
 co.modes.builtin.filter.key_bindings.on_key['esc'] = co.modes.builtin.filter.key_bindings.on_key.enter
 
------- Relative path does contain
 co.modes.builtin.relative_path_does_contain = {
     name = 'relative path does contain',
     help = nil,
@@ -847,7 +822,6 @@ co.modes.builtin.relative_path_does_contain = {
                     'ExplorePwdAsync',
                 },
             },
-            ['ctrl-c'] = { help = 'terminate', messages = { 'Terminate' } },
             ['ctrl-u'] = {
                 help = 'remove line',
                 messages = {
@@ -891,7 +865,6 @@ co.modes.builtin.relative_path_does_contain = {
     },
 }
 
------- Relative path does not contain
 co.modes.builtin.relative_path_does_not_contain = {
     name = 'relative path does not contain',
     help = nil,
@@ -907,7 +880,6 @@ co.modes.builtin.relative_path_does_not_contain = {
                     'ExplorePwdAsync',
                 },
             },
-            ['ctrl-c'] = { help = 'terminate', messages = { 'Terminate' } },
             ['ctrl-u'] = {
                 help = 'remove line',
                 messages = {
@@ -951,7 +923,6 @@ co.modes.builtin.relative_path_does_not_contain = {
     },
 }
 
------- Sort
 co.modes.builtin.sort = {
     name = 'sort',
     help = nil,
@@ -997,7 +968,6 @@ co.modes.builtin.sort = {
                 },
             },
             backspace = { help = 'remove last sorter', messages = { 'RemoveLastNodeSorter', 'ExplorePwdAsync' } },
-            ['ctrl-c'] = { help = 'terminate', messages = { 'Terminate' } },
             ['ctrl-r'] = { help = 'reset sorters', messages = { 'ResetNodeSorters', 'ExplorePwdAsync' } },
             ['ctrl-u'] = { help = 'clear sorters', messages = { 'ClearNodeSorters', 'ExplorePwdAsync' } },
             ['e'] = {
@@ -1048,7 +1018,6 @@ co.modes.builtin.sort = {
 
 co.modes.builtin.sort.key_bindings.on_key['esc'] = co.modes.builtin.sort.key_bindings.on_key.enter
 
------- Switch layout
 co.modes.builtin.switch_layout = {
     name = 'switch layout',
     help = nil,
@@ -1057,13 +1026,11 @@ co.modes.builtin.switch_layout = {
         on_key = {
             ['1'] = { help = 'mine', messages = { { SwitchLayoutCustom = 'mine' }, 'PopMode' } },
             ['2'] = { help = 'default', messages = { { SwitchLayoutBuiltin = 'default' }, 'PopMode' } },
-            ['ctrl-c'] = { help = 'terminate', messages = { 'Terminate' } },
             esc = { help = 'cancel', messages = { 'PopMode' } },
         },
     },
 }
 
----- Custom
 co.modes.custom = {}
 
 -------- Format path column
@@ -1149,11 +1116,8 @@ end
 
 xplr.fn.custom.edit_file = function(a)
     local res = xplr.fn.custom.open_shell(a)
---     os.execute('echo ' .. (a.focused_node and 'yes' or 'nil') .. '>>/tmp/fn 2>&1')
-    if a.focused_node then
-        table.insert(res[1].Call.args, 'nvim')
-        table.insert(res[1].Call.args, a.focused_node.canonical.absolute_path)
-    end
+    table.insert(res[1].Call.args, 'nvim')
+    table.insert(res[1].Call.args, a.focused_node and a.focused_node.canonical.absolute_path or a.pwd)
     return res
 end
 
