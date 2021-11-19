@@ -28,7 +28,7 @@ opt.expandtab = true
 opt.tabstop = 8
 opt.softtabstop = 4
 opt.shiftwidth = 4
-opt.relativenumber = true
+opt.number = true
 opt.wildmode = { 'longest:full', 'full' }
 opt.listchars = { tab = '> ', trail = '-', extends = '>', precedes = '<', nbsp = '+', eol = '$' }
 opt.shortmess = 'atToOIcF'

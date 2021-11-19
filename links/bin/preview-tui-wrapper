@@ -1,0 +1,3 @@
+#!/bin/sh
+kitty @ launch --type=window --location=vsplit --no-response --keep-focus --env "NNN_FIFO=$NNN_FIFO" preview-tui
+

@@ -1,0 +1,19 @@
+#!/bin/bash
+
+pipe="${NNN_FIFO}"
+
+if [[ -z "$pipe" ]] || [[ ! -p "$pipe" ]]; then exit 1; fi
+
+trap "rm -f $pipe" EXIT
+
+while true
+do
+    if read line <"$pipe"; then
+        clear
+        if [[ -d "$line" ]]; then
+            ls -Al "$line"
+        else
+            bat "$line"
+        fi
+    fi
+done

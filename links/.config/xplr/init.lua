@@ -16,10 +16,9 @@ genco.initial_sorting = {
     { sorter = 'ByIRelativePath', reverse = false },
 }
 genco.table.col_widths = {
-    { Percentage = 73 },
-    { Percentage = 4 },
-    { Percentage = 8 },
-    { Percentage = 15 },
+    { Percentage = 78 },
+    { Percentage = 9 },
+    { Percentage = 13 },
 }
 genco.table.header.height = 0
 genco.table.tree = {
@@ -57,7 +56,7 @@ con.symlink.meta.icon = ''
 con.symlink.style.add_modifiers = { 'Italic' }
 con.symlink.style.fg = 'Magenta'
 
-local function mic(s)
+local mic = function(s)
     return { meta = { icon = s } }
 end
 con.mime_essence = {
@@ -76,6 +75,7 @@ con.extension = {
     fb2 = mic(''),
     vim = mic(''),
     sql = mic(''),
+    db = mic(''),
     rc = mic(''),
     sh = mic(''),
     zsh = mic(''),
@@ -83,6 +83,7 @@ con.extension = {
     ts = mic(''),
     pub = mic(''),
     pgp = mic(''),
+    gpg = mic(''),
     sig = mic(''),
     css = mic(''),
     scss = mic(''),
@@ -101,6 +102,7 @@ con.extension = {
     deb = mic(''),
     gz = mic(''),
     gzip = mic(''),
+    ['7z'] = mic(''),
     rpm = mic(''),
     tar = mic(''),
     xz = mic(''),
@@ -110,27 +112,55 @@ con.extension = {
     docx = mic(''),
     rs = mic(''),
     rlib = mic(''),
+    zwc = mic(''),
+    ini = mic(''),
 }
 
 con.special = {
     Downloads = mic(''),
     Documents = mic(''),
     Desktop = mic(''),
+    Music = mic(''),
+    Pictures = mic(''),
+    Videos = mic(''),
+    tmp = mic(''),
+    home = mic('ﮟ'),
+    root = mic('ﮈ'),
+    github = mic(''),
+    ['dotfiles-reboot'] = mic(''),
+    ['.zshrc'] = mic(''),
+    ['.zsh'] = mic(''),
+    ['.zprofile'] = mic(''),
+    ['.zshenv'] = mic(''),
+    ['.zsh_history'] = mic(''),
+    ['.xinitrc'] = mic(''),
+    ['.xprofile'] = mic(''),
+    ['.profile'] = mic(''),
+    ['.Xresources'] = mic(''),
+    ['.bashrc'] = mic(''),
+    ['.bash_profile'] = mic(''),
+    ['.bash_logout'] = mic(''),
+    ['.bash_history'] = mic(''),
+    ['.toprc'] = mic(''),
+    ['.config'] = mic(''),
+    ['.git'] = mic(''),
+    ['.gitignore'] = mic(''),
+    ['.gitconfig'] = mic(''),
+    ['.gitmodules'] = mic(''),
+    ['.gitattributes'] = mic(''),
+    ['.ssh'] = mic(''),
+    ['.gnupg'] = mic(''),
+    ['lost+found'] = mic(''),
+    ['.npm'] = mic(''),
+    ['node_modules'] = mic(''),
+    ['.rustup'] = mic(''),
+    ['.cargo'] = mic(''),
+    ['Cargo.toml'] = mic(''),
+    ['Cargo.lock'] = mic(''),
+    ['.mozilla'] = mic(''),
+    ['.java'] = mic(''),
+    ['.cache'] = mic(''),
 }
-con.special['.git'] = mic('')
-con.special['.github'] = mic('')
-con.special['.gitignore'] = mic('')
-con.special['.ssh'] = mic('')
-con.special['lost+found'] = mic('')
-con.special['.npm'] = mic('')
-con.special['node_modules'] = mic('')
-con.special['package.json'] = mic('')
-con.special['package-lock.json'] = mic('')
-con.special['7z'] = mic('')
-con.special['.rustup'] = mic('')
-con.special['.cargo'] = mic('')
-con.special['Cargo.toml'] = mic('')
-con.special['Cargo.lock'] = mic('')
 
 co.layouts.custom.mine = {
     Vertical = {
@@ -174,6 +204,15 @@ co.layouts.custom.mine = {
         },
     },
 }
+
+local help_below = function()
+    return {
+        Vertical = {
+            config = { constraints = { { Percentage = 45 }, { Percentage = 10 }, { Percentage = 45 } } },
+            splits = { 'Table', 'SortAndFilter', 'HelpMenu' },
+        },
+    }
+end
 
 co.modes.builtin.default = {
     name = 'default',
@@ -222,6 +261,10 @@ co.modes.builtin.default = {
             ['d'] = { help = 'delete', messages = { 'PopMode', { SwitchModeBuiltin = 'delete' } } },
             down = { help = 'down', messages = { 'FocusNext' } },
             ['f4'] = { help = 'edit file', messages = { { CallLuaSilently = 'custom.edit_file' } } },
+            ['f7'] = {
+                help = 'create directory',
+                messages = { 'PopMode', { SwitchModeBuiltin = 'create directory' }, { SetInputBuffer = '' } },
+            },
             ['s'] = { help = 'open shell', messages = { { CallLuaSilently = 'custom.open_shell' } } },
             enter = { help = 'enter', messages = { { CallLuaSilently = 'custom.opener' } } },
             esc = { help = nil, messages = {} },
@@ -247,7 +290,6 @@ co.modes.builtin.default = {
                     },
                 },
             },
-            right = { help = 'enter', messages = { { CallLuaSilently = 'custom.opener' } } },
             ['S'] = { help = 'sort', messages = { 'PopMode', { SwitchModeBuiltin = 'sort' } } },
             space = { help = 'toggle selection', messages = { 'ToggleSelection', 'FocusNext' } },
             up = { help = 'up', messages = { 'FocusPrevious' } },
@@ -263,28 +305,16 @@ co.modes.builtin.default = {
             },
         },
         on_alphabet = nil,
-        on_number = {
-            help = 'input',
-            messages = { 'PopMode', { SwitchModeBuiltin = 'number' }, 'BufferInputFromKey' },
-        },
+        on_number = nil,
         on_special_character = nil,
         default = nil,
     },
 }
 
 co.modes.builtin.default.key_bindings.on_key['tab'] = co.modes.builtin.default.key_bindings.on_key['ctrl-i']
-
 co.modes.builtin.default.key_bindings.on_key['v'] = co.modes.builtin.default.key_bindings.on_key.space
-
 co.modes.builtin.default.key_bindings.on_key['V'] = co.modes.builtin.default.key_bindings.on_key['ctrl-a']
-
-co.modes.builtin.default.key_bindings.on_key['h'] = co.modes.builtin.default.key_bindings.on_key.left
-
-co.modes.builtin.default.key_bindings.on_key['j'] = co.modes.builtin.default.key_bindings.on_key.down
-
-co.modes.builtin.default.key_bindings.on_key['k'] = co.modes.builtin.default.key_bindings.on_key.up
-
-co.modes.builtin.default.key_bindings.on_key['l'] = co.modes.builtin.default.key_bindings.on_key.right
+co.modes.builtin.default.key_bindings.on_key.right = co.modes.builtin.default.key_bindings.on_key.enter
 
 co.modes.builtin.selection_ops = {
     name = 'selection ops',
@@ -387,103 +417,48 @@ co.modes.builtin.create = {
     },
 }
 
-co.modes.builtin.create_directory = {
-    name = 'create directory',
-    help = nil,
-    extra_help = nil,
-    key_bindings = {
-        on_key = {
-            backspace = { help = 'remove last character', messages = { 'RemoveInputBufferLastCharacter' } },
-            ['ctrl-u'] = { help = 'remove line', messages = { { SetInputBuffer = '' } } },
-            ['ctrl-w'] = { help = 'remove last word', messages = { 'RemoveInputBufferLastWord' } },
-            enter = {
-                help = 'create directory',
-                messages = {
-                    {
-                        BashExecSilently = [===[
+local create_thing = function(opName, opCmd)
+    return {
+        name = opName,
+        help = nil,
+        extra_help = nil,
+        key_bindings = {
+            on_key = {
+                backspace = { help = 'remove last character', messages = { 'RemoveInputBufferLastCharacter' } },
+                ['ctrl-u'] = { help = 'remove line', messages = { { SetInputBuffer = '' } } },
+                ['ctrl-w'] = { help = 'remove last word', messages = { 'RemoveInputBufferLastWord' } },
+                enter = {
+                    help = opName,
+                    messages = {
+                        {
+                            BashExecSilently = [===[
             PTH="$XPLR_INPUT_BUFFER"
             if [ "${PTH}" ]; then
-              mkdir -p -- "${PTH:?}" \
+                            ]===] .. opCmd .. [===[ -- "${PTH:?}" \
               && echo "SetInputBuffer: ''" >> "${XPLR_PIPE_MSG_IN:?}" \
-              && echo ExplorePwd >> "${XPLR_PIPE_MSG_IN:?}" \
               && echo LogSuccess: $PTH created >> "${XPLR_PIPE_MSG_IN:?}" \
-              && echo FocusByFileName: "'"$PTH"'" >> "${XPLR_PIPE_MSG_IN:?}"
+              && echo ExplorePwd >> "${XPLR_PIPE_MSG_IN:?}" \
+              && echo FocusByFileName: "'"$PTH"'" >> "${XPLR_PIPE_MSG_IN:?}" \
+              && echo PopMode >> "${XPLR_PIPE_MSG_IN:?}"
             else
               echo PopMode >> "${XPLR_PIPE_MSG_IN:?}"
             fi
             ]===],
+                        },
                     },
                 },
+                esc = { help = 'cancel', messages = { 'PopMode' } },
             },
-            esc = { help = 'cancel', messages = { 'PopMode' } },
+            on_alphabet = nil,
+            on_number = nil,
+            on_special_character = nil,
+            default = { help = nil, messages = { 'BufferInputFromKey' } },
         },
-        on_alphabet = nil,
-        on_number = nil,
-        on_special_character = nil,
-        default = { help = nil, messages = { 'BufferInputFromKey' } },
-    },
-}
+    }
+end
 
-co.modes.builtin.create_file = {
-    name = 'create file',
-    help = nil,
-    extra_help = nil,
-    key_bindings = {
-        on_key = {
-            backspace = { help = 'remove last character', messages = { 'RemoveInputBufferLastCharacter' } },
-            ['ctrl-u'] = { help = 'remove line', messages = { { SetInputBuffer = '' } } },
-            ['ctrl-w'] = { help = 'remove last word', messages = { 'RemoveInputBufferLastWord' } },
-            enter = {
-                help = 'create file',
-                messages = {
-                    {
-                        BashExecSilently = [===[
-            PTH="$XPLR_INPUT_BUFFER"
-            if [ "${PTH}" ]; then
-              touch -- "${PTH:?}" \
-              && echo "SetInputBuffer: ''" >> "${XPLR_PIPE_MSG_IN:?}" \
-              && echo LogSuccess: $PTH created >> "${XPLR_PIPE_MSG_IN:?}" \
-              && echo ExplorePwd >> "${XPLR_PIPE_MSG_IN:?}" \
-              && echo FocusByFileName: "'"$PTH"'" >> "${XPLR_PIPE_MSG_IN:?}"
-            else
-              echo PopMode >> "${XPLR_PIPE_MSG_IN:?}"
-            fi
-            ]===],
-                    },
-                },
-            },
-            esc = { help = 'cancel', messages = { 'PopMode' } },
-        },
-        on_alphabet = nil,
-        on_number = nil,
-        on_special_character = nil,
-        default = { help = nil, messages = { 'BufferInputFromKey' } },
-    },
-}
-
-co.modes.builtin.number = {
-    name = 'number',
-    help = nil,
-    extra_help = nil,
-    key_bindings = {
-        on_key = {
-            backspace = { help = 'remove last character', messages = { 'RemoveInputBufferLastCharacter' } },
-            ['ctrl-u'] = { help = 'remove line', messages = { { SetInputBuffer = '' } } },
-            ['ctrl-w'] = { help = 'remove last word', messages = { 'RemoveInputBufferLastWord' } },
-            down = { help = 'to down', messages = { 'FocusNextByRelativeIndexFromInput', 'PopMode' } },
-            enter = { help = 'to index', messages = { 'FocusByIndexFromInput', 'PopMode' } },
-            esc = { help = 'cancel', messages = { 'PopMode' } },
-            up = { help = 'to up', messages = { 'FocusPreviousByRelativeIndexFromInput', 'PopMode' } },
-        },
-        on_alphabet = nil,
-        on_number = { help = 'input', messages = { 'BufferInputFromKey' } },
-        on_special_character = nil,
-        default = nil,
-    },
-}
-
-co.modes.builtin.number.key_bindings.on_key['j'] = co.modes.builtin.number.key_bindings.on_key.down
-co.modes.builtin.number.key_bindings.on_key['k'] = co.modes.builtin.number.key_bindings.on_key.up
+co.modes.builtin.create_directory = create_thing('create directory', 'mkdir -p')
+co.modes.builtin.create_file = create_thing('create file', 'touch')
 
 co.modes.builtin.go_to = {
     name = 'go to',
@@ -494,28 +469,6 @@ co.modes.builtin.go_to = {
             esc = { help = 'cancel', messages = { 'PopMode' } },
             ['f'] = { help = 'follow symlink', messages = { 'FollowSymlink', 'PopMode' } },
             ['g'] = { help = 'top', messages = { 'FocusFirst', 'PopMode' } },
-            ['x'] = {
-                help = 'open in gui',
-                messages = {
-                    {
-                        BashExecSilently = [===[
-            if [ -z "$OPENER" ]; then
-              if command -v xdg-open; then
-                OPENER=xdg-open
-                elif command -v open; then
-                OPENER=open
-              else
-                echo 'LogError: $OPENER not found' >> "${XPLR_PIPE_MSG_IN:?}"
-                exit 1
-              fi
-            fi
-            $OPENER "${XPLR_FOCUS_PATH:?}" > /dev/null 2>&1
-            ]===],
-                    },
-                    'ClearScreen',
-                    'PopMode',
-                },
-            },
         },
         on_alphabet = nil,
         on_number = nil,
@@ -564,47 +517,19 @@ co.modes.builtin.delete = {
     extra_help = nil,
     key_bindings = {
         on_key = {
-            ['D'] = {
+            ['d'] = {
                 help = 'force delete',
                 messages = {
                     {
                         BashExec = [===[
             (while IFS= read -r line; do
-            if rm -rfv -- "${line:?}"; then
+            if rm -rf -- "${line:?}"; then
               echo LogSuccess: $line deleted >> "${XPLR_PIPE_MSG_IN:?}"
             else
               echo LogError: Failed to delete $line >> "${XPLR_PIPE_MSG_IN:?}"
             fi
             done < "${XPLR_PIPE_RESULT_OUT:?}")
             echo ExplorePwdAsync >> "${XPLR_PIPE_MSG_IN:?}"
-            read -p "[enter to continue]"
-            ]===],
-                    },
-                    'PopMode',
-                },
-            },
-            ['d'] = {
-                help = 'delete',
-                messages = {
-                    {
-                        BashExec = [===[
-            (while IFS= read -r line; do
-            if [ -d "$line" ] && [ ! -L "$line" ]; then
-              if rmdir -v -- "${line:?}"; then
-                echo LogSuccess: $line deleted >> "${XPLR_PIPE_MSG_IN:?}"
-              else
-                echo LogError: Failed to delete $line >> "${XPLR_PIPE_MSG_IN:?}"
-              fi
-            else
-              if rm -v -- "${line:?}"; then
-                echo LogSuccess: $line deleted >> "${XPLR_PIPE_MSG_IN:?}"
-              else
-                echo LogError: Failed to delete $line >> "${XPLR_PIPE_MSG_IN:?}"
-              fi
-            fi
-            done < "${XPLR_PIPE_RESULT_OUT:?}")
-            echo ExplorePwdAsync >> "${XPLR_PIPE_MSG_IN:?}"
-            read -p "[enter to continue]"
             ]===],
                     },
                     'PopMode',
@@ -634,17 +559,6 @@ co.modes.builtin.action = {
                 },
             },
             ['c'] = { help = 'create', messages = { 'PopMode', { SwitchModeBuiltin = 'create' } } },
-            ['e'] = {
-                help = 'open in editor',
-                messages = {
-                    {
-                        BashExec = [===[
-            ${EDITOR:-vi} "${XPLR_FOCUS_PATH:?}"
-            ]===],
-                    },
-                    'PopMode',
-                },
-            },
             esc = { help = 'cancel', messages = { 'PopMode' } },
             ['l'] = {
                 help = 'logs',
@@ -660,10 +574,7 @@ co.modes.builtin.action = {
             ['q'] = { help = 'quit options', messages = { 'PopMode', { SwitchModeBuiltin = 'quit' } } },
         },
         on_alphabet = nil,
-        on_number = {
-            help = 'go to index',
-            messages = { 'PopMode', { SwitchModeBuiltin = 'number' }, 'BufferInputFromKey' },
-        },
+        on_number = nil,
         on_special_character = nil,
         default = nil,
     },
@@ -675,16 +586,17 @@ co.modes.builtin.quit = {
     extra_help = nil,
     key_bindings = {
         on_key = {
-            enter = { help = 'just quit', messages = { 'Quit' } },
+            q = { help = 'quit', messages = { 'Quit' } },
             p = { help = 'quit printing pwd', messages = { 'PrintPwdAndQuit' } },
             f = { help = 'quit printing focus', messages = { 'PrintFocusPathAndQuit' } },
             s = { help = 'quit printing selection', messages = { 'PrintSelectionAndQuit' } },
             r = { help = 'quit printing result', messages = { 'PrintResultAndQuit' } },
             esc = { help = 'cancel', messages = { 'PopMode' } },
             ['ctrl-c'] = { help = 'terminate', messages = { 'Terminate' } },
-            ['#'] = { help = nil, messages = { 'PrintAppStateAndQuit' } },
+            ['#'] = { help = 'quit printing app state', messages = { 'PrintAppStateAndQuit' } },
         },
     },
+    layout = help_below(),
 }
 
 co.modes.builtin.search = {
@@ -1014,6 +926,7 @@ co.modes.builtin.sort = {
         on_special_character = nil,
         default = nil,
     },
+    layout = help_below(),
 }
 
 co.modes.builtin.sort.key_bindings.on_key['esc'] = co.modes.builtin.sort.key_bindings.on_key.enter
@@ -1033,7 +946,7 @@ co.modes.builtin.switch_layout = {
 
 co.modes.custom = {}
 
--------- Format path column
+-- Format path column
 xplr.fn.builtin.fmt_general_table_row_cols_0 = function(m)
     local r = m.tree .. m.prefix
 
@@ -1068,7 +981,7 @@ xplr.fn.builtin.fmt_general_table_row_cols_0 = function(m)
     return r
 end
 
--------- Format permissions column
+-- Format permissions column
 xplr.fn.builtin.fmt_general_table_row_cols_1 = function(m)
     local function num(x, y, z)
         return 4 * (x and 1 or 0) + 2 * (y and 1 or 0) + (z and 1 or 0)
@@ -1083,18 +996,9 @@ xplr.fn.builtin.fmt_general_table_row_cols_1 = function(m)
     return r
 end
 
--------- Format size column
+-- Format size column
 xplr.fn.builtin.fmt_general_table_row_cols_2 = function(m)
     return m.is_dir and '' or m.human_size
-end
-
--------- Format mime column
-xplr.fn.builtin.fmt_general_table_row_cols_3 = function(m)
-    if m.is_symlink and not m.is_broken then
-        return m.symlink.mime_essence
-    else
-        return m.mime_essence
-    end
 end
 
 xplr.fn.custom.open_shell = function(a)
@@ -1143,11 +1047,12 @@ term.setup({ term.profile_kitty_vsplit(), k_hsplit })
 require('preview-tabbed').setup({
     mode = 'default',
     key = 'f3',
-    previewer = os.getenv('HOME') .. '/.config/xplr/volatile/nnn/plugins/preview-tui',
+--     previewer = os.getenv('HOME') .. '/.config/xplr/volatile/nnn/plugins/preview-tui',
+    previewer = 'preview-tui-wrapper'
 })
 
 local csw = require('context-switch')
 csw.setup()
 xplr.fn.custom.render_context_num = function(_)
-    return '  ' .. tostring(csw.get_current_context_num())
+    return tostring(csw.get_current_context_num())
 end
