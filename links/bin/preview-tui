@@ -8,12 +8,24 @@ trap "rm -f $pipe" EXIT
 
 while true
 do
-    if read line <"$pipe"; then
-        clear
+    if read line < "$pipe"; then
+        tput reset
         if [[ -d "$line" ]]; then
             ls -Al "$line"
         else
-            bat "$line"
+            mimetype=$(file -bL --mime-type "$line")
+            #             echo mimetype=$mimetype
+            cols=$(tput cols)
+            lines=$(tput lines)
+            case "$mimetype" in
+                image/*)
+                    kitty +kitten icat --silent --place ${cols}x${lines}@0x0 "$line" &
+                    ;;
+                *)
+                    head -n 10 "$line"
+                    #             bat --theme="igAnsi" --paging=never --color=always --style=plain "$line" 2>/dev/null
+                    ;;
+            esac
         fi
     fi
 done
