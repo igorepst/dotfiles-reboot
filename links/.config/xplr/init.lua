@@ -260,6 +260,7 @@ co.modes.builtin.default = {
             ['ctrl-w'] = { help = 'switch layout', messages = { { SwitchModeBuiltin = 'switch_layout' } } },
             ['d'] = { help = 'delete', messages = { 'PopMode', { SwitchModeBuiltin = 'delete' } } },
             down = { help = 'down', messages = { 'FocusNext' } },
+            ['f3'] = { help = 'preview', messages = { { CallLuaSilently = 'custom.preview_tui' } } },
             ['f4'] = { help = 'edit file', messages = { { CallLuaSilently = 'custom.edit_file' } } },
             ['f7'] = {
                 help = 'create directory',
@@ -1018,6 +1019,48 @@ xplr.fn.custom.open_shell = function(a)
     }
 end
 
+local preview_tui_enabled = false
+local preview_tui_fifo = '/tmp/preview-tui.fifo'
+xplr.fn.custom.preview_tui = function(_)
+    if preview_tui_enabled then
+        preview_tui_enabled = false
+        return {
+            'StopFifo',
+            {
+                Call = {
+                    command = 'kitty',
+                    args = {
+                        '@close-window',
+                        '--match=title:PreviewTUI',
+                    },
+                },
+            },
+        }
+    else
+        os.execute('[ ! -p \'' .. preview_tui_fifo .. '\' ] && mkfifo \'' .. preview_tui_fifo .. '\'')
+        preview_tui_enabled = true
+        return {
+            {
+                Call = {
+                    command = 'kitty',
+                    args = {
+                        '@launch',
+                        '--type=window',
+                        '--no-response',
+                        '--location=vsplit',
+                        '--keep-focus',
+                        '--title=PreviewTUI',
+                        '--env',
+                        'PREVIEW_TUI_FIFO=' .. preview_tui_fifo,
+                        os.getenv('HOME') .. '/bin/preview-tui',
+                    },
+                },
+            },
+            { StartFifo = preview_tui_fifo },
+        }
+    end
+end
+
 xplr.fn.custom.edit_file = function(a)
     local res = xplr.fn.custom.open_shell(a)
     table.insert(res[1].Call.args, 'nvim')
@@ -1043,13 +1086,6 @@ local term = require('term')
 local k_hsplit = term.profile_kitty_hsplit()
 k_hsplit.key = 'ctrl-h'
 term.setup({ term.profile_kitty_vsplit(), k_hsplit })
-
-require('preview-tabbed').setup({
-    mode = 'default',
-    key = 'f3',
---     previewer = os.getenv('HOME') .. '/.config/xplr/volatile/nnn/plugins/preview-tui',
-    previewer = 'preview-tui-wrapper'
-})
 
 local csw = require('context-switch')
 csw.setup()

@@ -1,6 +1,6 @@
 #!/bin/bash
 
-pipe="${NNN_FIFO}"
+pipe="${PREVIEW_TUI_FIFO}"
 
 if [[ -z "$pipe" ]] || [[ ! -p "$pipe" ]]; then exit 1; fi
 
