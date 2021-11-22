@@ -1020,7 +1020,6 @@ xplr.fn.custom.open_shell = function(a)
 end
 
 local preview_tui_enabled = false
-local preview_tui_fifo = '/tmp/preview-tui.fifo'
 xplr.fn.custom.preview_tui = function(_)
     if preview_tui_enabled then
         preview_tui_enabled = false
@@ -1037,6 +1036,7 @@ xplr.fn.custom.preview_tui = function(_)
             },
         }
     else
+        local preview_tui_fifo = '/tmp/preview-tui.fifo' .. os.time()
         os.execute('[ ! -p \'' .. preview_tui_fifo .. '\' ] && mkfifo \'' .. preview_tui_fifo .. '\'')
         preview_tui_enabled = true
         return {

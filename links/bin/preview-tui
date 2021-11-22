@@ -6,24 +6,25 @@ if [[ -z "$pipe" ]] || [[ ! -p "$pipe" ]]; then exit 1; fi
 
 trap "rm -f $pipe" EXIT
 
+cols=$(tput cols)
+lines=$(tput lines)
 while true
 do
-    if read line < "$pipe"; then
+    if read fname < "$pipe"; then
         tput reset
-        if [[ -d "$line" ]]; then
-            ls -Al "$line"
+        if [[ -d "${fname}" ]]; then
+            ls "$fname" 
+#             (ls -AgGhF --group-directories-first --color=always "${fname}" | head -n ${lines}) &
         else
-            mimetype=$(file -bL --mime-type "$line")
+            mimetype=$(file -bL --mime-type "${fname}")
             #             echo mimetype=$mimetype
-            cols=$(tput cols)
-            lines=$(tput lines)
             case "$mimetype" in
                 image/*)
-                    kitty +kitten icat --silent --place ${cols}x${lines}@0x0 "$line" &
+                    kitty +kitten icat --silent --place ${cols}x${lines}@0x0 "${fname}" &
                     ;;
                 *)
-                    head -n 10 "$line"
-                    #             bat --theme="igAnsi" --paging=never --color=always --style=plain "$line" 2>/dev/null
+                                        head -n 10 "$fname"
+#                     bat --theme="igAnsi" --color=always --style=plain --line-range=:${lines} "${fname}" 2>/dev/null &
                     ;;
             esac
         fi
