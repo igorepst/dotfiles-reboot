@@ -6,27 +6,43 @@ if [[ -z "$pipe" ]] || [[ ! -p "$pipe" ]]; then exit 1; fi
 
 trap "rm -f $pipe" EXIT
 
-cols=$(tput cols)
-lines=$(tput lines)
-while true
-do
-    if read fname < "$pipe"; then
-        tput reset
-        if [[ -d "${fname}" ]]; then
-            ls "$fname" 
-#             (ls -AgGhF --group-directories-first --color=always "${fname}" | head -n ${lines}) &
-        else
-            mimetype=$(file -bL --mime-type "${fname}")
-            #             echo mimetype=$mimetype
-            case "$mimetype" in
-                image/*)
-                    kitty +kitten icat --silent --place ${cols}x${lines}@0x0 "${fname}" &
-                    ;;
-                *)
-                                        head -n 10 "$fname"
-#                     bat --theme="igAnsi" --color=always --style=plain --line-range=:${lines} "${fname}" 2>/dev/null &
-                    ;;
-            esac
-        fi
+function process(){
+    local fname=${1}
+    tput reset
+    if [[ -d "${fname}" ]]; then
+        (ls -AgGhF --group-directories-first --color=always "${fname}" | head -n ${lines})
+    else
+        local mimetype
+        mimetype=$(file -bL --mime-type "${fname}")
+        case "$mimetype" in
+            image/*)
+                kitty +kitten icat --silent --place ${cols}x${lines}@0x0 "${fname}"
+                ;;
+            *)
+                local encoding
+                encoding=$(file -bL --mime-encoding "${fname}")
+                if [ "${encoding}" = 'binary' ]; then
+                    echo Binary file
+                else
+                    bat --theme="igAnsi" --color=always --style=plain --line-range=:${lines} "${fname}" 2>/dev/null
+                fi
+                ;;
+        esac
     fi
-done
+}
+
+function main(){
+    local cols lines fname procpid 
+    cols=$(tput cols)
+    lines=$(tput lines)
+    while true
+    do
+        if read fname < "$pipe"; then
+            [ -n "${procpid}" ] && kill "${procpid}"
+            process "${fname}" &
+            procpid=$!
+        fi
+    done
+}
+
+main "$@"
