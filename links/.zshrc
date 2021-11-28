@@ -73,11 +73,12 @@ bindkey '[B' history-beginning-search-forward
 # Ctrl+/ to 'suspend' the half typed command. Restores on the next fresh prompt
 bindkey '' push-input
 
-fpath=($fpath ~/.zsh/volatile/igorepst/_gh_release/_cache/_compl ~/.zsh/plugins/archive ~/.zsh/plugins/zsh-completions/src)
-
 setopt glob_dots extended_glob auto_cd auto_pushd pushd_ignore_dups nomatch unset rm_star_silent
 setopt inc_append_history share_history extended_history hist_ignore_all_dups hist_ignore_space hist_save_no_dups
-setopt long_list_jobs notify no_beep complete_in_word no_hup no_flow_control
+setopt long_list_jobs notify no_beep complete_in_word no_hup no_flow_control typeset_silent
+
+path=($path ~/.zsh/plugins/archive)
+fpath=($fpath ~/.zsh/volatile/igorepst/_gh_release/_cache/_compl ~/.zsh/plugins/archive ~/.zsh/plugins/zsh-completions/src)
 
 {
     autoload -Uz compinit
