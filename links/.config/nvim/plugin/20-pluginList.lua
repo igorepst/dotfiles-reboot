@@ -97,6 +97,10 @@ return require('packer').startup({
                 null_ls.config({
                     sources = {
                         null_ls.builtins.code_actions.gitsigns,
+                        null_ls.builtins.diagnostics.shellcheck,
+                        null_ls.builtins.formatting.shfmt.with({
+                            args = { '-ci', '-sr', '-i', 4 },
+                        }),
                         null_ls.builtins.formatting.stylua.with({
                             args = {
                                 '--quote-style',

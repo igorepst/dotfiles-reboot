@@ -30,7 +30,7 @@ opt.softtabstop = 4
 opt.shiftwidth = 4
 opt.number = true
 opt.wildmode = { 'longest:full', 'full' }
-opt.listchars = { tab = '> ', trail = '-', extends = '>', precedes = '<', nbsp = '+', eol = '$' }
+opt.listchars = { tab = '> ', trail = '-', extends = '>', precedes = '<', nbsp = '+', eol = '$', space = '.' }
 opt.shortmess = 'atToOIcF'
 opt.whichwrap = 'b,s,<,>,[,]'
 opt.inccommand = 'nosplit'
