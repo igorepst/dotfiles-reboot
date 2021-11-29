@@ -54,6 +54,7 @@ EOF
     cat >"${ROFI_SETTINGS}" <<"EOF"
 configuration {
  font: "mono 15";
+ dpi: 106;
 }
 EOF
 
