@@ -1,0 +1,46 @@
+#!/bin/bash
+
+function handleAudio() {
+    mpv --force-window --fullscreen=no "${1}" &
+}
+
+function handleText() {
+    kitty @launch --type=tab --no-response --location=after --cwd="$(dirname "$(readlink -f "${1}")")" "${EDITOR}" "${1}" &
+}
+
+function process() {
+    local fname="${1}"
+    local mimetype ext
+    ext="${fname##*.}"
+    [ -n "$ext" ] && ext="${ext,,}" # to lower
+    case "${ext}" in
+        m3u)
+            handleAudio "${fname}"
+            ;;
+        vim | zshrc)
+            handleText "${fname}"
+            ;;
+        *)
+            mimetype=$(file -bL --mime-type "${fname}")
+            case "${mimetype}" in
+                text/html)
+                    firefox "${fname}" &
+                    ;;
+                text/* | application/json)
+                    handleText "${fname}"
+                    ;;
+                video/*)
+                    mpv "${fname}" &
+                    ;;
+                audio/*)
+                    handleAudio "${fname}"
+                    ;;
+                *)
+                    xdg-open "${fname}" &
+                    ;;
+            esac
+            ;;
+    esac
+}
+
+process "$@"

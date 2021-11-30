@@ -573,6 +573,17 @@ co.modes.builtin.action = {
                 messages = { 'PopMode', { SwitchModeBuiltin = 'selection_ops' } },
             },
             ['q'] = { help = 'quit options', messages = { 'PopMode', { SwitchModeBuiltin = 'quit' } } },
+            ['m'] = {
+                help = 'show mimetype',
+                messages = {
+                    {
+                        BashExecSilently = [===[
+                        echo LogSuccess: Mime=$(file -bLi "${XPLR_FOCUS_PATH:?}") >> "${XPLR_PIPE_MSG_IN:?}"
+                        ]===],
+                    },
+                    'PopMode',
+                },
+            },
         },
         on_alphabet = nil,
         on_number = nil,
@@ -1041,7 +1052,7 @@ xplr.fn.custom.preview_tui = function(_)
         preview_tui_enabled = true
         return {
             {
-                Call = {
+                CallSilently = {
                     command = 'kitty',
                     args = {
                         '@launch',
@@ -1070,7 +1081,8 @@ end
 
 xplr.fn.custom.opener = function(a)
     local c = a.focused_node.canonical
-    return c.is_dir and { 'Enter' } or { { CallSilently = { command = 'xdg-open', args = { c.absolute_path } } } }
+    return c.is_dir and { 'Enter' }
+        or { { CallSilently = { command = os.getenv('HOME') .. '/bin/run-tui', args = { c.absolute_path } } } }
 end
 
 package.path = os.getenv('HOME') .. '/.config/xplr/plugins/?/src/init.lua'

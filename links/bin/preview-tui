@@ -12,14 +12,14 @@ function process() {
         local cols mimetype ext
         cols=$(tput cols)
         ext="${fname##*.}"
-        [ -n "$ext" ] && ext="${ext,,}" # to lower
-        case "$ext" in
+        [ -n "${ext}" ] && ext="${ext,,}" # to lower
+        case "${ext}" in
             zip | zst)
                 ~/.zsh/plugins/archive/lsarchive "${fname}" | head -n ${lines}
                 ;;
             *)
                 mimetype=$(file -bL --mime-type "${fname}")
-                case "$mimetype" in
+                case "${mimetype}" in
                     image/*)
 #                         magick identify -format '%[width] %[height]' Screenshot_20200727_203946.png
 # if small, use --scale-up for icat
