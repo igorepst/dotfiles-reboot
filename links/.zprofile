@@ -3,7 +3,9 @@
 export LC_ALL=en_US.UTF-8
 export LANG=en_US.UTF-8
 export EDITOR=nvim
-export PATH=~/bin:~/.zsh/volatile/igorepst/_gh_release/_cache/_bin:~/.local/bin:~/.cargo/bin:$PATH
+PATH=~/bin:~/.zsh/volatile/igorepst/_gh_release/_cache/_bin:~/.local/bin:~/.cargo/bin:$PATH
+[ -d ~/.work/bin ] && PATH=~/.work/bin:$PATH
+export PATH
 export MYTERM=kitty
 export MYFEXP=xplr
 export _JAVA_OPTIONS='-Dawt.useSystemAAFontSettings=on'

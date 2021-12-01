@@ -34,3 +34,4 @@ alias sstart='sudo systemctl start'
 alias sstop='sudo systemctl stop'
 
 alias x=xplr
+alias d=docker

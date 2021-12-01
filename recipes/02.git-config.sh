@@ -5,12 +5,12 @@ function doWork() {
 
     local gcp=~/.gitconfig-private
     if [ ! -f "${gcp}" ]; then
-        read -p "Git username? " gituser
-        read -p "Git email? " gitemail
+        read -rp "Git username? " gituser
+        read -rp "Git email? " gitemail
         {
             echo '[User]'
-            echo 'name ='
-            echo 'email =' ${gitemail}
+            echo "name = ${gituser}"
+            echo "email = ${gitemail}"
         }>"${gcp}"
     chmod 600 "${gcp}"
     fi
