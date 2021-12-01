@@ -8,7 +8,6 @@ typeset -U path PATH cdpath CDPATH fpath FPATH manpath MANPATH
 source ~/.zsh/helpers/p10k.zsh
 source ~/.zsh/plugins/powerlevel10k/powerlevel10k.zsh-theme
 
-[ -d ~/.work/bin ] && path+=(~/.work/bin)
 [ -f ~/.work/aliases.zsh ] && source ~/.work/aliases.zsh
 
 export npm_config_prefix=~/.node_modules
