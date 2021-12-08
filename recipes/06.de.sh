@@ -53,8 +53,31 @@ org.gnome.desktop.calendar show-weekdate true
 
 org.gnome.desktop.wm.preferences audible-bell false
 org.gnome.desktop.wm.preferences visual-bell false
-org.gnome.desktop.wm.preferences focus-mode 'mouse' 
-org.gnome.desktop.wm.preferences num-workspaces 2 
+org.gnome.desktop.wm.preferences focus-mode 'mouse'
+
+org.gnome.desktop.peripherals.touchpad click-method 'fingers'
+org.gnome.desktop.peripherals.touchpad natural-scroll true
+org.gnome.desktop.input-sources xkb-options ['grp_led:scroll','grp:caps_toggle']
+org.gnome.mutter overlay-key 'Super_R'
+org.gnome.mutter dynamic-workspaces false
+org.gnome.desktop.wm.preferences num-workspaces 1
+org.gnome.shell.keybindings switch-to-application-1 ['']
+org.gnome.shell.keybindings switch-to-application-2 ['']
+org.gnome.shell.keybindings switch-to-application-3 ['']
+org.gnome.shell.keybindings switch-to-application-4 ['']
+org.gnome.shell.keybindings switch-to-application-5 ['']
+org.gnome.shell.keybindings switch-to-application-6 ['']
+org.gnome.shell.keybindings switch-to-application-7 ['']
+org.gnome.shell.keybindings switch-to-application-8 ['']
+org.gnome.shell.keybindings switch-to-application-9 ['']
+org.gnome.shell.keybindings focus-active-notification ['']
+org.gnome.shell.keybindings open-application-menu ['']
+org.gnome.shell.keybindings toggle-application-view ['']
+org.gnome.shell.keybindings toggle-message-tray ['']
+org.gnome.shell.keybindings toggle-overview ['']
+org.gnome.desktop.wm.keybindings show-desktop ['<Super>d']
+org.gnome.desktop.wm.keybindings switch-to-workspace-up []
+org.gnome.desktop.wm.keybindings switch-to-workspace-down []
 
 org.gtk.Settings.FileChooser show-hidden true
 org.gnome.nautilus.preferences default-folder-viewer 'list-view'
