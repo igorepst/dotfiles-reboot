@@ -1,7 +1,7 @@
 -- See https://github.com/sayanarijit/xplr/wiki/Upgrade-Guide.
 
 ---@diagnostic disable
-version = '0.16.0'
+version = '0.17.0'
 local xplr = xplr
 ---@diagnostic enable
 
