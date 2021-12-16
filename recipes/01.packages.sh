@@ -16,7 +16,12 @@ function doWork() {
     local add_arr
     case "${OS_ID}" in
         arch) add_arr=(python terminus-font xorg-xrdb);;
-        ubuntu) add_arr=(python3 fonts-terminus x11-xserver-utils gnome-shell-extension-dash-to-panel);;
+        ubuntu) add_arr=(python3 fonts-terminus x11-xserver-utils gnome-shell-extension-dash-to-panel)
+            if ! grep -q "^deb .*git-core" "/etc/apt/sources.list" "/etc/apt/sources.list.d/*" 2>/dev/null; then
+                printf '%sAdding official Git PPA and updating...%s\n' "${GREEN}" "${RESET}"
+                sudo add-apt-repository -yu ppa:git-core/ppa && sudo apt-get install -y git
+            fi
+            ;;
     esac
 
     arr=("${arr[@]}" "${add_arr[@]}")
@@ -28,14 +33,14 @@ function doWork() {
     for i in "${arr[@]}"; do
         checkp "${i}" && printf "${GREEN}*${RESET} $i ${GREEN}is installed${RESET}\n" || pnames="${pnames} $i"
     done
-    if [ ! -z "${pnames}" ]; then
+    if [ -n "${pnames}" ]; then
         printf "${RED}Installing the following packages:${RESET}\n${pnames}\n"
         case "${OS_ID}" in
             arch) yes | sudo /usr/bin/pacman -Sy ${pnames};;
             ubuntu) sudo /usr/bin/apt-get update && sudo /usr/bin/apt-get install -y ${pnames};;
         esac
     else
-        printf "${GREEN}All packages are installed${RESET}"
+        printf "${GREEN}All packages are installed${RESET}\n"
     fi
 }
 
