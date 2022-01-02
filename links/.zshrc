@@ -100,7 +100,7 @@ source ~/.zsh/helpers/aliases.zsh
 source ~/.zsh/helpers/fzf.zsh
 source ~/.zsh/helpers/navi.zsh 
 source ~/.zsh/helpers/ripgrep.zsh 
-source ~/.zsh/helpers/vifm.zsh 
+#  source ~/.zsh/helpers/vifm.zsh 
 source ~/.zsh/helpers/functions.zsh 
 source ~/.zsh/helpers/title.zsh 
 source ~/.zsh/helpers/formarks.zsh 
@@ -163,8 +163,8 @@ zstyle -e :urlglobber url-other-schema \
     '[[ $remote_commands[(i)$words[1]] -le ${#remote_commands} ]] && reply=("*") || reply=(http https ftp)'
 
 ZSH_AUTOSUGGEST_HIGHLIGHT_STYLE="fg=196"
-ZSH_AUTOSUGGEST_USE_ASYNC=1
 ZSH_AUTOSUGGEST_BUFFER_MAX_SIZE=20
+ZSH_AUTOSUGGEST_MANUAL_REBIND=1
 source ~/.zsh/plugins/zsh-autosuggestions/zsh-autosuggestions.zsh
 ZSH_HIGHLIGHT_HIGHLIGHTERS=(main brackets)
 source ~/.zsh/plugins/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh
