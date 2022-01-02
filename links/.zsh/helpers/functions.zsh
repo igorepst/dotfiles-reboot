@@ -58,6 +58,11 @@ function updateDots(){
     exec zsh
 }
 
+function zcompile-many() {
+  local f
+  for f; do zcompile -R -- "$f".zwc "$f"; done
+}
+
 function _updateDots(){
     emulate zsh; setopt localoptions
     echo 'Updating Git code and submodules'
@@ -65,6 +70,8 @@ function _updateDots(){
     pushd ~/dotfiles-reboot >/dev/null
     git pull origin $(git rev-parse --abbrev-ref HEAD)
     git submodule update --recursive --remote --merge --force
+    zcompile-many ~/dotfiles-reboot/links/.zsh/plugins/zsh-syntax-highlighting/{zsh-syntax-highlighting.zsh,highlighters/*/*.zsh}
+    zcompile-many ~/dotfiles-reboot/links/.zsh/plugins/zsh-autosuggestions/{zsh-autosuggestions.zsh,src/**/*.zsh}
     popd >/dev/null
     echo 'Updating GH releases'
     source ${(%):-%x}

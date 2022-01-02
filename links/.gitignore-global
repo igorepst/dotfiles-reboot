@@ -131,3 +131,5 @@ local.properties
 
 # Code Recommenders
 .recommenders/
+
+*.zwc*

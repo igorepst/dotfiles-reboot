@@ -5,9 +5,6 @@ fi
 # automatically remove duplicates from these arrays
 typeset -U path PATH cdpath CDPATH fpath FPATH manpath MANPATH
 
-source ~/.zsh/helpers/p10k.zsh
-source ~/.zsh/plugins/powerlevel10k/powerlevel10k.zsh-theme
-
 [ -f ~/.work/aliases.zsh ] && source ~/.work/aliases.zsh
 
 export npm_config_prefix=~/.node_modules
@@ -168,3 +165,6 @@ ZSH_AUTOSUGGEST_MANUAL_REBIND=1
 source ~/.zsh/plugins/zsh-autosuggestions/zsh-autosuggestions.zsh
 ZSH_HIGHLIGHT_HIGHLIGHTERS=(main brackets)
 source ~/.zsh/plugins/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh
+
+source ~/.zsh/plugins/powerlevel10k/powerlevel10k.zsh-theme
+source ~/.zsh/helpers/p10k.zsh
