@@ -107,22 +107,7 @@ function _get_gh_releases() {
         bat cache --build
     fi
     get_gh_release --repo sharkdp/fd --arch x86_64-unknown-linux-gnu.tar.gz --toPath fd --toCompletionPath autocomplete/_fd
-    if get_gh_release --repo kovidgoyal/kitty --arch x86_64.txz --toPath bin/kitty; then
-        cat >~/.zsh/volatile/igorepst/_gh_release/_cache/_compl/_kitty <<'EOM'
-#compdef kitty
-
-_kitty() {
-    local src
-    # Send all words up to the word the cursor is currently on
-    src=$(printf "%s
-" "${(@)words[1,$CURRENT]}" | kitty +complete zsh)
-    if [[ $? == 0 ]]; then
-        eval ${src}
-    fi
-}
-compdef _kitty kitty
-EOM
-    fi
+    get_gh_release --repo kovidgoyal/kitty --arch x86_64.txz --toPath bin/kitty
     # Should be the last one to use its exit code
     get_gh_release --repo neovim/neovim --arch linux64.tar.gz --toPath bin/nvim --tag nightly
 }
