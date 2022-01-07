@@ -9,34 +9,53 @@ function handleText() {
 }
 
 function process() {
-    local fname="${1}"
-    local mimetype ext
-    ext="${fname##*.}"
-    [ -n "$ext" ] && ext="${ext,,}" # to lower
-    case "${ext}" in
-        m3u)
-            handleAudio "${fname}"
+    shopt -s nocasematch
+    local mimetype
+    case "${1}" in
+        *.m3u)
+            handleAudio "${1}"
             ;;
-        vim | zshrc)
-            handleText "${fname}"
+        *.vim | *.zshrc)
+            handleText "${1}"
+            ;;
+        *.tar.gz | *.tgz | *.tar.bz2 | *.tbz | *.tbz2 | *.tar.xz | *.txz | *.tar.zst | *.tar.lzma | *.tlz | *.tar)
+            tar -xvf "${1}" && echo ExplorePwdAsync >> "${XPLR_PIPE_MSG_IN:?}"
+            ;;
+        *.gz)
+            gunzip "${1}" && echo ExplorePwdAsync >> "${XPLR_PIPE_MSG_IN:?}"
+            ;;
+        *.bz2)
+            bunzip2 "${1}" && echo ExplorePwdAsync >> "${XPLR_PIPE_MSG_IN:?}"
+            ;;
+        *.xz)
+            unxz "${1}" && echo ExplorePwdAsync >> "${XPLR_PIPE_MSG_IN:?}"
+            ;;
+        *.lzma)
+            unlzma "${1}" && echo ExplorePwdAsync >> "${XPLR_PIPE_MSG_IN:?}"
+            ;;
+        *.Z)
+            uncompress "${1}" && echo ExplorePwdAsync >> "${XPLR_PIPE_MSG_IN:?}"
+            ;;
+        *.zip | *.jar | *.rar | *.7z)
+            7z x "${1}" && echo ExplorePwdAsync >> "${XPLR_PIPE_MSG_IN:?}"
             ;;
         *)
-            mimetype=$(file -bL --mime-type "${fname}")
+            mimetype=$(file -bL --mime-type "${1}")
             case "${mimetype}" in
                 text/html)
-                    firefox "${fname}" &
+                    firefox "${1}" &
                     ;;
                 text/* | application/json)
-                    handleText "${fname}"
+                    handleText "${1}"
                     ;;
                 video/*)
-                    mpv "${fname}" &
+                    mpv "${1}" &
                     ;;
                 audio/*)
-                    handleAudio "${fname}"
+                    handleAudio "${1}"
                     ;;
                 *)
-                    xdg-open "${fname}" &
+                    xdg-open "${1}" &
                     ;;
             esac
             ;;

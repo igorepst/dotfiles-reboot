@@ -107,6 +107,7 @@ con.extension = {
     tar = mic(''),
     xz = mic(''),
     zst = mic(''),
+    lzma = mic(''),
     log = mic(''),
     doc = mic(''),
     docx = mic(''),
@@ -278,7 +279,7 @@ co.modes.builtin.default = {
             },
             ['g'] = { help = 'go to', messages = { 'PopMode', { SwitchModeBuiltin = 'go_to' } } },
             left = { help = 'back', messages = { 'Back' } },
-            ['q'] = { help = 'quit', messages = { 'Quit' } },
+            ['q'] = { help = 'quit', messages = { { CallLuaSilently = 'custom.quit' }, 'Quit' } },
             ['r'] = {
                 help = 'rename',
                 messages = {
@@ -598,14 +599,26 @@ co.modes.builtin.quit = {
     extra_help = nil,
     key_bindings = {
         on_key = {
-            q = { help = 'quit', messages = { 'Quit' } },
-            p = { help = 'quit printing pwd', messages = { 'PrintPwdAndQuit' } },
-            f = { help = 'quit printing focus', messages = { 'PrintFocusPathAndQuit' } },
-            s = { help = 'quit printing selection', messages = { 'PrintSelectionAndQuit' } },
-            r = { help = 'quit printing result', messages = { 'PrintResultAndQuit' } },
+            q = { help = 'quit', messages = { { CallLuaSilently = 'custom.quit' }, 'Quit' } },
+            p = { help = 'quit printing pwd', messages = { { CallLuaSilently = 'custom.quit' }, 'PrintPwdAndQuit' } },
+            f = {
+                help = 'quit printing focus',
+                messages = { { CallLuaSilently = 'custom.quit' }, 'PrintFocusPathAndQuit' },
+            },
+            s = {
+                help = 'quit printing selection',
+                messages = { { CallLuaSilently = 'custom.quit' }, 'PrintSelectionAndQuit' },
+            },
+            r = {
+                help = 'quit printing result',
+                messages = { { CallLuaSilently = 'custom.quit' }, 'PrintResultAndQuit' },
+            },
             esc = { help = 'cancel', messages = { 'PopMode' } },
-            ['ctrl-c'] = { help = 'terminate', messages = { 'Terminate' } },
-            ['#'] = { help = 'quit printing app state', messages = { 'PrintAppStateAndQuit' } },
+            ['ctrl-c'] = { help = 'terminate', messages = { { CallLuaSilently = 'custom.quit' }, 'Terminate' } },
+            ['#'] = {
+                help = 'quit printing app state',
+                messages = { { CallLuaSilently = 'custom.quit' }, 'PrintAppStateAndQuit' },
+            },
         },
     },
     layout = help_below(),
@@ -1013,6 +1026,21 @@ xplr.fn.builtin.fmt_general_table_row_cols_2 = function(m)
     return m.is_dir and '' or m.human_size
 end
 
+xplr.fn.custom.quit = function(_)
+    return {
+        'StopFifo',
+        {
+            Call = {
+                command = 'kitty',
+                args = {
+                    '@close-window',
+                    '--match=title:PreviewTUI',
+                },
+            },
+        },
+    }
+end
+
 xplr.fn.custom.open_shell = function(a)
     return {
         {
@@ -1034,18 +1062,7 @@ local preview_tui_enabled = false
 xplr.fn.custom.preview_tui = function(_)
     if preview_tui_enabled then
         preview_tui_enabled = false
-        return {
-            'StopFifo',
-            {
-                Call = {
-                    command = 'kitty',
-                    args = {
-                        '@close-window',
-                        '--match=title:PreviewTUI',
-                    },
-                },
-            },
-        }
+        return { { CallLuaSilently = 'custom.quit' } }
     else
         local preview_tui_fifo = '/tmp/preview-tui.fifo' .. os.time()
         os.execute('[ ! -p \'' .. preview_tui_fifo .. '\' ] && mkfifo \'' .. preview_tui_fifo .. '\'')
