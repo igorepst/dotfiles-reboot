@@ -118,6 +118,7 @@ return require('packer').startup({
                 })
             end,
         })
+        use('martinda/Jenkinsfile-vim-syntax')
     end,
     config = {
         display = {
