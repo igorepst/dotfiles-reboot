@@ -261,7 +261,8 @@ co.modes.builtin.default = {
             ['ctrl-w'] = { help = 'switch layout', messages = { { SwitchModeBuiltin = 'switch_layout' } } },
             ['d'] = { help = 'delete', messages = { 'PopMode', { SwitchModeBuiltin = 'delete' } } },
             down = { help = 'down', messages = { 'FocusNext' } },
-            ['f3'] = { help = 'preview', messages = { { CallLuaSilently = 'custom.preview_tui' } } },
+            ['f2'] = { help = 'preview horiz', messages = { { LuaEvalSilently = 'xplr.fn.custom.preview_tui("hsplit")' } } },
+            ['f3'] = { help = 'preview vert', messages = { { LuaEvalSilently = 'xplr.fn.custom.preview_tui("vsplit")' } } },
             ['f4'] = { help = 'edit file', messages = { { CallLuaSilently = 'custom.edit_file' } } },
             ['f7'] = {
                 help = 'create directory',
@@ -1059,7 +1060,7 @@ xplr.fn.custom.open_shell = function(a)
 end
 
 local preview_tui_enabled = false
-xplr.fn.custom.preview_tui = function(_)
+xplr.fn.custom.preview_tui = function(split)
     if preview_tui_enabled then
         preview_tui_enabled = false
         return { { CallLuaSilently = 'custom.quit' } }
@@ -1075,7 +1076,7 @@ xplr.fn.custom.preview_tui = function(_)
                         '@launch',
                         '--type=window',
                         '--no-response',
-                        '--location=vsplit',
+                        '--location=' .. split,
                         '--keep-focus',
                         '--title=PreviewTUI',
                         '--env',

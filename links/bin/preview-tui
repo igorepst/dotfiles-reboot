@@ -11,12 +11,13 @@ function process() {
         local cols mimetype
         cols=$(tput cols)
         case "${1}" in
-            *.7z | *.zip | *.jar | *.rar)
-                7z l "${1}" | head -n ${lines}
+            *.7z | *.zip | *.jar | *.rar | *.war)
+                7z l "${1}" #| head -n ${lines}
                 ;;
             *.tar.gz | *.tgz | *.tar.bz2 | *.tbz | *.tbz2 | *.tar.xz | *.txz | *.tar.zst | *.tar.lzma | *.tlz | *.tar)
                 tar -tvf "${1}" | head -n ${lines}
                 ;;
+            *.gz | *.Z) gzip -lv "${1}" | head -n ${lines} ;;
             *)
                 mimetype=$(file -bL --mime-type "${1}")
                 case "${mimetype}" in
