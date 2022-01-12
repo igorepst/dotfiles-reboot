@@ -45,9 +45,22 @@ function up(){
             get_parent_dirs $(dirname "$1")
         fi
     }
-    local DIR=$(get_parent_dirs $(realpath "${1:-$PWD}") | fzf-tmux --tac)
-    cd "$DIR"
+    local dir=$(get_parent_dirs $(realpath "${1:-$PWD}") | fzf-tmux)
+     if [[ -z "$dir" ]]; then
+    zle redisplay
+    return 0
+  fi
+  zle push-line
+  BUFFER="cd -- ${(q)dir}"
+  zle accept-line
+  local ret=$?
+  unset dir
+  zle reset-prompt
+  return $ret
 }
+zle -N up
+# Alt+x
+bindkey 'x' up
 
 function ssh(){
     TERM=xterm-256color command ssh -C -t $@ 'bash -l'
@@ -69,6 +82,7 @@ function _updateDots(){
     setopt no_pushd_ignore_dups 
     pushd ~/dotfiles-reboot >/dev/null
     git pull origin $(git rev-parse --abbrev-ref HEAD)
+    zcompile-many ~/dotfiles-reboot/links/.zsh/helpers/*.zsh
     git submodule update --recursive --remote --merge --force
     zcompile-many ~/dotfiles-reboot/links/.zsh/plugins/zsh-syntax-highlighting/{zsh-syntax-highlighting.zsh,highlighters/*/*.zsh}
     zcompile-many ~/dotfiles-reboot/links/.zsh/plugins/zsh-autosuggestions/{zsh-autosuggestions.zsh,src/**/*.zsh}
@@ -99,8 +113,13 @@ function _get_gh_releases() {
     get_gh_release --repo BurntSushi/ripgrep --arch linux-musl.tar.gz --toPath rg --toCompletionPath complete/_rg
     if get_gh_release --repo junegunn/fzf --arch linux_amd64.tar.gz --toPath fzf; then
         echo 'Downloading FZF scripts'
-        curl -k -L https://raw.githubusercontent.com/junegunn/fzf/master/shell/completion.zsh -o ~/.zsh/volatile/igorepst/_gh_release/junegunn/fzf/completion.zsh
-        curl -k -L https://raw.githubusercontent.com/junegunn/fzf/master/shell/key-bindings.zsh -o ~/.zsh/volatile/igorepst/_gh_release/junegunn/fzf/key-bindings.zsh
+        local fzf_dir=~/.zsh/volatile/igorepst/_gh_release/junegunn/fzf
+        curl -k -L https://raw.githubusercontent.com/junegunn/fzf/master/shell/completion.zsh -o "${fzf_dir}"/completion.zsh
+        curl -k -L https://raw.githubusercontent.com/junegunn/fzf/master/shell/key-bindings.zsh -o "${fzf_dir}"/key-bindings.zsh
+        zcompile-many "${fzf_dir}"/*.zsh
+        curl -k -L https://raw.githubusercontent.com/junegunn/fzf/master/bin/fzf-tmux -o "${fzf_dir}"/fzf-tmux
+        chmod +x "${fzf_dir}"/fzf-tmux
+        ln -sf "${fzf_dir}"/fzf-tmux ~/.zsh/volatile/igorepst/_gh_release/_cache/_bin/fzf-tmux
     fi
     if get_gh_release --repo sharkdp/bat --arch x86_64-unknown-linux-gnu.tar.gz --toPath bat --toCompletionPath autocomplete/bat.zsh --rnc _bat; then
         rehash
