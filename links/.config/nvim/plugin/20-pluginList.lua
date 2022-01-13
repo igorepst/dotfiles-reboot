@@ -20,7 +20,10 @@ return require('packer').startup({
                 vim.cmd([[colorscheme igTermColors]])
             end,
         })
-        use({ 'igorepst/igToggleComment.nvim', keys = { '<Plug>(IgToggleComment)' } })
+        use({ 'igorepst/igToggleComment.nvim', keys = {{ 'n', '<Plug>(IgToggleComment)' },
+        {'i', '<Plug>(IgToggleComment)'},
+        {'v', '<Plug>(IgToggleComment)'}
+        }})
         use({
             'igorepst/igCommands.nvim',
             config = function()
