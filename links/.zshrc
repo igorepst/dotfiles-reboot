@@ -2,13 +2,21 @@ if [[ -r "${XDG_CACHE_HOME:-$HOME/.cache}/p10k-instant-prompt-${(%):-%n}.zsh" ]]
     source "${XDG_CACHE_HOME:-$HOME/.cache}/p10k-instant-prompt-${(%):-%n}.zsh"
 fi
 
-# automatically remove duplicates from these arrays
-typeset -U path PATH cdpath CDPATH fpath FPATH manpath MANPATH
+path=(~/bin ~/.zsh/volatile/igorepst/_gh_release/_cache/_bin ~/.local/bin ~/.cargo/bin ~/go/bin ~/.zsh/plugins/archive $path)
+[ -d ~/.work/bin ] && path=(~/.work/bin $path)
 
 [ -f ~/.work/aliases.zsh ] && source ~/.work/aliases.zsh
 
-export npm_config_prefix=~/.node_modules
+fpath=($fpath ~/.zsh/volatile/igorepst/_gh_release/_cache/_compl ~/.zsh/plugins/archive ~/.zsh/plugins/zsh-completions/src)
 
+export LC_ALL=en_US.UTF-8
+export LANG=en_US.UTF-8
+export EDITOR=nvim
+export MYTERM=kitty
+export MYFEXP=xplr
+export _JAVA_OPTIONS='-Dawt.useSystemAAFontSettings=on'
+[ -f ~/.cache/.my_pc_is ] && source ~/.cache/.my_pc_is
+export npm_config_prefix=~/.node_modules
 [ -d "${npm_config_prefix}" ] && path+=("${npm_config_prefix}/bin")
 
 # run command line as user root via sudo:
@@ -72,9 +80,6 @@ bindkey '' push-input
 setopt glob_dots extended_glob auto_cd auto_pushd pushd_ignore_dups nomatch unset rm_star_silent
 setopt inc_append_history share_history extended_history hist_ignore_all_dups hist_ignore_space hist_save_no_dups
 setopt long_list_jobs notify no_beep complete_in_word no_hup no_flow_control typeset_silent
-
-path=($path ~/.zsh/plugins/archive)
-fpath=($fpath ~/.zsh/volatile/igorepst/_gh_release/_cache/_compl ~/.zsh/plugins/archive ~/.zsh/plugins/zsh-completions/src)
 
 {
     autoload -Uz compinit
