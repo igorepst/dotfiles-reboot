@@ -26,6 +26,8 @@ function doWork(){
     link ".zsh"
     link ".zshenv"
     link ".zshrc"
+    link ".zprofile"
+    ln -sf ~/.zprofile ~/.profile
     link ".xinitrc"
     link ".xprofile"
     link ".Xresources"

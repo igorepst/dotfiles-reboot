@@ -2,22 +2,7 @@ if [[ -r "${XDG_CACHE_HOME:-$HOME/.cache}/p10k-instant-prompt-${(%):-%n}.zsh" ]]
     source "${XDG_CACHE_HOME:-$HOME/.cache}/p10k-instant-prompt-${(%):-%n}.zsh"
 fi
 
-path=(~/bin ~/.zsh/volatile/igorepst/_gh_release/_cache/_bin ~/.local/bin ~/.cargo/bin ~/go/bin ~/.zsh/plugins/archive $path)
-[ -d ~/.work/bin ] && path=(~/.work/bin $path)
-
-[ -f ~/.work/aliases.zsh ] && source ~/.work/aliases.zsh
-
 fpath=($fpath ~/.zsh/volatile/igorepst/_gh_release/_cache/_compl ~/.zsh/plugins/archive ~/.zsh/plugins/zsh-completions/src)
-
-export LC_ALL=en_US.UTF-8
-export LANG=en_US.UTF-8
-export EDITOR=nvim
-export MYTERM=kitty
-export MYFEXP=xplr
-export _JAVA_OPTIONS='-Dawt.useSystemAAFontSettings=on'
-[ -f ~/.cache/.my_pc_is ] && source ~/.cache/.my_pc_is
-export npm_config_prefix=~/.node_modules
-[ -d "${npm_config_prefix}" ] && path+=("${npm_config_prefix}/bin")
 
 # run command line as user root via sudo:
 function sudo-command-line () {
@@ -102,7 +87,6 @@ source ~/.zsh/helpers/aliases.zsh
 source ~/.zsh/helpers/fzf.zsh
 source ~/.zsh/helpers/navi.zsh 
 source ~/.zsh/helpers/ripgrep.zsh 
-#  source ~/.zsh/helpers/vifm.zsh 
 source ~/.zsh/helpers/functions.zsh 
 source ~/.zsh/helpers/title.zsh 
 source ~/.zsh/helpers/formarks.zsh 
@@ -110,6 +94,7 @@ source ~/.zsh/helpers/command_not_found.zsh
 source ~/.zsh/helpers/lnav.zsh 
 source ~/.zsh/helpers/mvn.zsh 
 source ~/.zsh/helpers/aws.zsh 
+[ -f ~/.work/aliases.zsh ] && source ~/.work/aliases.zsh
 
 if [ "$EDITOR" = "nvim" ]; then
     export MANPAGER='nvim +Man!'
