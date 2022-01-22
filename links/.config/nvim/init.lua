@@ -1,4 +1,4 @@
-require('impatient').enable_profile()
+require('impatient')
 vim.cmd([[
     " https://gist.github.com/romainl/56f0c28ef953ffc157f36cc495947ab3
     set grepprg=rg\ --vimgrep
@@ -28,6 +28,4 @@ vim.cmd([[
     " Don't use Ex mode, use Q for formatting.
     nnoremap Q gq
 ]])
-
-require 'user.options'
 

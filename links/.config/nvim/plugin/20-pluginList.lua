@@ -66,18 +66,18 @@ return require('packer').startup({
             'nvim-treesitter/nvim-treesitter',
             run = ':TSUpdate',
             config = function()
-                require('treesitter').config()
+                require('user.treesitter').config()
             end,
         })
         use({
             'famiu/feline.nvim',
             requires = { 'kyazdani42/nvim-web-devicons', opt = true },
-            config = require('theme').statusline,
+            config = require('user.theme').statusline,
         })
         use({
             'neovim/nvim-lspconfig',
             config = function()
-                require('lsp')
+                require('user.lsp')
             end,
         })
         use('hrsh7th/nvim-cmp')
@@ -117,8 +117,8 @@ return require('packer').startup({
                             },
                         }),
                     },
-                    on_attach = require('lsp').on_attach,
-                    capabilities = require('lsp').capabilities,
+                    on_attach = require('user.lsp').on_attach,
+                    capabilities = require('user.lsp').capabilities,
                 })
             end,
         })
