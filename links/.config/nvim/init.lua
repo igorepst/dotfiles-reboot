@@ -28,4 +28,4 @@ vim.cmd([[
     " Don't use Ex mode, use Q for formatting.
     nnoremap Q gq
 ]])
-
+require('user.cmp')

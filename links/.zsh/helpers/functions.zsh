@@ -95,7 +95,11 @@ function _updateDots(){
         local packerDir=~/.local/share/nvim/site/pack/packer/start/packer.nvim
         [ ! -d "${packerDir}" ] && git clone --depth 1 https://github.com/wbthomason/packer.nvim "${packerDir}" 
         _install_nvim_lsp
-        nvim --headless -c 'autocmd User PackerComplete quitall' -c 'PackerSync'
+        nvim --headless -u NONE \
+            +'autocmd User PackerComplete quitall' \
+            +'lua dofile(os.getenv("HOME") .. "/.config/nvim/plugin/20-pluginList.lua")' \
+            +'lua require("packer").sync()'
+        printf '\nUpdating Treesitter\n'
         nvim --headless -c 'TSUpdateSync' -c 'quitall'
     fi
     rm -f ~/.zsh/volatile/zcompdump* 2>/dev/null
