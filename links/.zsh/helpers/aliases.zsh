@@ -1,6 +1,6 @@
 alias ls='ls --color=auto --hyperlink=auto'
-alias la='ls -al'
-alias ll='ls -al'
+alias la='ls -alh'
+alias ll='ls -alh'
 # Order by date, newest first
 alias lt='la --sort=time --reverse'
 

@@ -102,6 +102,9 @@ function _updateDots(){
         printf '\nUpdating Treesitter\n'
         nvim --headless -c 'TSUpdateSync' -c 'quitall'
     fi
+    echo 'Updating Python packages'
+    echo 'Visidata:'
+    pip3 install -U visidata
     rm -f ~/.zsh/volatile/zcompdump* 2>/dev/null
 }
 
@@ -131,6 +134,7 @@ function _get_gh_releases() {
     fi
     get_gh_release --repo sharkdp/fd --arch x86_64-unknown-linux-gnu.tar.gz --toPath fd --toCompletionPath autocomplete/_fd
     get_gh_release --repo kovidgoyal/kitty --arch x86_64.txz --toPath bin/kitty
+    get_gh_release --repo rclone/rclone --arch linux-amd64.zip --toPath rclone
     # Should be the last one to use its exit code
     get_gh_release --repo neovim/neovim --arch linux64.tar.gz --toPath bin/nvim --tag nightly
 }

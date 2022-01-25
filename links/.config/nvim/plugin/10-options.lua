@@ -42,11 +42,12 @@ o.showtabline = 2
 o.autoindent = true
 o.smartindent = true
 o.swapfile = false
+o.writebackup = false
 o.undofile = true
 o.cursorline = true
 o.iskeyword:append('-')
 
-g.netrw_sort_oions = 'i'
+g.netrw_sort_options = 'i'
 g.netrw_keepdir = 0
 g.netrw_hide = 0
 g.netrw_banner = 0
