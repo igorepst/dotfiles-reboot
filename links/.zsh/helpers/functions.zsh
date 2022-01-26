@@ -135,8 +135,25 @@ function _get_gh_releases() {
     get_gh_release --repo sharkdp/fd --arch x86_64-unknown-linux-gnu.tar.gz --toPath fd --toCompletionPath autocomplete/_fd
     get_gh_release --repo kovidgoyal/kitty --arch x86_64.txz --toPath bin/kitty
     get_gh_release --repo rclone/rclone --arch linux-amd64.zip --toPath rclone
+    get_gh_release --repo rust-analyzer/rust-analyzer --arch x86_64-unknown-linux-gnu.gz --toPath binx86_64-unknown-linux-gnu --rn rust-analyzer
     # Should be the last one to use its exit code
     get_gh_release --repo neovim/neovim --arch linux64.tar.gz --toPath bin/nvim --tag nightly
+}
+
+function _install_npm_lsp() {
+    emulate -L zsh
+    setopt no_autopushd
+    if [ ! -d "${1}" ]; then
+        echo "Installing ${2} LSP for Neovim"
+        mkdir -p "${1}"
+        pushd "${1}" > /dev/null
+        npm install ${3}
+    else
+        echo "Updating ${2} LSP for Neovim"
+        pushd "${1}" > /dev/null
+        npm update
+    fi
+    popd > /dev/null
 }
 
 function _install_nvim_lsp() {
@@ -144,33 +161,26 @@ function _install_nvim_lsp() {
     setopt no_autopushd
     local parentDir=~/.cache/nvim/lspServers
     # Bash
-    if [ ! -d "${parentDir}/bash" ]; then
-        echo 'Installing Bash LSP for Neovim'
-        mkdir -p "${parentDir}/bash"
-        pushd "${parentDir}/bash" > /dev/null
-        npm install bash-language-server
-        popd > /dev/null
-    else
-        echo 'Updating Bash LSP for Neovim'
-        pushd "${parentDir}/bash/node_modules/bash-language-server" > /dev/null
-        npm update
-        popd > /dev/null
-    fi
+    _install_npm_lsp "${parentDir}/bash" 'Bash' 'bash-language-server'
+    # HTML/CSS/JSON/ESLint (JS/TS)
+    _install_npm_lsp "${parentDir}/vscode-langservers-extracted" 'HTML/CSS/JSON/ESLint' 'vscode-langservers-extracted'
+    # Dockerfile
+    _install_npm_lsp "${parentDir}/dockerfile" 'Dockerfile' 'dockerfile-language-server-nodejs'
     # Lua
-    local inst url version
+    local inst_lua url version
     url=$(sed -ne 's/.*browser_download_url.*"\(http.*linux-x64.vsix\)"/\1/p' <<< $(curl -s https://api.github.com/repos/sumneko/vscode-lua/releases/latest))
     version=$(sed -ne 's|.*/v\(.*\)/.*|\1|p' <<< "${url}")
     if [ ! -d "${parentDir}/lua" ]; then
         printf '\nInstalling Lua LSP for Neovim, version: %s\n' "${version}"
-        inst=1
+        inst_lua=1
         mkdir -p "${parentDir}/lua"
     else
         local cur_ver
         cur_ver=$(sed -ne 's/.*version\": "\(.*\)".*/\1/p' "${parentDir}/lua/sumneko-lua/extension/package.json")
         printf '\nUpdating Lua LSP for Neovim, current version: %s, new version: %s\n' "${cur_ver}" "${version}"
-        [ "${cur_ver}" != "${version}" ] && inst=1
+        [ "${cur_ver}" != "${version}" ] && inst_lua=1
     fi
-    if [ -n "${inst}"]; then
+    if [ -n "${inst_lua}" ]; then
         pushd "${parentDir}/lua" > /dev/null
         curl -L -o sumneko-lua.vsix "${url}"
         rm -rf sumneko-lua
@@ -178,4 +188,11 @@ function _install_nvim_lsp() {
         rm sumneko-lua.vsix
         popd > /dev/null
     fi
+    # Go
+    local gopls_status
+    command -v gopls >/dev/null && gopls_status='Updating' || gopls_status='Installing'
+    echo "${gopls_status} Go LSP for Neovim"
+    go install golang.org/x/tools/gopls@latest
+    rehash
+    gopls version
 }

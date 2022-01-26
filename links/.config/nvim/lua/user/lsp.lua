@@ -40,16 +40,6 @@ end
 local capabilities = vim.lsp.protocol.make_client_capabilities()
 capabilities = require('cmp_nvim_lsp').update_capabilities(capabilities)
 
--- Enable the following language servers
--- local nvim_lsp = require 'lspconfig'
--- local servers = { 'bash' }
--- for _, lsp in ipairs(servers) do
---   nvim_lsp[lsp].setup {
---     on_attach = on_attach,
---     capabilities = capabilities,
---   }
--- end
-
 local sumneko_root_path = vim.fn.stdpath('cache') .. '/lspServers/lua/sumneko-lua/extension/server'
 local sumneko_binary = sumneko_root_path .. '/bin/lua-language-server'
 
@@ -72,9 +62,27 @@ local function ends_with(str, ending)
     return str:sub(-#ending) == ending
 end
 
+lspconfig.rust_analyzer.setup({ capabilities = capabilities })
+lspconfig.gopls.setup({ capabilities = capabilities })
+lspconfig.dockerls.setup({
+    capabilities = capabilities,
+    cmd = { vim.fn.stdpath('cache') .. '/dockerfile/node_modules/.bin/docker-langserver', '--stdio' },
+})
+local vscode_lsp = vim.fn.stdpath('cache') .. '/lspServers/vscode-langservers-extracted/node_modules/.bin/'
+lspconfig.cssls.setup({ capabilities = capabilities, cmd = { vscode_lsp .. 'vscode-css-language-server', '--stdio' } })
+lspconfig.eslint.setup({
+    capabilities = capabilities,
+    cmd = { vscode_lsp .. 'vscode-eslint-language-server', '--stdio' },
+})
+lspconfig.html.setup({ capabilities = capabilities, cmd = { vscode_lsp .. 'vscode-html-language-server', '--stdio' } })
+lspconfig.jsonls.setup({
+    capabilities = capabilities,
+    cmd = { vscode_lsp .. 'vscode-json-language-server', '--stdio' },
+})
+
 lspconfig.bashls.setup({
-    cmd = { vim.fn.stdpath('cache') .. '/lspServers/bash/node_modules/bash-language-server/bin/main.js', 'start' },
-    filetypes = { 'sh', 'bash', 'zsh' },
+    cmd = { vim.fn.stdpath('cache') .. '/lspServers/bash/node_modules/.bin/bash-language-server', 'start' },
+    capabilities = capabilities,
 })
 
 lspconfig.sumneko_lua.setup({

@@ -12,7 +12,8 @@ function get_gh_release() {
     zparseopts -A _GET_GH_REL_ARGS -repo: -arch: -update:: -toPath:: -toCompletionPath:: -tag:: -unarchive:: -rn:: -rnc::
     local workd=${workd_prefix}/${_GET_GH_REL_ARGS[--repo]}
     if [ -d ${workd} ] && [ -z "${IG_GH_REL_UPDATE}" ] && [ "${_GET_GH_REL_ARGS[--update]}" != "1" ]; then
-        _set_path ${workd} ${_GET_GH_REL_ARGS[--toPath]} ${_GET_GH_REL_ARGS[--toCompletionPath]} ${_GET_GH_REL_ARGS[--rnc]}
+        _set_path "${workd}" "${_GET_GH_REL_ARGS[--toPath]}" "${_GET_GH_REL_ARGS[--toCompletionPath]}" \
+            "${_GET_GH_REL_ARGS[--rn]}" "${_GET_GH_REL_ARGS[--rnc]}"
         return 2
     fi
     print "\033[32mFetching ${_GET_GH_REL_ARGS[--arch]} from ${_GET_GH_REL_ARGS[--repo]}\033[0m"
@@ -32,7 +33,8 @@ function get_gh_release() {
         local cur_published_at="${cur_version_array[2]}"
         print "Current version = '${cur_ver}', published at ${cur_published_at}"
         if [ "${cur_published_at}" = "${new_published_at}" ]; then
-            _set_path ${workd} ${_GET_GH_REL_ARGS[--toPath]} ${_GET_GH_REL_ARGS[--toCompletionPath]} ${_GET_GH_REL_ARGS[--rnc]}
+            _set_path "${workd}" "${_GET_GH_REL_ARGS[--toPath]}" "${_GET_GH_REL_ARGS[--toCompletionPath]}" \
+                "${_GET_GH_REL_ARGS[--rn]}" "${_GET_GH_REL_ARGS[--rnc]}"
             return 3
         fi
     else
@@ -43,16 +45,14 @@ function get_gh_release() {
     print "New version     = '${new_ver}', published at ${new_published_at}"
     local tmpd=$(mktemp -d)
     pushd ${tmpd} >/dev/null
-    local workf
-    [ -n "${_GET_GH_REL_ARGS[--rn]}" ] && workf="${_GET_GH_REL_ARGS[--rn]}" || workf="bin${_GET_GH_REL_ARGS[--arch]}"
+    local workf="bin${_GET_GH_REL_ARGS[--arch]}"
     curl -k -L ${binf} -o ${workf}
     [ $? -ne 0 ] && print "\033[31mCannot download requested file. URL: ${binf}\033[0m" && return 1
     rm -rf ${workd}
     mkdir -p ${workd}
     if [ -z "${_GET_GH_REL_ARGS[--unarchive]}" ] || [ "${_GET_GH_REL_ARGS[--unarchive]}" = "1" ]; then
-        ~/.zsh/plugins/archive/unarchive ${workf} >/dev/null
-        [ $? -ne 0 ] && print "\033[31mCannot extract the file: ${workf}\033[0m" && return 1
-        rm ${workf}
+        ! ~/.zsh/plugins/archive/unarchive ${workf} >/dev/null && print "\033[31mCannot extract the file: ${workf}\033[0m" && return 1
+        rm -f ${workf}
     fi
     local dir_name=$(_check_dirs ${tmpd})
     if [ -n "$dir_name" ]; then 
@@ -63,7 +63,10 @@ function get_gh_release() {
     zmv '*' ${workd}
     popd >/dev/null
     rm -rf ${tmpd}
-    _set_path ${workd} ${_GET_GH_REL_ARGS[--toPath]} ${_GET_GH_REL_ARGS[--toCompletionPath]} ${_GET_GH_REL_ARGS[--rnc]}
+    set -x
+    _set_path "${workd}" "${_GET_GH_REL_ARGS[--toPath]}" "${_GET_GH_REL_ARGS[--toCompletionPath]}" \
+        "${_GET_GH_REL_ARGS[--rn]}" "${_GET_GH_REL_ARGS[--rnc]}"
+    set +x
     mkdir -p "${cur_version_dir}"
     >"${cur_version_file}" echo "${new_ver}"
     >>"${cur_version_file}" echo "${new_published_at}"
@@ -91,7 +94,11 @@ function _set_path(){
             chmod +x "${top}"
             local bind="${workd_cache}/_bin"
             mkdir -p "${bind}"
-            ln -sf "${top}" "${bind}"
+            if [ -n "${4}" ]; then
+                ln -sf "${top}" "${bind}/${4}"
+            else
+                ln -sf "${top}" "${bind}"
+            fi
         fi
     fi
     if [ -n "${3}" ]; then
@@ -99,8 +106,8 @@ function _set_path(){
         if [ -f "${tfop}" ]; then
             local cind="${workd_cache}/_compl"
             mkdir -p "${cind}"
-            if [ -n "${4}" ]; then
-                ln -sf "${tfop}" "${cind}/${4}"
+            if [ -n "${5}" ]; then
+                ln -sf "${tfop}" "${cind}/${5}"
             else
                 ln -sf "${tfop}" "${cind}"
             fi
