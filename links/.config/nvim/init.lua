@@ -29,3 +29,6 @@ vim.cmd([[
     nnoremap Q gq
 ]])
 require('user.cmp')
+
+local wf = vim.fn.expand('~/.work/vim-work.lua')
+if vim.fn.filereadable(wf) > 0 then vim.cmd('source ' .. wf) end
