@@ -150,6 +150,11 @@ function _install_nvim_lsp() {
         pushd "${parentDir}/bash" > /dev/null
         npm install bash-language-server
         popd > /dev/null
+    else
+        echo 'Updating Bash LSP for Neovim'
+        pushd "${parentDir}/bash/node_modules/bash-language-server" > /dev/null
+        npm update
+        popd > /dev/null
     fi
     # Lua
     if [ ! -d "${parentDir}/lua" ]; then

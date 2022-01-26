@@ -72,6 +72,11 @@ local function ends_with(str, ending)
     return str:sub(-#ending) == ending
 end
 
+lspconfig.bashls.setup({
+    cmd = { vim.fn.stdpath('cache') .. '/lspServers/bash/node_modules/bash-language-server/bin/main.js', 'start' },
+    filetypes = { 'sh', 'bash', 'zsh' },
+})
+
 lspconfig.sumneko_lua.setup({
     cmd = { sumneko_binary, '-E', sumneko_root_path .. '/main.lua' },
     on_attach = on_attach,
@@ -108,9 +113,16 @@ lspconfig.sumneko_lua.setup({
     },
     on_new_config = function(new_config, new_root_dir)
         if ends_with(new_root_dir, '.config/awesome') then
-            new_config.settings.Lua.diagnostics.globals = { 'awesome', 'client', 'screen', 'tag', 'mouse', 'keygrabber' }
+            new_config.settings.Lua.diagnostics.globals = {
+                'awesome',
+                'client',
+                'screen',
+                'tag',
+                'mouse',
+                'keygrabber',
+            }
             new_config.settings.Lua.workspace.library = { new_root_dir, '/usr/share/awesome/lib' }
---             TODO runtime path
+            --             TODO runtime path
         elseif ends_with(new_root_dir, '.config/nvim') then
             new_config.settings.Lua.diagnostics.globals = { 'vim' }
             new_config.settings.Lua.workspace.library = vim.api.nvim_get_runtime_file('', true)
