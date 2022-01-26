@@ -51,7 +51,7 @@ capabilities = require('cmp_nvim_lsp').update_capabilities(capabilities)
 -- end
 
 local sumneko_root_path = vim.fn.stdpath('cache') .. '/lspServers/lua/sumneko-lua/extension/server'
-local sumneko_binary = sumneko_root_path .. '/bin/Linux/lua-language-server'
+local sumneko_binary = sumneko_root_path .. '/bin/lua-language-server'
 
 -- Make runtime files discoverable to the server
 local runtime_path = vim.split(package.path, ';')

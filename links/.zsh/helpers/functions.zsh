@@ -157,15 +157,25 @@ function _install_nvim_lsp() {
         popd > /dev/null
     fi
     # Lua
+    local inst url version
+    url=$(sed -ne 's/.*browser_download_url.*"\(http.*linux-x64.vsix\)"/\1/p' <<< $(curl -s https://api.github.com/repos/sumneko/vscode-lua/releases/latest))
+    version=$(sed -ne 's|.*/v\(.*\)/.*|\1|p' <<< "${url}")
     if [ ! -d "${parentDir}/lua" ]; then
-        echo 'Installing Lua LSP for Neovim'
+        printf '\nInstalling Lua LSP for Neovim, version: %s\n' "${version}"
+        inst=1
         mkdir -p "${parentDir}/lua"
+    else
+        local cur_ver
+        cur_ver=$(sed -ne 's/.*version\": "\(.*\)".*/\1/p' "${parentDir}/lua/sumneko-lua/extension/package.json")
+        printf '\nUpdating Lua LSP for Neovim, current version: %s, new version: %s\n' "${cur_ver}" "${version}"
+        [ "${cur_ver}" != "${version}" ] && inst=1
+    fi
+    if [ -n "${inst}"]; then
         pushd "${parentDir}/lua" > /dev/null
-        curl -L -o sumneko-lua.vsix $(curl -s https://api.github.com/repos/sumneko/vscode-lua/releases/latest | grep 'browser_' | cut -d\" -f4)
+        curl -L -o sumneko-lua.vsix "${url}"
         rm -rf sumneko-lua
-        unzip sumneko-lua.vsix -d sumneko-lua
+        unzip -q sumneko-lua.vsix -d sumneko-lua
         rm sumneko-lua.vsix
-        chmod +x sumneko-lua/extension/server/bin/Linux/lua-language-server
         popd > /dev/null
     fi
 }
