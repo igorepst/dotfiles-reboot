@@ -97,6 +97,7 @@ function _updateDots(){
         _install_nvim_lsp
         nvim --headless -u NONE \
             +'autocmd User PackerComplete quitall' \
+            +'lua dofile(os.getenv("HOME") .. "/.config/nvim/plugin/10-options.lua")' \
             +'lua dofile(os.getenv("HOME") .. "/.config/nvim/plugin/20-pluginList.lua")' \
             +'lua require("packer").sync()'
         printf '\nUpdating Treesitter\n'

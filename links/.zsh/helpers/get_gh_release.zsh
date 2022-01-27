@@ -63,10 +63,8 @@ function get_gh_release() {
     zmv '*' ${workd}
     popd >/dev/null
     rm -rf ${tmpd}
-    set -x
     _set_path "${workd}" "${_GET_GH_REL_ARGS[--toPath]}" "${_GET_GH_REL_ARGS[--toCompletionPath]}" \
         "${_GET_GH_REL_ARGS[--rn]}" "${_GET_GH_REL_ARGS[--rnc]}"
-    set +x
     mkdir -p "${cur_version_dir}"
     >"${cur_version_file}" echo "${new_ver}"
     >>"${cur_version_file}" echo "${new_published_at}"
