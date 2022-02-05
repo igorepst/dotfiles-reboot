@@ -98,7 +98,7 @@ function _updateDots(){
         nvim --headless -u NONE \
             +'autocmd User PackerComplete quitall' \
             +'lua dofile(os.getenv("HOME") .. "/.config/nvim/plugin/10-options.lua")' \
-            +'lua dofile(os.getenv("HOME") .. "/.config/nvim/plugin/20-pluginList.lua")' \
+            +'lua dofile(os.getenv("HOME") .. "/.config/nvim/plugin/40-pluginList.lua")' \
             +'lua require("packer").sync()'
         printf '\nUpdating Treesitter\n'
         nvim --headless -c 'TSUpdateSync' -c 'quitall'

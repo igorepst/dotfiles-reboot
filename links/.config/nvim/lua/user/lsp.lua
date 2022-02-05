@@ -1,7 +1,13 @@
+local opts = { noremap = true, silent = true }
+vim.api.nvim_set_keymap('n', '<leader>e', '<cmd>lua vim.diagnostic.open_float()<CR>', opts)
+vim.api.nvim_set_keymap('n', '[d', '<cmd>lua vim.diagnostic.goto_prev()<CR>', opts)
+vim.api.nvim_set_keymap('n', ']d', '<cmd>lua vim.diagnostic.goto_next()<CR>', opts)
+vim.api.nvim_set_keymap('n', '<leader>q', '<cmd>lua vim.diagnostic.setloclist()<CR>', opts)
+vim.api.nvim_set_keymap('n', '<leader>f', '<cmd>lua vim.lsp.buf.formatting()<CR>', opts)
+
 local on_attach = function(_, bufnr)
     vim.api.nvim_buf_set_option(bufnr, 'omnifunc', 'v:lua.vim.lsp.omnifunc')
 
-    local opts = { noremap = true, silent = true }
     vim.api.nvim_buf_set_keymap(bufnr, 'n', 'gD', '<cmd>lua vim.lsp.buf.declaration()<CR>', opts)
     vim.api.nvim_buf_set_keymap(bufnr, 'n', 'gd', '<cmd>lua vim.lsp.buf.definition()<CR>', opts)
     vim.api.nvim_buf_set_keymap(bufnr, 'n', 'K', '<cmd>lua vim.lsp.buf.hover()<CR>', opts)
@@ -18,27 +24,69 @@ local on_attach = function(_, bufnr)
     )
     vim.api.nvim_buf_set_keymap(bufnr, 'n', '<leader>D', '<cmd>lua vim.lsp.buf.type_definition()<CR>', opts)
     vim.api.nvim_buf_set_keymap(bufnr, 'n', '<leader>rn', '<cmd>lua vim.lsp.buf.rename()<CR>', opts)
-    vim.api.nvim_buf_set_keymap(bufnr, 'n', 'gr', '<cmd>lua vim.lsp.buf.references()<CR>', opts)
     vim.api.nvim_buf_set_keymap(bufnr, 'n', '<leader>ca', '<cmd>lua vim.lsp.buf.code_action()<CR>', opts)
-    -- vim.api.nvim_buf_set_keymap(bufnr, 'v', '<leader>ca', '<cmd>lua vim.lsp.buf.range_code_action()<CR>', opts)
-    vim.api.nvim_buf_set_keymap(
-        bufnr,
-        'n',
-        '<leader>e',
-        '<cmd>lua vim.lsp.diagnostic.show_line_diagnostics()<CR>',
-        opts
-    )
-    vim.api.nvim_buf_set_keymap(bufnr, 'n', '[d', '<cmd>lua vim.lsp.diagnostic.goto_prev()<CR>', opts)
-    vim.api.nvim_buf_set_keymap(bufnr, 'n', ']d', '<cmd>lua vim.lsp.diagnostic.goto_next()<CR>', opts)
-    vim.api.nvim_buf_set_keymap(bufnr, 'n', '<leader>q', '<cmd>lua vim.diagnostic.setqflist()<CR>', opts)
-    vim.api.nvim_buf_set_keymap(bufnr, 'n', '<leader>f', '<cmd>lua vim.lsp.buf.formatting()<CR>', opts)
-    --   vim.api.nvim_buf_set_keymap(bufnr, 'n', '<leader>so', [[<cmd>lua require('telescope.builtin').lsp_document_symbols()<CR>]], opts)
-    --   vim.cmd [[ command! Format execute 'lua vim.lsp.buf.formatting()' ]]
+    vim.api.nvim_buf_set_keymap(bufnr, 'n', 'gr', '<cmd>lua vim.lsp.buf.references()<CR>', opts)
 end
 
--- nvim-cmp supports additional completion capabilities
+vim.cmd([[autocmd ColorScheme * highlight NormalFloat guibg=white]])
+vim.cmd([[autocmd ColorScheme * highlight FloatBorder guifg=black guibg=white]])
+
+local border = {
+    { '🭽', 'FloatBorder' },
+    { '▔', 'FloatBorder' },
+    { '🭾', 'FloatBorder' },
+    { '▕', 'FloatBorder' },
+    { '🭿', 'FloatBorder' },
+    { '▁', 'FloatBorder' },
+    { '🭼', 'FloatBorder' },
+    { '▏', 'FloatBorder' },
+}
+
+local handlers = {
+    ['textDocument/hover'] = vim.lsp.with(vim.lsp.handlers.hover, { border = border }),
+    ['textDocument/signatureHelp'] = vim.lsp.with(vim.lsp.handlers.signature_help, { border = border }),
+}
+
 local capabilities = vim.lsp.protocol.make_client_capabilities()
 capabilities = require('cmp_nvim_lsp').update_capabilities(capabilities)
+
+local lspconfig = require('lspconfig')
+
+lspconfig.rust_analyzer.setup({ capabilities = capabilities, on_attach = on_attach, handlers = handlers })
+lspconfig.gopls.setup({ capabilities = capabilities, on_attach = on_attach, handlers = handlers })
+lspconfig.dockerls.setup({
+    capabilities = capabilities,
+    cmd = { vim.fn.stdpath('cache') .. '/dockerfile/node_modules/.bin/docker-langserver', '--stdio' },
+    on_attach = on_attach,
+    handlers = handlers,
+})
+local vscode_lsp = vim.fn.stdpath('cache') .. '/lspServers/vscode-langservers-extracted/node_modules/.bin/'
+lspconfig.cssls.setup({ capabilities = capabilities, cmd = { vscode_lsp .. 'vscode-css-language-server', '--stdio' } })
+lspconfig.eslint.setup({
+    capabilities = capabilities,
+    cmd = { vscode_lsp .. 'vscode-eslint-language-server', '--stdio' },
+    on_attach = on_attach,
+    handlers = handlers,
+})
+lspconfig.html.setup({
+    capabilities = capabilities,
+    cmd = { vscode_lsp .. 'vscode-html-language-server', '--stdio' },
+    on_attach = on_attach,
+    handlers = handlers,
+})
+lspconfig.jsonls.setup({
+    capabilities = capabilities,
+    cmd = { vscode_lsp .. 'vscode-json-language-server', '--stdio' },
+    on_attach = on_attach,
+    handlers = handlers,
+})
+
+lspconfig.bashls.setup({
+    cmd = { vim.fn.stdpath('cache') .. '/lspServers/bash/node_modules/.bin/bash-language-server', 'start' },
+    capabilities = capabilities,
+    on_attach = on_attach,
+    handlers = handlers,
+})
 
 local sumneko_root_path = vim.fn.stdpath('cache') .. '/lspServers/lua/sumneko-lua/extension/server'
 local sumneko_binary = sumneko_root_path .. '/bin/lua-language-server'
@@ -47,8 +95,6 @@ local sumneko_binary = sumneko_root_path .. '/bin/lua-language-server'
 local runtime_path = vim.split(package.path, ';')
 table.insert(runtime_path, 'lua/?.lua')
 table.insert(runtime_path, 'lua/?/init.lua')
-
-local lspconfig = require('lspconfig')
 
 local function find_and_trim(str, ptn)
     local ind = str:find(ptn)
@@ -62,33 +108,11 @@ local function ends_with(str, ending)
     return str:sub(-#ending) == ending
 end
 
-lspconfig.rust_analyzer.setup({ capabilities = capabilities })
-lspconfig.gopls.setup({ capabilities = capabilities })
-lspconfig.dockerls.setup({
-    capabilities = capabilities,
-    cmd = { vim.fn.stdpath('cache') .. '/dockerfile/node_modules/.bin/docker-langserver', '--stdio' },
-})
-local vscode_lsp = vim.fn.stdpath('cache') .. '/lspServers/vscode-langservers-extracted/node_modules/.bin/'
-lspconfig.cssls.setup({ capabilities = capabilities, cmd = { vscode_lsp .. 'vscode-css-language-server', '--stdio' } })
-lspconfig.eslint.setup({
-    capabilities = capabilities,
-    cmd = { vscode_lsp .. 'vscode-eslint-language-server', '--stdio' },
-})
-lspconfig.html.setup({ capabilities = capabilities, cmd = { vscode_lsp .. 'vscode-html-language-server', '--stdio' } })
-lspconfig.jsonls.setup({
-    capabilities = capabilities,
-    cmd = { vscode_lsp .. 'vscode-json-language-server', '--stdio' },
-})
-
-lspconfig.bashls.setup({
-    cmd = { vim.fn.stdpath('cache') .. '/lspServers/bash/node_modules/.bin/bash-language-server', 'start' },
-    capabilities = capabilities,
-})
-
 lspconfig.sumneko_lua.setup({
     cmd = { sumneko_binary, '-E', sumneko_root_path .. '/main.lua' },
     on_attach = on_attach,
     capabilities = capabilities,
+    handlers = handlers,
     root_dir = function(fname)
         local dirname = lspconfig.util.path.dirname(fname)
         local cand = find_and_trim(dirname, '.config/awesome') or find_and_trim(dirname, '.config/nvim')
@@ -137,7 +161,21 @@ lspconfig.sumneko_lua.setup({
         end
     end,
 })
+
+vim.diagnostic.config({
+  virtual_text = false,
+  signs = true,
+  underline = true,
+  update_in_insert = false,
+  severity_sort = true,
+})
+
+local signs = { Error = " ", Warn = " ", Hint = " ", Info = " " }
+for type, icon in pairs(signs) do
+  local hl = "DiagnosticSign" .. type
+  vim.fn.sign_define(hl, { text = icon, texthl = hl, numhl = hl })
+end
+
 return {
     on_attach = on_attach,
-    capabilities = capabilities,
 }

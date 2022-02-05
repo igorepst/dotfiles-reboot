@@ -37,3 +37,6 @@
 [submodule "links/.config/xplr/plugins/context-switch"]
 	path = links/.config/xplr/plugins/context-switch
 	url = https://github.com/igorepst/context-switch.xplr
+[submodule "links/.config/xplr/plugins/dual-pane"]
+	path = links/.config/xplr/plugins/dual-pane
+	url = https://github.com/sayanarijit/dual-pane.xplr.git

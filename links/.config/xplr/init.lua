@@ -259,10 +259,28 @@ co.modes.builtin.default = {
             ['ctrl-r'] = { help = 'refresh screen', messages = { 'ClearScreen' } },
             ['ctrl-u'] = { help = 'clear selection', messages = { 'ClearSelection' } },
             ['ctrl-w'] = { help = 'switch layout', messages = { { SwitchModeBuiltin = 'switch_layout' } } },
+            ['ctrl-d'] = {
+                help = 'duplicate as',
+                messages = {
+                    'PopMode',
+                    { SwitchModeBuiltin = 'duplicate_as' },
+                    {
+                        BashExecSilently = [===[
+              echo SetInputBuffer: "'"$(basename "${XPLR_FOCUS_PATH}")"'" >> "${XPLR_PIPE_MSG_IN:?}"
+            ]===],
+                    },
+                },
+            },
             ['d'] = { help = 'delete', messages = { 'PopMode', { SwitchModeBuiltin = 'delete' } } },
             down = { help = 'down', messages = { 'FocusNext' } },
-            ['f2'] = { help = 'preview horiz', messages = { { LuaEvalSilently = 'xplr.fn.custom.preview_tui("hsplit")' } } },
-            ['f3'] = { help = 'preview vert', messages = { { LuaEvalSilently = 'xplr.fn.custom.preview_tui("vsplit")' } } },
+            ['f2'] = {
+                help = 'preview horiz',
+                messages = { { LuaEvalSilently = 'xplr.fn.custom.preview_tui("hsplit")' } },
+            },
+            ['f3'] = {
+                help = 'preview vert',
+                messages = { { LuaEvalSilently = 'xplr.fn.custom.preview_tui("vsplit")' } },
+            },
             ['f4'] = { help = 'edit file', messages = { { CallLuaSilently = 'custom.edit_file' } } },
             ['f7'] = {
                 help = 'create directory',
@@ -308,7 +326,14 @@ co.modes.builtin.default = {
             },
         },
         on_alphabet = nil,
-        on_number = nil,
+        on_number = {
+            help = 'input',
+            messages = {
+                'PopMode',
+                { SwitchModeBuiltin = 'number' },
+                'BufferInputFromKey',
+            },
+        },
         on_special_character = nil,
         default = nil,
     },
@@ -455,7 +480,7 @@ local create_thing = function(opName, opCmd)
             on_alphabet = nil,
             on_number = nil,
             on_special_character = nil,
-            default = { help = nil, messages = { 'BufferInputFromKey' } },
+            default = { help = nil, messages = { 'UpdateInputBufferFromKey' } },
         },
     }
 end
@@ -496,10 +521,14 @@ co.modes.builtin.rename = {
                         BashExecSilently = [===[
             SRC="${XPLR_FOCUS_PATH:?}"
             TARGET="${XPLR_INPUT_BUFFER:?}"
-            mv -- "${SRC:?}" "${TARGET:?}" \
-              && echo ExplorePwd >> "${XPLR_PIPE_MSG_IN:?}" \
-              && echo FocusByFileName: "'"$TARGET"'" >> "${XPLR_PIPE_MSG_IN:?}" \
-              && echo LogSuccess: $SRC renamed to $TARGET >> "${XPLR_PIPE_MSG_IN:?}"
+            if [ -e "${TARGET:?}" ]; then
+                echo LogError: $TARGET already exists >> "${XPLR_PIPE_MSG_IN:?}"
+            else
+                mv -- "${SRC:?}" "${TARGET:?}" \
+                  && echo ExplorePwd >> "${XPLR_PIPE_MSG_IN:?}" \
+                  && echo FocusPath: "'"$TARGET"'" >> "${XPLR_PIPE_MSG_IN:?}" \
+                  && echo LogSuccess: $SRC renamed to $TARGET >> "${XPLR_PIPE_MSG_IN:?}"
+              fi
             ]===],
                     },
                     'PopMode',
@@ -510,7 +539,55 @@ co.modes.builtin.rename = {
         on_alphabet = nil,
         on_number = nil,
         on_special_character = nil,
-        default = { help = nil, messages = { 'BufferInputFromKey' } },
+        default = { help = nil, messages = { 'UpdateInputBufferFromKey' } },
+    },
+}
+
+co.modes.builtin.duplicate_as = {
+    name = 'duplicate as',
+    help = nil,
+    extra_help = nil,
+    key_bindings = {
+        on_key = {
+            ['ctrl-c'] = {
+                help = 'terminate',
+                messages = {
+                    'Terminate',
+                },
+            },
+            enter = {
+                help = 'duplicate',
+                messages = {
+                    {
+                        BashExecSilently = [===[
+              SRC="${XPLR_FOCUS_PATH:?}"
+              TARGET="${XPLR_INPUT_BUFFER:?}"
+              if [ -e "${TARGET:?}" ]; then
+                echo LogError: $TARGET already exists >> "${XPLR_PIPE_MSG_IN:?}"
+              else
+                cp -r -- "${SRC:?}" "${TARGET:?}" \
+                  && echo ExplorePwd >> "${XPLR_PIPE_MSG_IN:?}" \
+                  && echo FocusPath: "'"$TARGET"'" >> "${XPLR_PIPE_MSG_IN:?}" \
+                  && echo LogSuccess: $SRC duplicated as $TARGET >> "${XPLR_PIPE_MSG_IN:?}"
+              fi
+            ]===],
+                    },
+                    'PopMode',
+                },
+            },
+            esc = {
+                help = 'cancel',
+                messages = {
+                    'PopMode',
+                },
+            },
+        },
+        default = {
+            help = nil,
+            messages = {
+                'UpdateInputBufferFromKey',
+            },
+        },
     },
 }
 
@@ -588,7 +665,14 @@ co.modes.builtin.action = {
             },
         },
         on_alphabet = nil,
-        on_number = nil,
+        on_number = {
+            help = 'go to index',
+            messages = {
+                'PopMode',
+                { SwitchModeBuiltin = 'number' },
+                'BufferInputFromKey',
+            },
+        },
         on_special_character = nil,
         default = nil,
     },
@@ -695,7 +779,7 @@ co.modes.builtin.search = {
             help = nil,
             messages = {
                 { RemoveNodeFilterFromInput = 'IRelativePathDoesContain' },
-                'BufferInputFromKey',
+                'UpdateInputBufferFromKey',
                 { AddNodeFilterFromInput = 'IRelativePathDoesContain' },
                 'ExplorePwdAsync',
             },
@@ -795,7 +879,7 @@ co.modes.builtin.relative_path_does_contain = {
             help = nil,
             messages = {
                 { RemoveNodeFilterFromInput = 'IRelativePathDoesContain' },
-                'BufferInputFromKey',
+                'UpdateInputBufferFromKey',
                 { AddNodeFilterFromInput = 'IRelativePathDoesContain' },
                 'ExplorePwdAsync',
             },
@@ -853,9 +937,63 @@ co.modes.builtin.relative_path_does_not_contain = {
             help = nil,
             messages = {
                 { RemoveNodeFilterFromInput = 'IRelativePathDoesNotContain' },
-                'BufferInputFromKey',
+                'UpdateInputBufferFromKey',
                 { AddNodeFilterFromInput = 'IRelativePathDoesNotContain' },
                 'ExplorePwdAsync',
+            },
+        },
+    },
+}
+
+co.modes.builtin.number = {
+    name = 'number',
+    help = nil,
+    extra_help = nil,
+    key_bindings = {
+        on_key = {
+            ['ctrl-c'] = {
+                help = 'terminate',
+                messages = {
+                    'Terminate',
+                },
+            },
+            down = {
+                help = 'to down',
+                messages = {
+                    'FocusNextByRelativeIndexFromInput',
+                    'PopMode',
+                },
+            },
+            enter = {
+                help = 'to index',
+                messages = {
+                    'FocusByIndexFromInput',
+                    'PopMode',
+                },
+            },
+            esc = {
+                help = 'cancel',
+                messages = {
+                    'PopMode',
+                },
+            },
+            up = {
+                help = 'to up',
+                messages = {
+                    'FocusPreviousByRelativeIndexFromInput',
+                    'PopMode',
+                },
+            },
+        },
+        on_navigation = {
+            messages = {
+                'UpdateInputBufferFromKey',
+            },
+        },
+        on_number = {
+            help = 'input',
+            messages = {
+                'UpdateInputBufferFromKey',
             },
         },
     },
@@ -1059,6 +1197,8 @@ xplr.fn.custom.open_shell = function(a)
     }
 end
 
+local home = os.getenv('HOME')
+
 local preview_tui_enabled = false
 xplr.fn.custom.preview_tui = function(split)
     if preview_tui_enabled then
@@ -1081,7 +1221,7 @@ xplr.fn.custom.preview_tui = function(split)
                         '--title=PreviewTUI',
                         '--env',
                         'PREVIEW_TUI_FIFO=' .. preview_tui_fifo,
-                        os.getenv('HOME') .. '/bin/preview-tui',
+                        home .. '/bin/preview-tui',
                     },
                 },
             },
@@ -1100,10 +1240,10 @@ end
 xplr.fn.custom.opener = function(a)
     local c = a.focused_node.canonical
     return c.is_dir and { 'Enter' }
-        or { { CallSilently = { command = os.getenv('HOME') .. '/bin/run-tui', args = { c.absolute_path } } } }
+        or { { CallSilently = { command = home .. '/bin/run-tui', args = { c.absolute_path } } } }
 end
 
-package.path = os.getenv('HOME') .. '/.config/xplr/plugins/?/src/init.lua'
+package.path = home .. '/.config/xplr/plugins/?/init.lua;' .. home .. '/.config/xplr/plugins/?.lua;' .. package.path
 
 require('xclip').setup({
     copy_command = 'xclip-copyfile',
@@ -1122,3 +1262,5 @@ csw.setup()
 xplr.fn.custom.render_context_num = function(_)
     return tostring(csw.get_current_context_num())
 end
+
+require("dual-pane").setup()

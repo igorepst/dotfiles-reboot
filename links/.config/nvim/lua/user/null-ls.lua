@@ -18,6 +18,5 @@ null_ls.setup({
             },
         }),
     },
-    on_attach = require('user.lsp').on_attach,
-    capabilities = require('user.lsp').capabilities,
+    on_attach = require('user.lsp').on_attach
 })

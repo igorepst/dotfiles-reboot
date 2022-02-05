@@ -1,7 +1,7 @@
 vim.cmd([[
     augroup packComp
     autocmd!
-    autocmd BufWritePost 20-pluginList.lua source <afile> | PackerCompile
+    autocmd BufWritePost 40-pluginList.lua source <afile> | PackerCompile
     augroup END
 ]])
 
@@ -59,6 +59,7 @@ use({
     run = ':TSUpdate',
     config = [[require('user.treesitter').config()]],
 })
+-- use({'rebelot/heirline.nvim', config = [[require('user.heirline')]]})
 use({
     'famiu/feline.nvim',
     requires = { 'kyazdani42/nvim-web-devicons', opt = true },
