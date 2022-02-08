@@ -50,9 +50,9 @@ use({
 use({
     'ibhagwan/fzf-lua',
     requires = {
-        'vijaymarupudi/nvim-fzf',
         'kyazdani42/nvim-web-devicons',
     },
+    config = [[require('user.fzf')]],
 })
 use({
     'nvim-treesitter/nvim-treesitter',
