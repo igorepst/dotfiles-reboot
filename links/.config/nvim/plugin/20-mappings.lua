@@ -10,10 +10,6 @@ map('n', '<C-_>', '<Plug>(IgToggleComment)', { noremap = false })
 map('v', '<C-_>', '<Plug>(IgToggleComment)', { noremap = false })
 map('i', '<C-_>', '<Plug>(IgToggleComment)', { noremap = false })
 
-map('c', 'ee<Space>', '(getcmdtype() == \':\' && getcmdline() == \'\')? \'edit **/*\' : \'ee<Space>\'', {
-    expr = true,
-})
-
 map('n', '[b', ':<C-U>exe v:count1 . "bprevious!"<CR>', opts)
 map('n', ']b', ':<C-U>exe v:count1 . "bnext!"<CR>', opts)
 map('n', '[q', ':<C-U>exe v:count1 . "cprevious!"<CR>', opts)
