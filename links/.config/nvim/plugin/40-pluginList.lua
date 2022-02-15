@@ -59,11 +59,10 @@ use({
     run = ':TSUpdate',
     config = [[require('user.treesitter').config()]],
 })
--- use({'rebelot/heirline.nvim', config = [[require('user.heirline')]]})
-use({
-    'famiu/feline.nvim',
-    requires = { 'kyazdani42/nvim-web-devicons', opt = true },
-    config = [[require('user.theme').statusline()]],
+use({'rebelot/heirline.nvim',
+    requires = { 'kyazdani42/nvim-web-devicons'},
+    after = 'igTermColors.nvim',
+    config = [[require('user.heirline')]]
 })
 use({
     'neovim/nvim-lspconfig',
