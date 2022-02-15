@@ -4,34 +4,39 @@ function process() {
     tput reset
     tput rmam # no wrapping
     local lines=$(($(tput lines) - 1))
-    if [[ -d "${1}" ]]; then
+    local ff
+    ff=$(readlink -f "${1}")
+    if [[ -d "${ff}" ]]; then
         # shellcheck disable=SC2012
-        ls -AgGhF --group-directories-first --color=always "${1}" | head -n ${lines}
+        ls -AgGhF --group-directories-first --color=always "${ff}" | head -n ${lines}
     else
         local cols mimetype
         cols=$(tput cols)
-        case "${1}" in
+        case "${ff}" in
             *.7z | *.zip | *.jar | *.rar | *.war)
-                7z l "${1}" #| head -n ${lines}
+                7z l "${ff}" #| head -n ${lines}
                 ;;
             *.tar.gz | *.tgz | *.tar.bz2 | *.tbz | *.tbz2 | *.tar.xz | *.txz | *.tar.zst | *.tar.lzma | *.tlz | *.tar)
-                tar -tvf "${1}" | head -n ${lines}
+                tar -tvf "${ff}" | head -n ${lines}
                 ;;
-            *.gz | *.Z) gzip -lv "${1}" | head -n ${lines} ;;
+            *.gz | *.Z) gzip -lv "${ff}" | head -n ${lines} ;;
             *)
-                mimetype=$(file -bL --mime-type "${1}")
+                mimetype=$(file -bL --mime-type "${ff}")
                 case "${mimetype}" in
                     image/*)
                         #                         magick identify -format '%[width] %[height]' Screenshot_20200727_203946.png
                         # if small, use --scale-up for icat
-                        kitty +kitten icat --transfer-mode=stream --silent --place "${cols}x${lines}@0x0" --scale-up "${1}"
+                        kitty +kitten icat --transfer-mode=stream --silent --place "${cols}x${lines}@0x0" --scale-up "${ff}"
+                        ;;
+                    video/*)
+                        mediainfo --Output=file://"${HOME}/.config/mediainfo/template" "${ff}" | head -n ${lines}
                         ;;
                     *)
-                        #                 local encoding=$(file -bL --mime-encoding "${1}")
+                        #                 local encoding=$(file -bL --mime-encoding "${ff}")
                         #                 if [ "${encoding}" = 'binary' ]; then
                         #                     echo Binary file
                         #                 else
-                        bat --color=always --style=plain --line-range=:${lines} "${1}" 2> /dev/null
+                        bat --color=always --style=plain --line-range=:${lines} "${ff}" 2> /dev/null
                         ;;
                         #                 fi
                 esac

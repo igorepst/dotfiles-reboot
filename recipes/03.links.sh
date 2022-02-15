@@ -41,6 +41,7 @@ function doWork(){
     link ".config/navi"
     link ".config/picom"
     link ".config/tridactyl"
+    link ".config/mediainfo"
     link ".gitconfig"
     link ".gitignore-global"
     link "bin"
