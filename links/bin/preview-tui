@@ -24,7 +24,7 @@ function process() {
                     image/*)
                         #                         magick identify -format '%[width] %[height]' Screenshot_20200727_203946.png
                         # if small, use --scale-up for icat
-                        kitty +kitten icat --silent --place "${cols}x${lines}@0x0" --scale-up "${1}"
+                        kitty +kitten icat --transfer-mode=stream --silent --place "${cols}x${lines}@0x0" --scale-up "${1}"
                         ;;
                     *)
                         #                 local encoding=$(file -bL --mime-encoding "${1}")
