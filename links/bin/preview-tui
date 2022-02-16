@@ -28,8 +28,13 @@ function process() {
                         # if small, use --scale-up for icat
                         kitty +kitten icat --transfer-mode=stream --silent --place "${cols}x${lines}@0x0" --scale-up "${ff}"
                         ;;
-                    video/*)
-                        mediainfo --Output=file://"${HOME}/.config/mediainfo/template" "${ff}" | head -n ${lines}
+                    video/* | audio/*)
+                        # Too slow, tmp file is needed
+                        local out
+                        out=$(mktemp)
+                        mediainfo --Output=file://"${HOME}/.config/mediainfo/template" "${ff}" | head -n ${lines} > "${out}"
+                        cat "${out}"
+                        rm -f "${out}"
                         ;;
                     *)
                         #                 local encoding=$(file -bL --mime-encoding "${ff}")

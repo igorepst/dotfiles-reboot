@@ -1,13 +1,13 @@
-General;%FileName%\n      %FileSize/String3% * %Duration/String%\n
-Video;%ID% %Width%x%Height% * %DisplayAspectRatio/String% * %Format% %Format_Profile%
+General;%FileNameExtension%\n  Format: %Format%, Size: %FileSize/String3%, Duration: %Duration/String%\n$if(%Genre%,  Genre: %Genre%\n,)
+Video;%ID% Dims: %Width%x%Height%, Ratio: %DisplayAspectRatio/String%, Format: %Format%,%BitRate/String%
 Video_Begin;\nVideo:\n
 Video_Middle;\n
 Video_End;\n
-Audio;%ID% %Language/String% * $if(%Title%,%Title%,Unknown title) * %Channel(s)/String% * %CodecID% %BitRate/String%
+Audio;%ID% Lang: $if(%Language%,%Language/String%,Unknown), Format: %Format%,$if(%BitRate%,%BitRate/String%,%SamplingRate/String%),%Channel(s)% ch$if(%Title%,\n  Title: %Title%,)
 Audio_Begin;\nAudio:\n
 Audio_Middle;\n
 Audio_End;\n
-Text;%ID% %Language/String% * $if(%Title%,%Title%,Unknown title)
+Text;%ID% Lang: $if(%Language%,%Language/String%,Unknown), Title: $if(%Title%,%Title%,Unknown)
 Text_Begin;\nSubs:\n
 Text_Middle;\n
 Text_End;\n
