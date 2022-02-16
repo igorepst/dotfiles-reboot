@@ -1,21 +1,19 @@
-local opts = { noremap = true, silent = true }
-local map = vim.api.nvim_set_keymap
+local opts = { silent = true }
+local map = vim.keymap.set
 
 map('', '<Space>', '<Nop>', opts)
 vim.g.mapleader = ' '
 vim.g.maplocalleader = ' '
 
 --  Actually 'C-/' and not 'C-_'
-map('n', '<C-_>', '<Plug>(IgToggleComment)', { noremap = false })
-map('v', '<C-_>', '<Plug>(IgToggleComment)', { noremap = false })
-map('i', '<C-_>', '<Plug>(IgToggleComment)', { noremap = false })
+map({ 'n', 'v', 'i' }, '<C-_>', '<Plug>(IgToggleComment)')
 
-map('n', '[b', ':<C-U>exe v:count1 . "bprevious!"<CR>', opts)
-map('n', ']b', ':<C-U>exe v:count1 . "bnext!"<CR>', opts)
-map('n', '[q', ':<C-U>exe v:count1 . "cprevious!"<CR>', opts)
-map('n', ']q', ':<C-U>exe v:count1 . "cnext!"<CR>', opts)
+map('n', '[b', '<cmd>exe v:count1 . "bprevious!"<CR>', opts)
+map('n', ']b', '<cmd>exe v:count1 . "bnext!"<CR>', opts)
+map('n', '[q', '<cmd>exe v:count1 . "cprevious!"<CR>', opts)
+map('n', ']q', '<cmd>exe v:count1 . "cnext!"<CR>', opts)
 
-map('n', '<F8>', ':lua ShowCurrentWordHighlight()<CR>', opts)
+map('n', '<F8>', ShowCurrentWordHighlight, opts)
 
 map('n', '<C-h>', '<C-w>h', opts)
 map('n', '<C-j>', '<C-w>j', opts)
@@ -23,10 +21,10 @@ map('n', '<C-k>', '<C-w>k', opts)
 map('n', '<C-l>', '<C-w>l', opts)
 
 -- Resize with arrows
-map('n', '<C-Up>', ':resize -2<CR>', opts)
-map('n', '<C-Down>', ':resize +2<CR>', opts)
-map('n', '<C-Left>', ':vertical resize -2<CR>', opts)
-map('n', '<C-Right>', ':vertical resize +2<CR>', opts)
+map('n', '<C-Up>', '<cmd>resize -2<CR>', opts)
+map('n', '<C-Down>', '<cmd>resize +2<CR>', opts)
+map('n', '<C-Left>', '<cmd>vertical resize -2<CR>', opts)
+map('n', '<C-Right>', '<cmd>vertical resize +2<CR>', opts)
 
 map('i', 'jk', '<ESC>', opts)
 

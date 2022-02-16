@@ -26,10 +26,10 @@ function SearchInRuntime()
     })
 end
 
-local opts = { noremap = true, silent = true }
-local map = vim.api.nvim_set_keymap
+local opts = { silent = true }
+local map = vim.keymap.set
 
-map('n', '<leader>ff', ':lua require("fzf-lua").files()<CR>', opts)
-map('n', '<leader>fb', ':lua require("fzf-lua").buffers()<CR>', opts)
-map('n', '<leader>ffr', ':lua FindFileInRuntime()<CR>', opts)
-map('n', '<leader>fsr', ':lua SearchInRuntime()<CR>', opts)
+map('n', '<leader>ff', fzf_lua.files, opts)
+map('n', '<leader>fb', fzf_lua.buffers, opts)
+map('n', '<leader>ffr', FindFileInRuntime, opts)
+map('n', '<leader>fsr', SearchInRuntime, opts)
