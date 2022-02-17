@@ -90,3 +90,7 @@ git rebase -i @{u}
 @ git_common
 # Combine last N commits
 git rebase -i HEAD~<N>
+
+% git
+# Show changed files in commit by hash
+git show --pretty="" --name-status <hash>
