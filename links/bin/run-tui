@@ -15,7 +15,8 @@ function process() {
         *.m3u)
             handleAudio "${1}"
             ;;
-        *.vim | *.zshrc)
+            # Explicitly handle txt to support empty file ("inode/x-empty")
+        *.vim | *.zshrc | *.txt)
             handleText "${1}"
             ;;
         *.tar.gz | *.tgz | *.tar.bz2 | *.tbz | *.tbz2 | *.tar.xz | *.txz | *.tar.zst | *.tar.lzma | *.tlz | *.tar)
