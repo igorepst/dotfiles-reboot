@@ -88,4 +88,4 @@ git show --pretty="" --name-status <hash>
 %git
 @ git_common
 # Show changed files between two branches
-git diff --name-status <branch>
+git diff --stat <branch>
