@@ -1258,9 +1258,9 @@ k_hsplit.key = 'ctrl-h'
 term.setup({ term.profile_kitty_vsplit(), k_hsplit })
 
 local csw = require('context-switch')
-csw.setup()
+csw.setup({ layout = csw.builtin_layouts.without_help })
 xplr.fn.custom.render_context_num = function(_)
     return tostring(csw.get_current_context_num())
 end
 
-require("dual-pane").setup()
+require('dual-pane').setup()
