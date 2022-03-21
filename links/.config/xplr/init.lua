@@ -1165,19 +1165,25 @@ xplr.fn.builtin.fmt_general_table_row_cols_2 = function(m)
     return m.is_dir and '' or m.human_size
 end
 
+local preview_tui_enabled = false
 xplr.fn.custom.quit = function(_)
-    return {
-        'StopFifo',
-        {
-            Call = {
-                command = 'kitty',
-                args = {
-                    '@close-window',
-                    '--match=title:PreviewTUI',
+    if preview_tui_enabled then
+        preview_tui_enabled = false
+        return {
+            'StopFifo',
+            {
+                Call = {
+                    command = 'kitty',
+                    args = {
+                        '@close-window',
+                        '--match=title:PreviewTUI',
+                    },
                 },
             },
-        },
-    }
+        }
+    else
+        return {}
+    end
 end
 
 xplr.fn.custom.open_shell = function(a)
@@ -1199,10 +1205,8 @@ end
 
 local home = os.getenv('HOME')
 
-local preview_tui_enabled = false
 xplr.fn.custom.preview_tui = function(split)
     if preview_tui_enabled then
-        preview_tui_enabled = false
         return { { CallLuaSilently = 'custom.quit' } }
     else
         local preview_tui_fifo = '/tmp/preview-tui.fifo' .. os.time()
