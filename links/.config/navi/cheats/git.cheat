@@ -85,7 +85,7 @@ git rebase -i HEAD~<N>
 # Show changed files in commit by hash
 git show --pretty="" --name-status <hash>
 
-%git
+% git
 @ git_common
 # Show changed files between two branches
 git diff --stat <branch>

@@ -94,7 +94,7 @@ source ~/.zsh/helpers/command_not_found.zsh
 source ~/.zsh/helpers/lnav.zsh 
 source ~/.zsh/helpers/mvn.zsh 
 source ~/.zsh/helpers/aws.zsh 
-[ -f ~/.work/aliases.zsh ] && source ~/.work/aliases.zsh
+[ -f ~/.work/zshrc ] && source ~/.work/zshrc
 
 if [ "$EDITOR" = "nvim" ]; then
     export MANPAGER='nvim +Man!'
