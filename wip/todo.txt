@@ -1,2 +1,3 @@
 shfmt doesn't get renamed
 continue with vifm, incl. helpers/vifm
+remove luafile in favor of sumneko
