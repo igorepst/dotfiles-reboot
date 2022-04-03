@@ -1,0 +1,2 @@
+shfmt doesn't get renamed
+continue with vifm, incl. helpers/vifm
