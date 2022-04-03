@@ -115,7 +115,7 @@ function _get_gh_releases() {
     get_gh_release --repo denisidoro/navi --arch x86_64-unknown-linux-musl.tar.gz --toPath navi
     get_gh_release --repo tstack/lnav --arch musl-64bit.zip --toPath lnav
     get_gh_release --repo koalaman/shellcheck --arch linux.x86_64.tar.xz --toPath shellcheck
-    get_gh_release --repo mvdan/sh --arch linux_amd64 --toPath shfmt --unarchive 0 --rn shfmt
+    get_gh_release --repo mvdan/sh --arch linux_amd64 --toPath binlinux_amd64 --unarchive 0 --rn shfmt
     get_gh_release --repo JohnnyMorganz/StyLua --arch linux.zip --toPath stylua
     get_gh_release --repo sayanarijit/xplr --arch linux.tar.gz --toPath xplr
     get_gh_release --repo BurntSushi/ripgrep --arch linux-musl.tar.gz --toPath rg --toCompletionPath complete/_rg
