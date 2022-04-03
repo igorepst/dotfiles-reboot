@@ -56,6 +56,9 @@ vim.cmd([[
 endfunction
 
 command! -nargs=1 -complete=command -bar -range Redir silent call Redir(<q-args>, <range>, <line1>, <line2>)
+
+set rtp+=~/.zsh/volatile/igorepst/_gh_release/vifm/vifm/data/vim 
+
 ]])
    require('user.cmp')
 
