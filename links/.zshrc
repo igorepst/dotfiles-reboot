@@ -3,6 +3,7 @@ if [[ -r "${XDG_CACHE_HOME:-$HOME/.cache}/p10k-instant-prompt-${(%):-%n}.zsh" ]]
 fi
 
 fpath=($fpath ~/.zsh/volatile/igorepst/_gh_release/_cache/_compl ~/.zsh/plugins/archive ~/.zsh/plugins/zsh-completions/src)
+cdpath=($HOME)
 
 # run command line as user root via sudo:
 function sudo-command-line () {
@@ -94,6 +95,7 @@ source ~/.zsh/helpers/command_not_found.zsh
 source ~/.zsh/helpers/lnav.zsh 
 source ~/.zsh/helpers/mvn.zsh 
 source ~/.zsh/helpers/aws.zsh 
+source ~/.zsh/helpers/vifm.zsh 
 [ -f ~/.work/zshrc ] && source ~/.work/zshrc
 
 if [ "$EDITOR" = "nvim" ]; then

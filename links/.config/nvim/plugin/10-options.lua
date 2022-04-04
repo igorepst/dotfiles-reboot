@@ -35,7 +35,7 @@ o.listchars = { tab = '> ', trail = '-', extends = '>', precedes = '<', nbsp = '
 o.shortmess = 'atToOIcFs'
 o.whichwrap = 'b,s,<,>,[,]'
 o.inccommand = 'nosplit'
-o.foldenable = false
+o.foldlevel=99
 o.path = '.,,'
 o.signcolumn = 'yes'
 o.showtabline = 2

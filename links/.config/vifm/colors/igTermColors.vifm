@@ -1,5 +1,5 @@
 " vim: filetype=vifm :
-" PaperColor.vifm
+" igTermColors.vifm
 highlight clear
 
 highlight TopLine cterm=none ctermfg=242 ctermbg=250
