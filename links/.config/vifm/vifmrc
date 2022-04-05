@@ -12,9 +12,19 @@ set nofollowlinks
 set history=1000
 set nohlsearch
 set ignorecase
+set smartcase
 set incsearch
 set autocd
 set vimhelp
+set previewoptions="graphicsdelay:0"
+set rulerformat='%2l/%S%[ +%x%]'
+set norunexec
+set scrolloff=5
+set sizefmt=units:iec,precision:2,space
+set sort=+iname
+set sortnumbers
+
+windo set viewcolumns=-{iname}..,7{size},8{mode},16{mtime}
 
 if $TERM == 'linux'
     colorscheme Default
@@ -22,9 +32,19 @@ else
     colorscheme igTermColors
 endif
 
+nnoremap <f3> :setlocal previewprg='' | view<cr>
+vnoremap <f3> :setlocal previewprg='' | view<cr>gv
+nnoremap <f4> :!kitty @launch --type=tab --no-response --location after --cwd %d $EDITOR %c<cr>
+" Start shell in current directory
+nnoremap s :!kitty @launch --no-response --type=tab --cwd %d<cr>
+
 if has('win')
     filetype * start, explorer
 else
     fileviewer *[^/] bat --paging=never --color=always --style=plain %c
     filetype * xdg-open 2>/dev/null &
+endif
+
+if $MY_PC_IS == 'work'
+    source ~/.work/vifmrc-work
 endif

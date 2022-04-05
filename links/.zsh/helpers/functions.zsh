@@ -78,8 +78,14 @@ function zcompile-many() {
 
 function _updateDots(){
     emulate zsh; setopt localoptions
+    setopt no_pushd_ignore_dups
+    if [ -d ~/.work ]; then
+        echo 'Updating work Git code and submodules'
+        pushd ~/.work >/dev/null
+        git pull origin $(git rev-parse --abbrev-ref HEAD)
+        popd >/dev/null
+    fi
     echo 'Updating Git code and submodules'
-    setopt no_pushd_ignore_dups 
     pushd ~/dotfiles-reboot >/dev/null
     git pull origin $(git rev-parse --abbrev-ref HEAD)
     zcompile-many ~/dotfiles-reboot/links/.zsh/helpers/*.zsh
