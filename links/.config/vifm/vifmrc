@@ -1,3 +1,4 @@
+set vicmd=${EDITOR}
 set caseoptions=pg
 set dotfiles
 set fastrun
