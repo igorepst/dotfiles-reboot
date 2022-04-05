@@ -5,12 +5,15 @@ set fastrun
 set fillchars=vborder:ǀ
 set tuioptions=pul
 set findprg="fd %A %u"
+set locateprg="fd %a %u"
 set grepprg="rg %i --ignore-file $HOME/.config/ripgrep/ignore --ignore-case --follow --hidden --sort-files --no-heading --line-number %A %s"
+set mediaprg="~/.zsh/volatile/igorepst/_gh_release/vifm/vifm/data/vifm-media"
 set nofollowlinks
 set history=1000
 set nohlsearch
 set ignorecase
 set incsearch
+set autocd
 set vimhelp
 
 if $TERM == 'linux'
