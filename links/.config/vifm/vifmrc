@@ -10,6 +10,7 @@ set grepprg="rg %i --ignore-file $HOME/.config/ripgrep/ignore --ignore-case --fo
 set mediaprg="~/.zsh/volatile/igorepst/_gh_release/vifm/vifm/data/vifm-media"
 set nofollowlinks
 set history=1000
+set undolevels=1000
 set nohlsearch
 set ignorecase
 set smartcase
@@ -18,11 +19,20 @@ set autocd
 set vimhelp
 set previewoptions="graphicsdelay:0"
 set rulerformat='%2l/%S%[ +%x%]'
+set statusline=" %t  %A  %u:%g  %s  %d  %{&sort}%[  -> %T%]"
+set timefmt=%d/%m/%y\ %H:%M
 set norunexec
+set notrash
 set scrolloff=5
 set sizefmt=units:iec,precision:2,space
 set sort=+iname
 set sortnumbers
+set syscalls
+set tabscope="pane"
+set vifminfo=bmarks,bookmarks,tui,dhistory,state,savedirs,chistory,shitory,phistory,fhistory,dirstack,registers,tabs
+set wildmenu
+set wildstyle="popup"
+set wrap
 
 windo set viewcolumns=-{iname}..,7{size},8{mode},16{mtime}
 
@@ -35,6 +45,13 @@ endif
 nnoremap <f3> :setlocal previewprg='' | view<cr>
 vnoremap <f3> :setlocal previewprg='' | view<cr>gv
 nnoremap <f4> :!kitty @launch --type=tab --no-response --location after --cwd %d $EDITOR %c<cr>
+nnoremap <f5> :copy!<cr>
+nnoremap <f6> :move!<cr>
+nnoremap <f7> :mkdir<space>
+nnoremap <f8> :delete<cr>
+vnoremap <f8> :delete<cr>
+" Space selects and goes down
+nnoremap <space> tj
 " Start shell in current directory
 nnoremap s :!kitty @launch --no-response --type=tab --cwd %d<cr>
 
