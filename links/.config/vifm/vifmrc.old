@@ -1,58 +1,5 @@
 " vim: filetype=vifm :
 
-set tuioptions-=s
-set tuioptions+=u
-set suggestoptions=normal,visual,view,otherpane,delay,keys,registers,marks
-set vicmd=$EDITOR
-set notrash
-set fastrun
-set vimhelp
-set sortnumbers
-set sort=+iname
-set ignorecase
-set smartcase
-set norunexec
-set history=1000
-set undolevels=1000
-set wildmenu
-set wildstyle=popup
-set syscalls
-set nohlsearch
-set incsearch
-set nofollowlinks
-set scrolloff=5
-set timefmt=%d/%m/%y\ %H:%M
-set statusline="   %t   %A   %u:%g   %s   %d   %{&sort}%[   %T%]"
-set cpoptions-=f
-set nowrap
-set tabstop=2
-set rulerformat='%2l-%S%[ +%x%]'
-set dotfiles
-set caseoptions=pG
-set fillchars=vborder:ǀ
-
-if !has('win')
-    set slowfs=curlftpfs
-endif
-
-set title
-
-set vifminfo=dhistory,savedirs,chistory,state,tui,shistory,tabs,
-    \phistory,fhistory,dirstack,registers,bookmarks,bmarks
-set noquickview
-" Sync registers between instances
-set syncregs='mineSync'
-    
-windo set viewcolumns=-{iname}..,7{size},8{mode},16{mtime}
-
-set grepprg='rg --line-number --color=never --hidden %i %a %s'
-
-if $TERM == 'linux'
-    colorscheme Default
-else
-    colorscheme igTermColors
-endif
-
 command! fzf :let $FCMD = '~/bin/kitty_split_ret "fd --hidden | fzf-tmux --preview \"[ -d {} ] && (ls -Alh --color=always {}/ | head -10) || bat --color=always --style=plain --line-range=:10 {}\" 2>/dev/tty" "%d"'
     \| let $FZF_RES = system($FCMD)
     \| if $FZF_RES != ''
@@ -92,19 +39,8 @@ command! fzfPreviewSelector :let $FCMD = '~/bin/kitty_split_ret "printf \"%%s\n%
     \| endif
 nnoremap <c-F3> :fzfPreviewSelector<cr>
 
-" Space selects and goes down
-nnoremap <space> tj
 nnoremap * ggVG
 nnoremap <c-\> :bmarks<cr>
-" previewDefault forces view mode, this, however, toggles it
-nnoremap <f3> :setlocal previewprg='' | view<cr>
-vnoremap <f3> :setlocal previewprg='' | view<cr>gv
-nnoremap <f4> :!kitty @launch --type=tab --no-response --location after --cwd %d $EDITOR %c<cr>
-nnoremap <f5> :copy!<cr>
-nnoremap <f6> :move!<cr>
-nnoremap <f7> :mkdir<space>
-nnoremap <f8> :delete<cr>
-vnoremap <f8> :delete<cr>
 
 bmark! ~/dotfiles-reboot/ dotfiles
 
@@ -396,10 +332,6 @@ command! zzzInternalXC git log --name-only --format=%%n -- %d| CDUP=`git rev-par
 " ------------------------------------------------------------------------------
 " Sample mappings
 
-" Start shell in current directory
-"nnoremap s :!wezterm cli spawn --cwd %d<cr>
-nnoremap s :!kitty @launch --no-response --type=tab --cwd %d<cr>
-
 " Display sorting dialog
 nnoremap S :sort<cr>
 
@@ -576,7 +508,3 @@ set classify=' :dir:/, :exe:, :reg:, :link:,? :?:, ::../::,
             \  ::procfile::,
             \  ::Dockerfile,,docker-compose.yml::,
             \  ::Makefile,,Makefile.*,,CMakeLists.txt,,config.mk,,config.m4,,config.ac,,*.a,,*.cmake,,*.jl,,*.o,,*.so,,a.out,,configure::'
-
-if $MY_PC_IS == 'work'
-    source ~/.work/vifmrc-work
-endif
