@@ -1,9 +1,7 @@
 local wibox = require('wibox')
 local signal = require('widgets.battery.signal')
-local awesome = require('awesome')
 local popup = require('awful.popup')
 local gears = require('gears')
-local mouse = require('mouse')
 
 local _M = {}
 

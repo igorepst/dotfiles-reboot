@@ -55,6 +55,14 @@ nnoremap <space> tj
 " Start shell in current directory
 nnoremap s :!kitty @launch --no-response --type=tab --cwd %d<cr>
 
+fileviewer <video/*,audio/*> mediainfo --Output=file://"${HOME}/.config/mediainfo/template" %c
+filetype <video/*> mpv %c
+filetype <audio/*> mpv --force-window --fullscreen=no %c
+fileviewer <image/*>
+    \ kitty +icat --silent --transfer-mode=stream --place=%pwx%ph@%pxx%py --scale-up %c %N
+    \ %pc
+    \ kitty icat --clear --silent %pd
+
 if has('win')
     filetype * start, explorer
 else
@@ -65,3 +73,10 @@ endif
 if $MY_PC_IS == 'work'
     source ~/.work/vifmrc-work
 endif
+
+command! fzfFd :let $FCMD = 'fd -HI . "%d" | rofi -dmenu -i -p FIND -keep-right'
+    \| let $FZF_RES = system($FCMD)
+    \| if $FZF_RES != ''
+    \|    :goto $FZF_RES
+    \| endif
+nnoremap <F2> :fzfFd<cr>

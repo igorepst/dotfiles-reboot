@@ -1,5 +1,4 @@
 local upower = require('lgi').require('UPowerGlib')
-local awesome = require('awesome')
 
 local _M = {}
 

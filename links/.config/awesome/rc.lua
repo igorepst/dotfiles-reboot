@@ -667,7 +667,7 @@ ruled.client.connect_signal('request::rules', function()
 
     ruled.client.append_rule({
         id = 'notetaker',
-        rule = { class = 'notetaker' },
+        rule_any = { class = {'notetaker', 'centerw'} },
         properties = {
             floating = true,
             width = 800,

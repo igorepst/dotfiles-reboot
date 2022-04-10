@@ -1,16 +1,29 @@
-#!/bin/sh
+#!/bin/bash
+
+function doWork() {
+    local comm tmpi tmpr
+    if [ "${3}" = 'c' ]; then
+        tmpi=$(mktemp) || exit 1
+        tmpr=$tmpi
+        comm="kitty --class=centerw --directory ${2} -o initial_window_width=640 -o initial_window_height=420 -o remember_window_size=no"
+    else
+        tmpr=$(mktemp -d) || exit 1
+        tmpi=${tmpr}/fifo
+        mkfifo "${tmpi}" || {
+            rmdir "${tmpr}"
+            exit 1
+        }
+        comm="kitty @launch --no-response --location hsplit --cwd ${2}"
+    fi
+    trap "rm -rf ${tmpr}" EXIT
+
+    $comm sh -c "${1}>${tmpi}"
+
+    if read -r line < "${tmpi}"; then
+        echo "${line}"
+    fi
+}
 
 [ -z "${1}" ] && exit 1
 [ -z "${2}" ] && exit 1
-
-dir=$(mktemp -d) || exit 1
-fifo=${dir}/fifo
-mkfifo "${fifo}" || { rmdir "${dir}"; exit 1; }
-
-trap "rm -rf ${dir}" EXIT
-
-kitty @launch --no-response --location hsplit --cwd "${2}" sh -c "${1} >${fifo}"
-
-if read line <${fifo}; then
-    echo "${line}"
-fi
+doWork "$@"
