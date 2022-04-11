@@ -62,7 +62,7 @@ set rtp+=~/.zsh/volatile/igorepst/_gh_release/vifm/vifm/data/vim
 ]])
    require('user.cmp')
 
-vim.api.nvim_add_user_command('Q', 'q', {bang = true})
+vim.api.nvim_create_user_command('Q', 'q', {bang = true})
 
 local wf = vim.fn.expand('~/.work/vim-work.lua')
 if vim.fn.filereadable(wf) > 0 then vim.cmd('source ' .. wf) end
