@@ -116,7 +116,7 @@ fi
 
 eval $(dircolors -b)
 # activate color-completion
-zstyle ':completion:*:default'         list-colors ${(s.:.)LS_COLORS}
+zstyle ':completion:*' list-colors ${(s.:.)LS_COLORS}
 
 # match uppercase from lowercase and complete from the middle of filename
 zstyle ':completion:*' matcher-list 'm:{[:lower:][:upper:]}={[:upper:][:lower:]}' 'l:|=* r:|=*'
