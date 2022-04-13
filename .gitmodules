@@ -28,3 +28,6 @@
 [submodule "links/.config/awesome/awesome-buttons"]
 	path = links/.config/awesome/awesome-buttons
 	url = https://github.com/streetturtle/awesome-buttons
+[submodule "links/.zsh/plugins/fzf-tab"]
+	path = links/.zsh/plugins/fzf-tab
+	url = https://github.com/Aloxaf/fzf-tab

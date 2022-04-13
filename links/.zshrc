@@ -151,11 +151,11 @@ remote_commands=(scp rsync)
 zstyle -e :urlglobber url-other-schema \
     '[[ $remote_commands[(i)$words[1]] -le ${#remote_commands} ]] && reply=("*") || reply=(http https ftp)'
 
-#  zstyle -d ':completion:*' format
-#  zstyle ':completion:*:descriptions' format '[%d]'
-#  zstyle ':fzf-tab:*' default-color $fg[default]
-#  zstyle ':fzf-tab:*' fzf-flags "--color=fg:0,bg:15,hl:1,fg+:#ffffff,bg+:#74b1d1,hl+:1,info:6,prompt:4,pointer:5,marker:6,spinner:6,header:6"
-#  source ~/github/fzf-tab/fzf-tab.plugin.zsh
+zstyle -d ':completion:*' format
+zstyle ':completion:*:descriptions' format '[%d]'
+zstyle ':fzf-tab:*' default-color $'\033[30m'
+zstyle ':fzf-tab:*' fzf-flags "--color=fg:0,bg:15,hl:1,fg+:#ffffff,bg+:#74b1d1,hl+:1,info:6,prompt:4,pointer:5,marker:6,spinner:6,header:6"
+source ~/.zsh/plugins/fzf-tab/fzf-tab.plugin.zsh
 
 ZSH_AUTOSUGGEST_HIGHLIGHT_STYLE="fg=196"
 ZSH_AUTOSUGGEST_BUFFER_MAX_SIZE=20
