@@ -36,6 +36,12 @@ set wrap
 
 windo set viewcolumns=-{iname}..,7{size},8{mode},16{mtime}
 
+set classify=' :dir:/, :exe:, :reg:, :link:,? :?:, ::../::,
+            \  ::.git*::, ::.git/,,github/::/,
+            \  ::<image/*>::, ::Pictures/,,My Pictures/::/,
+            \  ::<video/*>::, ::Videos/::/,
+            \  ::<audio/*>::, ::Music/::/'
+
 if $TERM == 'linux'
     colorscheme Default
 else
@@ -66,7 +72,7 @@ fileviewer <image/*>
 if has('win')
     filetype * start, explorer
 else
-    fileviewer *[^/] bat --paging=never --color=always --style=plain %c
+    fileviewer *[^/] bat --line-range :30 --color=always --style=plain %c
     filetype * xdg-open 2>/dev/null &
 endif
 

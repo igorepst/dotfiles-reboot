@@ -1,8 +1,6 @@
 #!/bin/bash
 
 case "${MYFEXP}" in
-    xplr)
-        ${MYTERM} -e xplr;;
     vifm)
         ${MYTERM} -e vifm;;
     *)

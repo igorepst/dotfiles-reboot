@@ -1,0 +1,8 @@
+#!/bin/sh
+res=$(git log --color=always --pretty=mine "$@" | fzf --ansi --exit-0 \
+  --preview-window="right,50%,border-vertical" \
+  --preview="echo {} | cut -sf1 -d' ' | xargs -I % git show --color=always --name-only %" | cut -sf1 -d' ')
+if [ -n "${res}" ]; then
+     git difftool --no-symlinks --dir-diff "${res}^..${res}"
+fi
+

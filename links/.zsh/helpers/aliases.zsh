@@ -14,10 +14,13 @@ alias d="kitty +kitten diff"
 # Globbing should be done by Git itself
 alias git='noglob git'
 alias g='git'
+alias gi='git'
 alias gs='git status -s'
 alias gpl='git pull origin $(git rev-parse --abbrev-ref HEAD)'
 alias gps='git push origin $(git rev-parse --abbrev-ref HEAD)'
 alias gd='git difftool --no-symlinks --dir-diff'
+alias gr='git-refresh'
+alias gh='git-history'
 
 alias sudo='sudo -E '
 alias mkdir='mkdir -p'

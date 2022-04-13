@@ -28,15 +28,3 @@
 [submodule "links/.config/awesome/awesome-buttons"]
 	path = links/.config/awesome/awesome-buttons
 	url = https://github.com/streetturtle/awesome-buttons
-[submodule "links/.config/xplr/plugins/xclip"]
-	path = links/.config/xplr/plugins/xclip
-	url = https://github.com/sayanarijit/xclip.xplr
-[submodule "links/.config/xplr/plugins/term"]
-	path = links/.config/xplr/plugins/term
-	url = https://github.com/igorepst/term.xplr
-[submodule "links/.config/xplr/plugins/context-switch"]
-	path = links/.config/xplr/plugins/context-switch
-	url = https://github.com/igorepst/context-switch.xplr
-[submodule "links/.config/xplr/plugins/dual-pane"]
-	path = links/.config/xplr/plugins/dual-pane
-	url = https://github.com/sayanarijit/dual-pane.xplr.git

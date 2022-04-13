@@ -285,9 +285,9 @@ awful.keyboard.append_global_keybindings({
         group = 'launcher',
     }),
     awful.key({ modkey }, 'e', function()
-        awful.spawn('tvifm')
+        awful.spawn('tfm')
     end, {
-        description = 'run Vifm',
+        description = 'run file explorer',
         group = 'launcher',
     }),
     awful.key({ modkey }, 'p', function()
