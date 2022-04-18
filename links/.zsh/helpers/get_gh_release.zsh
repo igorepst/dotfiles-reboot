@@ -27,7 +27,12 @@ function get_gh_release() {
         curlo=$(curl -is $(echo ${curlo} |  grep -Po '"url": "\K.*?(?=")'))
         code=$(echo ${curlo} |  grep -Po 'HTTP/2 \K(\d+)')
     fi
-    [ "${code}" != '200' ] && print "Received code: ${code}" && echo $curlo >>/tmp/res && return 1
+    if [ "${code}" != '200' ]; then
+        local msg=$(echo ${curlo} |  grep -Po '"message":"\K.*?(?=")')
+        [ -z "${msg}" ] && msg='Unknown error'
+        print "Received code: ${code} with message: ${msg}"
+        return 1
+    fi
     local new_ver=$(echo ${curlo} | grep -Po '"tag_name": "\K.*?(?=")')
     local new_published_at=$(echo ${curlo} | grep -Po '"published_at": "\K.*?(?=")')
     local cur_version_dir="${workd_cache}/${_GET_GH_REL_ARGS[--repo]}"
