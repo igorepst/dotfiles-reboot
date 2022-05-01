@@ -39,7 +39,7 @@ local viMode = {
     },
     hl = function(self)
         local m = self.modes[self.mode]
-        return { fg = c.color7, bg = m and m.c or c.color0, style = 'bold' }
+        return { fg = c.color7, bg = m and m.c or c.color0, bold = true }
     end,
 }
 
@@ -69,7 +69,7 @@ local fileName = {
         local filename = self.filename
         return filename == '' and '[No Name]' or vim.fn.fnamemodify(filename, ':t')
     end,
-    hl = { style = 'bold' },
+    hl = { bold = true },
 }
 
 local fileFlags = {
@@ -79,7 +79,7 @@ local fileFlags = {
                 return ' +'
             end
         end,
-        hl = { fg = c.color2, style = 'bold' },
+        hl = { fg = c.color2, bold = true },
     },
     {
         provider = function()
@@ -87,7 +87,7 @@ local fileFlags = {
                 return ' '
             end
         end,
-        hl = { fg = c.color3, style = 'bold' },
+        hl = { fg = c.color3, bold = true },
     },
 }
 
