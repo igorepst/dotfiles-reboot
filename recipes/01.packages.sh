@@ -37,7 +37,7 @@ function doWork() {
     if [ -n "${pnames}" ]; then
         printf "${RED}Installing the following packages:${RESET}\n${pnames}\n"
         case "${OS_ID}" in
-            arch) yes | sudo /usr/bin/pacman -Sy ${pnames} ;;
+            arch) sudo /usr/bin/pacman -Sy --noconfirm ${pnames} ;;
             ubuntu) sudo /usr/bin/apt-get update && sudo /usr/bin/apt-get install -y ${pnames} ;;
         esac
     else
