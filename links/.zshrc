@@ -7,11 +7,11 @@ cdpath=($HOME)
 
 # run command line as user root via sudo:
 function sudo-command-line () {
-[[ -z $BUFFER ]] && zle up-history
-if [[ $BUFFER != sudo\ * ]]; then
-    BUFFER="sudo $BUFFER"
-    CURSOR=$(( CURSOR+5 ))
-fi
+    [[ -z $BUFFER ]] && zle up-history
+    if [[ $BUFFER != sudo\ * ]]; then
+        BUFFER="sudo $BUFFER"
+        CURSOR=$(( CURSOR+5 ))
+    fi
 }
 zle -N sudo-command-line
 # Alt+s
@@ -78,9 +78,9 @@ setopt long_list_jobs notify no_beep complete_in_word no_hup no_flow_control typ
     if [[ -f "$zcd"(N.m+1) ]]; then
         compinit -i -d "$zcd"
         { rm -f "$zcdc" && zcompile "$zcd" } &!
-        else
-            compinit -C -d "$zcd"
-            { [[ ! -f "$zcdc" || "$zcd" -nt "$zcdc" ]] && rm -f "$zcdc" && zcompile "$zcd" } &!
+    else
+        compinit -C -d "$zcd"
+        { [[ ! -f "$zcdc" || "$zcd" -nt "$zcdc" ]] && rm -f "$zcdc" && zcompile "$zcd" } &!
     fi
 }
 
@@ -149,7 +149,7 @@ autoload -U url-quote-magic
 zle -N self-insert url-quote-magic
 remote_commands=(scp rsync)
 zstyle -e :urlglobber url-other-schema \
-    '[[ $remote_commands[(i)$words[1]] -le ${#remote_commands} ]] && reply=("*") || reply=(http https ftp)'
+       '[[ $remote_commands[(i)$words[1]] -le ${#remote_commands} ]] && reply=("*") || reply=(http https ftp)'
 
 zstyle -d ':completion:*' format
 zstyle ':completion:*:descriptions' format '[%d]'
