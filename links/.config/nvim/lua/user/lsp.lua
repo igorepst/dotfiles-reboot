@@ -18,7 +18,7 @@ local on_attach = function(_, bufnr)
     map('n', '<C-k>', vim.lsp.buf.signature_help, bopts)
     map('n', '<leader>wa', vim.lsp.buf.add_workspace_folder, bopts)
     map('n', '<leader>wr', vim.lsp.buf.remove_workspace_folder, bopts)
-    map('n', '<leader>wl', '<cmd>lua print(vim.inspect(vim.lsp.buf.list_workspace_folders()))<CR>', bopts)
+    map('n', '<leader>wl', '<cmd>lua print(vim.inspect(vim.lsp.buf.list_workspace_folders()))', bopts)
     map('n', '<leader>D', vim.lsp.buf.type_definition, bopts)
     map('n', '<leader>rn', vim.lsp.buf.rename, bopts)
     map('n', '<leader>ca', vim.lsp.buf.code_action, bopts)
@@ -53,11 +53,11 @@ lspconfig.rust_analyzer.setup({ capabilities = capabilities, on_attach = on_atta
 lspconfig.gopls.setup({ capabilities = capabilities, on_attach = on_attach, handlers = handlers })
 lspconfig.dockerls.setup({
     capabilities = capabilities,
-    cmd = { vim.fn.stdpath('cache') .. '/dockerfile/node_modules/.bin/docker-langserver', '--stdio' },
+    cmd = { os.getenv('HOME') .. '/.cache/lspServers/dockerfile/node_modules/.bin/docker-langserver', '--stdio' },
     on_attach = on_attach,
     handlers = handlers,
 })
-local vscode_lsp = vim.fn.stdpath('cache') .. '/lspServers/vscode-langservers-extracted/node_modules/.bin/'
+local vscode_lsp = os.getenv('HOME') .. '/.cache/lspServers/vscode-langservers-extracted/node_modules/.bin/'
 lspconfig.cssls.setup({ capabilities = capabilities, cmd = { vscode_lsp .. 'vscode-css-language-server', '--stdio' } })
 lspconfig.eslint.setup({
     capabilities = capabilities,
@@ -79,13 +79,13 @@ lspconfig.jsonls.setup({
 })
 
 lspconfig.bashls.setup({
-    cmd = { vim.fn.stdpath('cache') .. '/lspServers/bash/node_modules/.bin/bash-language-server', 'start' },
+    cmd = { os.getenv('HOME') .. '/.cache/lspServers/bash/node_modules/.bin/bash-language-server', 'start' },
     capabilities = capabilities,
     on_attach = on_attach,
     handlers = handlers,
 })
 
-local sumneko_root_path = vim.fn.stdpath('cache') .. '/lspServers/lua/sumneko-lua/extension/server'
+local sumneko_root_path = os.getenv('HOME') .. '/.cache/lspServers/lua/sumneko-lua/extension/server'
 local sumneko_binary = sumneko_root_path .. '/bin/lua-language-server'
 
 -- Make runtime files discoverable to the server
