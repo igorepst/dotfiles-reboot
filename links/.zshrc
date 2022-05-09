@@ -95,7 +95,13 @@ source ~/.zsh/helpers/aws.zsh
 source ~/.zsh/helpers/vifm.zsh 
 [ -f ~/.work/zshrc ] && source ~/.work/zshrc
 
-if [ "$EDITOR" = "nvim" ]; then
+if [ "$EDITOR" = "emacsclient" ]; then
+    macsman() {
+        emacsclient -c -e "(progn (require 'man)(select-frame-set-input-focus (selected-frame))(let ((Man-notify-method 'bully)) (man \"$1\")))"
+    }
+    compdef _man macsman
+    alias man=macsman
+elif [ "$EDITOR" = "nvim" ]; then
     export MANPAGER='nvim +Man!'
     export MANWIDTH=999
 elif [ "$EDITOR" = "vim" ]; then
@@ -109,9 +115,6 @@ else
     export LESS_TERMCAP_ue=$'\e[0m'        # reset underline
     export GROFF_NO_SGR=1                  # needed in some terminals, incl. kitty, to show colors in man pages
     export MANPAGER='less -s -M +Gg'       # show % in man
-    macsman() {
-        emacsclient -t -e "(let ((Man-notify-method 'bully)) (man \"$1\"))"
-    }
 fi
 
 eval $(dircolors -b)
