@@ -139,7 +139,10 @@ function _get_gh_releases() {
         bat cache --build
     fi
     get_gh_release --repo sharkdp/fd --arch x86_64-unknown-linux-gnu.tar.gz --toPath fd --toCompletionPath autocomplete/_fd
-    get_gh_release --repo kovidgoyal/kitty --arch x86_64.txz --toPath bin/kitty
+    if get_gh_release --repo kovidgoyal/kitty --arch x86_64.txz --toPath bin/kitty; then
+        mkdir -p ~/.terminfo/x
+        ln -sf ~/.zsh/volatile/igorepst/_gh_release/kovidgoyal/kitty/share/terminfo/x/xterm-kitty ~/.terminfo/x/xterm-kitty
+    fi
     get_gh_release --repo rclone/rclone --arch linux-amd64.zip --toPath rclone
     get_gh_release --repo rust-analyzer/rust-analyzer --arch x86_64-unknown-linux-gnu.gz --toPath binx86_64-unknown-linux-gnu --rn rust-analyzer
     # Should be the last one to use its exit code

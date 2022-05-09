@@ -51,6 +51,7 @@ endif
 nnoremap <f3> :setlocal previewprg='' | view<cr>
 vnoremap <f3> :setlocal previewprg='' | view<cr>gv
 nnoremap <f4> :!kitty @launch --type=tab --no-response --location after --cwd %d $EDITOR %c<cr>
+nnoremap <s-f4> :!emacsclient -c %c<cr>
 nnoremap <f5> :copy!<cr>
 nnoremap <f6> :move!<cr>
 nnoremap <f7> :mkdir<space>

@@ -109,6 +109,9 @@ else
     export LESS_TERMCAP_ue=$'\e[0m'        # reset underline
     export GROFF_NO_SGR=1                  # needed in some terminals, incl. kitty, to show colors in man pages
     export MANPAGER='less -s -M +Gg'       # show % in man
+    macsman() {
+        emacsclient -t -e "(let ((Man-notify-method 'bully)) (man \"$1\"))"
+    }
 fi
 
 eval $(dircolors -b)
