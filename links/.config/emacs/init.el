@@ -31,18 +31,6 @@
 		  file-name-handler-alist ig--file-name-handler-alist)))
 (if (not (display-graphic-p))
     (xterm-mouse-mode 1))
-;(custom-set-variables
- ;; custom-set-variables was added by Custom.
- ;; If you edit it by hand, you could mess it up, so be careful.
- ;; Your init file should contain only one such instance.
- ;; If there is more than one, they won't work right.
-; )
-;(custom-set-faces
- ;; custom-set-faces was added by Custom.
- ;; If you edit it by hand, you could mess it up, so be careful.
- ;; Your init file should contain only one such instance.
- ;; If there is more than one, they won't work right.
-; '(region ((t (:extend t :background "#74b1d1" :foreground "#ffffff")))))
 
 (defvar bootstrap-version)
 (let ((bootstrap-file
@@ -56,7 +44,7 @@
       (goto-char (point-max))
       (eval-print-last-sexp)))
   (load bootstrap-file nil 'nomessage))
-(straight-use-package '(emacs-leuven-theme :type git :host github :repo "fniessen/emacs-leuven-theme"))
+(straight-use-package 'leuven-theme)
 
 (setq org-fontify-whole-heading-line t
       org-startup-with-inline-images t)
