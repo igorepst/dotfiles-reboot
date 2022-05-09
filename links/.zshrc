@@ -57,9 +57,6 @@ HISTFILE=~/.zsh/volatile/zsh_history
 HISTSIZE=10000000
 SAVEHIST=10000000
 
-bindkey '[A' history-beginning-search-backward
-bindkey '[B' history-beginning-search-forward
-
 # Ctrl+/ to 'suspend' the half typed command. Restores on the next fresh prompt
 bindkey '' push-input
 
@@ -163,6 +160,10 @@ ZSH_AUTOSUGGEST_MANUAL_REBIND=1
 source ~/.zsh/plugins/zsh-autosuggestions/zsh-autosuggestions.zsh
 ZSH_HIGHLIGHT_HIGHLIGHTERS=(main brackets)
 source ~/.zsh/plugins/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh
+source ~/.zsh/plugins/zsh-history-substring-search/zsh-history-substring-search.zsh
+
+bindkey '[A' history-substring-search-up
+bindkey '[B' history-substring-search-down
 
 if test -n "$KITTY_INSTALLATION_DIR"; then
     export KITTY_SHELL_INTEGRATION="no-cursor no-title"

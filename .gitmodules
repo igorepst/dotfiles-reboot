@@ -31,3 +31,6 @@
 [submodule "links/.zsh/plugins/fzf-tab"]
 	path = links/.zsh/plugins/fzf-tab
 	url = https://github.com/Aloxaf/fzf-tab
+[submodule "links/.zsh/plugins/zsh-history-substring-search"]
+	path = links/.zsh/plugins/zsh-history-substring-search
+	url = https://github.com/zsh-users/zsh-history-substring-search.git

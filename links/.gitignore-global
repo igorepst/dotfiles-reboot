@@ -133,3 +133,6 @@ local.properties
 .recommenders/
 
 *.zwc*
+
+# Emacs
+\#*\#

@@ -37,3 +37,6 @@ alias sstart='sudo systemctl start'
 alias sstop='sudo systemctl stop'
 
 alias x='${MYFEXP} .'
+
+alias emacs='emacs -mm'
+alias e='emacsclient -nc'

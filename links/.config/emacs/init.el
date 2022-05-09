@@ -14,9 +14,11 @@
       initial-scratch-message nil
       initial-major-mode 'emacs-lisp-mode
       focus-follow-mouse t
-      mouse-autoselect-window t)
+      mouse-autoselect-window t
+      disabled-command-function nil)
 (setq-default inhibit-redisplay t
-              inhibit-message t)
+              inhibit-message t
+	      indicate-empty-lines t)
 (add-hook 'window-setup-hook
           (lambda ()
             (setq-default inhibit-redisplay nil
@@ -59,3 +61,5 @@
 (setq org-fontify-whole-heading-line t
       org-startup-with-inline-images t)
 (load-theme 'leuven t) 
+
+(fset 'yes-or-no-p 'y-or-n-p)
