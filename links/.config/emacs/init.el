@@ -15,7 +15,11 @@
       initial-major-mode 'emacs-lisp-mode
       focus-follow-mouse t
       mouse-autoselect-window t
-      disabled-command-function nil)
+      disabled-command-function nil
+      use-short-answers t
+      savehist-file "~/.cache/emacs/savehist"
+      recentf-save-file "~/.cache/emacs/recentf"
+      x-gtk-show-hidden-files t)
 (setq-default inhibit-redisplay t
               inhibit-message t
 	      indicate-empty-lines t)
@@ -48,6 +52,7 @@
 
 (setq org-fontify-whole-heading-line t
       org-startup-with-inline-images t)
-(load-theme 'leuven t) 
+(load-theme 'leuven t)
 
-(fset 'yes-or-no-p 'y-or-n-p)
+(savehist-mode)
+(recentf-mode)

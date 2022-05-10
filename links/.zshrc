@@ -95,27 +95,26 @@ source ~/.zsh/helpers/aws.zsh
 source ~/.zsh/helpers/vifm.zsh 
 [ -f ~/.work/zshrc ] && source ~/.work/zshrc
 
-if [ "$EDITOR" = "emacsclient" ]; then
-    macsman() {
-        emacsclient -c -e "(progn (require 'man)(select-frame-set-input-focus (selected-frame))(let ((Man-notify-method 'bully)) (man \"$1\")))"
-    }
-    compdef _man macsman
-    alias man=macsman
-elif [ "$EDITOR" = "nvim" ]; then
-    export MANPAGER='nvim +Man!'
-    export MANWIDTH=999
-elif [ "$EDITOR" = "vim" ]; then
-    export MANPAGER='vim -M +MANPAGER -'
-else
-    export LESS_TERMCAP_mb=$'\e[1;31m'     # begin bold
-    export LESS_TERMCAP_md=$'\e[1;33m'     # begin blink
-    export LESS_TERMCAP_us=$'\e[01;32m'    # begin underline
-    export LESS_TERMCAP_me=$'\e[0m'        # reset bold/blink
-    export LESS_TERMCAP_se=$'\e[0m'        # reset reverse video
-    export LESS_TERMCAP_ue=$'\e[0m'        # reset underline
-    export GROFF_NO_SGR=1                  # needed in some terminals, incl. kitty, to show colors in man pages
-    export MANPAGER='less -s -M +Gg'       # show % in man
-fi
+macsman() {
+    emacsclient -nc -e "(progn (require 'man)(select-frame-set-input-focus (selected-frame))(let ((Man-notify-method 'bully)) (man \"$1\")))" >/dev/null
+}
+compdef _man macsman
+alias man=macsman
+#elif [ "$EDITOR" = "nvim" ]; then
+#    export MANPAGER='nvim +Man!'
+#    export MANWIDTH=999
+#elif [ "$EDITOR" = "vim" ]; then
+#    export MANPAGER='vim -M +MANPAGER -'
+#else
+#    export LESS_TERMCAP_mb=$'\e[1;31m'     # begin bold
+#    export LESS_TERMCAP_md=$'\e[1;33m'     # begin blink
+#    export LESS_TERMCAP_us=$'\e[01;32m'    # begin underline
+#    export LESS_TERMCAP_me=$'\e[0m'        # reset bold/blink
+#    export LESS_TERMCAP_se=$'\e[0m'        # reset reverse video
+#    export LESS_TERMCAP_ue=$'\e[0m'        # reset underline
+#    export GROFF_NO_SGR=1                  # needed in some terminals, incl. kitty, to show colors in man pages
+#    export MANPAGER='less -s -M +Gg'       # show % in man
+#fi
 
 eval $(dircolors -b)
 # activate color-completion
