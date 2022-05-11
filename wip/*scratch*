@@ -1,0 +1,6 @@
+(set-fontset-font t '(#x1F514 . #x1FB7E) (font-spec :size 16 :name "Noto Sans Symbols2"))
+
+
+(set-fontset-font "fontset-default" '(#x1FB7D . #x1FB7E) "Noto Sans Symbols2")
+
+(font-family-list)
