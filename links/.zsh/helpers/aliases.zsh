@@ -40,3 +40,4 @@ alias x='${MYFEXP} .'
 
 alias emacs='emacs -mm'
 alias e='${VISUAL}'
+alias et='${EDITOR}'
