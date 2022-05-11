@@ -290,12 +290,6 @@ awful.keyboard.append_global_keybindings({
         description = 'run file explorer',
         group = 'launcher',
     }),
-     awful.key({ modkey }, 'a', function()
-        awful.spawn('visual')
-    end, {
-        description = 'run visual editor',
-        group = 'launcher',
-    }),
     awful.key({ modkey }, 'p', function()
         menubar.show()
     end, {
@@ -770,7 +764,7 @@ local function run_once(cmd_arr)
     end
 end
 local run_once_t = { 'picom -b' }
-if os.getenv('MY_PC_IS') == 'home' then
-    table.insert(run_once_t, 'wifi')
-end
+-- if os.getenv('MY_PC_IS') == 'home' then
+--     table.insert(run_once_t, 'wifi')
+-- end
 run_once(run_once_t)

@@ -17,10 +17,11 @@ end
 
 local sm = function(title, value, color)
     local c = color or 'black'
-    return '<span weight="bold">' .. title .. ':</span><span color="'..c..'"> ' .. tostring(value) .. '</span>\r'
+    return '<span weight="bold">' .. title .. ':</span><span color="' .. c .. '"> ' .. tostring(value) .. '</span>\r'
 end
 
 local bat_color = { good = '#00ff00', low = '#ffff00', empty = '#ff0000' }
+local img_path = gears.filesystem.get_configuration_dir() .. 'widgets/battery/icons/'
 
 local setup = function()
     local pp = popup({
@@ -58,7 +59,7 @@ local setup = function()
         for _, bn in ipairs(upd) do
             local level = bn.battery_level == 'None' and (bn.percentage .. '%') or bn.battery_level
             w:get_children_by_id('txt')[1].markup = level
-             local color
+            local color
             if string.match(bn.icon_name, 'full') or string.match(bn.icon_name, 'good') then
                 color = bat_color.good
             elseif string.match(bn.icon_name, 'low') then
@@ -77,20 +78,14 @@ local setup = function()
                 .. sm('Energy Full Design', bn.energy_full_design .. ' Wh')
                 .. sm('Energy Rate', bn.energy_rate .. ' W')
                 .. sm('Voltage', bn.voltage .. ' V')
-                .. sm(
-                    'Temperature',
-                    bn.temperature > 0 and (bn.temperature .. ' °C') or 'Unavailable'
-                )
+                .. sm('Temperature', bn.temperature > 0 and (bn.temperature .. ' °C') or 'Unavailable')
                 .. sm('Capacity', string.format('%.4f%%', bn.capacity))
                 .. '\r<span font_size="large" weight="bold">Data:</span>\r'
                 .. sm('Vendor', bn.vendor)
                 .. sm('Model', bn.model)
                 .. sm('Serial', bn.serial)
                 .. sm('Technology', bn.technology)
-                       w:get_children_by_id('icon')[1].image = gears.color.recolor_image(
-                '/usr/share/icons/hicolor/scalable/status/' .. bn.icon_name .. '.svg',
-                color
-            )
+            w:get_children_by_id('icon')[1].image = gears.color.recolor_image(img_path .. bn.icon_name .. '.svg', color)
         end
     end
 

@@ -15,7 +15,7 @@ function doWork() {
 
     local add_arr
     case "${OS_ID}" in
-        arch) add_arr=(python python-pip terminus-font xorg-xrdb) ;;
+        arch) add_arr=(python python-pip terminus-font xorg-xrdb xorg-xinit unzip ttf-dejavu) ;;
         ubuntu)
             add_arr=(python3 python3-pip fonts-terminus x11-xserver-utils gnome-shell-extension-dash-to-panel p7zip-full p7zip-rar)
             if ! grep -q "^deb .*git-core" "/etc/apt/sources.list" "/etc/apt/sources.list.d/*" 2> /dev/null; then
@@ -26,7 +26,7 @@ function doWork() {
     esac
 
     arr=("${arr[@]}" "${add_arr[@]}")
-    #local arr=(rofi acpilight picom)
+    #local arr=(rofi acpilight picom upower)
     # Vifm + atool + img. support
     #arr+=(vifm ueberzug ffmpegthumbnailer imagemagick poppler mediainfo \
     #    atool rpm-tools bzip2 cpio gzip lha xz lzop p7zip tar unace unrar zip unzip)
