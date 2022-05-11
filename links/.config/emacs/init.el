@@ -4,7 +4,7 @@
       gc-cons-percentage 0.6
       file-name-handler-alist nil
       frame-resize-pixelwise t
-      default-frame-alist '((fullscreen . maximized) (font . "DejaVu Sans Mono-14"))
+      default-frame-alist '((fullscreen . maximized) (font . "DejaVuSansMono Nerd Font Mono-14"))
       vc-follow-symlinks t
       completion-ignore-case t
       tab-always-indent 'complete
@@ -48,11 +48,28 @@
       (goto-char (point-max))
       (eval-print-last-sexp)))
   (load bootstrap-file nil 'nomessage))
-(straight-use-package 'leuven-theme)
+(setq straight-use-package-by-default t)
+(straight-use-package 'use-package)
+
+(use-package lua-mode
+  :defer t
+  :mode ("\\.lua\\'" . lua-mode))
+
+(use-package eglot
+  :commands (eglot eglot-ensure)
+  :hook ((lua-mode . eglot-ensure))
+  :config
+  (let* ((ig--sumneko-root-path "~/.cache/lspServers/lua/sumneko-lua/extension/server")
+	 (ig--sumneko-bin (expand-file-name "bin/lua-language-server" ig--sumneko-root-path))
+	 (ig--sumneko-main (expand-file-name "main.lua" ig--sumneko-root-path)))
+    (add-to-list 'eglot-server-programs `(lua-mode . (,ig--sumneko-bin "-E" "-e" "LANG=en" ,ig--sumneko-main)))))
+
+(use-package leuven-theme
+  :config
+  (load-theme 'leuven t))
 
 (setq org-fontify-whole-heading-line t
       org-startup-with-inline-images t)
-(load-theme 'leuven t)
 
 (savehist-mode)
 (recentf-mode)
