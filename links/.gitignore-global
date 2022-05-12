@@ -137,3 +137,4 @@ local.properties
 # Emacs
 \#*\#
 .\#*
+*.elc

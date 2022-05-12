@@ -17,9 +17,9 @@
       mouse-autoselect-window t
       disabled-command-function nil
       use-short-answers t
-      savehist-file "~/.cache/emacs/savehist"
-      recentf-save-file "~/.cache/emacs/recentf"
-      x-gtk-show-hidden-files t)
+      x-gtk-show-hidden-files t
+      org-fontify-whole-heading-line t
+      org-startup-with-inline-images t)
 (setq-default inhibit-redisplay t
               inhibit-message t
 	      indicate-empty-lines t)
@@ -36,6 +36,7 @@
 (if (not (display-graphic-p))
     (xterm-mouse-mode 1))
 
+(setq straight-check-for-modifications nil)
 (defvar bootstrap-version)
 (let ((bootstrap-file
        (expand-file-name "straight/repos/straight.el/bootstrap.el" user-emacs-directory))
@@ -48,14 +49,15 @@
       (goto-char (point-max))
       (eval-print-last-sexp)))
   (load bootstrap-file nil 'nomessage))
-(setq straight-use-package-by-default t)
 (straight-use-package 'use-package)
 
 (use-package lua-mode
+  :straight t
   :defer t
   :mode ("\\.lua\\'" . lua-mode))
 
 (use-package eglot
+  :straight t
   :commands (eglot eglot-ensure)
   :hook ((lua-mode . eglot-ensure))
   :config
@@ -66,11 +68,14 @@
     (add-to-list 'eglot-server-programs `(lua-mode . (,ig--sumneko-bin "-E" "-e" "LANG=en" ,ig--sumneko-main ,ig--sumneko-settings)))))
 
 (use-package leuven-theme
+  :straight t
   :config
   (load-theme 'leuven t))
 
-(setq org-fontify-whole-heading-line t
-      org-startup-with-inline-images t)
+(use-package savehist
+  :init (savehist-mode)
+  :custom (savehist-file "~/.cache/emacs/savehist"))
 
-(savehist-mode)
-(recentf-mode)
+(use-package recentf
+  :init (recentf-mode)
+  :custom (recentf-save-file "~/.cache/emacs/recentf"))
