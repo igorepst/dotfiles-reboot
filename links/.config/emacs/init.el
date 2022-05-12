@@ -61,8 +61,9 @@
   :config
   (let* ((ig--sumneko-root-path "~/.cache/lspServers/lua/sumneko-lua/extension/server")
 	 (ig--sumneko-bin (expand-file-name "bin/lua-language-server" ig--sumneko-root-path))
-	 (ig--sumneko-main (expand-file-name "main.lua" ig--sumneko-root-path)))
-    (add-to-list 'eglot-server-programs `(lua-mode . (,ig--sumneko-bin "-E" "-e" "LANG=en" ,ig--sumneko-main)))))
+	 (ig--sumneko-main (expand-file-name "main.lua" ig--sumneko-root-path))
+	 (ig--sumneko-settings (concat "--configpath=" (expand-file-name "external/sumnekoSettings.lua" user-emacs-directory))))
+    (add-to-list 'eglot-server-programs `(lua-mode . (,ig--sumneko-bin "-E" "-e" "LANG=en" ,ig--sumneko-main ,ig--sumneko-settings)))))
 
 (use-package leuven-theme
   :config

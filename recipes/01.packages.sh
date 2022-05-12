@@ -17,7 +17,7 @@ function doWork() {
     case "${OS_ID}" in
         arch) add_arr=(python python-pip terminus-font xorg-xrdb xorg-xinit unzip ttf-dejavu) ;;
         ubuntu)
-            add_arr=(python3 python3-pip fonts-terminus x11-xserver-utils gnome-shell-extension-dash-to-panel p7zip-full p7zip-rar)
+            add_arr=(python3 python3-pip fonts-terminus x11-xserver-utils gnome-shell-extension-dash-to-panel p7zip-full p7zip-rar python3-fontforge)
             if ! grep -q "^deb .*git-core" "/etc/apt/sources.list" "/etc/apt/sources.list.d/*" 2> /dev/null; then
                 printf '%sAdding official Git PPA and updating...%s\n' "${GREEN}" "${RESET}"
                 sudo add-apt-repository -yu ppa:git-core/ppa && sudo apt-get install -y git

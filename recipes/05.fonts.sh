@@ -12,6 +12,8 @@ function doWork(){
     ["DejaVu Sans Mono Bold Oblique Nerd Font Complete Mono"]="https://github.com/ryanoasis/nerd-fonts/raw/master/patched-fonts/DejaVuSansMono/Bold-Italic/complete/DejaVu%20Sans%20Mono%20Bold%20Oblique%20Nerd%20Font%20Complete%20Mono.ttf"
     ["VSCode Codicons"]="https://github.com/microsoft/vscode-codicons/raw/main/dist/codicon.ttf"
     ["Nonicons"]="https://github.com/yamatsum/nonicons/raw/master/dist/nonicons.ttf"
+    ["Noto Sans Symbols2"]="https://github.com/googlefonts/noto-fonts/raw/main/hinted/ttf/NotoSansSymbols2/NotoSansSymbols2-Regular.ttf"
+    ["Noto Color Emoji"]="https://github.com/googlefonts/noto-emoji/raw/main/fonts/NotoColorEmoji.ttf"
 )
 
     local CONV_NEEDED=0
