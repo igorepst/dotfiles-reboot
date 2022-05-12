@@ -54,7 +54,7 @@ nnoremap <s-f4> :!kitty @launch --type=tab --no-response --location after --cwd 
 nnoremap <f4> :!$VISUAL %c<cr>
 nnoremap <f5> :copy!<cr>
 nnoremap <f6> :move!<cr>
-nnoremap <f7> :mkdir<space>
+nnoremap <f7> :mkdir!<space>
 nnoremap <f8> :delete<cr>
 vnoremap <f8> :delete<cr>
 " Space selects and goes down
