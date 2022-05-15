@@ -100,7 +100,6 @@ function _updateDots(){
         echo 'Updating nvim plugins'
         local packerDir=~/.local/share/nvim/site/pack/packer/start/packer.nvim
         [ ! -d "${packerDir}" ] && git clone --depth 1 https://github.com/wbthomason/packer.nvim "${packerDir}" 
-        _install_nvim_lsp
         nvim --headless -u NONE \
             +'autocmd User PackerComplete quitall' \
             +'lua dofile(os.getenv("HOME") .. "/.config/nvim/plugin/10-options.lua")' \
@@ -109,6 +108,7 @@ function _updateDots(){
         printf '\nUpdating Treesitter\n'
         nvim --headless -c 'TSUpdateSync' -c 'quitall'
     fi
+    _install_lsp
     echo 'Updating Python packages'
     echo 'Visidata:'
     pip3 install -U visidata
@@ -119,7 +119,6 @@ function _get_gh_releases() {
     IG_GH_REL_UPDATE=1
     source ~/.zsh/helpers/get_gh_release.zsh
     get_gh_release --repo denisidoro/navi --arch x86_64-unknown-linux-musl.tar.gz --toPath navi
-    get_gh_release --repo tstack/lnav --arch musl-64bit.zip --toPath lnav
     get_gh_release --repo koalaman/shellcheck --arch linux.x86_64.tar.xz --toPath shellcheck
     get_gh_release --repo mvdan/sh --arch linux_amd64 --toPath binlinux_amd64 --unarchive 0 --rn shfmt
     get_gh_release --repo JohnnyMorganz/StyLua --arch linux.zip --toPath stylua
@@ -153,22 +152,22 @@ function _install_npm_lsp() {
     emulate -L zsh
     setopt no_autopushd
     if [ ! -d "${1}" ]; then
-        echo "Installing ${2} LSP for Neovim"
+        echo "Installing ${2} LSP"
         mkdir -p "${1}"
         pushd "${1}" > /dev/null
         npm install ${3}
     else
-        echo "Updating ${2} LSP for Neovim"
+        echo "Updating ${2}"
         pushd "${1}" > /dev/null
         npm update
     fi
     popd > /dev/null
 }
 
-function _install_nvim_lsp() {
+function _install_lsp() {
     emulate -L zsh
     setopt no_autopushd
-    local parentDir=~/.cache/nvim/lspServers
+    local parentDir=~/.cache/lspServers
     # Bash
     _install_npm_lsp "${parentDir}/bash" 'Bash' 'bash-language-server'
     # HTML/CSS/JSON/ESLint (JS/TS)
@@ -180,13 +179,13 @@ function _install_nvim_lsp() {
     url=$(sed -ne 's/.*browser_download_url.*"\(http.*linux-x64.vsix\)"/\1/p' <<< $(curl -s https://api.github.com/repos/sumneko/vscode-lua/releases/latest))
     version=$(sed -ne 's|.*/v\(.*\)/.*|\1|p' <<< "${url}")
     if [ ! -d "${parentDir}/lua" ]; then
-        printf '\nInstalling Lua LSP for Neovim, version: %s\n' "${version}"
+        printf '\nInstalling Lua LSP, version: %s\n' "${version}"
         inst_lua=1
         mkdir -p "${parentDir}/lua"
     else
         local cur_ver
         cur_ver=$(sed -ne 's/.*version\": "\(.*\)".*/\1/p' "${parentDir}/lua/sumneko-lua/extension/package.json")
-        printf '\nUpdating Lua LSP for Neovim, current version: %s, new version: %s\n' "${cur_ver}" "${version}"
+        printf '\nUpdating Lua LSP, current version: %s, new version: %s\n' "${cur_ver}" "${version}"
         [ "${cur_ver}" != "${version}" ] && inst_lua=1
     fi
     if [ -n "${inst_lua}" ]; then
@@ -200,7 +199,7 @@ function _install_nvim_lsp() {
     # Go
     local gopls_status
     command -v gopls >/dev/null && gopls_status='Updating' || gopls_status='Installing'
-    echo "${gopls_status} Go LSP for Neovim"
+    echo "${gopls_status} Go LSP"
     go install golang.org/x/tools/gopls@latest
     rehash
     gopls version

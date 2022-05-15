@@ -16,11 +16,9 @@ function doWork(){
     ["Noto Color Emoji"]="https://github.com/googlefonts/noto-emoji/raw/main/fonts/NotoColorEmoji.ttf"
 )
 
-    local CONV_NEEDED=0
     for FNAME in "${!FARR[@]}"; do
         local URL=${FARR[$FNAME]}
         if [ ! -f "${FONTS_DIR}/${FNAME}.ttf" ] || [ -n "${DOT_UPDATE_FONTS}" ]; then
-            CONV_NEEDED=1
             printf "${GREEN}Installing ${FNAME}.ttf${RESET}\n"
             curl -o "${FONTS_DIR}/${FNAME}.ttf" -L -O "$URL"
         else
@@ -28,24 +26,6 @@ function doWork(){
             [ ! -f "${FONTS_DIR}/${FNAME}.otf" ] && CONV_NEEDED=1
         fi
     done
-    if [ "${CONV_NEEDED}" -eq "1" ]; then
-        printf "${GREEN}Converting TTF to OTF for pango${RESET}\n"
-        local CONV_SCRIPT=convertFonts.py
-        cat >"${FONTS_DIR}/${CONV_SCRIPT}" <<"EOF"
-import fontforge
-import os
-fonts = [f for f in os.listdir('.') if f.endswith('.ttf')]
-for font in fonts:
-        f = fontforge.open(font)
-        f.generate(font[:-3] + 'otf')
-EOF
-        pushd "${FONTS_DIR}" >/dev/null
-        python ./"${CONV_SCRIPT}" &>/dev/null
-        rm "./${CONV_SCRIPT}"
-        popd >/dev/null
-    else
-        printf "${GREEN}OTF fonts exist${RESET}"
-    fi
 
     fc-cache
 

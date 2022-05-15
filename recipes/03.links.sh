@@ -48,7 +48,6 @@ function doWork(){
     link ".toprc"
     link ".config/awesome"
     link ".config/emacs"
-    link ".config/environment.d"
 }
 
 doWork

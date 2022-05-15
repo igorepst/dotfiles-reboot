@@ -61,6 +61,10 @@ vnoremap <f8> :delete<cr>
 nnoremap <space> tj
 " Start shell in current directory
 nnoremap s :!kitty @launch --no-response --type=tab --cwd %d<cr>
+" Yank current directory path into the clipboard
+nnoremap yd :!echo %d | xclip -selection clipboard %i<cr>
+" Yank current file path into the clipboard
+nnoremap yf :!echo %c:p | xclip -selection clipboard%i<cr>
 
 fileviewer <video/*,audio/*> mediainfo --Output=file://"${HOME}/.config/mediainfo/template" %c
 filetype <video/*> mpv %c
