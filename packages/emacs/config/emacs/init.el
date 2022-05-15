@@ -83,3 +83,5 @@
 (use-package recentf
   :init (recentf-mode)
   :custom (recentf-save-file "~/.cache/emacs/recentf"))
+
+(global-display-line-numbers-mode)
