@@ -9,5 +9,5 @@ packer_compiled.lua
 links/bin/*archive
 links/.config/mpv/*
 !links/.config/mpv/*.conf
-links/.config/emacs/eln-cache/*
-links/.config/emacs/straight/*
+packages/emacs/config/emacs/eln-cache/*
+packages/emacs/config/emacs/straight/*
