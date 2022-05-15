@@ -19,7 +19,10 @@
       use-short-answers t
       x-gtk-show-hidden-files t
       org-fontify-whole-heading-line t
-      org-startup-with-inline-images t)
+      org-startup-with-inline-images t
+      tool-bar-style 'both
+      auto-save-default nil
+      make-backup-files nil)
 (setq-default inhibit-redisplay t
               inhibit-message t
 	      indicate-empty-lines t)
