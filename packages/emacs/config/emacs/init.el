@@ -1,10 +1,5 @@
 ;;; init.el -*- lexical-binding: t; -*-
-(defvar ig--file-name-handler-alist file-name-handler-alist)
-(setq gc-cons-threshold most-positive-fixnum
-      gc-cons-percentage 0.6
-      file-name-handler-alist nil
-      frame-resize-pixelwise t
-      default-frame-alist '((fullscreen . maximized) (font . "DejaVuSansMono Nerd Font Mono-14"))
+(setq default-frame-alist '((fullscreen . maximized) (font . "DejaVuSansMono Nerd Font Mono-14"))
       vc-follow-symlinks t
       completion-ignore-case t
       tab-always-indent 'complete
@@ -23,19 +18,8 @@
       tool-bar-style 'both
       auto-save-default nil
       make-backup-files nil)
-(setq-default inhibit-redisplay t
-              inhibit-message t
-	      indicate-empty-lines t)
-(add-hook 'window-setup-hook
-          (lambda ()
-            (setq-default inhibit-redisplay nil
-                          inhibit-message nil)
-            (redisplay)))
-(add-hook 'emacs-startup-hook
-	  (lambda ()
-	    (setq gc-cons-threshold 16777216 ; 16mb
-		  gc-cons-percentage 0.1
-		  file-name-handler-alist ig--file-name-handler-alist)))
+
+(setq-default indicate-empty-lines t)
 (if (not (display-graphic-p))
     (xterm-mouse-mode 1))
 
@@ -85,3 +69,7 @@
   :custom (recentf-save-file "~/.cache/emacs/recentf"))
 
 (global-display-line-numbers-mode)
+
+(let* ((systemd-files '(".service" ".timer" ".target" ".mount" ".automount" ".slice" ".socket" ".path" ".netdev" ".network" ".link"))
+       (systemd-regexp (concat (regexp-opt systemd-files t) "\\'")))
+  (add-to-list 'auto-mode-alist (cons systemd-regexp 'conf-unix-mode)))
