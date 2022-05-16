@@ -61,12 +61,17 @@
   (load-theme 'leuven t))
 
 (use-package savehist
-  :init (savehist-mode)
-  :custom (savehist-file "~/.cache/emacs/savehist"))
+  :defer 1
+  :config
+  (setq savehist-file "~/.cache/emacs/savehist")
+  (savehist-mode))
 
 (use-package recentf
-  :init (recentf-mode)
-  :custom (recentf-save-file "~/.cache/emacs/recentf"))
+  :defer 1
+  :config
+  (setq recentf-save-file "~/.cache/emacs/recentf"
+	recentf-auto-cleanup 'never)
+  (recentf-mode))
 
 (global-display-line-numbers-mode)
 
