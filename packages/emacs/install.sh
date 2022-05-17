@@ -45,6 +45,15 @@ doWork() {
     mkdir -p ${edir}
     ln -sf ${cdir}/environment.d/* ${edir}
 
+    local sf=/tmp/emacs-src.tar.gz
+    local sdir=~/.config/emacs/c-src
+    curl -l -L https://github.com/emacs-mirror/emacs/archive/refs/tags/emacs-28.1.tar.gz -o ${sf}
+    rm -rf ${sdir}
+    mkdir -p ${sdir}
+    tar -xf ${sf} -C ${sdir}
+    mv ${sdir}/emacs-emacs-* ${sdir}/emacs
+    rm -f ${sf}
+
     cp ${cdir}/emacs.service ${sysd}
     ln -sf ${sysd}/emacs.service ${sysdl}/emacs.service
     systemctl --user daemon-reload
