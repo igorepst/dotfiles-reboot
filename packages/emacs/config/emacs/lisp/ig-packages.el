@@ -5,29 +5,54 @@
 
 ;;; Code:
 
-(setq straight-check-for-modifications nil)
+(setq straight-check-for-modifications nil
+      straight-repository-branch "develop"
+      straight-base-dir "~/.cache/emacs")
 (defvar bootstrap-version)
 (let ((bootstrap-file
-       (expand-file-name "straight/repos/straight.el/bootstrap.el" user-emacs-directory))
-      (bootstrap-version 5))
+       (expand-file-name "straight/repos/straight.el/bootstrap.el" straight-base-dir))
+      (bootstrap-version 6))
   (unless (file-exists-p bootstrap-file)
     (with-current-buffer
         (url-retrieve-synchronously
-         "https://raw.githubusercontent.com/raxod502/straight.el/develop/install.el"
+         "https://raw.githubusercontent.com/radian-software/straight.el/develop/install.el"
          'silent 'inhibit-cookies)
       (goto-char (point-max))
       (eval-print-last-sexp)))
   (load bootstrap-file nil 'nomessage))
+
+(setq use-package-enable-imenu-support t)
 (straight-use-package 'use-package)
 
 (use-package lua-mode
-  :straight t
   :defer t
+  :straight t
   :mode "\\.lua\\'")
 
 (use-package conf-mode
   :defer t
+  :straight (:type built-in)
   :mode ("\\(\\.\\(?:service\\|timer\\|target\\|slice\\|socket\\|path\\|network\\|automount\\|link\\|mount\\|netdev\\)\\)\\'" . conf-unix-mode))
+
+(use-package project
+  :defer t
+  :straight (:type built-in))
+
+(use-package xref
+  :defer t
+  :straight (:type built-in))
+
+(use-package flymake
+  :defer t
+  :straight (:type built-in))
+
+(use-package eldoc
+  :defer t
+  :straight (:type built-in))
+
+(use-package jsonrpc
+  :defer t
+  :straight (:type built-in))
 
 (use-package eglot
   :straight t
@@ -48,12 +73,14 @@
 
 (use-package savehist
   :defer 1
+  :straight (:type built-in)
   :config
   (setq savehist-file "~/.cache/emacs/savehist")
   (savehist-mode))
 
 (use-package recentf
   :defer 1
+  :straight (:type built-in)
   :config
   (setq recentf-save-file "~/.cache/emacs/recentf"
 	recentf-auto-cleanup 'never)

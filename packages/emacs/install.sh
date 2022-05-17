@@ -46,7 +46,7 @@ doWork() {
     ln -sf ${cdir}/environment.d/* ${edir}
 
     local sf=/tmp/emacs-src.tar.gz
-    local sdir=~/.config/emacs/c-src
+    local sdir=~/.cache/emacs/c-src
     curl -l -L https://github.com/emacs-mirror/emacs/archive/refs/tags/emacs-28.1.tar.gz -o ${sf}
     rm -rf ${sdir}
     mkdir -p ${sdir}

@@ -17,9 +17,10 @@
       org-startup-with-inline-images t
       tool-bar-style 'both
       auto-save-default nil
+      auto-save-list-file-prefix nil
       backup-inhibited t
       create-lockfiles nil
-      source-directory (expand-file-name "c-src/emacs" user-emacs-directory))
+      source-directory "~/.cache/emacs/c-src/emacs")
 
 (setq-default indicate-empty-lines t)
 (if (not (display-graphic-p))

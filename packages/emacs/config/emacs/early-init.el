@@ -1,4 +1,5 @@
 ;;; early-init.el -*- lexical-binding: t; -*-
+(push "~/.cache/emacs/eln-cache/" native-comp-eln-load-path)
 (defvar ig--file-name-handler-alist file-name-handler-alist)
 (setq package-enable-at-startup nil
       gc-cons-threshold most-positive-fixnum
