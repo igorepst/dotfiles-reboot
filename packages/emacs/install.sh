@@ -7,12 +7,12 @@ doWork() {
 
     case "${OS_ID}" in
 	ubuntu)
-	    if ! checkp emacs; then
-		printf "%bInstalling Emacs%b\n" "${RED}" "${RESET}"
-		sudo add-apt-repository ppa:kelleyk/emacs
-		sudo apt-get update
-		sudo apt install emacs28
-	    fi
+	    #if ! checkp emacs28; then
+		#printf "%bInstalling Emacs%b\n" "${RED}" "${RESET}"
+		#sudo add-apt-repository ppa:kelleyk/emacs
+		#sudo apt-get update
+		#sudo apt install emacs28
+	    #fi
 	    ;;
 	arch)
 	    if ! checkp emacs-nativecomp; then
