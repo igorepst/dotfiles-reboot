@@ -86,6 +86,15 @@
 	recentf-auto-cleanup 'never)
   (recentf-mode))
 
+(use-package isearch
+  :defer t
+  :straight (:type built-in)
+  :config
+  (setq isearch-lazy-count t
+	isearch-lazy-highlight t
+	search-upper-case nil
+	isearch-wrap-pause 'no-ding))
+
 (provide 'ig-packages)
 
 ;;; ig-packages.el ends here
