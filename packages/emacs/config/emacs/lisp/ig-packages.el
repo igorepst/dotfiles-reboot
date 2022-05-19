@@ -81,8 +81,10 @@
   :straight (:type built-in)
   :config
   (setq recentf-save-file "~/.cache/emacs/recentf"
-	recentf-auto-cleanup 'never)
+	recentf-auto-cleanup 'never
+	recentf-exclude '("MERGE_MSG" "COMMIT_EDITMSG"))
   (recentf-mode))
+
 
 (use-package isearch
   :defer t
@@ -100,16 +102,9 @@
 
 (use-package marginalia
   :straight t
-  ;; Either bind `marginalia-cycle` globally or only in the minibuffer
-  :bind (("M-A" . marginalia-cycle)
-         :map minibuffer-local-map
-         ("M-A" . marginalia-cycle))
-
-  ;; The :init configuration is always executed (Not lazy!)
+  :bind (:map minibuffer-local-map
+              ("M-A" . marginalia-cycle))
   :init
-
-  ;; Must be in the :init section of use-package such that the mode gets
-  ;; enabled right away. Note that this forces loading the package.
   (marginalia-mode))
 
 (use-package consult
@@ -227,7 +222,7 @@
   ;; (setq consult-project-function (lambda (_) (vc-root-dir)))
   ;;;; 4. locate-dominating-file
   ;; (setq consult-project-function (lambda (_) (locate-dominating-file "." ".git")))
-)
+  )
 
 (provide 'ig-packages)
 

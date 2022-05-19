@@ -93,9 +93,13 @@ function _updateDots(){
     zcompile-many ~/dotfiles-reboot/links/.zsh/plugins/zsh-syntax-highlighting/{zsh-syntax-highlighting.zsh,highlighters/*/*.zsh}
     zcompile-many ~/dotfiles-reboot/links/.zsh/plugins/zsh-autosuggestions/{zsh-autosuggestions.zsh,src/**/*.zsh}
     popd >/dev/null
-    echo 'Updating GH releases'
     source ${(%):-%x}
     rehash
+    echo 'Updating Emacs packages'
+    if emacs --batch --eval "(progn (add-to-list 'load-path (expand-file-name \"lisp\" user-emacs-directory))(require 'ig-packages)(straight-pull-all))"; then
+	systemctl --user restart emacs
+    fi
+    echo 'Updating GH releases'
     if _get_gh_releases; then
         echo 'Updating nvim plugins'
         local packerDir=~/.local/share/nvim/site/pack/packer/start/packer.nvim
