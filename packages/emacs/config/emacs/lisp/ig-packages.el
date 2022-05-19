@@ -57,7 +57,7 @@
 (use-package eglot
   :straight t
   :commands (eglot eglot-ensure)
-  :hook ((lua-mode sh-mode) . eglot-ensure)
+  :hook ((lua-mode sh-mode python-mode) . eglot-ensure)
   :config
   (let* ((ig--sumneko-root-path "~/.cache/lspServers/lua/sumneko-lua/extension/server")
 	 (ig--sumneko-bin (expand-file-name "bin/lua-language-server" ig--sumneko-root-path))

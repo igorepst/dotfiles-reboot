@@ -9,7 +9,7 @@
       initial-scratch-message nil
       initial-major-mode 'emacs-lisp-mode
       focus-follow-mouse t
-      mouse-autoselect-window t
+      mouse-autoselect-window nil
       disabled-command-function nil
       use-short-answers t
       x-gtk-show-hidden-files t
