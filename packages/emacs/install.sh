@@ -7,12 +7,14 @@ doWork() {
 
     case "${OS_ID}" in
 	ubuntu)
-	    #if ! checkp emacs28; then
-		#printf "%bInstalling Emacs%b\n" "${RED}" "${RESET}"
-		#sudo add-apt-repository ppa:kelleyk/emacs
-		#sudo apt-get update
-		#sudo apt install emacs28
-	    #fi
+	    if ! command -v snap > /dev/null; then
+		printf "%bSnap is not installed%b\n" "${RED}" "${RESET}"
+		exit 1
+	    fi
+	    if ! snap info emacs > /dev/null 2>&1; then
+		printf "%bInstalling Emacs%b\n" "${RED}" "${RESET}"
+		sudo snap install emacs --classic
+	    fi
 	    ;;
 	arch)
 	    if ! checkp emacs-nativecomp; then
@@ -34,7 +36,17 @@ doWork() {
 
     local ddir=~/.local/share/applications
     mkdir -p ${ddir}
-    cp ${cdir}/desktop/* ${ddir}
+    case "${OS_ID}" in
+	ubuntu)
+	    # Override for Snap
+	    for d in ${cdir}/desktop/*; do
+            cp -- "${d}" "${ddir}/emacs_$(basename ${d})"
+	    done
+	    ;;
+	*)
+	    cp ${cdir}/desktop/* ${ddir}
+	    ;;
+    esac
     update-desktop-database ${ddir}
     
     local sysd=~/.config/systemd/user

@@ -36,8 +36,11 @@ alias sstat='systemctl status --no-pager --full'
 alias sstart='sudo systemctl start'
 alias sstop='sudo systemctl stop'
 
-alias x='${MYFEXP} .'
+alias x='${MYFEXP}'
+function x.(){
+    "${MYFEXP}" .
+}
 
 alias emacs='emacs -mm'
-alias e='${VISUAL}'
+alias e='emacsclient -nc'
 alias et='${EDITOR}'

@@ -159,7 +159,7 @@ function _install_npm_lsp() {
     else
         echo "Updating ${2}"
         pushd "${1}" > /dev/null
-        npm update
+        ! ncu -us -e 2 && npm install
     fi
     popd > /dev/null
 }

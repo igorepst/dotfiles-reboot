@@ -3,6 +3,8 @@
 function doWork() {
     printf "${GREEN}Completing installation${RESET}\n\n"
 
+    npm install -g npm-check-updates
+
     local ZSH_VOLATILE="${HOME}"/.zsh/volatile
     mkdir -p "${ZSH_VOLATILE}"
     zsh -i -c "_updateDots"
