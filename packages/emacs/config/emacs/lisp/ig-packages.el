@@ -64,7 +64,8 @@
 	 (ig--sumneko-main (expand-file-name "main.lua" ig--sumneko-root-path))
 	 (ig--sumneko-settings (concat "--configpath=" (expand-file-name "external/sumnekoSettings.lua" user-emacs-directory))))
     (add-to-list 'eglot-server-programs `(lua-mode . (,ig--sumneko-bin "-E" "-e" "LANG=en" ,ig--sumneko-main ,ig--sumneko-settings))))
-  (add-to-list 'eglot-server-programs '(sh-mode . ("~/.cache/lspServers/bash/node_modules/.bin/bash-language-server" "start"))))
+  (add-to-list 'eglot-server-programs '(sh-mode . ("~/.cache/lspServers/bash/node_modules/.bin/bash-language-server" "start")))
+  (add-to-list 'eglot-server-programs '(python-mode . ("~/.local/bin/pyright-langserver" "--stdio"))))
 
 (use-package leuven-theme
   :straight t
@@ -74,8 +75,19 @@
 (use-package savehist
   :straight (:type built-in)
   :config
-  (setq savehist-file "~/.cache/emacs/savehist")
+  (setq savehist-file "~/.cache/emacs/savehist"
+	savehist-additional-variables    
+        '(search-ring regexp-search-ring compile-history))
   (savehist-mode))
+
+(use-package saveplace
+  :straight (:type built-in)
+  :config
+  (setq save-place-file "~/.cache/emacs/saveplace"
+	save-place-version-control 'never
+	save-place-ignore-files-regexp
+  "\\(?:COMMIT_EDITMSG\\|MERGE_MSG\\|hg-editor-[[:alnum:]]+\\.txt\\|svn-commit\\.tmp\\|bzr_log\\.[[:alnum:]]+\\)$")
+  (save-place-mode))
 
 (use-package recentf
   :straight (:type built-in)
@@ -95,10 +107,26 @@
 	search-upper-case nil
 	isearch-wrap-pause 'no-ding))
 
+(use-package emacs-lock
+  :straight (:type built-in)
+  :init
+  (with-current-buffer "*scratch*"
+    (emacs-lock-mode 'kill))
+  (with-current-buffer "*Messages*"
+	  (emacs-lock-mode 'kill)))
+
 (use-package vertico
   :straight t
   :init
   (vertico-mode))
+
+(use-package vertico-directory
+  :load-path "~/.cache/emacs/straight/build/vertico/extensions/"
+  :bind
+  (:map vertico-map
+        ([left] . vertico-directory-up)
+        )
+  )
 
 (use-package marginalia
   :straight t
@@ -223,6 +251,10 @@
   ;;;; 4. locate-dominating-file
   ;; (setq consult-project-function (lambda (_) (locate-dominating-file "." ".git")))
   )
+
+(use-package org-modern
+  :straight t
+  :hook ((org-mode org-agenda-finalize) . 'org-modern-mode))
 
 (provide 'ig-packages)
 

@@ -8,7 +8,8 @@ function doWork() {
 
     local ZSH_VOLATILE="${HOME}"/.zsh/volatile
     mkdir -p "${ZSH_VOLATILE}"
-    zsh -i -c "_updateDots"
+    # Run as login intercative shell to re-read config
+    zsh -li -c "_updateDots"
 
     if [[ -f "${HOME}"/.zsh_history ]] && [[ ! -f "${ZSH_VOLATILE}"/zsh_history ]]; then
         # Moving the file is problematic if called from existing ZSH session

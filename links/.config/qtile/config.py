@@ -1,29 +1,3 @@
-# Copyright (c) 2010 Aldo Cortesi
-# Copyright (c) 2010, 2014 dequis
-# Copyright (c) 2012 Randall Ma
-# Copyright (c) 2012-2014 Tycho Andersen
-# Copyright (c) 2012 Craig Barnes
-# Copyright (c) 2013 horsik
-# Copyright (c) 2013 Tao Sauvage
-#
-# Permission is hereby granted, free of charge, to any person obtaining a copy
-# of this software and associated documentation files (the "Software"), to deal
-# in the Software without restriction, including without limitation the rights
-# to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
-# copies of the Software, and to permit persons to whom the Software is
-# furnished to do so, subject to the following conditions:
-#
-# The above copyright notice and this permission notice shall be included in
-# all copies or substantial portions of the Software.
-#
-# THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
-# IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
-# FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
-# AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
-# LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
-# OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
-# SOFTWARE.
-
 import os
 import subprocess
 from libqtile import bar, layout, widget, hook
@@ -32,6 +6,16 @@ from libqtile.lazy import lazy
 
 mod = "mod4"
 terminal = "kitty"
+wmname = "LG3D"
+
+auto_fullscreen = True
+bring_front_click = "floating_only"
+cursor_warp = False
+dgroups_key_binder = None
+focus_on_window_activation = "smart"
+follow_mouse_focus = True
+reconfigure_screens = True
+dgroups_app_rules = []
 
 keys = [
     # A list of available commands that can be bound to keys can be found
@@ -103,7 +87,7 @@ for i in groups:
     )
 
 layouts = [
-    layout.Columns(border_focus_stack=["#d75f5f", "#8f3d3d"], border_width=2),
+    layout.Columns(border_focus_stack=["#d75f5f", "#8f3d3d"], border_width = 4),
     layout.Max(),
     # Try more layouts by unleashing below layouts.
     # layout.Stack(num_stacks=2),
@@ -122,6 +106,8 @@ widget_defaults = dict(
     font="DejaVuSansMono Nerd Font Mono",
     fontsize=14,
     padding=3,
+    foreground = '#2E3436',
+    background = '#EEEEEC'
 )
 extension_defaults = widget_defaults.copy()
 
@@ -133,16 +119,18 @@ screens = [
             [
                 # widget.CurrentLayoutIcon(),
                 widget.GroupBox(active = '#2E3436'),
-                widget.TaskList(max_title_width = 400, icon_size = 20, padding_x = 5, foreground = '#2E3436', padding_y = 2, margin_y = 2, fontsize = 16),
+                widget.TaskList(max_title_width = 400, icon_size = 20, padding_x = 5, padding_y = 2, margin_y = 2, fontsize = 16),
                 # NB Systray is incompatible with Wayland, consider using StatusNotifier instead
                 # widget.StatusNotifier(),
                 widget.Systray(),
+                widget.KeyboardLayout(configured_keyboards = ['us', 'ru', 'il']),
+                widget.Backlight(backlight_name = 'intel_backlight'),
                 widget.BatteryIcon(scale = 0.7),
-                # widget.Wlan(),
-                widget.Clock(format="%a %d/%m,%H:%M", foreground = '#2E3436'),
+                widget.Volume(),
+                widget.Wlan(interface = 'wlo1'),
+                widget.Clock(format="%a %d/%m,%H:%M"),
             ],
             24,
-            background = '#EEEEEC'
             # border_width=[2, 0, 2, 0],  # Draw top and bottom borders
             # border_color=["ff00ff", "000000", "ff00ff", "000000"]  # Borders are magenta
         ),
@@ -156,11 +144,11 @@ mouse = [
     Click([mod], "Button2", lazy.window.bring_to_front()),
 ]
 
-dgroups_key_binder = None
-dgroups_app_rules = []  # type: list
-follow_mouse_focus = True
-bring_front_click = False
-cursor_warp = False
+
+
+
+
+
 floating_layout = layout.Floating(
     float_rules=[
         # Run the utility of `xprop` to see the wm class and name of an X client.
@@ -173,9 +161,9 @@ floating_layout = layout.Floating(
         Match(title="pinentry"),  # GPG key password entry
     ]
 )
-auto_fullscreen = True
-focus_on_window_activation = "smart"
-reconfigure_screens = True
+
+
+
 
 # If things like steam games want to auto-minimize themselves when losing
 # focus, should we respect this or not?
@@ -183,8 +171,6 @@ auto_minimize = True
 
 # When using the Wayland backend, this can be used to configure input devices.
 wl_input_rules = None
-
-wmname = "LG3D"
 
 @hook.subscribe.startup_once
 def autostart():

@@ -11,3 +11,4 @@ export MYTERM=kitty
 export MYFEXP=vifm
 export _JAVA_OPTIONS='-Dawt.useSystemAAFontSettings=on'
 [ -f ~/.cache/.my_pc_is ] && source ~/.cache/.my_pc_is
+XDG_CURRENT_DESKTOP=GNOME
