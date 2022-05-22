@@ -86,7 +86,7 @@
   (setq save-place-file "~/.cache/emacs/saveplace"
 	save-place-version-control 'never
 	save-place-ignore-files-regexp
-  "\\(?:COMMIT_EDITMSG\\|MERGE_MSG\\|hg-editor-[[:alnum:]]+\\.txt\\|svn-commit\\.tmp\\|bzr_log\\.[[:alnum:]]+\\)$")
+	"\\(?:COMMIT_EDITMSG\\|MERGE_MSG\\|hg-editor-[[:alnum:]]+\\.txt\\|svn-commit\\.tmp\\|bzr_log\\.[[:alnum:]]+\\)$")
   (save-place-mode))
 
 (use-package recentf
@@ -96,7 +96,6 @@
 	recentf-auto-cleanup 'never
 	recentf-exclude '("MERGE_MSG" "COMMIT_EDITMSG"))
   (recentf-mode))
-
 
 (use-package isearch
   :defer t
@@ -113,7 +112,7 @@
   (with-current-buffer "*scratch*"
     (emacs-lock-mode 'kill))
   (with-current-buffer "*Messages*"
-	  (emacs-lock-mode 'kill)))
+    (emacs-lock-mode 'kill)))
 
 (use-package vertico
   :straight t
@@ -124,9 +123,7 @@
   :load-path "~/.cache/emacs/straight/build/vertico/extensions/"
   :bind
   (:map vertico-map
-        ([left] . vertico-directory-up)
-        )
-  )
+        ([left] . vertico-directory-up)))
 
 (use-package marginalia
   :straight t
@@ -137,7 +134,6 @@
 
 (use-package consult
   :straight t
-  ;; Replace bindings. Lazily loaded due by `use-package'.
   :bind (;; C-c bindings (mode-specific-map)
          ("C-c h" . consult-history)
          ("C-c m" . consult-mode-command)
