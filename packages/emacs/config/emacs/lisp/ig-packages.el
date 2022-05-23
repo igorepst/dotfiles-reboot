@@ -106,6 +106,11 @@
 	search-upper-case nil
 	isearch-wrap-pause 'no-ding))
 
+(use-package delsel
+  :straight (:type built-in)
+  :config
+  (delete-selection-mode))
+
 (use-package emacs-lock
   :straight (:type built-in)
   :init
