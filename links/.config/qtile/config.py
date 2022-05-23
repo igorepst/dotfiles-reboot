@@ -1,11 +1,12 @@
 import os
+from os import environ
 import subprocess
 from libqtile import bar, layout, widget, hook
-from libqtile.config import Click, Drag, Group, Key, Match, Screen
+from libqtile.config import Click, Drag, Group, Key, Match, Screen, ScratchPad, DropDown
 from libqtile.lazy import lazy
 
 mod = "mod4"
-terminal = "kitty"
+terminal = environ.get("MYTERM")
 wmname = "LG3D"
 
 auto_fullscreen = True
@@ -15,12 +16,16 @@ dgroups_key_binder = None
 focus_on_window_activation = "smart"
 follow_mouse_focus = True
 reconfigure_screens = True
+auto_minimize = True
+wl_input_rules = None
 dgroups_app_rules = []
 
+groups = [
+    Group("1", label = "⍺"),
+    Group("2", label = "ϐ"),
+]
+
 keys = [
-    # A list of available commands that can be bound to keys can be found
-    # at https://docs.qtile.org/en/latest/manual/config/lazy.html
-    # Switch between windows
     Key([mod], "h", lazy.layout.left(), desc="Move focus to left"),
     Key([mod], "l", lazy.layout.right(), desc="Move focus to right"),
     Key([mod], "j", lazy.layout.down(), desc="Move focus down"),
@@ -38,7 +43,7 @@ keys = [
     Key([mod, "control"], "l", lazy.layout.grow_right(), desc="Grow window to the right"),
     Key([mod, "control"], "j", lazy.layout.grow_down(), desc="Grow window down"),
     Key([mod, "control"], "k", lazy.layout.grow_up(), desc="Grow window up"),
-    Key([mod], "n", lazy.layout.normalize(), desc="Reset all window sizes"),
+    Key([mod, "control"], "n", lazy.layout.normalize(), desc="Reset all window sizes"),
     # Toggle between split and unsplit sides of stack.
     # Split = all windows displayed
     # Unsplit = 1 window displayed, like Max layout, but still with
@@ -52,15 +57,17 @@ keys = [
     Key([mod], "Return", lazy.spawn(terminal), desc="Launch terminal"),
     # Toggle between different layouts as defined below
     Key([mod], "Tab", lazy.next_layout(), desc="Toggle between layouts"),
+    Key([mod, "shift"], "Tab", lazy.prev_layout(), desc="Toggle between layouts"),
     Key([mod], "w", lazy.window.kill(), desc="Kill focused window"),
     Key([mod, "control"], "r", lazy.reload_config(), desc="Reload the config"),
     Key([mod, "control"], "q", lazy.shutdown(), desc="Shutdown Qtile"),
     Key([mod], "r", lazy.spawn("rofiLauncher"), desc="Rofi"),
     Key([mod], "a", lazy.spawn("emacsclient -c"), desc="Emacs"),
     Key([mod], "e", lazy.spawn("tfm"), desc="File manager"),
+    Key([mod], "t", lazy.group['scratch'].dropdown_toggle("term"), desc="Toggle scratchpad"),
 ]
 
-groups = [Group(i) for i in "12"]
+
 
 for i in groups:
     keys.extend(
@@ -85,6 +92,10 @@ for i in groups:
             #     desc="move focused window to group {}".format(i.name)),
         ]
     )
+
+groups.append(
+    ScratchPad("scratch", [
+        DropDown("term", terminal, width=0.8, height=0.5, opacity=0.9,on_focus_lost_hide=True)]),)
 
 layouts = [
     layout.Columns(border_focus_stack=["#d75f5f", "#8f3d3d"], border_width = 4),
@@ -113,9 +124,9 @@ extension_defaults = widget_defaults.copy()
 
 screens = [
     Screen(
-        wallpaper='~/.config/awesome/theme/mine/background.jpg',
+        wallpaper='~/.config/qtile/theme/background.jpg',
         wallpaper_mode='fill',
-        top=bar.Bar(
+        bottom=bar.Bar(
             [
                 # widget.CurrentLayoutIcon(),
                 widget.GroupBox(active = '#2E3436'),
@@ -167,7 +178,7 @@ floating_layout = layout.Floating(
 
 # If things like steam games want to auto-minimize themselves when losing
 # focus, should we respect this or not?
-auto_minimize = True
+
 
 # When using the Wayland backend, this can be used to configure input devices.
 wl_input_rules = None

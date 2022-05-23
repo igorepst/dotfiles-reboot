@@ -5,4 +5,6 @@ export SSH_AUTH_SOCK
 
 export XDG_CURRENT_DESKTOP=GNOME
 
-exec awesome >>/tmp/awesome-stdout 2>>/tmp/awesome-stderr
+_wm_name=$1
+shift
+exec "${_wm_name}" "$@" >>/tmp/"${_wm_name}"-stdout 2>>/tmp/"${_wm_name}"-stderr
