@@ -130,6 +130,12 @@
   (:map vertico-map
         ([left] . vertico-directory-up)))
 
+(use-package orderless
+  :straight t
+  :custom
+  (completion-styles '(substring orderless basic))
+  (completion-category-overrides '((file (styles basic substring partial-completion)))))
+
 (use-package marginalia
   :straight t
   :bind (:map minibuffer-local-map

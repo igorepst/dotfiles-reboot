@@ -20,7 +20,8 @@
       auto-save-list-file-prefix nil
       backup-inhibited t
       create-lockfiles nil
-      source-directory "~/.cache/emacs/c-src/emacs")
+      source-directory "~/.cache/emacs/c-src/emacs"
+      load-prefer-newer t)
 
 (setq-default indicate-empty-lines t)
 (if (not (display-graphic-p))

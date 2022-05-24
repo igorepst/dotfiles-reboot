@@ -8,9 +8,6 @@ function doWork() {
 
     local ZSH_VOLATILE="${HOME}"/.zsh/volatile
     mkdir -p "${ZSH_VOLATILE}"
-    # Run as login intercative shell to re-read config
-    zsh -li -c "_updateDots"
-
     if [[ -f "${HOME}"/.zsh_history ]] && [[ ! -f "${ZSH_VOLATILE}"/zsh_history ]]; then
         # Moving the file is problematic if called from existing ZSH session
         cp "${HOME}"/.zsh_history "${ZSH_VOLATILE}"/zsh_history
@@ -22,7 +19,12 @@ function doWork() {
         [[ "${MY_PC_IS}" = "home" ]] && echo 'inner: /mnt/Inner' >> "${PMFILE}"
     fi
 
+    mkdir -p ~/.zsh/volatile/igorepst/_gh_release/_cache/_compl
     curl -k -L https://raw.githubusercontent.com/docker/cli/master/contrib/completion/zsh/_docker -o ~/.zsh/volatile/igorepst/_gh_release/_cache/_compl/_docker
+    curl -k -L https://raw.githubusercontent.com/ohmyzsh/ohmyzsh/master/plugins/pip/_pip -o ~/.zsh/volatile/igorepst/_gh_release/_cache/_compl/_pip
+
+    # Run as login intercative shell to re-read config
+    zsh -li -c "_updateDots"
 
     # Add nvim to secure path of 'sudo'
     sudo ln -sf ~/.zsh/volatile/igorepst/_gh_release/neovim/neovim/bin/nvim /usr/local/bin/nvim
