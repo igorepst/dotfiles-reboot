@@ -1,9 +1,10 @@
 import os
 from os import environ
 import subprocess
-from libqtile import bar, layout, widget, hook
+from libqtile import bar, layout, hook
 from libqtile.config import Click, Drag, Group, Key, Match, Screen, ScratchPad, DropDown
 from libqtile.lazy import lazy
+from qtile_extras import widget
 
 mod = "mod4"
 terminal = environ.get("MYTERM")
@@ -55,7 +56,6 @@ keys = [
         desc="Toggle between split and unsplit sides of stack",
     ),
     Key([mod], "Return", lazy.spawn(terminal), desc="Launch terminal"),
-    # Toggle between different layouts as defined below
     Key([mod], "Tab", lazy.next_layout(), desc="Toggle between layouts"),
     Key([mod, "shift"], "Tab", lazy.prev_layout(), desc="Toggle between layouts"),
     Key([mod], "w", lazy.window.kill(), desc="Kill focused window"),
@@ -98,8 +98,9 @@ groups.append(
         DropDown("term", terminal, width=0.8, height=0.5, opacity=0.9,on_focus_lost_hide=True)]),)
 
 layouts = [
-    layout.Columns(border_focus_stack=["#d75f5f", "#8f3d3d"], border_width = 4),
-    layout.Max(),
+    layout.Floating()
+    # layout.Columns(border_focus_stack=["#d75f5f", "#8f3d3d"], border_width = 4),
+    # layout.Max(),
     # Try more layouts by unleashing below layouts.
     # layout.Stack(num_stacks=2),
     # layout.Bsp(),
@@ -113,12 +114,18 @@ layouts = [
     # layout.Zoomy(),
 ]
 
+colors = dict(
+    foreground = '#2E3436',
+    background = '#EEEEEC',
+    inactive = '#999999'
+)
+
 widget_defaults = dict(
     font="DejaVuSansMono Nerd Font Mono",
     fontsize=14,
     padding=3,
-    foreground = '#2E3436',
-    background = '#EEEEEC'
+    foreground = colors['foreground'],
+    background = colors['background']
 )
 extension_defaults = widget_defaults.copy()
 
@@ -131,14 +138,12 @@ screens = [
                 # widget.CurrentLayoutIcon(),
                 widget.GroupBox(active = '#2E3436'),
                 widget.TaskList(max_title_width = 400, icon_size = 20, padding_x = 5, padding_y = 2, margin_y = 2, fontsize = 16),
-                # NB Systray is incompatible with Wayland, consider using StatusNotifier instead
-                # widget.StatusNotifier(),
-                widget.Systray(),
+                widget.StatusNotifier(),
                 widget.KeyboardLayout(configured_keyboards = ['us', 'ru', 'il']),
-                widget.Backlight(backlight_name = 'intel_backlight'),
-                widget.BatteryIcon(scale = 0.7),
-                widget.Volume(),
-                widget.Wlan(interface = 'wlo1'),
+                # widget.Backlight(backlight_name = 'intel_backlight'),
+                widget.UPowerWidget(font_colour = colors['foreground'], fill_normal = colors['foreground'], border_colour = colors['foreground']),
+                widget.ALSAWidget(mode = 'icon', theme_path = '/usr/share/icons/breeze/status/22'),
+                widget.WiFiIcon(interface = 'wlo1', active_colour = colors['foreground'], inactive_colour = colors['inactive']),
                 widget.Clock(format="%a %d/%m,%H:%M"),
             ],
             24,
@@ -148,42 +153,38 @@ screens = [
     ),
 ]
 
-# Drag floating layouts.
 mouse = [
     Drag([mod], "Button1", lazy.window.set_position_floating(), start=lazy.window.get_position()),
     Drag([mod], "Button3", lazy.window.set_size_floating(), start=lazy.window.get_size()),
     Click([mod], "Button2", lazy.window.bring_to_front()),
 ]
 
-
-
-
-
-
-floating_layout = layout.Floating(
-    float_rules=[
-        # Run the utility of `xprop` to see the wm class and name of an X client.
-        *layout.Floating.default_float_rules,
-        Match(wm_class="confirmreset"),  # gitk
-        Match(wm_class="makebranch"),  # gitk
-        Match(wm_class="maketag"),  # gitk
-        Match(wm_class="ssh-askpass"),  # ssh-askpass
-        Match(title="branchdialog"),  # gitk
-        Match(title="pinentry"),  # GPG key password entry
-    ]
-)
-
-
-
-
-# If things like steam games want to auto-minimize themselves when losing
-# focus, should we respect this or not?
-
-
-# When using the Wayland backend, this can be used to configure input devices.
-wl_input_rules = None
+# floating_layout = layout.Floating(
+#     float_rules=[
+#         *layout.Floating.default_float_rules,
+#         Match(wm_class="ssh-askpass"),
+#         Match(title="pinentry"),
+#         Match(title="kitty-vifm"),
+#     ]
+# )
 
 @hook.subscribe.startup_once
 def autostart():
     home = os.path.expanduser('~')
     subprocess.Popen([home + '/.config/qtile/autostart.sh'])
+
+# @hook.subscribe.client_managed
+# def clientManaged(c):
+#     if c.get_wm_class()[0] == 'kitty-vifm':
+#         # c.floating = True
+#         c.maximized = True
+
+# @hook.subscribe.client_new
+# def clientNew(c):
+#     if c.get_wm_class()[0] == 'kitty-vifm':
+#         c.floating = True
+        # c.maximized = True
+
+# @hook.subscribe.client_focus
+# def clientFocus(c):
+#     c.cmd_bring_to_front()

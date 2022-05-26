@@ -290,6 +290,12 @@ awful.keyboard.append_global_keybindings({
         description = 'run file explorer',
         group = 'launcher',
     }),
+     awful.key({ modkey }, 'a', function()
+        awful.spawn('visual')
+    end, {
+        description = 'run visual editor',
+        group = 'launcher',
+    }),
     awful.key({ modkey }, 'p', function()
         menubar.show()
     end, {

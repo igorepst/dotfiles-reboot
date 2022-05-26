@@ -146,6 +146,7 @@
 (use-package consult
   :straight t
   :bind (;; C-c bindings (mode-specific-map)
+	 ("C-x C-a" . consult-recent-file)
          ("C-c h" . consult-history)
          ("C-c m" . consult-mode-command)
          ("C-c k" . consult-kmacro)

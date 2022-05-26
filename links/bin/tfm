@@ -2,7 +2,7 @@
 
 case "${MYFEXP}" in
     vifm)
-        ${MYTERM} -e vifm;;
+        ${MYTERM} --class "${MYTERM}-vifm" -e vifm;;
     *)
         xdg-open ~;;
 esac
