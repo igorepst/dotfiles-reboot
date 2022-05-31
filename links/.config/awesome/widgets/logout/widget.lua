@@ -10,7 +10,7 @@ local onlogout = function()
     awesome.quit()
 end
 local onlock = function()
-    awful.spawn.with_shell('i3lock')
+   awful.spawn.with_shell(os.getenv('HOME') .. '/bin/lockScreen')
 end
 local onreboot = function()
     awful.spawn.with_shell('systemctl reboot')
@@ -29,7 +29,7 @@ local w = wibox({
     max_widget_size = 500,
     ontop = true,
     height = 200,
-    width = 400,
+    width = 420,
     shape = function(cr, width, height)
         gears.shape.rounded_rect(cr, width, height, 8)
     end,
@@ -132,20 +132,20 @@ function logout.setup()
                         icon_margin
                     ),
                     create_button(
-                        img_path .. 'refresh-cw.svg',
-                        'Reboot (r)',
-                        accent_color,
-                        text_color,
-                        onreboot,
-                        icon_size,
-                        icon_margin
-                    ),
-                    create_button(
                         img_path .. 'moon.svg',
                         'Suspend (u)',
                         accent_color,
                         text_color,
                         onsuspend,
+                        icon_size,
+                        icon_margin
+                    ),
+		     create_button(
+                        img_path .. 'refresh-cw.svg',
+                        'Reboot (r)',
+                        accent_color,
+                        text_color,
+                        onreboot,
                         icon_size,
                         icon_margin
                     ),
@@ -159,7 +159,7 @@ function logout.setup()
                         icon_margin
                     ),
                     id = 'buttons',
-                    spacing = 8,
+                    spacing = 10,
                     layout = wibox.layout.fixed.horizontal,
                 },
                 valigh = 'center',

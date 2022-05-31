@@ -346,7 +346,7 @@ theme.taglist_squares_unsel = nil
 -- theme.wallpaper = function(s)
 --     return theme_assets.wallpaper(wallpaper_bg, wallpaper_fg, wallpaper_alt_fg, s)
 -- end
-theme.wallpaper = themes_path .. 'background.jpg'
+theme.wallpaper = os.getenv('HOME') ..'/.theme/background.png'
 
 -- Set different colors for urgent notifications.
 rnotification.connect_signal('request::rules', function()
