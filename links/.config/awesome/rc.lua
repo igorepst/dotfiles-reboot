@@ -673,18 +673,6 @@ ruled.client.connect_signal('request::rules', function()
     })
 
     ruled.client.append_rule({
-        id = 'notetaker',
-        rule_any = { class = {'notetaker', 'centerw'} },
-        properties = {
-            floating = true,
-            width = 800,
-            height = 600,
-            delayed_placement = awful.placement.centered,
-            ontop = true,
-        },
-    })
-
-    ruled.client.append_rule({
         id = 'kitty',
         rule_any = { class = { 'kitty' } },
         properties = { delayed_max = true },
@@ -759,19 +747,3 @@ end)
 client.connect_signal('mouse::enter', function(c)
     c:activate({ context = 'mouse_enter', raise = false })
 end)
-
-local function run_once(cmd_arr)
-    for _, cmd in ipairs(cmd_arr) do
-        local findme = cmd
-        local firstspace = cmd:find(' ')
-        if firstspace then
-            findme = cmd:sub(0, firstspace - 1)
-        end
-        awful.spawn.with_shell(string.format('pgrep -u $USER -x %s > /dev/null || (%s)', findme, cmd))
-    end
-end
-local run_once_t = { 'picom -b' }
--- if os.getenv('MY_PC_IS') == 'home' then
---     table.insert(run_once_t, 'wifi')
--- end
-run_once(run_once_t)
