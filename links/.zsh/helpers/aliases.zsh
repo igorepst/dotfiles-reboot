@@ -44,3 +44,4 @@ function x.(){
 alias emacs='emacs -mm'
 alias e='emacsclient -nc'
 alias et='${EDITOR}'
+alias S='sudoedit'

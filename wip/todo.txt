@@ -1,2 +1,3 @@
 continue with vifm, incl. helpers/vifm
 remove luafile in favor of sumneko
+pathmarks file is not filled

@@ -11,7 +11,11 @@ fi
 
 case "${MY_PC_IS}" in
     home)
-        exec startplasma-x11
+	eval $(/usr/bin/gnome-keyring-daemon --start --components=pkcs11,secrets,ssh)
+	export SSH_AUTH_SOCK
+	export XDG_CURRENT_DESKTOP=GNOME
+	udiskie --tray &
+        exec awesome >>/tmp/awesome-stdout 2>>/tmp/awesome-stderr
         ;;
     *)
         ;;

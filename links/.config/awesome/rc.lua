@@ -242,7 +242,8 @@ screen.connect_signal('request::desktop_decoration', function(s)
             spacing = dpi(7),
             mykeyboardlayout(),
             volume_widget({
-                widget_type = 'icon_and_text',
+		  device = 'default',
+		  widget_type = 'icon_and_text',
             }),
             upower_bat(),
             wibox.container.margin(systray, 0, 0, dpi(3), 0),
