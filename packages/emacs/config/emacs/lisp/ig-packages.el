@@ -5,7 +5,8 @@
 
 ;;; Code:
 
-(setq straight-check-for-modifications nil
+(setq load-prefer-newer t
+      straight-check-for-modifications nil
       straight-repository-branch "develop"
       straight-base-dir "~/.cache/emacs")
 (defvar bootstrap-version)
