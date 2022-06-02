@@ -58,7 +58,15 @@
 (use-package eglot
   :straight t
   :commands (eglot eglot-ensure)
-  :hook ((lua-mode sh-mode python-mode) . eglot-ensure)
+  :hook ((lua-mode python-mode) . eglot-ensure)
+  :init
+  (add-hook 'sh-mode-hook
+	    (lambda ()
+	      ; TODO: fix: eglot connects when going from bash to zsh
+	      (when (not (equal 'zsh sh-shell))
+		(autoload #'eglot "eglot" nil t)
+		(eglot-ensure)
+		)))
   :config
   (let* ((ig--sumneko-root-path "~/.cache/lspServers/lua/sumneko-lua/extension/server")
 	 (ig--sumneko-bin (expand-file-name "bin/lua-language-server" ig--sumneko-root-path))

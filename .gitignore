@@ -10,3 +10,4 @@ links/bin/*archive
 links/.config/mpv/*
 !links/.config/mpv/*.conf
 packages/emacs/config/emacs/eln-cache/*
+links/.zsh/helpers/emacs.zsh
