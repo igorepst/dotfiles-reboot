@@ -83,18 +83,7 @@ setopt long_list_jobs notify no_beep complete_in_word no_hup no_flow_control typ
     fi
 }
 
-source ~/.zsh/helpers/aliases.zsh
-source ~/.zsh/helpers/fzf.zsh
-source ~/.zsh/helpers/navi.zsh 
-source ~/.zsh/helpers/ripgrep.zsh 
-source ~/.zsh/helpers/functions.zsh 
-source ~/.zsh/helpers/title.zsh 
-source ~/.zsh/helpers/formarks.zsh 
-source ~/.zsh/helpers/command_not_found.zsh 
-source ~/.zsh/helpers/lnav.zsh 
-source ~/.zsh/helpers/mvn.zsh 
-source ~/.zsh/helpers/aws.zsh 
-source ~/.zsh/helpers/vifm.zsh 
+for f (~/.zsh/helpers/*.zsh(N.)) source $f
 [ -f ~/.work/zshrc ] && source ~/.work/zshrc
 
 if (( ${+commands[emacsclient]} )); then

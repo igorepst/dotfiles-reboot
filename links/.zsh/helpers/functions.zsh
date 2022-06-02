@@ -89,6 +89,7 @@ function _updateDots(){
     pushd ~/dotfiles-reboot >/dev/null
     git pull origin $(git rev-parse --abbrev-ref HEAD)
     zcompile-many ~/dotfiles-reboot/links/.zsh/helpers/*.zsh
+    zcompile-many ~/dotfiles-reboot/links/.zsh/supp/*.zsh
     git submodule update --init --recursive --remote --merge --force
     zcompile-many ~/dotfiles-reboot/links/.zsh/plugins/zsh-syntax-highlighting/{zsh-syntax-highlighting.zsh,highlighters/*/*.zsh}
     zcompile-many ~/dotfiles-reboot/links/.zsh/plugins/zsh-autosuggestions/{zsh-autosuggestions.zsh,src/**/*.zsh}
@@ -121,7 +122,7 @@ function _updateDots(){
 
 function _get_gh_releases() {
     IG_GH_REL_UPDATE=1
-    source ~/.zsh/helpers/get_gh_release.zsh
+    source ~/.zsh/supp/get_gh_release.zsh
     get_gh_release --repo denisidoro/navi --arch x86_64-unknown-linux-musl.tar.gz --toPath navi
     get_gh_release --repo koalaman/shellcheck --arch linux.x86_64.tar.xz --toPath shellcheck
     get_gh_release --repo mvdan/sh --arch linux_amd64 --toPath binlinux_amd64 --unarchive 0 --rn shfmt
