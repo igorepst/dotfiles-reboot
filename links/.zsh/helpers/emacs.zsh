@@ -1,1 +1,0 @@
-/home/igor.epstein/dotfiles-reboot/packages/emacs/emacs.zsh
