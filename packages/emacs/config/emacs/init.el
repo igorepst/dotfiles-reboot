@@ -23,6 +23,8 @@
       source-directory "~/.cache/emacs/c-src/emacs"
       find-file-visit-truename t)
 
+(add-to-list 'completion-ignored-extensions ".zwc")
+
 (setq-default indicate-empty-lines t)
 (if (not (display-graphic-p))
     (xterm-mouse-mode 1))
