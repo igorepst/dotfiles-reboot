@@ -34,3 +34,8 @@ function rf() {
         $EDITOR "$fn" +"$ln"
     fi
 }
+
+function _ig_update_ripgrep() {
+    get_gh_release --repo BurntSushi/ripgrep --arch linux-musl.tar.gz --toPath rg --toCompletionPath complete/_rg
+}
+_ig_update_funcs+=("_ig_update_ripgrep")

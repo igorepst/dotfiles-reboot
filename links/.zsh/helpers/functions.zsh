@@ -108,21 +108,9 @@ function _updateDots(){
 }
 
 function _get_gh_releases() {
-    get_gh_release --repo denisidoro/navi --arch x86_64-unknown-linux-musl.tar.gz --toPath navi
     get_gh_release --repo koalaman/shellcheck --arch linux.x86_64.tar.xz --toPath shellcheck
     get_gh_release --repo mvdan/sh --arch linux_amd64 --toPath binlinux_amd64 --unarchive 0 --rn shfmt
     get_gh_release --repo JohnnyMorganz/StyLua --arch linux.zip --toPath stylua
-    get_gh_release --repo BurntSushi/ripgrep --arch linux-musl.tar.gz --toPath rg --toCompletionPath complete/_rg
-    if get_gh_release --repo junegunn/fzf --arch linux_amd64.tar.gz --toPath fzf; then
-        echo 'Downloading FZF scripts'
-        local fzf_dir=~/.zsh/volatile/igorepst/_gh_release/junegunn/fzf
-        curl -k -L https://raw.githubusercontent.com/junegunn/fzf/master/shell/completion.zsh -o "${fzf_dir}"/completion.zsh
-        curl -k -L https://raw.githubusercontent.com/junegunn/fzf/master/shell/key-bindings.zsh -o "${fzf_dir}"/key-bindings.zsh
-        zcompile-many "${fzf_dir}"/*.zsh
-        curl -k -L https://raw.githubusercontent.com/junegunn/fzf/master/bin/fzf-tmux -o "${fzf_dir}"/fzf-tmux
-        chmod +x "${fzf_dir}"/fzf-tmux
-        ln -sf "${fzf_dir}"/fzf-tmux ~/.zsh/volatile/igorepst/_gh_release/_cache/_bin/fzf-tmux
-    fi
     if get_gh_release --repo sharkdp/bat --arch x86_64-unknown-linux-gnu.tar.gz --toPath bat --toCompletionPath autocomplete/bat.zsh --rnc _bat; then
         rehash
         bat cache --build

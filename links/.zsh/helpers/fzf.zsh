@@ -29,3 +29,17 @@ function kitty_list_hints(){
 }
 zle -N kitty_list_hints
 bindkey 'h' kitty_list_hints
+
+function _ig_update_fzf() {
+    if get_gh_release --repo junegunn/fzf --arch linux_amd64.tar.gz --toPath fzf; then
+        echo 'Downloading FZF scripts'
+        local fzf_dir=~/.zsh/volatile/igorepst/_gh_release/junegunn/fzf
+        curl -k -L https://raw.githubusercontent.com/junegunn/fzf/master/shell/completion.zsh -o "${fzf_dir}"/completion.zsh
+        curl -k -L https://raw.githubusercontent.com/junegunn/fzf/master/shell/key-bindings.zsh -o "${fzf_dir}"/key-bindings.zsh
+        zcompile-many "${fzf_dir}"/*.zsh
+        curl -k -L https://raw.githubusercontent.com/junegunn/fzf/master/bin/fzf-tmux -o "${fzf_dir}"/fzf-tmux
+        chmod +x "${fzf_dir}"/fzf-tmux
+        ln -sf "${fzf_dir}"/fzf-tmux ~/.zsh/volatile/igorepst/_gh_release/_cache/_bin/fzf-tmux
+    fi
+}
+_ig_update_funcs+=("_ig_update_fzf")

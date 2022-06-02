@@ -32,3 +32,8 @@ _navi_widget() {
 
 zle -N _navi_widget
 bindkey 'n' _navi_widget
+
+function _ig_update_navi() {
+    get_gh_release --repo denisidoro/navi --arch x86_64-unknown-linux-musl.tar.gz --toPath navi
+}
+_ig_update_funcs+=("_ig_update_navi")
