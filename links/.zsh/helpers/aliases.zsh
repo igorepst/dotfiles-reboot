@@ -4,11 +4,6 @@ alias ll='ls -alh'
 # Order by date, newest first
 alias lt='la --sort=time --reverse'
 
-alias v='nvim'
-alias vi='nvim'
-alias vim='nvim'
-alias :q='exit'
-
 alias d="kitty +kitten diff"
 
 # Globbing should be done by Git itself
@@ -41,7 +36,4 @@ function x.(){
     "${MYFEXP}" .
 }
 
-alias emacs='emacs -mm'
-alias e='emacsclient -nc'
-alias et='${EDITOR}'
 alias S='sudoedit'

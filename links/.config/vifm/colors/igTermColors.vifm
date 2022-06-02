@@ -1,4 +1,3 @@
-" vim: filetype=vifm :
 " igTermColors.vifm
 highlight clear
 

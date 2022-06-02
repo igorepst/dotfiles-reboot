@@ -83,7 +83,8 @@ setopt long_list_jobs notify no_beep complete_in_word no_hup no_flow_control typ
     fi
 }
 
-for f (~/.zsh/helpers/*.zsh(N.)) source $f
+typeset -a _ig_update_funcs
+for f (~/.zsh/helpers/*.zsh) source $f
 [ -f ~/.work/zshrc ] && source ~/.work/zshrc
 
 if (( ${+commands[emacsclient]} )); then
@@ -170,5 +171,5 @@ if test -n "$KITTY_INSTALLATION_DIR"; then
     unfunction kitty-integration
 fi
 source ~/.zsh/plugins/powerlevel10k/powerlevel10k.zsh-theme
-source ~/.zsh/helpers/p10k.zsh
+source ~/.zsh/supp/p10k.zsh
 

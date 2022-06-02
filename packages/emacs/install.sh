@@ -29,6 +29,7 @@ doWork() {
     esac
     
     ln -sf ${cdir}/config/emacs ~/.config
+    ln -sf ${cdir}/emacs.zsh ~/.zsh/helpers/emacs.zsh
 
     local idir=~/.local/share/icons
     mkdir -p ${idir}

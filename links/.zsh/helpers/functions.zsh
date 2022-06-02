@@ -96,23 +96,10 @@ function _updateDots(){
     popd >/dev/null
     source ${(%):-%x}
     rehash
-    echo 'Updating Emacs packages'
-    if emacs --batch --eval "(progn (add-to-list 'load-path (expand-file-name \"lisp\" user-emacs-directory))(require 'ig-packages)(straight-pull-all))"; then
-	systemctl --user restart emacs
-    fi
-    echo 'Updating GH releases'
-    if _get_gh_releases; then
-        echo 'Updating nvim plugins'
-        local packerDir=~/.local/share/nvim/site/pack/packer/start/packer.nvim
-        [ ! -d "${packerDir}" ] && git clone --depth 1 https://github.com/wbthomason/packer.nvim "${packerDir}" 
-        nvim --headless -u NONE \
-            +'autocmd User PackerComplete quitall' \
-            +'lua dofile(os.getenv("HOME") .. "/.config/nvim/plugin/10-options.lua")' \
-            +'lua dofile(os.getenv("HOME") .. "/.config/nvim/plugin/40-pluginList.lua")' \
-            +'lua require("packer").sync()'
-        printf '\nUpdating Treesitter\n'
-        nvim --headless -c 'TSUpdateSync' -c 'quitall'
-    fi
+    IG_GH_REL_UPDATE=1
+    source ~/.zsh/supp/get_gh_release.zsh
+    for i ("$_ig_update_funcs[@]") $i
+    _get_gh_releases
     _install_lsp
     echo 'Updating Python packages'
     echo 'Visidata:'
@@ -121,8 +108,6 @@ function _updateDots(){
 }
 
 function _get_gh_releases() {
-    IG_GH_REL_UPDATE=1
-    source ~/.zsh/supp/get_gh_release.zsh
     get_gh_release --repo denisidoro/navi --arch x86_64-unknown-linux-musl.tar.gz --toPath navi
     get_gh_release --repo koalaman/shellcheck --arch linux.x86_64.tar.xz --toPath shellcheck
     get_gh_release --repo mvdan/sh --arch linux_amd64 --toPath binlinux_amd64 --unarchive 0 --rn shfmt
@@ -149,8 +134,6 @@ function _get_gh_releases() {
     fi
     get_gh_release --repo rclone/rclone --arch linux-amd64.zip --toPath rclone
     get_gh_release --repo rust-analyzer/rust-analyzer --arch x86_64-unknown-linux-gnu.gz --toPath binx86_64-unknown-linux-gnu --rn rust-analyzer
-    # Should be the last one to use its exit code
-    get_gh_release --repo neovim/neovim --arch linux64.tar.gz --toPath bin/nvim --tag nightly
 }
 
 function _install_npm_lsp() {

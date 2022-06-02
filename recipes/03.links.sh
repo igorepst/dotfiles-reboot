@@ -36,7 +36,6 @@ function doWork(){
     link ".config/ripgrep"
     link ".config/vifm"
     link ".config/rofi"
-    link ".config/nvim"
     link ".config/kitty"
     link ".config/navi"
     link ".config/picom"

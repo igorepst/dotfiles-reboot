@@ -25,9 +25,6 @@ function doWork() {
 
     # Run as login intercative shell to re-read config
     zsh -li -c "_updateDots"
-
-    # Add nvim to secure path of 'sudo'
-    sudo ln -sf ~/.zsh/volatile/igorepst/_gh_release/neovim/neovim/bin/nvim /usr/local/bin/nvim
 }
 
 doWork
