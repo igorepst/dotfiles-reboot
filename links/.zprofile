@@ -1,6 +1,7 @@
 export LC_ALL=en_US.UTF-8
 export LANG=en_US.UTF-8
 export EDITOR=~/bin/editor
+export SUDO_EDITOR=emacs
 export VISUAL=~/bin/visual
 export npm_config_prefix=~/.node_modules
 [ -d "${npm_config_prefix}/bin" ] && PATH="${npm_config_prefix}/bin":$PATH

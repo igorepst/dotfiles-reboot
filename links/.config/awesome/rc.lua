@@ -1,30 +1,18 @@
 pcall(require, 'luarocks.loader')
 
--- Standard awesome library
 local gears = require('gears')
 local awful = require('awful')
 require('awful.autofocus')
--- Widget and layout library
 local wibox = require('wibox')
--- Theme handling library
 local beautiful = require('beautiful')
--- Notification library
-local naughty = require('naughty')
--- Declarative object management
+
 local ruled = require('ruled')
 local menubar = require('menubar')
 local hotkeys_popup = require('awful.hotkeys_popup')
 require('awful.hotkeys_popup.keys')
 
-naughty.connect_signal('request::display_error', function(message, startup)
-    naughty.notification({
-        urgency = 'critical',
-        title = 'Oops, an error happened' .. (startup and ' during startup!' or '!'),
-        message = message,
-    })
-end)
-
 beautiful.init(gears.filesystem.get_configuration_dir() .. 'theme/gtk/theme.lua')
+require('conf.notif')
 
 local terminal = os.getenv('MYTERM')
 local modkey = 'Mod4'
@@ -648,13 +636,6 @@ ruled.client.connect_signal('request::rules', function()
             class = {
                 'Arandr',
                 'Blueman-manager',
-                'Gpick',
-                'Kruler',
-                'Sxiv',
-                'Tor Browser',
-                'Wpa_gui',
-                'veromix',
-                'xtightvncviewer',
             },
             -- Note that the name property shown in xprop might be set slightly after creation of the client
             -- and the name shown there might not match defined rules here.
@@ -735,10 +716,6 @@ ruled.notification.connect_signal('request::rules', function()
             implicit_timeout = 5,
         },
     })
-end)
-
-naughty.connect_signal('request::display', function(n)
-    naughty.layout.box({ notification = n })
 end)
 
 -- Enable sloppy focus, so that focus follows mouse.

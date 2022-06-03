@@ -1,32 +1,8 @@
 #!/usr/bin/env bash
 
-function checkp() {
-    case "${1}" in
-        arch) /usr/bin/pacman -Qs '^'"${2}"'$' > /dev/null ;;
-        ubuntu) /usr/bin/dpkg -s "${2}" > /dev/null 2>&1 ;;
-    esac
-}
-
-function doWork() {
-    local RED='\033[0;31m'
-    local RESET='\033[0m'
-
-    local settings="${1}"
-    if [ -z "${settings}" ]; then
-        printf "${RED}Settings file is not provided${RESET}\n"
-        exit 1
-    fi
-    # shellcheck disable=SC1090
-    if ! source "$(dirname "${0}")/${settings}"; then
-        printf "${RED}Settings path does not exist${RESET}\n"
-        exit 1
-    fi
-
-    local GREEN='\033[0;32m'
-
-    local OS_ID arr
+function _build() {
+    local arr
     printf "${GREEN}Checking OS${RESET}\n"
-    OS_ID=$(sed -ne 's/^ID=\(.*\)/\1/p' /etc/os-release)
     case "${OS_ID}" in
         arch) arr=( "${_INST_ARCH_ARR[@]}" ) ;;
         ubuntu) arr=( "${_INST_UB_ARR[@]}" ) ;;
@@ -98,7 +74,4 @@ function doWork() {
 
     popd > /dev/null || exit 1
     printf "${GREEN}Done successfully${RESET}\n"
-    exec zsh
 }
-
-doWork "$@"

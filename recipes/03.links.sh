@@ -34,8 +34,6 @@ function doWork(){
     link ".config/bat"
     link ".config/mpv"
     link ".config/ripgrep"
-    link ".config/vifm"
-    link ".config/rofi"
     link ".config/kitty"
     link ".config/navi"
     link ".config/picom"

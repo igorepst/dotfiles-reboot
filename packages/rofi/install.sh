@@ -13,3 +13,17 @@ _inst() {
     cp -r rofi "${inst_dir}"
     ln -sf "${inst_dir}/rofi" "${bin_dir}/rofi"
 }
+
+doWork() {
+    local cdir=$(dirname $(readlink -f $0))
+
+    source ${cdir}/../ensure_env.sh
+    source ${cdir}/../build_common.sh
+
+    if _build; then
+	ln -sf ${cdir}/config/rofi ~/.config
+	exec zsh
+    fi
+}
+
+doWork "$@"

@@ -11,6 +11,7 @@ fi
 
 case "${MY_PC_IS}" in
     home)
+	! ping -qc 1 -w 1 8.8.8.8 > /dev/null 2>&1 && sudo systemctl restart iwd.service
 	eval $(/usr/bin/gnome-keyring-daemon --start --components=pkcs11,secrets,ssh)
 	export SSH_AUTH_SOCK
 	export XDG_CURRENT_DESKTOP=GNOME

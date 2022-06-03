@@ -15,3 +15,18 @@ _inst() {
     ln -sf "${inst_dir}/vifm-pause" "${bin_dir}/vifm-pause"
     ln -sf "${inst_dir}/_vifm" "${compl_dir}/_vifm"
 }
+
+doWork() {
+    local cdir=$(dirname $(readlink -f $0))
+
+    source ${cdir}/../ensure_env.sh
+    source ${cdir}/../build_common.sh
+
+    if _build; then
+	ln -sf ${cdir}/config/vifm ~/.config
+	ln -sf ${cdir}/vifm.zsh ~/.zsh/helpers/vifm.zsh
+	exec zsh
+    fi
+}
+
+doWork "$@"

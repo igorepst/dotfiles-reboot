@@ -2,7 +2,7 @@ links/.vim/volatile
 links/.vim/autoload/plug.vim*
 links/.vim/sessions
 links/.zsh/volatile
-links/.config/vifm/vifminfo*
+packages/vifm/config/vifm/vifminfo*
 packer_compiled.lua
 # Override ~/.gitignore-global
 !links/bin

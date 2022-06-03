@@ -1,2 +1,1 @@
-# See 'cdpath' option. Doesn't work without the export
-export CDPATH
+/home/igor/dotfiles-reboot/packages/vifm/vifm.zsh
