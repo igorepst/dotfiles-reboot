@@ -1,1 +1,0 @@
-/home/igor/dotfiles-reboot/packages/vifm/vifm.zsh
