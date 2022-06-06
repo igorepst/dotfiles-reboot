@@ -89,6 +89,7 @@ function _updateDots(){
     pushd ~/dotfiles-reboot >/dev/null
     git pull origin $(git rev-parse --abbrev-ref HEAD)
     zcompile-many ~/dotfiles-reboot/links/.zsh/helpers/*.zsh
+    zcompile-many ~/dotfiles-reboot/links/.zsh/volatile/helpers/*.zsh
     zcompile-many ~/dotfiles-reboot/links/.zsh/supp/*.zsh
     git submodule update --init --recursive --remote --merge --force
     zcompile-many ~/dotfiles-reboot/links/.zsh/plugins/zsh-syntax-highlighting/{zsh-syntax-highlighting.zsh,highlighters/*/*.zsh}

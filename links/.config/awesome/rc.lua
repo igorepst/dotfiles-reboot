@@ -66,7 +66,7 @@ screen.connect_signal('request::desktop_decoration', function(s)
         },
         s,
         {
-            awful.layout.layouts[1],
+            awful.layout.layouts[2],
             awful.layout.layouts[2],
             awful.layout.layouts[2],
         }
@@ -634,7 +634,6 @@ ruled.client.connect_signal('request::rules', function()
         rule_any = {
             instance = { 'copyq', 'pinentry' },
             class = {
-                'Arandr',
                 'Blueman-manager',
             },
             -- Note that the name property shown in xprop might be set slightly after creation of the client
@@ -643,12 +642,11 @@ ruled.client.connect_signal('request::rules', function()
                 'Event Tester', -- xev.
             },
             role = {
-                'AlarmWindow', -- Thunderbird's calendar.
-                'ConfigManager', -- Thunderbird's about:config.
-                'pop-up', -- e.g. Google Chrome's (detached) Developer Tools.
+	       'pop-up',
+	       'gimp-startup'
             },
         },
-        properties = { floating = true },
+        properties = { floating = true, placement = awful.placement.centered,},
     })
 
     ruled.client.append_rule({
@@ -656,19 +654,31 @@ ruled.client.connect_signal('request::rules', function()
         rule_any = { class = { 'kitty' } },
         properties = { delayed_max = true },
     })
+
+    ruled.client.append_rule({
+        id = 'vivaldi',
+        rule_any = { class = { 'vivaldi-stable' } },
+        properties = {
+	   maximized_vertical   = true,
+	   maximized_horizontal = true
+	},
+    })
 end)
 
 client.connect_signal('request::manage', function(c)
     -- Set the windows at the slave,
     -- i.e. put it at the end of others instead of setting it master.
     if not awesome.startup then
-        awful.client.setslave(c)
+       awful.client.setslave(c)
+    end
+       if client.floating then
+        client.placement = awful.placement.centered + awful.placement.no_overlap + awful.placement.no_offscreen
+    end
         --     else
         --         if not c.size_hints.user_position and not c.size_hints.program_position then
         --             Prevent clients from being unreachable after screen count changes.
         --             awful.placement.no_offscreen(c)
         --         end
-    end
 end)
 
 client.connect_signal('request::titlebars', function(c)
@@ -714,6 +724,7 @@ ruled.notification.connect_signal('request::rules', function()
         properties = {
             screen = awful.screen.preferred,
             implicit_timeout = 5,
+	    position = 'bottom_right',
         },
     })
 end)

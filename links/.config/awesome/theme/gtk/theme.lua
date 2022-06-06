@@ -125,10 +125,10 @@ theme.border_color_normal = theme.gtk.wm_border_unfocused_color
 theme.border_color_active = theme.gtk.wm_border_focused_color
 theme.border_color_marked = theme.gtk.success_color
 
-theme.border_width  = dpi(theme.gtk.button_border_width or 1)
+theme.border_width  = dpi(3)
 theme.border_radius = theme.gtk.button_border_radius
 
-theme.useless_gap   = dpi(3)
+theme.useless_gap   = 0
 
 local rounded_rect_shape = function(cr,w,h)
     gears_shape.rounded_rect(
@@ -162,6 +162,7 @@ theme.tasklist_shape_border_width_minimized = theme.gtk.button_border_width
 
 theme.tasklist_spacing = theme.gtk.button_border_width
 
+theme.notification_spacing = 5
 --[[ Advanced taglist and tasklist styling: {{{
 
 --- In order to get taglist and tasklist to follow GTK theme you need to

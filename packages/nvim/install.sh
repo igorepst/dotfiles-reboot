@@ -6,7 +6,8 @@ doWork() {
     source ${cdir}/../ensure_env.sh
 
     ln -sf ${cdir}/config/nvim ~/.config
-    ln -sf ${cdir}/nvim.zsh ~/.zsh/helpers/nvim.zsh
+    mkdir -p ~/.zsh/volatile/helpers
+    ln -sf ${cdir}/nvim.zsh ~/.zsh/volatile/helpers/nvim.zsh
 
     echo 'Add nvim to secure path of sudo'
     sudo ln -sf ~/.zsh/volatile/igorepst/_gh_release/neovim/neovim/bin/nvim /usr/local/bin/nvim

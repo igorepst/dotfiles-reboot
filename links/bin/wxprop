@@ -1,4 +1,4 @@
 #!/bin/sh
 
 out=/tmp/xprop.tmp
-xprop > "${out}" && ${VISUAL} ${out} && rm -f "${out}"
+(xprop > "${out}" && ${VISUAL} ${out} && rm -f "${out}") &

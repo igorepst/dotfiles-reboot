@@ -85,6 +85,7 @@ setopt long_list_jobs notify no_beep complete_in_word no_hup no_flow_control typ
 
 typeset -a _ig_update_funcs
 for f (~/.zsh/helpers/*.zsh) source $f
+for f (~/.zsh/volatile/helpers/*.zsh) source $f
 [ -f ~/.work/zshrc ] && source ~/.work/zshrc
 
 if (( ${+commands[emacsclient]} )); then

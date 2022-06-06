@@ -24,7 +24,8 @@ doWork() {
 
     if _build; then
 	ln -sf ${cdir}/config/vifm ~/.config
-	ln -sf ${cdir}/vifm.zsh ~/.zsh/helpers/vifm.zsh
+	mkdir -p ~/.zsh/volatile/helpers
+	ln -sf ${cdir}/vifm.zsh ~/.zsh/volatile/helpers/vifm.zsh
 	exec zsh
     fi
 }
