@@ -14,7 +14,7 @@ function _build() {
     local pnames=""
     printf "${GREEN}Checking prerequisites packages to install:${RESET}\n\n"
     for i in "${arr[@]}"; do
-        checkp "${OS_ID}" "${i}" && printf "${GREEN}*${RESET} $i ${GREEN}is installed${RESET}\n" || pnames="${pnames} $i"
+        checkp "${i}" && printf "${GREEN}*${RESET} $i ${GREEN}is installed${RESET}\n" || pnames="${pnames} $i"
     done
     if [ -n "${pnames}" ]; then
         printf "${RED}Installing the following packages:${RESET}\n${pnames}\n"
