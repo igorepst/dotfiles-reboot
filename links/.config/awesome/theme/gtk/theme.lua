@@ -163,6 +163,7 @@ theme.tasklist_shape_border_width_minimized = theme.gtk.button_border_width
 theme.tasklist_spacing = theme.gtk.button_border_width
 
 theme.notification_spacing = 5
+theme.tasklist_plain_task_name=true
 --[[ Advanced taglist and tasklist styling: {{{
 
 --- In order to get taglist and tasklist to follow GTK theme you need to

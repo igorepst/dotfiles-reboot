@@ -319,13 +319,31 @@ awful.keyboard.append_global_keybindings({
         group = 'client',
     }),
     awful.key({ modkey }, 'Tab', function()
-        awful.client.focus.history.previous()
-        if client.focus then
-            client.focus:raise()
-        end
+	  -- awful.client.focus.byidx(-1)
+	  local t = awful.screen.focused().selected_tag
+	  if not t then return end
+	  local clients = t:clients()
+	  if not clients then return end
+	  local f, ind = client.focus, 1
+	  if f then
+	     for i, cc in ipairs(clients) do
+		if cc == f then
+		   ind = i + 1
+		   break
+		end
+	     end
+	  end
+	  if ind > #clients then ind = 1 end
+	  local c = clients[ind]
+	  if c then
+	     c:activate({context = "unminimize",raise = true})
+	  end
+	  -- if c.focus then
+        --     c.focus:raise()
+        -- end
     end, {
         description = 'go back',
-        group = 'client',
+        group = 'client'
     }),
     awful.key({ modkey, 'Control' }, 'j', function()
         awful.screen.focus_relative(1)
@@ -634,7 +652,7 @@ ruled.client.connect_signal('request::rules', function()
         rule_any = {
             instance = { 'copyq', 'pinentry' },
             class = {
-                'Blueman-manager',
+	       'Blueman-manager',
             },
             -- Note that the name property shown in xprop might be set slightly after creation of the client
             -- and the name shown there might not match defined rules here.
@@ -649,9 +667,18 @@ ruled.client.connect_signal('request::rules', function()
         properties = { floating = true, placement = awful.placement.centered,},
     })
 
+     ruled.client.append_rule({
+        id = 'mpv',
+        rule_any = { class = { 'mpv' } },
+	-- As of 06/06/22 there seems to be a bug in tiling layout:
+	-- mpv.conf defines fullscreen, however awesome leaves some gap at the bottom
+	-- fullscreen = false here causes mpv to start fullscreen without a gap!
+        properties = { floating = true, fullscreen = false, placement = awful.placement.centered },
+    })
+
     ruled.client.append_rule({
         id = 'kitty',
-        rule_any = { class = { 'kitty' } },
+        rule_any = { class = { 'kitty', 'kitty-vifm' } },
         properties = { delayed_max = true },
     })
 
@@ -661,6 +688,18 @@ ruled.client.connect_signal('request::rules', function()
         properties = {
 	   maximized_vertical   = true,
 	   maximized_horizontal = true
+	},
+    })
+
+    ruled.client.append_rule({
+        id = 'pavucontrol',
+        rule_any = { class = { 'Pavucontrol' } },
+        properties = {
+	   floating = true,
+	   width = 600,
+	   height = 400,
+	   placement = awful.placement.centered,
+	   titlebars_enabled = true
 	},
     })
 end)
