@@ -337,22 +337,6 @@ theme.awesome_icon = theme_assets.awesome_icon(
 theme.taglist_squares_sel = nil
 theme.taglist_squares_unsel = nil
 
--- Generate wallpaper:
--- local wallpaper_bg = theme.gtk.base_color
--- local wallpaper_fg = theme.gtk.bg_color
--- local wallpaper_alt_fg = theme.gtk.selected_bg_color
--- if not is_dark(theme.bg_normal) then
---     wallpaper_bg, wallpaper_fg = wallpaper_fg, wallpaper_bg
--- end
--- wallpaper_bg = reduce_contrast(wallpaper_bg, 50)
--- wallpaper_fg = reduce_contrast(wallpaper_fg, 30)
--- wallpaper_fg = mix(wallpaper_fg, wallpaper_bg, 0.4)
--- wallpaper_alt_fg = mix(wallpaper_alt_fg, wallpaper_fg, 0.4)
--- theme.wallpaper = function(s)
---     return theme_assets.wallpaper(wallpaper_bg, wallpaper_fg, wallpaper_alt_fg, s)
--- end
-theme.wallpaper = os.getenv('HOME') ..'/.theme/background.png'
-
 -- Set different colors for urgent notifications.
 rnotification.connect_signal('request::rules', function()
     rnotification.append_rule {
