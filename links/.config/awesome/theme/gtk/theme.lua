@@ -293,7 +293,7 @@ theme.menu_submenu = "▸ "
 
 
 -- Recolor Layout icons:
-theme = theme_assets.recolor_layout(theme, theme.wibar_fg)
+-- theme = theme_assets.recolor_layout(theme, theme.wibar_fg)
 
 -- Recolor titlebar icons:
 --
@@ -320,20 +320,16 @@ theme = theme_assets.recolor_titlebar(
 -- from /usr/share/icons and /usr/share/icons/hicolor will be used.
 theme.icon_theme = nil
 
+local icon_path = '/usr/share/icons/Adwaita/scalable/'
+theme.titlebar_close_button_normal = icon_path .. 'ui/window-close-symbolic.svg'
+theme.titlebar_close_button_focus = icon_path .. 'ui/window-close-symbolic.svg'
+theme.titlebar_minimize_button_normal = icon_path .. 'ui/window-minimize-symbolic.svg'
+theme.titlebar_minimize_button_focus = icon_path .. 'ui/window-minimize-symbolic.svg'
 -- Generate Awesome icon:
-theme.awesome_icon = theme_assets.awesome_icon(
-    theme.menu_height, mix(theme.bg_focus, theme.fg_normal), theme.wibar_bg
-)
+-- theme.awesome_icon = theme_assets.awesome_icon(
+--     theme.menu_height, mix(theme.bg_focus, theme.fg_normal), theme.wibar_bg
+-- )
 
--- Generate taglist squares:
---local taglist_square_size = dpi(4)
---theme.taglist_squares_sel = theme_assets.taglist_squares_sel(
-    --taglist_square_size, theme.gtk.header_button_border_color
---)
---theme.taglist_squares_unsel = theme_assets.taglist_squares_unsel(
-    --taglist_square_size, theme.gtk.header_button_border_color
---)
--- Or disable them:
 theme.taglist_squares_sel = nil
 theme.taglist_squares_unsel = nil
 

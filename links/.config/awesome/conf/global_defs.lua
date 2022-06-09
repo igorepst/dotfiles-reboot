@@ -35,14 +35,6 @@ awful.keyboard.append_global_keybindings({
         description = 'run visual editor',
         group = 'launcher',
     }),
-    awful.key({ modkey }, 'p', function()
-	  local menubar = require('menubar')
-	  menubar.utils.terminal = config.terminal
-	  menubar.show()
-    end, {
-        description = 'show the menubar',
-        group = 'launcher',
-    }),
     awful.key({}, 'XF86PowerOff', function()
         local logoutw = require('widgets.logout.widget')
         logoutw.setup()

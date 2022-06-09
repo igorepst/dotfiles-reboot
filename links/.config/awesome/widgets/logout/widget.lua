@@ -3,6 +3,8 @@ local capi = { keygrabber = keygrabber }
 local wibox = require('wibox')
 local gears = require('gears')
 local beautiful = require('beautiful')
+local gears_color = require("gears.color")
+local recolor_image = gears_color.recolor_image
 
 local logout = {}
 
@@ -38,7 +40,7 @@ local w = wibox({
 local action = wibox.widget({
     text = ' ',
     widget = wibox.widget.textbox,
-    forced_height = 20,
+    forced_height = 32,
 })
 
 local phrase_widget = wibox.widget({
@@ -74,7 +76,7 @@ local function create_button(icon, action_name, color, label_color, onclick, ico
 
     result:connect_signal('mouse::enter', function(c)
         c:set_bg(color)
-        action:set_markup('<span color="' .. label_color .. '">' .. action_name .. '</span>')
+        action:set_markup('<span color="' .. label_color .. '" size="20000">' .. action_name .. '</span>')
     end)
     result:connect_signal('mouse::leave', function(c)
         c:set_bg(def_color)
@@ -97,16 +99,13 @@ function logout.setup()
     local bg_color = beautiful.bg_normal
     local accent_color = beautiful.bg_focus
     local text_color = beautiful.fg_normal
-    local phrases = { 'Goodbye!' }
     local icon_size = 40
     local icon_margin = 16
 
     w:set_bg(bg_color)
-    if #phrases > 0 then
         phrase_widget:set_markup(
-            '<span color="' .. text_color .. '" size="20000">' .. phrases[math.random(#phrases)] .. '</span>'
+            '<span color="' .. text_color .. '" size="20000">Goodbye!</span>'
         )
-    end
 
     w:setup({
         {
@@ -123,8 +122,11 @@ function logout.setup()
                         icon_margin
                     ),
                     create_button(
-                        img_path .. 'lock.svg',
-                        'Lock (k)',
+                        -- img_path .. 'lock.svg',
+		       -- recolor_image('/usr/share/icons/Adwaita/scalable/status/system-lock-screen-symbolic.svg','#eeeeee'),
+		       recolor_image('/usr/share/icons/Yaru/scalable/actions/system-lock-screen-symbolic.svg', '#ffffff'),
+		       -- '/usr/share/icons/Yaru/scalable/actions/system-lock-screen-symbolic.svg',
+		       'Lock (k)',
                         accent_color,
                         text_color,
                         onlock,
