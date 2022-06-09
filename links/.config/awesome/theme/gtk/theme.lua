@@ -246,6 +246,9 @@ theme.taglist_fg_empty = mix(
     theme.gtk.header_button_fg_color
 )
 theme.taglist_font = 'DejaVuSansMono Nerd Font Mono 18'
+theme.hotkeys_font = 'DejaVuSansMono Nerd Font Mono Bold 14'
+theme.hotkeys_description_font = 'DejaVuSansMono Nerd Font Mono 14'
+theme.hotkeys_modifiers_fg = theme.fg_normal
 
 theme.titlebar_font_normal = theme.gtk.bold_font
 theme.titlebar_bg_normal = theme.gtk.wm_border_unfocused_color
