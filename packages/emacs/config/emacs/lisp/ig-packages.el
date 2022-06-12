@@ -65,7 +65,7 @@
   :straight (:type built-in)
   :config
   (setq savehist-file "~/.cache/emacs/savehist"
-	savehist-additional-variables    
+	savehist-additional-variables
         '(search-ring regexp-search-ring compile-history))
   (savehist-mode))
 
@@ -259,7 +259,8 @@
   (setq lsp-keymap-prefix "C-c l")
   :config
   (setq lsp-log-io nil
-	lsp-enable-suggest-server-download nil)
+	lsp-enable-suggest-server-download nil
+	lsp-session-file "~/.cache/emacs/lsp-session-v1")
     (let* ((ig--sumneko-root-path "~/.cache/lspServers/lua/sumneko-lua/extension/server")
 	 (ig--sumneko-bin (expand-file-name "bin/lua-language-server" ig--sumneko-root-path))
 	 (ig--sumneko-main (expand-file-name "main.lua" ig--sumneko-root-path)))
@@ -280,7 +281,7 @@
   :straight t
   :hook (python-mode . (lambda ()
                           (require 'lsp-pyright)
-                          (lsp-deferred)))) 
+                          (lsp-deferred))))
 
 (use-package consult-lsp
   :straight t
