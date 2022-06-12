@@ -84,6 +84,15 @@ ruled.client.connect_signal('request::rules', function()
     })
 
     ruled.client.append_rule({
+        id = 'emacs_dlg',
+        rule_any = { class = {'Emacs'}, name = {"Question"},  },
+        properties = {
+	   floating = true,
+	   placement = awful.placement.centered,
+	},
+    })
+
+    ruled.client.append_rule({
         id = 'zoom',
         rule_any = { class = { 'zoom', 'zoom ' } },
         properties = {

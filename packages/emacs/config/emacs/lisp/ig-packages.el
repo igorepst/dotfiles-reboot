@@ -260,7 +260,16 @@
   :config
   (setq lsp-log-io nil
 	lsp-enable-suggest-server-download nil
-	lsp-session-file "~/.cache/emacs/lsp-session-v1")
+	lsp-session-file "~/.cache/emacs/lsp-session-v1"
+	lsp-warn-no-matched-clients nil
+	lsp-lua-diagnostics-globals [
+		"vim"
+		"awesome"
+                "client"
+                "screen"
+                "tag"
+                "mouse"
+                "keygrabber"])
     (let* ((ig--sumneko-root-path "~/.cache/lspServers/lua/sumneko-lua/extension/server")
 	 (ig--sumneko-bin (expand-file-name "bin/lua-language-server" ig--sumneko-root-path))
 	 (ig--sumneko-main (expand-file-name "main.lua" ig--sumneko-root-path)))

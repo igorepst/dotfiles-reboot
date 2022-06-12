@@ -101,6 +101,7 @@ function _updateDots(){
     source ~/.zsh/supp/get_gh_release.zsh
     for i ("$_ig_update_funcs[@]") $i
     _get_gh_releases
+    ! ncu -gs -e 2 npm-check-updates && echo 'Updating npm-check-updates' && npm i -g npm-check-updates
     _install_lsp
     echo 'Updating Python packages'
     echo 'Visidata:'
@@ -133,6 +134,10 @@ function _install_npm_lsp() {
         mkdir -p "${1}"
         pushd "${1}" > /dev/null
         npm install ${3}
+	if [ "${2}" = 'Bash' ]; then
+	    mkdir -p ~/.local/bin
+	    ln -sf "${1}"/node_modules/.bin/bash-language-server ~/.local/bin
+	fi
     else
         echo "Updating ${2}"
         pushd "${1}" > /dev/null
