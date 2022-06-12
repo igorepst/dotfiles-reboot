@@ -25,7 +25,8 @@
 
 (add-to-list 'completion-ignored-extensions ".zwc")
 
-(setq-default indicate-empty-lines t)
+(setq-default indicate-empty-lines t
+	      read-process-output-max (* 1024 1024))
 (if (not (display-graphic-p))
     (xterm-mouse-mode 1))
 

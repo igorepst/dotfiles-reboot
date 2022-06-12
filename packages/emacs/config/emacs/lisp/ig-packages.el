@@ -35,46 +35,26 @@
   :straight (:type built-in)
   :mode ("\\(\\.\\(?:service\\|timer\\|target\\|slice\\|socket\\|path\\|network\\|automount\\|link\\|mount\\|netdev\\)\\)\\'" . conf-unix-mode))
 
-(use-package project
-  :defer t
-  :straight (:type built-in))
-
-(use-package xref
-  :defer t
-  :straight (:type built-in))
-
-(use-package flymake
-  :defer t
-  :straight (:type built-in))
-
-(use-package eldoc
-  :defer t
-  :straight (:type built-in))
-
-(use-package jsonrpc
-  :defer t
-  :straight (:type built-in))
-
-(use-package eglot
-  :straight t
-  :commands (eglot eglot-ensure)
-  :hook ((lua-mode python-mode) . eglot-ensure)
-  :init
-  (add-hook 'sh-mode-hook
-	    (lambda ()
-	      ; TODO: fix: eglot connects when going from bash to zsh
-	      (when (not (equal 'zsh sh-shell))
-		(autoload #'eglot "eglot" nil t)
-		(eglot-ensure)
-		)))
-  :config
-  (let* ((ig--sumneko-root-path "~/.cache/lspServers/lua/sumneko-lua/extension/server")
-	 (ig--sumneko-bin (expand-file-name "bin/lua-language-server" ig--sumneko-root-path))
-	 (ig--sumneko-main (expand-file-name "main.lua" ig--sumneko-root-path))
-	 (ig--sumneko-settings (concat "--configpath=" (expand-file-name "external/sumnekoSettings.lua" user-emacs-directory))))
-    (add-to-list 'eglot-server-programs `(lua-mode . (,ig--sumneko-bin "-E" "-e" "LANG=en" ,ig--sumneko-main ,ig--sumneko-settings))))
-  (add-to-list 'eglot-server-programs '(sh-mode . ("~/.cache/lspServers/bash/node_modules/.bin/bash-language-server" "start")))
-  (add-to-list 'eglot-server-programs '(python-mode . ("~/.local/bin/pyright-langserver" "--stdio"))))
+;; (use-package eglot
+;;   :straight t
+;;   :commands (eglot eglot-ensure)
+;;   :hook ((lua-mode python-mode) . eglot-ensure)
+;;   :init
+;;   (add-hook 'sh-mode-hook
+;; 	    (lambda ()
+;; 	      ; TODO: fix: eglot connects when going from bash to zsh
+;; 	      (when (not (equal 'zsh sh-shell))
+;; 		(autoload #'eglot "eglot" nil t)
+;; 		(eglot-ensure)
+;; 		)))
+;;   :config
+;;   (let* ((ig--sumneko-root-path "~/.cache/lspServers/lua/sumneko-lua/extension/server")
+;; 	 (ig--sumneko-bin (expand-file-name "bin/lua-language-server" ig--sumneko-root-path))
+;; 	 (ig--sumneko-main (expand-file-name "main.lua" ig--sumneko-root-path))
+;; 	 (ig--sumneko-settings (concat "--configpath=" (expand-file-name "external/sumnekoSettings.lua" user-emacs-directory))))
+;;     (add-to-list 'eglot-server-programs `(lua-mode . (,ig--sumneko-bin "-E" "-e" "LANG=en" ,ig--sumneko-main ,ig--sumneko-settings))))
+;;   (add-to-list 'eglot-server-programs '(sh-mode . ("~/.cache/lspServers/bash/node_modules/.bin/bash-language-server" "start")))
+;;   (add-to-list 'eglot-server-programs '(python-mode . ("~/.local/bin/pyright-langserver" "--stdio"))))
 
 (use-package leuven-theme
   :straight t
@@ -269,9 +249,42 @@
   ;; (setq consult-project-function (lambda (_) (locate-dominating-file "." ".git")))
   )
 
-(use-package org-modern
+(use-package flycheck
   :straight t
-  :hook ((org-mode org-agenda-finalize) . 'org-modern-mode))
+  :init (global-flycheck-mode))
+
+(use-package lsp-mode
+  :straight t
+  :init
+  (setq lsp-keymap-prefix "C-c l")
+  :config
+  (setq lsp-log-io nil
+	lsp-enable-suggest-server-download nil)
+    (let* ((ig--sumneko-root-path "~/.cache/lspServers/lua/sumneko-lua/extension/server")
+	 (ig--sumneko-bin (expand-file-name "bin/lua-language-server" ig--sumneko-root-path))
+	 (ig--sumneko-main (expand-file-name "main.lua" ig--sumneko-root-path)))
+      (setq lsp-clients-lua-language-server-install-dir ig--sumneko-root-path
+	    lsp-clients-lua-language-server-bin ig--sumneko-bin
+	    lsp-clients-lua-language-server-main-location ig--sumneko-main))
+  :hook ((lua-mode . lsp-deferred)
+         (sh-mode . lsp-deferred))
+  :commands (lsp lsp-deferred))
+
+(use-package lsp-ui
+  :straight t
+  :commands lsp-ui-mode
+  :config
+  (setq lsp-idle-delay 0.500))
+
+(use-package lsp-pyright
+  :straight t
+  :hook (python-mode . (lambda ()
+                          (require 'lsp-pyright)
+                          (lsp-deferred)))) 
+
+(use-package consult-lsp
+  :straight t
+  :commands (consult-lsp-diagnostics consult-lsp-symbols consult-lsp-file-symbols))
 
 (provide 'ig-packages)
 

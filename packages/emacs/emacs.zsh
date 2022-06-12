@@ -9,3 +9,5 @@ _ig_update_funcs+=("_ig_update_emacs")
 alias emacs='emacs -mm'
 alias e='emacsclient -nc'
 alias et='emacsclient -t'
+
+export LSP_USE_PLISTS=true
