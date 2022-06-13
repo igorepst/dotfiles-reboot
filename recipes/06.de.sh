@@ -78,6 +78,7 @@ org.gnome.shell.keybindings toggle-overview ['']
 org.gnome.desktop.wm.keybindings show-desktop ['<Super>d']
 org.gnome.desktop.wm.keybindings switch-to-workspace-up []
 org.gnome.desktop.wm.keybindings switch-to-workspace-down []
+org.gnome.desktop.wm.keybindings activate-window-menu []
 
 org.gtk.Settings.FileChooser show-hidden true
 org.gnome.nautilus.preferences default-folder-viewer 'list-view'
