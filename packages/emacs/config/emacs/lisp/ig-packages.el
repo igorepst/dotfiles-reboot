@@ -35,27 +35,6 @@
   :straight (:type built-in)
   :mode ("\\(\\.\\(?:service\\|timer\\|target\\|slice\\|socket\\|path\\|network\\|automount\\|link\\|mount\\|netdev\\)\\)\\'" . conf-unix-mode))
 
-;; (use-package eglot
-;;   :straight t
-;;   :commands (eglot eglot-ensure)
-;;   :hook ((lua-mode python-mode) . eglot-ensure)
-;;   :init
-;;   (add-hook 'sh-mode-hook
-;; 	    (lambda ()
-;; 	      ; TODO: fix: eglot connects when going from bash to zsh
-;; 	      (when (not (equal 'zsh sh-shell))
-;; 		(autoload #'eglot "eglot" nil t)
-;; 		(eglot-ensure)
-;; 		)))
-;;   :config
-;;   (let* ((ig--sumneko-root-path "~/.cache/lspServers/lua/sumneko-lua/extension/server")
-;; 	 (ig--sumneko-bin (expand-file-name "bin/lua-language-server" ig--sumneko-root-path))
-;; 	 (ig--sumneko-main (expand-file-name "main.lua" ig--sumneko-root-path))
-;; 	 (ig--sumneko-settings (concat "--configpath=" (expand-file-name "external/sumnekoSettings.lua" user-emacs-directory))))
-;;     (add-to-list 'eglot-server-programs `(lua-mode . (,ig--sumneko-bin "-E" "-e" "LANG=en" ,ig--sumneko-main ,ig--sumneko-settings))))
-;;   (add-to-list 'eglot-server-programs '(sh-mode . ("~/.cache/lspServers/bash/node_modules/.bin/bash-language-server" "start")))
-;;   (add-to-list 'eglot-server-programs '(python-mode . ("~/.local/bin/pyright-langserver" "--stdio"))))
-
 (use-package leuven-theme
   :straight t
   :config
