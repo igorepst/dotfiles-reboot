@@ -88,6 +88,11 @@
   (with-current-buffer "*Messages*"
     (emacs-lock-mode 'kill)))
 
+(use-package dired
+  :straight (:type built-in)
+  :config
+  (setq dired-listing-switches "-alh --group-directories-first --time-style \"+%d-%m-%Y %H:%M\""))
+
 (use-package vertico
   :straight t
   :init
