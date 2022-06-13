@@ -1,4 +1,10 @@
-;;; early-init.el -*- lexical-binding: t; -*-
+;;; early-init.el --- Early init code -*- lexical-binding: t; -*-
+
+;;; Commentary:
+;; Early init config
+
+;;; Code:
+
 (push "~/.cache/emacs/eln-cache/" native-comp-eln-load-path)
 (defvar ig--file-name-handler-alist file-name-handler-alist)
 (setq package-enable-at-startup nil
@@ -18,4 +24,7 @@
 	    (setq gc-cons-threshold 134217728 ; 128 Mb
 		  gc-cons-percentage 0.1
 		  file-name-handler-alist ig--file-name-handler-alist)))
+
+(provide 'early-init)
+;;; early-init.el ends here
 

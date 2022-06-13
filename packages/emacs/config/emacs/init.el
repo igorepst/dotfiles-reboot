@@ -1,4 +1,10 @@
-;;; init.el -*- lexical-binding: t; -*-
+;;; init.el --- Init code -*- lexical-binding: t; -*-
+
+;;; Commentary:
+;; Init config
+
+;;; Code:
+
 (setq default-frame-alist '((fullscreen . maximized) (font . "DejaVuSansMono Nerd Font Mono-14"))
       vc-follow-symlinks t
       completion-ignore-case t
@@ -36,3 +42,6 @@
   (add-to-list 'load-path additional-lisp-dir))
 
 (require 'ig-packages)
+
+(provide 'init)
+;;; init.el ends here
