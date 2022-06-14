@@ -23,7 +23,8 @@
 	  (lambda ()
 	    (setq gc-cons-threshold 134217728 ; 128 Mb
 		  gc-cons-percentage 0.1
-		  file-name-handler-alist ig--file-name-handler-alist)))
+		  file-name-handler-alist ig--file-name-handler-alist)
+	    (makunbound 'ig--file-name-handler-alist)))
 
 (provide 'early-init)
 ;;; early-init.el ends here

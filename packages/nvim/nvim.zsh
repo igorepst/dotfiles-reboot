@@ -19,3 +19,6 @@ alias v='nvim'
 alias vi='nvim'
 alias vim='nvim'
 alias :q='exit'
+
+export MANPAGER='nvim +Man!'
+export MANWIDTH=999

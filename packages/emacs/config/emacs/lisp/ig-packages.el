@@ -27,12 +27,10 @@
 (eval-when-compile (require 'use-package))
 
 (use-package lua-mode
-  :defer t
   :straight t
   :mode "\\.lua\\'")
 
 (use-package conf-mode
-  :defer t
   :straight (:type built-in)
   :mode ("\\(\\.\\(?:service\\|timer\\|target\\|slice\\|socket\\|path\\|network\\|automount\\|link\\|mount\\|netdev\\)\\)\\'" . conf-unix-mode))
 
@@ -92,6 +90,13 @@
   :straight (:type built-in)
   :config
   (setq dired-listing-switches "-alh --group-directories-first --time-style \"+%d-%m-%Y %H:%M\""))
+
+(use-package man
+  :straight (:type built-in)
+  :commands (man)
+  :config
+   (set-face-attribute 'Man-overstrike nil :inherit font-lock-type-face :bold t)
+   (set-face-attribute 'Man-underline nil :inherit font-lock-keyword-face :underline nil))
 
 (use-package vertico
   :straight t
