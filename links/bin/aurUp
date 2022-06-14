@@ -2,7 +2,7 @@
 
 function main() {
     local f n hold found
-    hold=( 'nomachine' 'openfortigui' )
+    hold=( )
     for f in ~/aur/*; do
         pushd "$f" >/dev/null
         n=$(basename "$f")
@@ -22,7 +22,7 @@ function main() {
             echo "Updating $n" 
             git reset --hard
             git pull origin $(git rev-parse --abbrev-ref HEAD)
-            makepkg -si
+            makepkg --clean --syncdeps --rmdeps --install --force
         fi
         popd >/dev/null
     done
