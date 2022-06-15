@@ -89,7 +89,8 @@
 (use-package dired
   :straight (:type built-in)
   :config
-  (setq dired-listing-switches "-alh --group-directories-first --time-style \"+%d-%m-%Y %H:%M\""))
+  (setq  dired-use-ls-dired t
+	 dired-listing-switches "-alh --group-directories-first --time-style \"+%d-%m-%Y %H:%M\""))
 
 (use-package man
   :straight (:type built-in)
