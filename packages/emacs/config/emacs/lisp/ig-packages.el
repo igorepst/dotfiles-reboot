@@ -30,14 +30,10 @@
   :straight t
   :mode "\\.lua\\'")
 
-(use-package conf-mode
-  :straight (:type built-in)
-  :mode ("\\(\\.\\(?:service\\|timer\\|target\\|slice\\|socket\\|path\\|network\\|automount\\|link\\|mount\\|netdev\\)\\)\\'" . conf-unix-mode))
+	(add-to-list 'auto-mode-alist
+		     '("\\(\\.\\(?:service\\|timer\\|target\\|slice\\|socket\\|path\\|network\\|automount\\|link\\|mount\\|netdev\\)\\)\\'" . conf-unix-mode))
 
-(use-package leuven-theme
-  :straight t
-  :config
-  (load-theme 'leuven t))
+(load-theme 'adwaita t)
 
 (use-package savehist
   :straight (:type built-in)
@@ -73,29 +69,18 @@
 	search-upper-case nil
 	isearch-wrap-pause 'no-ding))
 
-(use-package delsel
-  :straight (:type built-in)
-  :config
-  (delete-selection-mode))
+  (delete-selection-mode)
 
-(use-package emacs-lock
-  :straight (:type built-in)
-  :init
   (with-current-buffer "*scratch*"
     (emacs-lock-mode 'kill))
   (with-current-buffer "*Messages*"
-    (emacs-lock-mode 'kill)))
+    (emacs-lock-mode 'kill))
 
-(use-package dired
-  :straight (:type built-in)
-  :config
+(with-eval-after-load 'dired
   (setq  dired-use-ls-dired t
 	 dired-listing-switches "-alh --group-directories-first --time-style \"+%d-%m-%Y %H:%M\""))
 
-(use-package man
-  :straight (:type built-in)
-  :commands (man)
-  :config
+(with-eval-after-load 'man
    (set-face-attribute 'Man-overstrike nil :inherit font-lock-type-face :bold t)
    (set-face-attribute 'Man-underline nil :inherit font-lock-keyword-face :underline nil))
 
@@ -345,10 +330,9 @@
   (setq completion-cycle-threshold 3
 	sentence-end-double-space nil))
 
-(use-package flycheck
-  :straight t
-  :init (global-flycheck-mode)
-  :config
+(straight-use-package 'flycheck)
+(add-hook 'prog-mode-hook 'flycheck-mode)
+(with-eval-after-load 'flycheck
   (setq flycheck-emacs-lisp-load-path 'inherit))
 
 (use-package lsp-mode
