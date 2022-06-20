@@ -26,44 +26,34 @@
 (straight-use-package 'use-package)
 (eval-when-compile (require 'use-package))
 
-(use-package lua-mode
-  :straight t
-  :mode "\\.lua\\'")
+(straight-use-package 'lua-mode)
+(add-to-list 'auto-mode-alist '("\\.lua\\'" . lua-mode))
+;; (use-package lua-mode
+;;   :straight t
+;;   :mode "\\.lua\\'")
 
 	(add-to-list 'auto-mode-alist
 		     '("\\(\\.\\(?:service\\|timer\\|target\\|slice\\|socket\\|path\\|network\\|automount\\|link\\|mount\\|netdev\\)\\)\\'" . conf-unix-mode))
 
 (load-theme 'adwaita t)
 
-(use-package savehist
-  :straight (:type built-in)
-  :config
   (setq savehist-file "~/.cache/emacs/savehist"
 	savehist-additional-variables
         '(search-ring regexp-search-ring compile-history))
-  (savehist-mode))
+  (savehist-mode)
 
-(use-package saveplace
-  :straight (:type built-in)
-  :config
   (setq save-place-file "~/.cache/emacs/saveplace"
 	save-place-version-control 'never
 	save-place-ignore-files-regexp
 	"\\(?:COMMIT_EDITMSG\\|MERGE_MSG\\|hg-editor-[[:alnum:]]+\\.txt\\|svn-commit\\.tmp\\|bzr_log\\.[[:alnum:]]+\\)$")
-  (save-place-mode))
+  (save-place-mode)
 
-(use-package recentf
-  :straight (:type built-in)
-  :config
-  (setq recentf-save-file "~/.cache/emacs/recentf"
+   (setq recentf-save-file "~/.cache/emacs/recentf"
 	recentf-auto-cleanup 'never
 	recentf-exclude '("MERGE_MSG" "COMMIT_EDITMSG"))
-  (recentf-mode))
+  (recentf-mode)
 
-(use-package isearch
-  :defer t
-  :straight (:type built-in)
-  :config
+(with-eval-after-load 'isearch
   (setq isearch-lazy-count t
 	isearch-lazy-highlight t
 	search-upper-case nil
@@ -84,10 +74,8 @@
    (set-face-attribute 'Man-overstrike nil :inherit font-lock-type-face :bold t)
    (set-face-attribute 'Man-underline nil :inherit font-lock-keyword-face :underline nil))
 
-(use-package vertico
-  :straight t
-  :init
-  (vertico-mode))
+(straight-use-package 'vertico)
+  (vertico-mode)
 
 (use-package vertico-directory
   :load-path "~/.cache/emacs/straight/build/vertico/extensions/"
@@ -357,22 +345,21 @@
          (sh-mode . lsp-deferred))
   :commands (lsp lsp-deferred))
 
-(use-package lsp-ui
-  :straight t
-  :commands lsp-ui-mode
-  :config
-  (setq lsp-idle-delay 0.500))
+(straight-use-package 'lsp-ui)
+
+;; (straight-use-package 'lsp-pyright)
+;; (add-hook 'python-mode-hook
+;; 		  #'(lambda nil
+;; 		      (require 'lsp-pyright)
+;; 		      (lsp-deferred)))
 
 (use-package lsp-pyright
-  :straight t
-  :hook (python-mode . (lambda ()
-                          (require 'lsp-pyright)
-                          (lsp-deferred))))
+-  :straight t
+-  :hook (python-mode . (lambda ()
+-                          (require 'lsp-pyright)
+-                          (lsp-deferred))))
 
-(use-package consult-lsp
-  :straight t
-  :commands (consult-lsp-diagnostics consult-lsp-symbols consult-lsp-file-symbols))
-
+(straight-use-package 'consult-lsp)
 
 ;; Local Variables:
 ;; byte-compile-warnings: (not free-vars unresolved)
