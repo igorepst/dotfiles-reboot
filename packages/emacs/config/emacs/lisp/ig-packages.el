@@ -351,6 +351,8 @@
       (setq lsp-clients-lua-language-server-install-dir ig--sumneko-root-path
 	    lsp-clients-lua-language-server-bin ig--sumneko-bin
 	    lsp-clients-lua-language-server-main-location ig--sumneko-main))
+    (delete 'lsp-pyls lsp-client-packages)
+    (delete 'lsp-pylsp lsp-client-packages)
   :hook ((lua-mode . lsp-deferred)
          (sh-mode . lsp-deferred))
   :commands (lsp lsp-deferred))
