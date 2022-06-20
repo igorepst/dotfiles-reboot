@@ -129,21 +129,21 @@ function _get_gh_releases() {
 function _install_npm_lsp() {
     emulate -L zsh
     setopt no_autopushd
+    local res=1
     if [ ! -d "${1}" ]; then
         echo "Installing ${2} LSP"
         mkdir -p "${1}"
         pushd "${1}" > /dev/null
         npm install ${3}
-	if [ "${2}" = 'Bash' ]; then
-	    mkdir -p ~/.local/bin
-	    ln -sf "${1}"/node_modules/.bin/bash-language-server ~/.local/bin
-	fi
+	res=$?
     else
         echo "Updating ${2}"
         pushd "${1}" > /dev/null
         ! ncu -us -e 2 && npm install
+	res=$?
     fi
     popd > /dev/null
+    return res
 }
 
 function _install_lsp() {
@@ -151,7 +151,16 @@ function _install_lsp() {
     setopt no_autopushd
     local parentDir=~/.cache/lspServers
     # Bash
-    _install_npm_lsp "${parentDir}/bash" 'Bash' 'bash-language-server'
+    if _install_npm_lsp "${parentDir}/bash" 'Bash' 'bash-language-server'; then
+	 mkdir -p ~/.local/bin
+	 ln -sf "${parentDir}"/bash/node_modules/.bin/bash-language-server ~/.local/bin
+    fi
+    # Pyright
+    if _install_npm_lsp "${parentDir}/pyright" 'Pyright' 'pyright'; then
+	 mkdir -p ~/.local/bin
+	 ln -sf "${parentDir}"/pyright/node_modules/pyright/index.js ~/.local/bin/pyright
+	 ln -sf "${parentDir}"/pyright/node_modules/pyright/langserver.index.js ~/.local/bin/pyright-langserver
+    fi
     # HTML/CSS/JSON/ESLint (JS/TS)
     _install_npm_lsp "${parentDir}/vscode-langservers-extracted" 'HTML/CSS/JSON/ESLint' 'vscode-langservers-extracted'
     # Dockerfile

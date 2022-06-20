@@ -4,7 +4,6 @@ function doWork() {
     printf "${GREEN}Completing installation${RESET}\n\n"
 
     npm install -g npm-check-updates
-    pip install pyright
 
     local ZSH_VOLATILE="${HOME}"/.zsh/volatile
     mkdir -p "${ZSH_VOLATILE}"

@@ -11,7 +11,8 @@
       gc-cons-threshold most-positive-fixnum
       gc-cons-percentage 0.6
       file-name-handler-alist nil
-      frame-resize-pixelwise t)
+      frame-resize-pixelwise t
+      frame-inhibit-implied-resize t)
 (setq-default inhibit-redisplay t
               inhibit-message t)
 (add-hook 'window-setup-hook

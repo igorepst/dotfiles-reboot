@@ -14,20 +14,20 @@
       inhibit-startup-screen t
       initial-scratch-message nil
       initial-major-mode 'emacs-lisp-mode
-      focus-follow-mouse t
+      focus-follows-mouse t
       mouse-autoselect-window nil
       disabled-command-function nil
       use-short-answers t
       x-gtk-show-hidden-files t
-      org-fontify-whole-heading-line t
-      org-startup-with-inline-images t
       tool-bar-style 'both
       auto-save-default nil
       auto-save-list-file-prefix nil
       backup-inhibited t
       create-lockfiles nil
       source-directory "~/.cache/emacs/c-src/emacs"
-      find-file-visit-truename t)
+      find-file-visit-truename t
+      completion-cycle-threshold 3
+      sentence-end-double-space nil)
 
 (add-to-list 'completion-ignored-extensions ".zwc")
 

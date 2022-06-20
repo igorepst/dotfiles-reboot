@@ -28,30 +28,31 @@
 
 (straight-use-package 'lua-mode)
 (add-to-list 'auto-mode-alist '("\\.lua\\'" . lua-mode))
-;; (use-package lua-mode
-;;   :straight t
-;;   :mode "\\.lua\\'")
 
-	(add-to-list 'auto-mode-alist
-		     '("\\(\\.\\(?:service\\|timer\\|target\\|slice\\|socket\\|path\\|network\\|automount\\|link\\|mount\\|netdev\\)\\)\\'" . conf-unix-mode))
+(add-to-list 'auto-mode-alist
+	     '("\\(\\.\\(?:service\\|timer\\|target\\|slice\\|socket\\|path\\|network\\|automount\\|link\\|mount\\|netdev\\)\\)\\'" . conf-unix-mode))
 
 (load-theme 'adwaita t)
 
-  (setq savehist-file "~/.cache/emacs/savehist"
-	savehist-additional-variables
-        '(search-ring regexp-search-ring compile-history))
-  (savehist-mode)
+(setq savehist-file "~/.cache/emacs/savehist"
+      savehist-additional-variables
+      '(search-ring regexp-search-ring compile-history))
+(savehist-mode)
 
-  (setq save-place-file "~/.cache/emacs/saveplace"
-	save-place-version-control 'never
-	save-place-ignore-files-regexp
-	"\\(?:COMMIT_EDITMSG\\|MERGE_MSG\\|hg-editor-[[:alnum:]]+\\.txt\\|svn-commit\\.tmp\\|bzr_log\\.[[:alnum:]]+\\)$")
-  (save-place-mode)
+(setq save-place-file "~/.cache/emacs/saveplace"
+      save-place-version-control 'never
+      save-place-ignore-files-regexp
+      "\\(?:COMMIT_EDITMSG\\|MERGE_MSG\\|hg-editor-[[:alnum:]]+\\.txt\\|svn-commit\\.tmp\\|bzr_log\\.[[:alnum:]]+\\)$")
+(save-place-mode)
 
-   (setq recentf-save-file "~/.cache/emacs/recentf"
-	recentf-auto-cleanup 'never
-	recentf-exclude '("MERGE_MSG" "COMMIT_EDITMSG"))
-  (recentf-mode)
+(setq recentf-save-file "~/.cache/emacs/recentf"
+      recentf-auto-cleanup 'never
+      recentf-exclude '("MERGE_MSG" "COMMIT_EDITMSG"))
+(recentf-mode)
+
+(with-eval-after-load 'org
+  (setq org-fontify-whole-heading-line t
+	org-startup-with-inline-images t))
 
 (with-eval-after-load 'isearch
   (setq isearch-lazy-count t
@@ -59,29 +60,28 @@
 	search-upper-case nil
 	isearch-wrap-pause 'no-ding))
 
-  (delete-selection-mode)
-
-  (with-current-buffer "*scratch*"
-    (emacs-lock-mode 'kill))
-  (with-current-buffer "*Messages*"
-    (emacs-lock-mode 'kill))
+(run-with-idle-timer 1 nil (lambda()
+			     (delete-selection-mode)
+			     (with-current-buffer "*scratch*"
+			       (emacs-lock-mode 'kill))
+			     (with-current-buffer "*Messages*"
+			       (emacs-lock-mode 'kill))
+			     ))
 
 (with-eval-after-load 'dired
-  (setq  dired-use-ls-dired t
-	 dired-listing-switches "-alh --group-directories-first --time-style \"+%d-%m-%Y %H:%M\""))
+  (setq dired-use-ls-dired t
+	dired-listing-switches "-alh --group-directories-first --time-style \"+%d-%m-%Y %H:%M\""))
 
 (with-eval-after-load 'man
-   (set-face-attribute 'Man-overstrike nil :inherit font-lock-type-face :bold t)
-   (set-face-attribute 'Man-underline nil :inherit font-lock-keyword-face :underline nil))
+  (set-face-attribute 'Man-overstrike nil :inherit font-lock-type-face :bold t)
+  (set-face-attribute 'Man-underline nil :inherit font-lock-keyword-face :underline nil))
 
 (straight-use-package 'vertico)
-  (vertico-mode)
+(vertico-mode)
 
-(use-package vertico-directory
-  :load-path "~/.cache/emacs/straight/build/vertico/extensions/"
-  :bind
-  (:map vertico-map
-        ([left] . vertico-directory-up)))
+(add-to-list 'load-path "~/.cache/emacs/straight/build/vertico/extensions/")
+(autoload #'vertico-directory-up "vertico-directory" nil t)
+(define-key vertico-map [left] 'vertico-directory-up)
 
 (use-package orderless
   :straight t
@@ -89,12 +89,10 @@
   (completion-styles '(substring orderless basic))
   (completion-category-overrides '((file (styles basic substring partial-completion)))))
 
-(use-package marginalia
-  :straight t
-  :bind (:map minibuffer-local-map
-              ("M-A" . marginalia-cycle))
-  :init
-  (marginalia-mode))
+(straight-use-package 'marginalia)
+(marginalia-mode)
+(add-hook 'minibuffer-setup-hook (lambda()
+				   (define-key minibuffer-local-map "\M-A" 'marginalia-cycle)))
 
 (use-package consult
   :straight t
@@ -213,61 +211,38 @@
   ;; (setq consult-project-function (lambda (_) (locate-dominating-file "." ".git")))
   )
 
-(use-package corfu
-  :straight t
-  ;; Optional customizations
-  ;; :custom
-  ;; (corfu-cycle t)                ;; Enable cycling for `corfu-next/previous'
-  ;; (corfu-auto t)                 ;; Enable auto completion
-  ;; (corfu-separator ?\s)          ;; Orderless field separator
-  ;; (corfu-quit-at-boundary nil)   ;; Never quit at completion boundary
-  ;; (corfu-quit-no-match nil)      ;; Never quit, even if there is no match
-  ;; (corfu-preview-current nil)    ;; Disable current candidate preview
-  ;; (corfu-preselect-first nil)    ;; Disable candidate preselection
-  ;; (corfu-on-exact-match nil)     ;; Configure handling of exact matches
-  ;; (corfu-echo-documentation nil) ;; Disable documentation in the echo area
-  ;; (corfu-scroll-margin 5)        ;; Use scroll margin
+(straight-use-package 'corfu)
+;; Optional customizations
+;; :custom
+;; (corfu-cycle t)                ;; Enable cycling for `corfu-next/previous'
+;; (corfu-auto t)                 ;; Enable auto completion
+;; (corfu-separator ?\s)          ;; Orderless field separator
+;; (corfu-quit-at-boundary nil)   ;; Never quit at completion boundary
+;; (corfu-quit-no-match nil)      ;; Never quit, even if there is no match
+;; (corfu-preview-current nil)    ;; Disable current candidate preview
+;; (corfu-preselect-first nil)    ;; Disable candidate preselection
+;; (corfu-on-exact-match nil)     ;; Configure handling of exact matches
+;; (corfu-echo-documentation nil) ;; Disable documentation in the echo area
+;; (corfu-scroll-margin 5)        ;; Use scroll margin
 
-  ;; Enable Corfu only for certain modes.
-  ;; :hook ((prog-mode . corfu-mode)
-  ;;        (shell-mode . corfu-mode)
-  ;;        (eshell-mode . corfu-mode))
+;; Enable Corfu only for certain modes.
+;; :hook ((prog-mode . corfu-mode)
+;;        (shell-mode . corfu-mode)
+;;        (eshell-mode . corfu-mode))
 
-  ;; Recommended: Enable Corfu globally.
-  ;; This is recommended since Dabbrev can be used globally (M-/).
-  ;; See also `corfu-excluded-modes'.
-  :init
-  (global-corfu-mode)
-  (defun corfu-enable-in-minibuffer ()
+;; Recommended: Enable Corfu globally.
+;; This is recommended since Dabbrev can be used globally (M-/).
+;; See also `corfu-excluded-modes'.
+(global-corfu-mode)
+(defun corfu-enable-in-minibuffer ()
   "Enable Corfu in the minibuffer if `completion-at-point' is bound."
   (when (where-is-internal #'completion-at-point (list (current-local-map)))
     ;; (setq-local corfu-auto nil) Enable/disable auto completion
     (corfu-mode 1)))
-  (add-hook 'minibuffer-setup-hook #'corfu-enable-in-minibuffer))
+(add-hook 'minibuffer-setup-hook #'corfu-enable-in-minibuffer)
 
-(use-package cape
-  :straight t
-  ;; Bind dedicated completion commands
-  ;; Alternative prefix keys: C-c p, M-p, M-+, ...
-  :bind (("C-c p p" . completion-at-point) ;; capf
-         ("C-c p t" . complete-tag)        ;; etags
-         ("C-c p d" . cape-dabbrev)        ;; or dabbrev-completion
-         ("C-c p h" . cape-history)
-         ("C-c p f" . cape-file)
-         ("C-c p k" . cape-keyword)
-         ("C-c p s" . cape-symbol)
-         ("C-c p a" . cape-abbrev)
-         ("C-c p i" . cape-ispell)
-         ("C-c p l" . cape-line)
-         ("C-c p w" . cape-dict)
-         ("C-c p \\" . cape-tex)
-         ("C-c p _" . cape-tex)
-         ("C-c p ^" . cape-tex)
-         ("C-c p &" . cape-sgml)
-         ("C-c p r" . cape-rfc1345))
-  :init
-  ;; Add `completion-at-point-functions', used by `completion-at-point'.
-  (add-to-list 'completion-at-point-functions #'cape-file)
+(straight-use-package 'cape)
+ (add-to-list 'completion-at-point-functions #'cape-file)
   (add-to-list 'completion-at-point-functions #'cape-dabbrev)
   ;;(add-to-list 'completion-at-point-functions #'cape-history)
   ;;(add-to-list 'completion-at-point-functions #'cape-keyword)
@@ -278,31 +253,33 @@
   ;;(add-to-list 'completion-at-point-functions #'cape-ispell)
   ;;(add-to-list 'completion-at-point-functions #'cape-dict)
   ;;(add-to-list 'completion-at-point-functions #'cape-symbol)
-  ;;(add-to-list 'completion-at-point-functions #'cape-line)
-  )
+;;(add-to-list 'completion-at-point-functions #'cape-line)
+(global-set-key (kbd "C-c p p") 'completion-at-point)
+(global-set-key (kbd "C-c p t") 'complete-tag)
+(global-set-key (kbd "C-c p d") 'cape-dabbrev)
+(global-set-key (kbd "C-c p h") 'cape-history)
+(global-set-key (kbd "C-c p f") 'cape-file)
+(global-set-key (kbd "C-c p k") 'cape-keyword)
+(global-set-key (kbd "C-c p s") 'cape-symbol)
+(global-set-key (kbd "C-c p a") 'cape-abbrev)
+(global-set-key (kbd "C-c p i") 'cape-ispell)
+(global-set-key (kbd "C-c p l") 'cape-line)
+(global-set-key (kbd "C-c p w") 'cape-dict)
+(global-set-key (kbd "C-c p \\") 'cape-tex)
+(global-set-key (kbd "C-c p &") 'cape-sgml)
+(global-set-key (kbd "C-c p r") 'cape-rfc1345)
 
-(use-package embark
-  :straight t
+(straight-use-package 'embark)
+(setq prefix-help-command #'embark-prefix-help-command)
+(with-eval-after-load 'embark
+  		 (add-to-list 'display-buffer-alist
+			      '("\\`\\*Embark Collect \\(Live\\|Completions\\)\\*" nil
+				(window-parameters
+				 (mode-line-format . none)))))
+(global-set-key (kbd "C-.") 'embark-act)
+(global-set-key (kbd "M-.") 'embark-dwim)
+(global-set-key (kbd "C-h B") 'embark-bindings)
 
-  :bind
-  (("C-." . embark-act)
-   ("M-." . embark-dwim)
-   ("C-h B" . embark-bindings))
-
-  :init
-
-  ;; Optionally replace the key help with a completing-read interface
-  (setq prefix-help-command #'embark-prefix-help-command)
-
-  :config
-
-  ;; Hide the mode line of the Embark live/completions buffers
-  (add-to-list 'display-buffer-alist
-               '("\\`\\*Embark Collect \\(Live\\|Completions\\)\\*"
-                 nil
-                 (window-parameters (mode-line-format . none)))))
-
-;; Consult users will also want the embark-consult package.
 (use-package embark-consult
   :straight t
   :after (embark consult)
@@ -311,12 +288,6 @@
   ;; auto-updating embark collect buffer
   :hook
   (embark-collect-mode . consult-preview-at-point-mode))
-
-(use-package emacs
-  :straight (:type built-in)
-  :init
-  (setq completion-cycle-threshold 3
-	sentence-end-double-space nil))
 
 (straight-use-package 'flycheck)
 (add-hook 'prog-mode-hook 'flycheck-mode)
@@ -332,15 +303,15 @@
 	lsp-enable-suggest-server-download nil
 	lsp-session-file "~/.cache/emacs/lsp-session-v1"
 	lsp-warn-no-matched-clients nil
+	lsp-enable-snippet nil
+	lsp-completion-provider :none
 	lsp-lua-diagnostics-globals ["vim" "awesome" "client" "screen" "tag" "mouse" "keygrabber"])
-    (let* ((ig--sumneko-root-path "~/.cache/lspServers/lua/sumneko-lua/extension/server")
+  (let* ((ig--sumneko-root-path "~/.cache/lspServers/lua/sumneko-lua/extension/server")
 	 (ig--sumneko-bin (expand-file-name "bin/lua-language-server" ig--sumneko-root-path))
 	 (ig--sumneko-main (expand-file-name "main.lua" ig--sumneko-root-path)))
-      (setq lsp-clients-lua-language-server-install-dir ig--sumneko-root-path
-	    lsp-clients-lua-language-server-bin ig--sumneko-bin
-	    lsp-clients-lua-language-server-main-location ig--sumneko-main))
-    (delete 'lsp-pyls lsp-client-packages)
-    (delete 'lsp-pylsp lsp-client-packages)
+    (setq lsp-clients-lua-language-server-install-dir ig--sumneko-root-path
+	  lsp-clients-lua-language-server-bin ig--sumneko-bin
+	  lsp-clients-lua-language-server-main-location ig--sumneko-main))
   :hook ((lua-mode . lsp-deferred)
          (sh-mode . lsp-deferred))
   :commands (lsp lsp-deferred))
@@ -349,15 +320,9 @@
 
 (straight-use-package 'lsp-pyright)
 (add-hook 'python-mode-hook
-		  #'(lambda nil
-		      (require 'lsp-pyright)
-		      (lsp-deferred)))
-
-;; (use-package lsp-pyright
-;;   :straight t
-;;   :hook (python-mode . (lambda ()
-;;                           (require 'lsp-pyright)
-;;                           (lsp-deferred))))
+	  #'(lambda nil
+	      (require 'lsp-pyright)
+	      (lsp-deferred)))
 
 (straight-use-package 'consult-lsp)
 
