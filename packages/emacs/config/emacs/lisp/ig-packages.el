@@ -83,11 +83,11 @@
 (autoload #'vertico-directory-up "vertico-directory" nil t)
 (define-key vertico-map [left] 'vertico-directory-up)
 
-(use-package orderless
-  :straight t
-  :custom
-  (completion-styles '(substring orderless basic))
-  (completion-category-overrides '((file (styles basic substring partial-completion)))))
+(straight-use-package 'orderless)
+(require 'orderless)
+(with-eval-after-load 'orderless
+    (customize-set-variable 'completion-styles '(substring orderless basic))
+  (customize-set-variable 'completion-category-overrides '((file (styles basic substring partial-completion)))))
 
 (straight-use-package 'marginalia)
 (marginalia-mode)
@@ -280,25 +280,21 @@
 (global-set-key (kbd "M-.") 'embark-dwim)
 (global-set-key (kbd "C-h B") 'embark-bindings)
 
-(use-package embark-consult
-  :straight t
-  :after (embark consult)
-  :demand t ; only necessary if you have the hook below
-  ;; if you want to have consult previews as you move around an
-  ;; auto-updating embark collect buffer
-  :hook
-  (embark-collect-mode . consult-preview-at-point-mode))
+(straight-use-package 'embark-consult)
+(with-eval-after-load 'consult
+  (with-eval-after-load 'embark
+    (progn (require 'embark-consult)
+	   (add-hook 'embark-collect-mode-hook #'consult-preview-at-point-mode))))
 
 (straight-use-package 'flycheck)
 (add-hook 'prog-mode-hook 'flycheck-mode)
 (with-eval-after-load 'flycheck
   (setq flycheck-emacs-lisp-load-path 'inherit))
 
-(use-package lsp-mode
-  :straight t
-  :init
-  (setq lsp-keymap-prefix "C-c l")
-  :config
+(straight-use-package 'lsp-mode)
+(with-eval-after-load 'lsp-mode
+  (progn
+  (define-key lsp-mode-map (kbd "C-c l") lsp-command-map)
   (setq lsp-log-io nil
 	lsp-enable-suggest-server-download nil
 	lsp-session-file "~/.cache/emacs/lsp-session-v1"
@@ -311,10 +307,9 @@
 	 (ig--sumneko-main (expand-file-name "main.lua" ig--sumneko-root-path)))
     (setq lsp-clients-lua-language-server-install-dir ig--sumneko-root-path
 	  lsp-clients-lua-language-server-bin ig--sumneko-bin
-	  lsp-clients-lua-language-server-main-location ig--sumneko-main))
-  :hook ((lua-mode . lsp-deferred)
-         (sh-mode . lsp-deferred))
-  :commands (lsp lsp-deferred))
+	  lsp-clients-lua-language-server-main-location ig--sumneko-main))))
+(add-hook 'lua-mode-hook 'lsp-deferred)
+(add-hook 'sh-mode-hook 'lsp-deferred)
 
 (straight-use-package 'lsp-ui)
 
