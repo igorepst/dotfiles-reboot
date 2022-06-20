@@ -71,7 +71,11 @@ doWork() {
     cp ${cdir}/emacs.service ${sysd}
     ln -sf ${sysd}/emacs.service ${sysdl}/emacs.service
     systemctl --user daemon-reload
-    systemctl --user enable --now emacs.service
+    # Prefer to import PATH + start the service here and during login,
+    # than to enable the service with the wrong PATH
+    # If using shell different from Bash, the path may be wrong
+    systemctl --user import-environment PATH
+    systemctl --user start emacs.service
 }
 
 doWork "$@"
