@@ -347,17 +347,17 @@
 
 (straight-use-package 'lsp-ui)
 
-;; (straight-use-package 'lsp-pyright)
-;; (add-hook 'python-mode-hook
-;; 		  #'(lambda nil
-;; 		      (require 'lsp-pyright)
-;; 		      (lsp-deferred)))
+(straight-use-package 'lsp-pyright)
+(add-hook 'python-mode-hook
+		  #'(lambda nil
+		      (require 'lsp-pyright)
+		      (lsp-deferred)))
 
-(use-package lsp-pyright
--  :straight t
--  :hook (python-mode . (lambda ()
--                          (require 'lsp-pyright)
--                          (lsp-deferred))))
+;; (use-package lsp-pyright
+;;   :straight t
+;;   :hook (python-mode . (lambda ()
+;;                           (require 'lsp-pyright)
+;;                           (lsp-deferred))))
 
 (straight-use-package 'consult-lsp)
 
