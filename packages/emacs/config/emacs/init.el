@@ -29,6 +29,9 @@
       completion-cycle-threshold 3
       sentence-end-double-space nil)
 
+(set-face-font 'fixed-pitch-serif "DejaVu Serif-14")
+(set-face-font 'variable-pitch "DejaVu Sans-14")
+
 (add-to-list 'completion-ignored-extensions ".zwc")
 
 (setq-default indicate-empty-lines t

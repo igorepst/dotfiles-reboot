@@ -84,10 +84,10 @@
 
 
 (straight-use-package 'orderless)
-(require 'orderless)
-(with-eval-after-load 'orderless
-    (customize-set-variable 'completion-styles '(substring orderless basic))
-  (customize-set-variable 'completion-category-overrides '((file (styles basic substring partial-completion)))))
+(setq completion-styles '(substring orderless basic)
+      completion-category-overrides '((file (styles basic substring partial-completion))))
+
+;; (customize-set-variable 'completion-styles '(substring orderless basic))
 
 
 
@@ -154,46 +154,48 @@
   ;;;; 4. locate-dominating-file
   ;; (setq consult-project-function (lambda (_) (locate-dominating-file "." ".git")))
   )
-(global-set-key (kbd "C-x C-a") 'consult-recent-file)
-(global-set-key (kbd "C-c h") 'consult-history)
-(global-set-key (kbd "C-c k") 'consult-kmacro)
-(global-set-key (kbd "C-x M-:") 'consult-complex-command) ;; orig. repeat-complex-command
-(global-set-key (kbd "C-x b") 'consult-buffer) ;; orig. switch-to-buffer
-(global-set-key (kbd "C-x 4 b") 'consult-buffer-other-window) ;; orig. switch-to-buffer-other-window
-(global-set-key (kbd "C-x 5 b") 'consult-buffer-other-frame) ;; orig. switch-to-buffer-other-frame
-(global-set-key (kbd "C-x r b") 'consult-bookmark) ;; orig. bookmark-jump
-(global-set-key (kbd "C-x p b") 'consult-project-buffer) ;; orig. project-switch-to-buffer
-(global-set-key (kbd "M-#") 'consult-register-load)
-(global-set-key (kbd "M-'") 'consult-register-store) ;; orig. abbrev-prefix-mark (unrelated)
-(global-set-key (kbd "C-M-#") 'consult-register)
-(global-set-key (kbd "M-y") 'consult-yank-pop) ;; orig. yank-pop
-(global-set-key (kbd "<help> a") 'consult-apropos) ;; orig. apropos-command
-(global-set-key (kbd "M-g e") 'consult-compile-error)
-(global-set-key (kbd "M-g f") 'consult-flycheck)
-(global-set-key (kbd "M-g g") 'consult-goto-line) ;; orig. goto-line
-(global-set-key (kbd "M-g M-g") 'consult-goto-line) ;; orig. goto-line
-(global-set-key (kbd "M-g o") 'consult-outline)
-(global-set-key (kbd "M-g m") 'consult-mark)
-(global-set-key (kbd "M-g k") 'consult-global-mark)
-(global-set-key (kbd "M-g i") 'consult-imenu)
-(global-set-key (kbd "M-g I") 'consult-imenu-multi)
-(global-set-key (kbd "M-s d") 'consult-find)
-(global-set-key (kbd "M-s D") 'consult-locate)
-(global-set-key (kbd "M-s g") 'consult-grep)
-(global-set-key (kbd "M-s G") 'consult-git-grep)
-(global-set-key (kbd "M-s r") 'consult-ripgrep)
-(global-set-key (kbd "M-s l") 'consult-line)
-(global-set-key (kbd "M-s L") 'consult-line-multi)
-(global-set-key (kbd "M-s m") 'consult-multi-occur)
-(global-set-key (kbd "M-s k") 'consult-keep-lines)
-(global-set-key (kbd "M-s u") 'consult-focus-lines)
-(global-set-key (kbd "M-s e") 'consult-isearch-history)
-(define-key isearch-mode-map (kbd "M-e") 'consult-isearch-history) ;; orig. isearch-edit-string
-(define-key isearch-mode-map (kbd "M-s e") 'consult-isearch-history) ;; orig. isearch-edit-string
-(define-key isearch-mode-map (kbd "M-s l") 'consult-line) ;; needed by consult-line to detect isearch
-(define-key isearch-mode-map (kbd "M-s L") 'consult-line-multi) ;; needed by consult-line to detect isearch
-(define-key minibuffer-local-map (kbd "M-s") 'consult-history) ;; orig. next-matching-history-element
-(define-key minibuffer-local-map (kbd "M-r") 'consult-history) ;; orig. previous-matching-history-element
+(define-key global-map "\C-x\C-a" 'consult-recent-file)
+(define-key global-map "\C-ch" 'consult-history)
+(define-key global-map "\C-ck" 'consult-kmacro)
+(define-key global-map "\C-x\M-:" 'consult-complex-command) ;; orig. repeat-complex-command
+(define-key global-map "\C-xb" 'consult-buffer) ;; orig. switch-to-buffer
+(define-key global-map "\C-x4b" 'consult-buffer-other-window) ;; orig. switch-to-buffer-other-window
+(define-key global-map "\C-x5b" 'consult-buffer-other-frame) ;; orig. switch-to-buffer-other-frame
+(define-key global-map "\C-xrb" 'consult-bookmark) ;; orig. bookmark-jump
+(define-key global-map "\C-xpb" 'consult-project-buffer) ;; orig. project-switch-to-buffer
+(define-key global-map "\M-#" 'consult-register-load)
+(define-key global-map "\M-'" 'consult-register-store) ;; orig. abbrev-prefix-mark (unrelated)
+(define-key global-map [?\C-\M-#] 'consult-register)
+(define-key global-map "\M-y" 'consult-yank-pop) ;; orig. yank-pop
+(define-key global-map [(help) (a)] 'consult-apropos) ;; orig. apropos-command
+(define-key global-map "\M-ge" 'consult-compile-error)
+(define-key global-map "\M-gg" 'consult-goto-line) ;; orig. goto-line
+(define-key global-map "\M-g\M-g" 'consult-goto-line) ;; orig. goto-line
+(define-key global-map "\M-go" 'consult-outline)
+(define-key global-map "\M-gm" 'consult-mark)
+(define-key global-map "\M-gk" 'consult-global-mark)
+(define-key global-map "\M-gi" 'consult-imenu)
+(define-key global-map "\M-gI" 'consult-imenu-multi)
+(define-key global-map "\M-sd" 'consult-find)
+(define-key global-map "\M-sD" 'consult-locate)
+(define-key global-map "\M-sg" 'consult-grep)
+(define-key global-map "\M-sG" 'consult-git-grep)
+(define-key global-map "\M-sr" 'consult-ripgrep)
+(define-key global-map "\M-sl" 'consult-line)
+(define-key global-map "\M-sL" 'consult-line-multi)
+(define-key global-map "\M-sm" 'consult-multi-occur)
+(define-key global-map "\M-sk" 'consult-keep-lines)
+(define-key global-map "\M-su" 'consult-focus-lines)
+(define-key global-map "\M-se" 'consult-isearch-history)
+(define-key isearch-mode-map "\M-e" 'consult-isearch-history) ;; orig. isearch-edit-string
+(define-key isearch-mode-map "\M-se" 'consult-isearch-history) ;; orig. isearch-edit-string
+(define-key isearch-mode-map "\M-sl" 'consult-line) ;; needed by consult-line to detect isearch
+(define-key isearch-mode-map "\M-sL" 'consult-line-multi) ;; needed by consult-line to detect isearch
+(define-key minibuffer-local-map "\M-s" 'consult-history) ;; orig. next-matching-history-element
+(define-key minibuffer-local-map "\M-r" 'consult-history) ;; orig. previous-matching-history-element
+
+(straight-use-package 'consult-flycheck)
+(define-key global-map "\M-gf" 'consult-flycheck)
 
 
 
@@ -242,20 +244,20 @@
   ;;(add-to-list 'completion-at-point-functions #'cape-dict)
   ;;(add-to-list 'completion-at-point-functions #'cape-symbol)
 ;;(add-to-list 'completion-at-point-functions #'cape-line)
-(global-set-key (kbd "C-c p p") 'completion-at-point)
-(global-set-key (kbd "C-c p t") 'complete-tag)
-(global-set-key (kbd "C-c p d") 'cape-dabbrev)
-(global-set-key (kbd "C-c p h") 'cape-history)
-(global-set-key (kbd "C-c p f") 'cape-file)
-(global-set-key (kbd "C-c p k") 'cape-keyword)
-(global-set-key (kbd "C-c p s") 'cape-symbol)
-(global-set-key (kbd "C-c p a") 'cape-abbrev)
-(global-set-key (kbd "C-c p i") 'cape-ispell)
-(global-set-key (kbd "C-c p l") 'cape-line)
-(global-set-key (kbd "C-c p w") 'cape-dict)
-(global-set-key (kbd "C-c p \\") 'cape-tex)
-(global-set-key (kbd "C-c p &") 'cape-sgml)
-(global-set-key (kbd "C-c p r") 'cape-rfc1345)
+(define-key global-map "\C-cpp" 'completion-at-point)
+(define-key global-map "\C-cpt" 'complete-tag)
+(define-key global-map "\C-cpd" 'cape-dabbrev)
+(define-key global-map "\C-cph" 'cape-history)
+(define-key global-map "\C-cpf" 'cape-file)
+(define-key global-map "\C-cpk" 'cape-keyword)
+(define-key global-map "\C-cps" 'cape-symbol)
+(define-key global-map "\C-cpa" 'cape-abbrev)
+(define-key global-map "\C-cpi" 'cape-ispell)
+(define-key global-map "\C-cpl" 'cape-line)
+(define-key global-map "\C-cpw" 'cape-dict)
+(define-key global-map "\C-cp\\" 'cape-tex)
+(define-key global-map "\C-cp&" 'cape-sgml)
+(define-key global-map "\C-cpr" 'cape-rfc1345)
 
 
 
@@ -266,9 +268,9 @@
 			      '("\\`\\*Embark Collect \\(Live\\|Completions\\)\\*" nil
 				(window-parameters
 				 (mode-line-format . none)))))
-(global-set-key (kbd "C-.") 'embark-act)
-(global-set-key (kbd "M-.") 'embark-dwim)
-(global-set-key (kbd "C-h B") 'embark-bindings)
+(define-key global-map [?\C-.] 'embark-act)
+(define-key global-map "\M-." 'embark-dwim)
+(define-key global-map "\C-hB" 'embark-bindings)
 
 (straight-use-package 'embark-consult)
 (with-eval-after-load 'consult
