@@ -44,7 +44,6 @@
 (setq recentf-save-file "~/.cache/emacs/recentf"
       recentf-auto-cleanup 'never
       recentf-exclude '("MERGE_MSG" "COMMIT_EDITMSG"))
-(recentf-mode)
 
 (with-eval-after-load 'org
   (setq org-fontify-whole-heading-line t
@@ -56,13 +55,15 @@
 	search-upper-case nil
 	isearch-wrap-pause 'no-ding))
 
-(run-with-idle-timer 1 nil (lambda()
-			     (delete-selection-mode)
-			     (with-current-buffer "*scratch*"
-			       (emacs-lock-mode 'kill))
-			     (with-current-buffer "*Messages*"
-			       (emacs-lock-mode 'kill))
-			     ))
+(run-with-idle-timer 0.1 nil (lambda()
+			       (let ((inhibit-message t))
+			       (recentf-mode))
+			       (with-current-buffer "*scratch*"
+				 (emacs-lock-mode 'kill))
+			       (with-current-buffer "*Messages*"
+				 (emacs-lock-mode 'kill))
+			       (delete-selection-mode)
+			       ))
 
 (with-eval-after-load 'dired
   (setq dired-use-ls-dired t
@@ -99,25 +100,25 @@
 
 
 (straight-use-package 'consult)
-  ;; Optionally configure the register formatting. This improves the register
-  ;; preview for `consult-register', `consult-register-load',
-  ;; `consult-register-store' and the Emacs built-ins.
-  (setq register-preview-delay 0.5
-        register-preview-function #'consult-register-format)
+;; Optionally configure the register formatting. This improves the register
+;; preview for `consult-register', `consult-register-load',
+;; `consult-register-store' and the Emacs built-ins.
+(setq register-preview-delay 0.5
+      register-preview-function #'consult-register-format)
 
-  ;; Optionally tweak the register preview window.
-  ;; This adds thin lines, sorting and hides the mode line of the window.
-  (advice-add #'register-preview :override #'consult-register-window)
+;; Optionally tweak the register preview window.
+;; This adds thin lines, sorting and hides the mode line of the window.
+(advice-add #'register-preview :override #'consult-register-window)
 
-  ;; Use Consult to select xref locations with preview
-  (setq xref-show-xrefs-function #'consult-xref
-        xref-show-definitions-function #'consult-xref)
+;; Use Consult to select xref locations with preview
+(setq xref-show-xrefs-function #'consult-xref
+      xref-show-definitions-function #'consult-xref)
 
- ;; Enable automatic preview at point in the *Completions* buffer. This is
-  ;; relevant when you use the default completion UI.
+;; Enable automatic preview at point in the *Completions* buffer. This is
+;; relevant when you use the default completion UI.
 (add-hook 'completion-list-mode-hook 'consult-preview-at-point-mode)
 (with-eval-after-load 'consult
-;; Optionally configure preview. The default value
+  ;; Optionally configure preview. The default value
   ;; is 'any, such that any key triggers the preview.
   ;; (setq consult-preview-key 'any)
   ;; (setq consult-preview-key (kbd "M-."))
@@ -232,17 +233,17 @@
 
 
 (straight-use-package 'cape)
- (add-to-list 'completion-at-point-functions #'cape-file)
-  (add-to-list 'completion-at-point-functions #'cape-dabbrev)
-  ;;(add-to-list 'completion-at-point-functions #'cape-history)
-  ;;(add-to-list 'completion-at-point-functions #'cape-keyword)
-  ;;(add-to-list 'completion-at-point-functions #'cape-tex)
-  ;;(add-to-list 'completion-at-point-functions #'cape-sgml)
-  ;;(add-to-list 'completion-at-point-functions #'cape-rfc1345)
-  ;;(add-to-list 'completion-at-point-functions #'cape-abbrev)
-  ;;(add-to-list 'completion-at-point-functions #'cape-ispell)
-  ;;(add-to-list 'completion-at-point-functions #'cape-dict)
-  ;;(add-to-list 'completion-at-point-functions #'cape-symbol)
+(add-to-list 'completion-at-point-functions #'cape-file)
+(add-to-list 'completion-at-point-functions #'cape-dabbrev)
+;;(add-to-list 'completion-at-point-functions #'cape-history)
+;;(add-to-list 'completion-at-point-functions #'cape-keyword)
+;;(add-to-list 'completion-at-point-functions #'cape-tex)
+;;(add-to-list 'completion-at-point-functions #'cape-sgml)
+;;(add-to-list 'completion-at-point-functions #'cape-rfc1345)
+;;(add-to-list 'completion-at-point-functions #'cape-abbrev)
+;;(add-to-list 'completion-at-point-functions #'cape-ispell)
+;;(add-to-list 'completion-at-point-functions #'cape-dict)
+;;(add-to-list 'completion-at-point-functions #'cape-symbol)
 ;;(add-to-list 'completion-at-point-functions #'cape-line)
 (define-key global-map "\C-cpp" 'completion-at-point)
 (define-key global-map "\C-cpt" 'complete-tag)
@@ -264,10 +265,10 @@
 (straight-use-package 'embark)
 (setq prefix-help-command #'embark-prefix-help-command)
 (with-eval-after-load 'embark
-  		 (add-to-list 'display-buffer-alist
-			      '("\\`\\*Embark Collect \\(Live\\|Completions\\)\\*" nil
-				(window-parameters
-				 (mode-line-format . none)))))
+  (add-to-list 'display-buffer-alist
+	       '("\\`\\*Embark Collect \\(Live\\|Completions\\)\\*" nil
+		 (window-parameters
+		  (mode-line-format . none)))))
 (define-key global-map [?\C-.] 'embark-act)
 (define-key global-map "\M-." 'embark-dwim)
 (define-key global-map "\C-hB" 'embark-bindings)
@@ -290,20 +291,20 @@
 (straight-use-package 'lsp-mode)
 (with-eval-after-load 'lsp-mode
   (progn
-  (define-key lsp-mode-map (kbd "C-c l") lsp-command-map)
-  (setq lsp-log-io nil
-	lsp-enable-suggest-server-download nil
-	lsp-session-file "~/.cache/emacs/lsp-session-v1"
-	lsp-warn-no-matched-clients nil
-	lsp-enable-snippet nil
-	lsp-completion-provider :none
-	lsp-lua-diagnostics-globals ["vim" "awesome" "client" "screen" "tag" "mouse" "keygrabber"])
-  (let* ((ig--sumneko-root-path "~/.cache/lspServers/lua/sumneko-lua/extension/server")
-	 (ig--sumneko-bin (expand-file-name "bin/lua-language-server" ig--sumneko-root-path))
-	 (ig--sumneko-main (expand-file-name "main.lua" ig--sumneko-root-path)))
-    (setq lsp-clients-lua-language-server-install-dir ig--sumneko-root-path
-	  lsp-clients-lua-language-server-bin ig--sumneko-bin
-	  lsp-clients-lua-language-server-main-location ig--sumneko-main))))
+    (define-key lsp-mode-map (kbd "C-c l") lsp-command-map)
+    (setq lsp-log-io nil
+	  lsp-enable-suggest-server-download nil
+	  lsp-session-file "~/.cache/emacs/lsp-session-v1"
+	  lsp-warn-no-matched-clients nil
+	  lsp-enable-snippet nil
+	  lsp-completion-provider :none
+	  lsp-lua-diagnostics-globals ["vim" "awesome" "client" "screen" "tag" "mouse" "keygrabber"])
+    (let* ((ig--sumneko-root-path "~/.cache/lspServers/lua/sumneko-lua/extension/server")
+	   (ig--sumneko-bin (expand-file-name "bin/lua-language-server" ig--sumneko-root-path))
+	   (ig--sumneko-main (expand-file-name "main.lua" ig--sumneko-root-path)))
+      (setq lsp-clients-lua-language-server-install-dir ig--sumneko-root-path
+	    lsp-clients-lua-language-server-bin ig--sumneko-bin
+	    lsp-clients-lua-language-server-main-location ig--sumneko-main))))
 (add-hook 'lua-mode-hook 'lsp-deferred)
 (add-hook 'sh-mode-hook 'lsp-deferred)
 
