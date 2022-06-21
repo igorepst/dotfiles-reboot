@@ -22,10 +22,6 @@
       (eval-print-last-sexp)))
   (load bootstrap-file nil 'nomessage))
 
-(setq use-package-enable-imenu-support t)
-(straight-use-package 'use-package)
-(eval-when-compile (require 'use-package))
-
 (straight-use-package 'lua-mode)
 (add-to-list 'auto-mode-alist '("\\.lua\\'" . lua-mode))
 
@@ -76,6 +72,8 @@
   (set-face-attribute 'Man-overstrike nil :inherit font-lock-type-face :bold t)
   (set-face-attribute 'Man-underline nil :inherit font-lock-keyword-face :underline nil))
 
+
+
 (straight-use-package 'vertico)
 (vertico-mode)
 
@@ -83,78 +81,24 @@
 (autoload #'vertico-directory-up "vertico-directory" nil t)
 (define-key vertico-map [left] 'vertico-directory-up)
 
+
+
 (straight-use-package 'orderless)
 (require 'orderless)
 (with-eval-after-load 'orderless
     (customize-set-variable 'completion-styles '(substring orderless basic))
   (customize-set-variable 'completion-category-overrides '((file (styles basic substring partial-completion)))))
 
+
+
 (straight-use-package 'marginalia)
 (marginalia-mode)
 (add-hook 'minibuffer-setup-hook (lambda()
 				   (define-key minibuffer-local-map "\M-A" 'marginalia-cycle)))
 
-(use-package consult
-  :straight t
-  :bind (;; C-c bindings (mode-specific-map)
-	 ("C-x C-a" . consult-recent-file)
-         ("C-c h" . consult-history)
-         ("C-c m" . consult-mode-command)
-         ("C-c k" . consult-kmacro)
-         ;; C-x bindings (ctl-x-map)
-         ("C-x M-:" . consult-complex-command)     ;; orig. repeat-complex-command
-         ("C-x b" . consult-buffer)                ;; orig. switch-to-buffer
-         ("C-x 4 b" . consult-buffer-other-window) ;; orig. switch-to-buffer-other-window
-         ("C-x 5 b" . consult-buffer-other-frame)  ;; orig. switch-to-buffer-other-frame
-         ("C-x r b" . consult-bookmark)            ;; orig. bookmark-jump
-         ("C-x p b" . consult-project-buffer)      ;; orig. project-switch-to-buffer
-         ;; Custom M-# bindings for fast register access
-         ("M-#" . consult-register-load)
-         ("M-'" . consult-register-store)          ;; orig. abbrev-prefix-mark (unrelated)
-         ("C-M-#" . consult-register)
-         ;; Other custom bindings
-         ("M-y" . consult-yank-pop)                ;; orig. yank-pop
-         ("<help> a" . consult-apropos)            ;; orig. apropos-command
-         ;; M-g bindings (goto-map)
-         ("M-g e" . consult-compile-error)
-         ("M-g f" . consult-flymake)               ;; Alternative: consult-flycheck
-         ("M-g g" . consult-goto-line)             ;; orig. goto-line
-         ("M-g M-g" . consult-goto-line)           ;; orig. goto-line
-         ("M-g o" . consult-outline)               ;; Alternative: consult-org-heading
-         ("M-g m" . consult-mark)
-         ("M-g k" . consult-global-mark)
-         ("M-g i" . consult-imenu)
-         ("M-g I" . consult-imenu-multi)
-         ;; M-s bindings (search-map)
-         ("M-s d" . consult-find)
-         ("M-s D" . consult-locate)
-         ("M-s g" . consult-grep)
-         ("M-s G" . consult-git-grep)
-         ("M-s r" . consult-ripgrep)
-         ("M-s l" . consult-line)
-         ("M-s L" . consult-line-multi)
-         ("M-s m" . consult-multi-occur)
-         ("M-s k" . consult-keep-lines)
-         ("M-s u" . consult-focus-lines)
-         ;; Isearch integration
-         ("M-s e" . consult-isearch-history)
-         :map isearch-mode-map
-         ("M-e" . consult-isearch-history)         ;; orig. isearch-edit-string
-         ("M-s e" . consult-isearch-history)       ;; orig. isearch-edit-string
-         ("M-s l" . consult-line)                  ;; needed by consult-line to detect isearch
-         ("M-s L" . consult-line-multi)            ;; needed by consult-line to detect isearch
-         ;; Minibuffer history
-         :map minibuffer-local-map
-         ("M-s" . consult-history)                 ;; orig. next-matching-history-element
-         ("M-r" . consult-history))                ;; orig. previous-matching-history-element
+
 
-  ;; Enable automatic preview at point in the *Completions* buffer. This is
-  ;; relevant when you use the default completion UI.
-  :hook (completion-list-mode . consult-preview-at-point-mode)
-
-  ;; The :init configuration is always executed (Not lazy)
-  :init
-
+(straight-use-package 'consult)
   ;; Optionally configure the register formatting. This improves the register
   ;; preview for `consult-register', `consult-register-load',
   ;; `consult-register-store' and the Emacs built-ins.
@@ -169,11 +113,11 @@
   (setq xref-show-xrefs-function #'consult-xref
         xref-show-definitions-function #'consult-xref)
 
-  ;; Configure other variables and modes in the :config section,
-  ;; after lazily loading the package.
-  :config
-
-  ;; Optionally configure preview. The default value
+ ;; Enable automatic preview at point in the *Completions* buffer. This is
+  ;; relevant when you use the default completion UI.
+(add-hook 'completion-list-mode-hook 'consult-preview-at-point-mode)
+(with-eval-after-load 'consult
+;; Optionally configure preview. The default value
   ;; is 'any, such that any key triggers the preview.
   ;; (setq consult-preview-key 'any)
   ;; (setq consult-preview-key (kbd "M-."))
@@ -210,6 +154,48 @@
   ;;;; 4. locate-dominating-file
   ;; (setq consult-project-function (lambda (_) (locate-dominating-file "." ".git")))
   )
+(global-set-key (kbd "C-x C-a") 'consult-recent-file)
+(global-set-key (kbd "C-c h") 'consult-history)
+(global-set-key (kbd "C-c k") 'consult-kmacro)
+(global-set-key (kbd "C-x M-:") 'consult-complex-command) ;; orig. repeat-complex-command
+(global-set-key (kbd "C-x b") 'consult-buffer) ;; orig. switch-to-buffer
+(global-set-key (kbd "C-x 4 b") 'consult-buffer-other-window) ;; orig. switch-to-buffer-other-window
+(global-set-key (kbd "C-x 5 b") 'consult-buffer-other-frame) ;; orig. switch-to-buffer-other-frame
+(global-set-key (kbd "C-x r b") 'consult-bookmark) ;; orig. bookmark-jump
+(global-set-key (kbd "C-x p b") 'consult-project-buffer) ;; orig. project-switch-to-buffer
+(global-set-key (kbd "M-#") 'consult-register-load)
+(global-set-key (kbd "M-'") 'consult-register-store) ;; orig. abbrev-prefix-mark (unrelated)
+(global-set-key (kbd "C-M-#") 'consult-register)
+(global-set-key (kbd "M-y") 'consult-yank-pop) ;; orig. yank-pop
+(global-set-key (kbd "<help> a") 'consult-apropos) ;; orig. apropos-command
+(global-set-key (kbd "M-g e") 'consult-compile-error)
+(global-set-key (kbd "M-g f") 'consult-flycheck)
+(global-set-key (kbd "M-g g") 'consult-goto-line) ;; orig. goto-line
+(global-set-key (kbd "M-g M-g") 'consult-goto-line) ;; orig. goto-line
+(global-set-key (kbd "M-g o") 'consult-outline)
+(global-set-key (kbd "M-g m") 'consult-mark)
+(global-set-key (kbd "M-g k") 'consult-global-mark)
+(global-set-key (kbd "M-g i") 'consult-imenu)
+(global-set-key (kbd "M-g I") 'consult-imenu-multi)
+(global-set-key (kbd "M-s d") 'consult-find)
+(global-set-key (kbd "M-s D") 'consult-locate)
+(global-set-key (kbd "M-s g") 'consult-grep)
+(global-set-key (kbd "M-s G") 'consult-git-grep)
+(global-set-key (kbd "M-s r") 'consult-ripgrep)
+(global-set-key (kbd "M-s l") 'consult-line)
+(global-set-key (kbd "M-s L") 'consult-line-multi)
+(global-set-key (kbd "M-s m") 'consult-multi-occur)
+(global-set-key (kbd "M-s k") 'consult-keep-lines)
+(global-set-key (kbd "M-s u") 'consult-focus-lines)
+(global-set-key (kbd "M-s e") 'consult-isearch-history)
+(define-key isearch-mode-map (kbd "M-e") 'consult-isearch-history) ;; orig. isearch-edit-string
+(define-key isearch-mode-map (kbd "M-s e") 'consult-isearch-history) ;; orig. isearch-edit-string
+(define-key isearch-mode-map (kbd "M-s l") 'consult-line) ;; needed by consult-line to detect isearch
+(define-key isearch-mode-map (kbd "M-s L") 'consult-line-multi) ;; needed by consult-line to detect isearch
+(define-key minibuffer-local-map (kbd "M-s") 'consult-history) ;; orig. next-matching-history-element
+(define-key minibuffer-local-map (kbd "M-r") 'consult-history) ;; orig. previous-matching-history-element
+
+
 
 (straight-use-package 'corfu)
 ;; Optional customizations
@@ -241,6 +227,8 @@
     (corfu-mode 1)))
 (add-hook 'minibuffer-setup-hook #'corfu-enable-in-minibuffer)
 
+
+
 (straight-use-package 'cape)
  (add-to-list 'completion-at-point-functions #'cape-file)
   (add-to-list 'completion-at-point-functions #'cape-dabbrev)
@@ -269,6 +257,8 @@
 (global-set-key (kbd "C-c p &") 'cape-sgml)
 (global-set-key (kbd "C-c p r") 'cape-rfc1345)
 
+
+
 (straight-use-package 'embark)
 (setq prefix-help-command #'embark-prefix-help-command)
 (with-eval-after-load 'embark
@@ -286,10 +276,14 @@
     (progn (require 'embark-consult)
 	   (add-hook 'embark-collect-mode-hook #'consult-preview-at-point-mode))))
 
+
+
 (straight-use-package 'flycheck)
 (add-hook 'prog-mode-hook 'flycheck-mode)
 (with-eval-after-load 'flycheck
   (setq flycheck-emacs-lisp-load-path 'inherit))
+
+
 
 (straight-use-package 'lsp-mode)
 (with-eval-after-load 'lsp-mode
@@ -320,6 +314,10 @@
 	      (lsp-deferred)))
 
 (straight-use-package 'consult-lsp)
+
+
+
+(straight-use-package 'esup)
 
 ;; Local Variables:
 ;; byte-compile-warnings: (not free-vars unresolved)
