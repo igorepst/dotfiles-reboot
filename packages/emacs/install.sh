@@ -3,7 +3,7 @@
 doWork() {
     local cdir=$(dirname $(readlink -f $0))
 
-    source ${cdir}/../ensure_env.sh
+    source "${cdir}"/../ensure_env.sh
 
     case "${OS_ID}" in
 	ubuntu)
@@ -28,25 +28,25 @@ doWork() {
 	    ;;
     esac
     
-    ln -sf ${cdir}/config/emacs ~/.config
+    ln -sf "${cdir}"/config/emacs ~/.config
     mkdir -p ~/.zsh/volatile/helpers
-    ln -sf ${cdir}/emacs.zsh ~/.zsh/volatile/helpers/emacs.zsh
+    ln -sf "${cdir}"/emacs.zsh ~/.zsh/volatile/helpers/emacs.zsh
 
     local idir=~/.local/share/icons
     mkdir -p ${idir}
-    cp -r ${cdir}/icons/* ${idir}
+    cp -r "${cdir}"/icons/* ${idir}
 
     local ddir=~/.local/share/applications
     mkdir -p ${ddir}
     case "${OS_ID}" in
 	ubuntu)
 	    # Override for Snap
-	    for d in ${cdir}/desktop/*; do
+	    for d in "${cdir}"/desktop/*; do
             cp -- "${d}" "${ddir}/emacs_$(basename ${d})"
 	    done
 	    ;;
 	*)
-	    cp ${cdir}/desktop/* ${ddir}
+	    cp "${cdir}"/desktop/* ${ddir}
 	    ;;
     esac
     update-desktop-database ${ddir}
@@ -57,7 +57,7 @@ doWork() {
 
     local edir=~/.config/environment.d
     mkdir -p ${edir}
-    ln -sf ${cdir}/environment.d/* ${edir}
+    ln -sf "${cdir}"/environment.d/* ${edir}
 
     local sf=/tmp/emacs-src.tar.gz
     local sdir=~/.cache/emacs/c-src
@@ -68,14 +68,12 @@ doWork() {
     mv ${sdir}/emacs-emacs-* ${sdir}/emacs
     rm -f ${sf}
 
-    cp ${cdir}/emacs.service ${sysd}
+    cp "${cdir}"/emacs.service ${sysd}
     ln -sf ${sysd}/emacs.service ${sysdl}/emacs.service
     systemctl --user daemon-reload
-    # Prefer to import PATH + start the service here and during login,
-    # than to enable the service with the wrong PATH
-    # If using shell different from Bash, the path may be wrong
-    systemctl --user import-environment PATH
-    systemctl --user start emacs.service
+    
+    mkdir -p ~/.zsh/volatile/autostart
+    ln -sf "${cdir}"/emacs-autostart.zsh ~/.zsh/volatile/autostart/emacs-autostart.zsh
 }
 
 doWork "$@"
