@@ -5,24 +5,8 @@
 
 ;;; Code:
 
-(setq load-prefer-newer t
-      straight-check-for-modifications nil
-      straight-repository-branch "develop"
-      straight-base-dir "~/.cache/emacs")
-(defvar bootstrap-version)
-(let ((bootstrap-file
-       (expand-file-name "straight/repos/straight.el/bootstrap.el" straight-base-dir))
-      (bootstrap-version 6))
-  (unless (file-exists-p bootstrap-file)
-    (with-current-buffer
-        (url-retrieve-synchronously
-         "https://raw.githubusercontent.com/radian-software/straight.el/develop/install.el"
-         'silent 'inhibit-cookies)
-      (goto-char (point-max))
-      (eval-print-last-sexp)))
-  (load bootstrap-file nil 'nomessage))
+(setq load-prefer-newer t)
 
-(straight-use-package 'lua-mode)
 (add-to-list 'auto-mode-alist '("\\.lua\\'" . lua-mode))
 
 (add-to-list 'auto-mode-alist
@@ -80,16 +64,14 @@
 
 
 
-(straight-use-package 'vertico)
 (vertico-mode)
 
-(add-to-list 'load-path "~/.cache/emacs/straight/build/vertico/extensions/")
-(autoload #'vertico-directory-up "vertico-directory" nil t)
-(define-key vertico-map [left] 'vertico-directory-up)
+;; (add-to-list 'load-path "~/.cache/emacs/straight/build/vertico/extensions/")
+;; (autoload #'vertico-directory-up "vertico-directory" nil t)
+;; (define-key vertico-map [left] 'vertico-directory-up)
 
 
 
-(straight-use-package 'orderless)
 (setq completion-styles '(substring orderless basic)
       completion-category-overrides '((file (styles basic substring partial-completion))))
 
@@ -97,13 +79,11 @@
 
 
 
-(straight-use-package 'marginalia)
 (marginalia-mode)
 (add-hook 'minibuffer-setup-hook (lambda() (define-key minibuffer-local-map "\M-A" 'marginalia-cycle)))
 
 
 
-(straight-use-package 'consult)
 ;; Optionally configure the register formatting. This improves the register
 ;; preview for `consult-register', `consult-register-load',
 ;; `consult-register-store' and the Emacs built-ins.
@@ -199,12 +179,10 @@
 (define-key minibuffer-local-map "\M-s" 'consult-history) ;; orig. next-matching-history-element
 (define-key minibuffer-local-map "\M-r" 'consult-history) ;; orig. previous-matching-history-element
 
-(straight-use-package 'consult-flycheck)
 (define-key global-map "\M-gf" 'consult-flycheck)
 
 
 
-(straight-use-package 'corfu)
 ;; Optional customizations
 ;; :custom
 ;; (corfu-cycle t)                ;; Enable cycling for `corfu-next/previous'
@@ -236,7 +214,6 @@
 
 
 
-(straight-use-package 'cape)
 (add-to-list 'completion-at-point-functions #'cape-file)
 (add-to-list 'completion-at-point-functions #'cape-dabbrev)
 ;;(add-to-list 'completion-at-point-functions #'cape-history)
@@ -266,7 +243,6 @@
 
 
 
-(straight-use-package 'embark)
 (setq prefix-help-command #'embark-prefix-help-command)
 (with-eval-after-load 'embark
   (add-to-list 'display-buffer-alist
@@ -277,7 +253,6 @@
 (define-key global-map "\M-." 'embark-dwim)
 (define-key global-map "\C-hB" 'embark-bindings)
 
-(straight-use-package 'embark-consult)
 (with-eval-after-load 'consult
   (with-eval-after-load 'embark
     (require 'embark-consult)
@@ -285,14 +260,12 @@
 
 
 
-(straight-use-package 'flycheck)
 (add-hook 'prog-mode-hook 'flycheck-mode)
 (with-eval-after-load 'flycheck
   (setq flycheck-emacs-lisp-load-path 'inherit))
 
 
 
-(straight-use-package 'lsp-mode)
 (with-eval-after-load 'lsp-mode
   (define-key lsp-mode-map (kbd "C-c l") lsp-command-map)
   (setq lsp-log-io nil
@@ -311,16 +284,9 @@
 (add-hook 'lua-mode-hook 'lsp-deferred)
 (add-hook 'sh-mode-hook 'lsp-deferred)
 
-(straight-use-package 'lsp-ui)
-
-(straight-use-package 'lsp-pyright)
 (add-hook 'python-mode-hook (lambda () (require 'lsp-pyright) (lsp-deferred)))
 
-(straight-use-package 'consult-lsp)
-
 
-
-(straight-use-package 'esup)
 
 ;; Local Variables:
 ;; byte-compile-warnings: (not free-vars unresolved)
