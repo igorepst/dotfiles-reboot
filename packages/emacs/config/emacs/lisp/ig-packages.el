@@ -41,9 +41,10 @@
       "\\(?:COMMIT_EDITMSG\\|MERGE_MSG\\|hg-editor-[[:alnum:]]+\\.txt\\|svn-commit\\.tmp\\|bzr_log\\.[[:alnum:]]+\\)$")
 (save-place-mode)
 
+(with-eval-after-load 'recentf
 (setq recentf-save-file "~/.cache/emacs/recentf"
       recentf-auto-cleanup 'never
-      recentf-exclude '("MERGE_MSG" "COMMIT_EDITMSG"))
+      recentf-exclude '("MERGE_MSG" "COMMIT_EDITMSG")))
 
 (with-eval-after-load 'org
   (setq org-fontify-whole-heading-line t
@@ -57,7 +58,7 @@
 
 (run-with-idle-timer 0.1 nil (lambda()
 			       (let ((inhibit-message t))
-			       (recentf-mode))
+				 (recentf-mode))
 			       (with-current-buffer "*scratch*"
 				 (emacs-lock-mode 'kill))
 			       (with-current-buffer "*Messages*"
@@ -94,8 +95,7 @@
 
 (straight-use-package 'marginalia)
 (marginalia-mode)
-(add-hook 'minibuffer-setup-hook (lambda()
-				   (define-key minibuffer-local-map "\M-A" 'marginalia-cycle)))
+(add-hook 'minibuffer-setup-hook (lambda() (define-key minibuffer-local-map "\M-A" 'marginalia-cycle)))
 
 
 
@@ -276,8 +276,8 @@
 (straight-use-package 'embark-consult)
 (with-eval-after-load 'consult
   (with-eval-after-load 'embark
-    (progn (require 'embark-consult)
-	   (add-hook 'embark-collect-mode-hook #'consult-preview-at-point-mode))))
+    (require 'embark-consult)
+    (add-hook 'embark-collect-mode-hook #'consult-preview-at-point-mode)))
 
 
 
@@ -290,31 +290,27 @@
 
 (straight-use-package 'lsp-mode)
 (with-eval-after-load 'lsp-mode
-  (progn
-    (define-key lsp-mode-map (kbd "C-c l") lsp-command-map)
-    (setq lsp-log-io nil
-	  lsp-enable-suggest-server-download nil
-	  lsp-session-file "~/.cache/emacs/lsp-session-v1"
-	  lsp-warn-no-matched-clients nil
-	  lsp-enable-snippet nil
-	  lsp-completion-provider :none
-	  lsp-lua-diagnostics-globals ["vim" "awesome" "client" "screen" "tag" "mouse" "keygrabber"])
-    (let* ((ig--sumneko-root-path "~/.cache/lspServers/lua/sumneko-lua/extension/server")
-	   (ig--sumneko-bin (expand-file-name "bin/lua-language-server" ig--sumneko-root-path))
-	   (ig--sumneko-main (expand-file-name "main.lua" ig--sumneko-root-path)))
-      (setq lsp-clients-lua-language-server-install-dir ig--sumneko-root-path
-	    lsp-clients-lua-language-server-bin ig--sumneko-bin
-	    lsp-clients-lua-language-server-main-location ig--sumneko-main))))
+  (define-key lsp-mode-map (kbd "C-c l") lsp-command-map)
+  (setq lsp-log-io nil
+	lsp-enable-suggest-server-download nil
+	lsp-session-file "~/.cache/emacs/lsp-session-v1"
+	lsp-warn-no-matched-clients nil
+	lsp-enable-snippet nil
+	lsp-completion-provider :none
+	lsp-lua-diagnostics-globals ["vim" "awesome" "client" "screen" "tag" "mouse" "keygrabber"])
+  (let* ((ig--sumneko-root-path "~/.cache/lspServers/lua/sumneko-lua/extension/server")
+	 (ig--sumneko-bin (expand-file-name "bin/lua-language-server" ig--sumneko-root-path))
+	 (ig--sumneko-main (expand-file-name "main.lua" ig--sumneko-root-path)))
+    (setq lsp-clients-lua-language-server-install-dir ig--sumneko-root-path
+	  lsp-clients-lua-language-server-bin ig--sumneko-bin
+	  lsp-clients-lua-language-server-main-location ig--sumneko-main)))
 (add-hook 'lua-mode-hook 'lsp-deferred)
 (add-hook 'sh-mode-hook 'lsp-deferred)
 
 (straight-use-package 'lsp-ui)
 
 (straight-use-package 'lsp-pyright)
-(add-hook 'python-mode-hook
-	  #'(lambda nil
-	      (require 'lsp-pyright)
-	      (lsp-deferred)))
+(add-hook 'python-mode-hook (lambda () (require 'lsp-pyright) (lsp-deferred)))
 
 (straight-use-package 'consult-lsp)
 
