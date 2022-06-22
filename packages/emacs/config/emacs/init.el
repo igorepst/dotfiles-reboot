@@ -11,6 +11,7 @@
       tab-always-indent 'complete
       read-buffer-completion-ignore-case t
       read-file-name-completion-ignore-case t
+      inhibit-default-init t
       inhibit-startup-screen t
       initial-scratch-message nil
       initial-major-mode 'emacs-lisp-mode
