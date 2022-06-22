@@ -30,6 +30,10 @@
 
 (load-theme 'adwaita t)
 
+(define-key 'help-command "\C-l" 'find-library)
+(define-key 'help-command "\C-f" 'find-function)
+(define-key 'help-command "\C-v" 'find-variable)
+
 (setq savehist-file "~/.cache/emacs/savehist"
       savehist-additional-variables
       '(search-ring regexp-search-ring compile-history))
@@ -168,7 +172,7 @@
 (define-key global-map "\M-'" 'consult-register-store) ;; orig. abbrev-prefix-mark (unrelated)
 (define-key global-map [?\C-\M-#] 'consult-register)
 (define-key global-map "\M-y" 'consult-yank-pop) ;; orig. yank-pop
-(define-key global-map [(help) (a)] 'consult-apropos) ;; orig. apropos-command
+(define-key 'help-command "a" 'consult-apropos) ;; orig. apropos-command
 (define-key global-map "\M-ge" 'consult-compile-error)
 (define-key global-map "\M-gg" 'consult-goto-line) ;; orig. goto-line
 (define-key global-map "\M-g\M-g" 'consult-goto-line) ;; orig. goto-line
