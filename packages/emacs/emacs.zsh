@@ -1,6 +1,7 @@
 function _ig_update_emacs() {
-    echo 'Updating Emacs packages'
-    if emacs --batch --eval "(progn (add-to-list 'load-path (expand-file-name \"lisp\" user-emacs-directory))(require 'ig-packages)(straight-pull-all)(straight-prune-build))"; then
+    printf '\033[0;32m%s\033[0m\n' 'Updating Emacs packages'
+    if emacs --batch -l ~/.config/emacs/early-init.el -f ig-update-packages
+    then
 	systemctl --user restart emacs
     fi
 }

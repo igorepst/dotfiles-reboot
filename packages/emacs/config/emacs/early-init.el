@@ -40,6 +40,56 @@
 					   lsp-mode lsp-ui lsp-pyright
 					   consult-lsp esup))
 
+(defun package-update (name)
+  "Update package NAME if a newer version exists."
+  (interactive
+   (list (completing-read
+          "Update package: " (package--updateable-packages) nil t)))
+  (let ((package (if (symbolp name)
+                     name
+                   (intern name))))
+    (package-delete (cadr (assq package package-alist)) 'force)
+    (package-install package 'dont-select)))
+
+(defun package--updateable-packages ()
+  "Initialize the package system to get the list of package symbols for completion."
+  (package--archives-initialize)
+  (mapcar
+   #'car
+   (seq-filter
+    (lambda (elt)
+      (let ((available
+             (assq (car elt) package-archive-contents)))
+        (and available
+             (version-list-<
+              (package-desc-priority-version (cadr elt))
+              (package-desc-priority-version (cadr available))))))
+    package-alist)))
+
+(defun ig-update-packages ()
+  "Update all packages."
+  (interactive)
+  (if (version< "29.0" emacs-version)
+      (error "Rewrite to use built-in functions!"))
+  (ignore-errors (exit-minibuffer))
+  (princ "Refreshing package contents\n")
+  (package-refresh-contents)
+  (princ "Done\n")
+  (let ((updateable (package--updateable-packages)))
+    (if (not updateable)
+        (princ "No packages to update\n")
+      (princ (format "Updating packages: %s\n" (mapconcat #'symbol-name updateable " ")))
+      (mapc #'package-update updateable)
+      (princ "Done\n")))
+  (let ((removable (package--removable-packages)))
+    (if (not removable)
+	(princ "Nothing to remove\n")
+      (princ (format "Removing packages: %s\n" (mapconcat #'symbol-name removable " ")))
+      (mapc (lambda (p)
+              (package-delete (cadr (assq p package-alist)) t))
+            removable)
+      (princ "Done\n"))))
+
 (provide 'early-init)
 ;;; early-init.el ends here
 
