@@ -25,7 +25,7 @@
       auto-save-list-file-prefix nil
       backup-inhibited t
       create-lockfiles nil
-      source-directory "~/.cache/emacs/c-src/emacs"
+      source-directory (expand-file-name "c-src/emacs" ig-cache-dir)
       find-file-visit-truename t
       completion-cycle-threshold 3
       sentence-end-double-space nil)
@@ -43,9 +43,15 @@
 (global-display-line-numbers-mode)
 
 (let ((additional-lisp-dir (expand-file-name "lisp" user-emacs-directory)))
-  (add-to-list 'load-path additional-lisp-dir))
+  (push additional-lisp-dir load-path))
+
+(push (file-name-directory generated-autoload-file) load-path)
+(load generated-autoload-file t t t)
 
 (require 'ig-packages)
 
+;; Local Variables:
+;; byte-compile-warnings: (not free-vars)
+;; End:
 (provide 'init)
 ;;; init.el ends here

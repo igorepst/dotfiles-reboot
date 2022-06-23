@@ -5,8 +5,6 @@
 
 ;;; Code:
 
-(setq load-prefer-newer t)
-
 (add-to-list 'auto-mode-alist '("\\.lua\\'" . lua-mode))
 
 (add-to-list 'auto-mode-alist
@@ -14,25 +12,26 @@
 
 (load-theme 'adwaita t)
 
+(define-key 'help-command [? ] 'ig-describe-symbol)
 (define-key 'help-command "\C-l" 'find-library)
 (define-key 'help-command "\C-f" 'find-function)
 (define-key 'help-command "\C-v" 'find-variable)
 
-(setq savehist-file "~/.cache/emacs/savehist"
+(setq savehist-file (expand-file-name "savehist" ig-cache-dir)
       savehist-additional-variables
       '(search-ring regexp-search-ring compile-history))
 (savehist-mode)
 
-(setq save-place-file "~/.cache/emacs/saveplace"
+(setq save-place-file (expand-file-name "saveplace" ig-cache-dir)
       save-place-version-control 'never
       save-place-ignore-files-regexp
       "\\(?:COMMIT_EDITMSG\\|MERGE_MSG\\|hg-editor-[[:alnum:]]+\\.txt\\|svn-commit\\.tmp\\|bzr_log\\.[[:alnum:]]+\\)$")
 (save-place-mode)
 
 (with-eval-after-load 'recentf
-(setq recentf-save-file "~/.cache/emacs/recentf"
-      recentf-auto-cleanup 'never
-      recentf-exclude '("MERGE_MSG" "COMMIT_EDITMSG")))
+  (setq recentf-save-file (expand-file-name "recentf" ig-cache-dir)
+	recentf-auto-cleanup 'never
+	recentf-exclude '("MERGE_MSG" "COMMIT_EDITMSG")))
 
 (with-eval-after-load 'org
   (setq org-fontify-whole-heading-line t
@@ -42,7 +41,17 @@
   (setq isearch-lazy-count t
 	isearch-lazy-highlight t
 	search-upper-case nil
-	isearch-wrap-pause 'no-ding))
+	isearch-wrap-pause 'no-ding)
+  ;; http://stackoverflow.com/a/287067/407953
+  (defadvice isearch-search (after isearch-no-fail activate)
+    "Wraps isearch automatically."
+    (unless isearch-success
+      (ad-disable-advice 'isearch-search 'after 'isearch-no-fail)
+      (ad-activate 'isearch-search)
+      (isearch-repeat (if isearch-forward 'forward))
+      (ad-enable-advice 'isearch-search 'after 'isearch-no-fail)
+      (ad-activate 'isearch-search)))
+  (define-key isearch-mode-map [remap isearch-delete-char] 'isearch-del-char))
 
 (run-with-idle-timer 0.1 nil (lambda()
 			       (let ((inhibit-message t))
@@ -56,6 +65,9 @@
 
 (with-eval-after-load 'dired
   (setq dired-use-ls-dired t
+	dired-recursive-copies 'always
+	dired-recursive-deletes 'always
+	dired-dwim-target t
 	dired-listing-switches "-alh --group-directories-first --time-style \"+%d-%m-%Y %H:%M\""))
 
 (with-eval-after-load 'man
@@ -66,9 +78,8 @@
 
 (vertico-mode)
 
-;; (add-to-list 'load-path "~/.cache/emacs/straight/build/vertico/extensions/")
-;; (autoload #'vertico-directory-up "vertico-directory" nil t)
-;; (define-key vertico-map [left] 'vertico-directory-up)
+(autoload #'vertico-directory-up "vertico-directory" nil t)
+(define-key vertico-map [left] 'vertico-directory-up)
 
 
 
@@ -211,6 +222,12 @@
     ;; (setq-local corfu-auto nil) Enable/disable auto completion
     (corfu-mode 1)))
 (add-hook 'minibuffer-setup-hook #'corfu-enable-in-minibuffer)
+(with-eval-after-load 'corfu
+  (setq kind-icon-default-face 'corfu-default)
+  (add-to-list 'corfu-margin-formatters #'kind-icon-margin-formatter))
+
+(with-eval-after-load 'svg-lib
+  (setq svg-lib-icons-dir (expand-file-name "svg-lib" ig-cache-dir)))
 
 
 
@@ -270,7 +287,7 @@
   (define-key lsp-mode-map (kbd "C-c l") lsp-command-map)
   (setq lsp-log-io nil
 	lsp-enable-suggest-server-download nil
-	lsp-session-file "~/.cache/emacs/lsp-session-v1"
+	lsp-session-file (expand-file-name "lsp-session-v1" ig-cache-dir)
 	lsp-warn-no-matched-clients nil
 	lsp-enable-snippet nil
 	lsp-completion-provider :none
