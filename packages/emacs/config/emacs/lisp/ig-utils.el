@@ -42,7 +42,9 @@
 
 ;;;###autoload
 (defun ig-update-packages ()
-  "Update all packages."
+  "Update all packages.
+
+Refresh quickstart as needed automatically in install/delete."
   (interactive)
   (if (version< "29.0" emacs-version)
       (error "Rewrite to use built-in functions!"))

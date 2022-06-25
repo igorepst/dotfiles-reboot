@@ -5,7 +5,7 @@
 
 ;;; Code:
 
-(defconst ig-cache-dir "~/.cache/emacs")
+(defconst ig-cache-dir "~/.cache/emacs" "Emacs cache directory.")
 (push (expand-file-name "eln-cache" ig-cache-dir) native-comp-eln-load-path)
 (defvar ig--file-name-handler-alist file-name-handler-alist)
 (setq gc-cons-threshold most-positive-fixnum

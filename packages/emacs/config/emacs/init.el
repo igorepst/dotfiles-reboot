@@ -28,7 +28,8 @@
       source-directory (expand-file-name "c-src/emacs" ig-cache-dir)
       find-file-visit-truename t
       completion-cycle-threshold 3
-      sentence-end-double-space nil)
+      sentence-end-double-space nil
+      byte-compile-docstring-max-column 999)
 
 (set-face-font 'fixed-pitch-serif "DejaVu Serif-14")
 (set-face-font 'variable-pitch "DejaVu Sans-14")
@@ -48,10 +49,11 @@
 (push (file-name-directory generated-autoload-file) load-path)
 (load generated-autoload-file t t t)
 
+(require 'ig-fonts)
 (require 'ig-packages)
 
 ;; Local Variables:
-;; byte-compile-warnings: (not free-vars)
+;; byte-compile-warnings: (not free-vars constants)
 ;; End:
 (provide 'init)
 ;;; init.el ends here

@@ -3,3 +3,4 @@ continue with vifm, incl. helpers/vifm
 pathmarks file is not filled
 _ig_update_funcs on new install there would be issues with, for ex., fzf because of sourcing completions in fzf.zsh
 on update reload _ig_update_funcs as they may be changed remotely
+check HTML/Docker LSP
