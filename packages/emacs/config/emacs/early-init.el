@@ -5,7 +5,10 @@
 
 ;;; Code:
 
-(defconst ig-cache-dir "~/.cache/emacs" "Emacs cache directory.")
+(let ((additional-lisp-dir (expand-file-name "lisp" user-emacs-directory)))
+  (push additional-lisp-dir load-path))
+
+(require 'ig-common)
 (push (expand-file-name "eln-cache" ig-cache-dir) native-comp-eln-load-path)
 (defvar ig--file-name-handler-alist file-name-handler-alist)
 (setq gc-cons-threshold most-positive-fixnum

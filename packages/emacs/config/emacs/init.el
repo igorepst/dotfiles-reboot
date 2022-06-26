@@ -31,9 +31,6 @@
       sentence-end-double-space nil
       byte-compile-docstring-max-column 999)
 
-(set-face-font 'fixed-pitch-serif "DejaVu Serif-14")
-(set-face-font 'variable-pitch "DejaVu Sans-14")
-
 (add-to-list 'completion-ignored-extensions ".zwc")
 
 (setq-default indicate-empty-lines t
@@ -43,17 +40,16 @@
 
 (global-display-line-numbers-mode)
 
-(let ((additional-lisp-dir (expand-file-name "lisp" user-emacs-directory)))
-  (push additional-lisp-dir load-path))
-
 (push (file-name-directory generated-autoload-file) load-path)
 (load generated-autoload-file t t t)
+
+(load-theme 'adwaita t)
 
 (require 'ig-fonts)
 (require 'ig-packages)
 
 ;; Local Variables:
-;; byte-compile-warnings: (not free-vars constants)
+;; byte-compile-warnings: (not free-vars)
 ;; End:
 (provide 'init)
 ;;; init.el ends here

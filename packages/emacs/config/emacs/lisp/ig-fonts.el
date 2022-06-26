@@ -6,9 +6,13 @@
 ;;; Code:
 
 (defun ig-font-override()
-  "Set fonts overrides."
+  "Set fonts overrides.
+
+Emoji is supported OOB by Noto Color Emoji font."
   (run-with-timer 0.5 nil (lambda()
-			    (dolist (charset '((#x1f000 . #x1fbf9)))
+			    (set-face-font 'fixed-pitch-serif "DejaVu Serif-14")
+			    (set-face-font 'variable-pitch "DejaVu Sans-14")
+			    (dolist (charset '((#x10000 . #x1ffff)))
 			      (set-fontset-font t charset "Noto Sans Symbols2-14" nil 'append)))))
 
 (defun ig-daemon-font ()

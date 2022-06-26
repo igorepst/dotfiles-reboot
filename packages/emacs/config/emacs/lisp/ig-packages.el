@@ -5,27 +5,28 @@
 
 ;;; Code:
 
+(require 'ig-common)
+
 (add-to-list 'auto-mode-alist '("\\.lua\\'" . lua-mode))
 
 (add-to-list 'auto-mode-alist
 	     '("\\(\\.\\(?:service\\|timer\\|target\\|slice\\|socket\\|path\\|network\\|automount\\|link\\|mount\\|netdev\\)\\)\\'" . conf-unix-mode))
-
-(load-theme 'adwaita t)
 
 (define-key 'help-command [? ] 'ig-describe-symbol)
 (define-key 'help-command "\C-l" 'find-library)
 (define-key 'help-command "\C-f" 'find-function)
 (define-key 'help-command "\C-v" 'find-variable)
 
-(setq savehist-file (expand-file-name "savehist" ig-cache-dir)
-      savehist-additional-variables
-      '(search-ring regexp-search-ring compile-history))
-(savehist-mode)
+(with-eval-after-load 'savehist
+  (setq savehist-file (expand-file-name "savehist" ig-cache-dir)
+	savehist-additional-variables
+	'(search-ring regexp-search-ring compile-history)))
 
-(setq save-place-file (expand-file-name "saveplace" ig-cache-dir)
-      save-place-version-control 'never
-      save-place-ignore-files-regexp
-      "\\(?:COMMIT_EDITMSG\\|MERGE_MSG\\|hg-editor-[[:alnum:]]+\\.txt\\|svn-commit\\.tmp\\|bzr_log\\.[[:alnum:]]+\\)$")
+(with-eval-after-load 'saveplace
+  (setq save-place-file (expand-file-name "saveplace" ig-cache-dir)
+	save-place-version-control 'never
+	save-place-ignore-files-regexp
+	"\\(?:COMMIT_EDITMSG\\|MERGE_MSG\\|hg-editor-[[:alnum:]]+\\.txt\\|svn-commit\\.tmp\\|bzr_log\\.[[:alnum:]]+\\)$"))
 (save-place-mode)
 
 (with-eval-after-load 'recentf
@@ -55,13 +56,13 @@
 
 (run-with-idle-timer 0.1 nil (lambda()
 			       (let ((inhibit-message t))
-				 (recentf-mode))
+				 (recentf-mode)
+				 (savehist-mode))
 			       (with-current-buffer "*scratch*"
 				 (emacs-lock-mode 'kill))
 			       (with-current-buffer "*Messages*"
 				 (emacs-lock-mode 'kill))
-			       (delete-selection-mode)
-			       ))
+			       (delete-selection-mode)))
 
 (with-eval-after-load 'dired
   (setq dired-use-ls-dired t
