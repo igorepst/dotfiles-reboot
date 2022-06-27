@@ -57,7 +57,8 @@
 (run-with-idle-timer 0.1 nil (lambda()
 			       (let ((inhibit-message t))
 				 (recentf-mode)
-				 (savehist-mode))
+				 (savehist-mode)
+				 (global-auto-revert-mode))
 			       (with-current-buffer "*scratch*"
 				 (emacs-lock-mode 'kill))
 			       (with-current-buffer "*Messages*"

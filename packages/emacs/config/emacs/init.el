@@ -1,12 +1,11 @@
 ;;; init.el --- Init code -*- lexical-binding: t; -*-
 
 ;;; Commentary:
-;; Init config
+;; Init config.
 
 ;;; Code:
 
-(setq default-frame-alist '((fullscreen . maximized) (font . "DejaVuSansMono Nerd Font Mono-14"))
-      vc-follow-symlinks t
+(setq vc-follow-symlinks t
       completion-ignore-case t
       tab-always-indent 'complete
       read-buffer-completion-ignore-case t
@@ -14,7 +13,7 @@
       inhibit-default-init t
       inhibit-startup-screen t
       initial-scratch-message nil
-      initial-major-mode 'emacs-lisp-mode
+      initial-major-mode 'fundamental-mode
       focus-follows-mouse t
       mouse-autoselect-window nil
       disabled-command-function nil
@@ -35,8 +34,6 @@
 
 (setq-default indicate-empty-lines t
 	      read-process-output-max (* 1024 1024))
-(if (not (display-graphic-p))
-    (xterm-mouse-mode 1))
 
 (global-display-line-numbers-mode)
 

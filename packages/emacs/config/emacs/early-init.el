@@ -7,11 +7,11 @@
 
 (let ((additional-lisp-dir (expand-file-name "lisp" user-emacs-directory)))
   (push additional-lisp-dir load-path))
-
 (require 'ig-common)
 (push (expand-file-name "eln-cache" ig-cache-dir) native-comp-eln-load-path)
 (defvar ig--file-name-handler-alist file-name-handler-alist)
-(setq gc-cons-threshold most-positive-fixnum
+(setq default-frame-alist '((fullscreen . maximized) (font . "DejaVuSansMono Nerd Font Mono-14"))
+      gc-cons-threshold most-positive-fixnum
       gc-cons-percentage 0.6
       file-name-handler-alist nil
       frame-resize-pixelwise t
