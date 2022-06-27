@@ -44,7 +44,8 @@
 					   consult consult-flycheck corfu cape
 					   embark embark-consult flycheck
 					   lsp-mode lsp-ui lsp-pyright
-					   consult-lsp esup kind-icon))
+					   consult-lsp kind-icon))
+
 ;; Local Variables:
 ;; byte-compile-warnings: (not free-vars)
 ;; End:
