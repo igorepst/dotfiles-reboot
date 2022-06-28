@@ -13,7 +13,6 @@ macsman() {
 compdef _man macsman
 alias man=macsman
 
-alias emacs='emacs -mm'
 alias e='emacsclient -nc'
 alias et='emacsclient -t'
 

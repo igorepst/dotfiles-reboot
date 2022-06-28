@@ -5,10 +5,7 @@ if [ -f "${userresources}" ]; then
     xrdb -merge "${userresources}"
 fi
 
-currentThemeXResources=$HOME/.theme/currentTheme.Xresources
-if [ -f "${currentThemeXResources}" ]; then
-    xrdb -merge "${currentThemeXResources}"
-fi
+for f in $HOME/.theme/*.Xresources; do xrdb -merge "${f}"; done
 
 currentThemeXFonts=$HOME/.theme/currentTheme.Xfonts
 if [ -f "${currentThemeXFonts}" ]; then

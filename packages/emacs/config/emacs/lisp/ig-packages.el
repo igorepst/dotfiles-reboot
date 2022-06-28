@@ -56,6 +56,7 @@
 
 (run-with-idle-timer 0.1 nil (lambda()
 			       (let ((inhibit-message t))
+				 (global-hl-line-mode)
 				 (recentf-mode)
 				 (savehist-mode)
 				 (global-auto-revert-mode))

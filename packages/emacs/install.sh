@@ -59,6 +59,10 @@ doWork() {
     mkdir -p ${edir}
     ln -sf "${cdir}"/environment.d/* ${edir}
 
+    local themeDir=~/.theme
+    mkdir -p ${themeDir}
+    ln -sf "${cdir}"/emacs.Xresources ${themeDir}
+
     local version
     version=$(emacs --version | grep -m 1 -Po 'GNU Emacs \K[.\d]+')
     if [ -n "${version}" ]; then
