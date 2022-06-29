@@ -26,11 +26,11 @@
       create-lockfiles nil
       source-directory (expand-file-name "c-src/emacs" ig-cache-dir)
       find-file-visit-truename t
-      completion-cycle-threshold 3
+      completion-cycle-threshold nil
       sentence-end-double-space nil
       byte-compile-docstring-max-column 999)
 
-(add-to-list 'completion-ignored-extensions ".zwc")
+(push ".zwc" completion-ignored-extensions)
 
 (setq-default indicate-empty-lines t
 	      read-process-output-max (* 1024 1024))

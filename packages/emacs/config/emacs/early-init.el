@@ -33,7 +33,7 @@
 	    (makunbound 'ig--file-name-handler-alist)))
 
 (require 'package)
-(add-to-list 'package-archives '("melpa" . "https://melpa.org/packages/"))
+(push '("melpa" . "https://melpa.org/packages/") package-archives)
 (setq package-enable-at-startup t
       package-user-dir (expand-file-name "packages/install" ig-cache-dir)
       package-native-compile t

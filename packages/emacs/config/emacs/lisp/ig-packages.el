@@ -7,10 +7,9 @@
 
 (require 'ig-common)
 
-(add-to-list 'auto-mode-alist '("\\.lua\\'" . lua-mode))
+(push '("\\.lua\\'" . lua-mode) auto-mode-alist)
 
-(add-to-list 'auto-mode-alist
-	     '("\\(\\.\\(?:service\\|timer\\|target\\|slice\\|socket\\|path\\|network\\|automount\\|link\\|mount\\|netdev\\)\\)\\'" . conf-unix-mode))
+(push '("\\(\\.\\(?:service\\|timer\\|target\\|slice\\|socket\\|path\\|network\\|automount\\|link\\|mount\\|netdev\\)\\)\\'" . conf-unix-mode) auto-mode-alist)
 
 (define-key 'help-command [? ] 'ig-describe-symbol)
 (define-key 'help-command "\C-l" 'find-library)
@@ -80,9 +79,7 @@
 
 
 (vertico-mode)
-
-(autoload #'vertico-directory-up "vertico-directory" nil t)
-(define-key vertico-map [left] 'vertico-directory-up)
+(define-key vertico-map [left] #'vertico-directory-up)
 
 
 
@@ -234,8 +231,8 @@
 
 
 
-(add-to-list 'completion-at-point-functions #'cape-file)
-(add-to-list 'completion-at-point-functions #'cape-dabbrev)
+(push #'cape-file completion-at-point-functions)
+(push #'cape-dabbrev completion-at-point-functions)
 ;;(add-to-list 'completion-at-point-functions #'cape-history)
 ;;(add-to-list 'completion-at-point-functions #'cape-keyword)
 ;;(add-to-list 'completion-at-point-functions #'cape-tex)
@@ -265,10 +262,9 @@
 
 (setq prefix-help-command #'embark-prefix-help-command)
 (with-eval-after-load 'embark
-  (add-to-list 'display-buffer-alist
-	       '("\\`\\*Embark Collect \\(Live\\|Completions\\)\\*" nil
+  (push '("\\`\\*Embark Collect \\(Live\\|Completions\\)\\*" nil
 		 (window-parameters
-		  (mode-line-format . none)))))
+		  (mode-line-format . none))) display-buffer-alist))
 (define-key global-map [?\C-.] 'embark-act)
 (define-key global-map "\M-." 'embark-dwim)
 (define-key global-map "\C-hB" 'embark-bindings)
