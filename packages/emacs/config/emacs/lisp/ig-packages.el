@@ -6,7 +6,9 @@
 ;;; Code:
 
 (require 'ig-common)
+(defconst ig-selected-packages '() "Autogeneration of package-selected-packages.")
 
+(push 'lua-mode ig-selected-packages)
 (push '("\\.lua\\'" . lua-mode) auto-mode-alist)
 
 (push '("\\(\\.\\(?:service\\|timer\\|target\\|slice\\|socket\\|path\\|network\\|automount\\|link\\|mount\\|netdev\\)\\)\\'" . conf-unix-mode) auto-mode-alist)
@@ -78,12 +80,14 @@
 
 
 
+(push 'vertico ig-selected-packages)
 (vertico-mode)
 (define-key vertico-map [left] #'vertico-directory-up)
 (define-key vertico-map [right] #'vertico-directory-enter)
 
 
 
+(push 'orderless ig-selected-packages)
 ;; Support TRAMP hostname completion
 (defun basic-remote-try-completion (string table pred point)
   "Support TRAMP hostname completion with STRING, TABLE, PRED, POINT."
@@ -101,11 +105,13 @@
 
 
 
+(push 'marginalia ig-selected-packages)
 (marginalia-mode)
 (add-hook 'minibuffer-setup-hook (lambda() (define-key minibuffer-local-map "\M-A" 'marginalia-cycle)))
 
 
 
+(push 'consult ig-selected-packages)
 ;; Optionally configure the register formatting. This improves the register
 ;; preview for `consult-register', `consult-register-load',
 ;; `consult-register-store' and the Emacs built-ins.
@@ -201,10 +207,12 @@
 (define-key minibuffer-local-map "\M-s" 'consult-history) ;; orig. next-matching-history-element
 (define-key minibuffer-local-map "\M-r" 'consult-history) ;; orig. previous-matching-history-element
 
+(push 'consult-flycheck ig-selected-packages)
 (define-key global-map "\M-gf" 'consult-flycheck)
 
 
 
+(push 'corfu ig-selected-packages)
 ;; Optional customizations
 ;; :custom
 ;; (corfu-cycle t)                ;; Enable cycling for `corfu-next/previous'
@@ -233,6 +241,8 @@
     ;; (setq-local corfu-auto nil) Enable/disable auto completion
     (corfu-mode 1)))
 (add-hook 'minibuffer-setup-hook #'corfu-enable-in-minibuffer)
+
+(push 'kind-icon ig-selected-packages)
 (with-eval-after-load 'corfu
   (setq kind-icon-default-face 'corfu-default)
   (add-to-list 'corfu-margin-formatters #'kind-icon-margin-formatter))
@@ -242,6 +252,7 @@
 
 
 
+(push 'cape ig-selected-packages)
 (push #'cape-file completion-at-point-functions)
 (push #'cape-dabbrev completion-at-point-functions)
 ;;(add-to-list 'completion-at-point-functions #'cape-history)
@@ -271,6 +282,7 @@
 
 
 
+(push 'embark ig-selected-packages)
 (setq prefix-help-command #'embark-prefix-help-command)
 (with-eval-after-load 'embark
   (push '("\\`\\*Embark Collect \\(Live\\|Completions\\)\\*" nil
@@ -280,6 +292,7 @@
 (define-key global-map "\M-." 'embark-dwim)
 (define-key global-map "\C-hB" 'embark-bindings)
 
+(push 'embark-consult ig-selected-packages)
 (with-eval-after-load 'consult
   (with-eval-after-load 'embark
     (require 'embark-consult)
@@ -287,12 +300,16 @@
 
 
 
+(push 'flycheck ig-selected-packages)
 (add-hook 'prog-mode-hook 'flycheck-mode)
 (with-eval-after-load 'flycheck
   (setq flycheck-emacs-lisp-load-path 'inherit))
 
 
 
+(push 'lsp-mode ig-selected-packages)
+(push 'lsp-ui ig-selected-packages)
+(push 'consult-lsp ig-selected-packages)
 (with-eval-after-load 'lsp-mode
   (define-key lsp-mode-map (kbd "C-c l") lsp-command-map)
   (setq lsp-log-io nil
@@ -311,10 +328,12 @@
 (add-hook 'lua-mode-hook 'lsp-deferred)
 (add-hook 'sh-mode-hook 'lsp-deferred)
 
+(push 'lsp-pyright ig-selected-packages)
 (add-hook 'python-mode-hook (lambda () (require 'lsp-pyright) (lsp-deferred)))
 
 
 
+(makunbound 'ig-selected-packages)
 ;; Local Variables:
 ;; byte-compile-warnings: (not free-vars unresolved)
 ;; End:
