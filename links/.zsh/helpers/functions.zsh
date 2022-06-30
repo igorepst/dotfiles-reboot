@@ -105,7 +105,7 @@ function _updateDots(){
     _install_lsp
     echo 'Updating Python packages'
     echo 'Visidata:'
-    pip3 install -U visidata
+    pip3 install -U --user visidata
     rm -f ~/.zsh/volatile/zcompdump* 2>/dev/null
 }
 
