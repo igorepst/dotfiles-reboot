@@ -80,11 +80,22 @@
 
 (vertico-mode)
 (define-key vertico-map [left] #'vertico-directory-up)
+(define-key vertico-map [right] #'vertico-directory-enter)
 
 
 
-(setq completion-styles '(substring orderless basic)
-      completion-category-overrides '((file (styles basic substring partial-completion))))
+;; Support TRAMP hostname completion
+(defun basic-remote-try-completion (string table pred point)
+  "Support TRAMP hostname completion with STRING, TABLE, PRED, POINT."
+  (and (vertico--remote-p string)
+       (completion-basic-try-completion string table pred point)))
+(defun basic-remote-all-completions (string table pred point)
+   "Support TRAMP hostname completion with STRING, TABLE, PRED, POINT."
+  (and (vertico--remote-p string)
+       (completion-basic-all-completions string table pred point)))
+(push '(basic-remote basic-remote-try-completion basic-remote-all-completions nil) completion-styles-alist)
+(setq completion-styles '(orderless basic)
+      completion-category-overrides '((file (styles basic-remote substring partial-completion))))
 
 ;; (customize-set-variable 'completion-styles '(substring orderless basic))
 
