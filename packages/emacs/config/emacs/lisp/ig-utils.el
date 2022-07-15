@@ -106,18 +106,19 @@ Refresh quickstart as needed automatically in install/delete."
     (if thing (describe-symbol thing) (call-interactively #'describe-symbol))))
 
 ;;;###autoload
-(defun ig-kitty-scrollback ()
-  "Open and process Kitty terminal scrollback."
-  (interactive)
-  (let ((scrf "/tmp/kitty_scrollback"))
-    (with-temp-file scrf
-      (insert-file-contents scrf)
-      ;; Convert color to TextProperties. Copy without formatting
-      ;; See also https://www.emacswiki.org/emacs/TtyFormat
-      (require 'ansi-color)
-      (ansi-color-apply-on-region (point-min) (point-max)))
-    (let ((buf (find-file scrf)))
-      (with-current-buffer buf (revert-buffer nil t)))))
+(defun ig-kitty-scrollback (scrf)
+  "Open and process Kitty terminal scrollback.
+
+SCRF - scrollback file."
+  (let ((buf (find-file-noselect scrf t)))
+    (switch-to-buffer buf))
+  (revert-buffer t t)
+  ;; Convert color to TextProperties. Copy without formatting
+  ;; See also https://www.emacswiki.org/emacs/TtyFormat
+  (require 'ansi-color)
+  (ansi-color-apply-on-region (point-min) (point-max))
+  (save-buffer))
+
 
 ;; Local Variables:
 ;; byte-compile-warnings: (not free-vars unresolved)

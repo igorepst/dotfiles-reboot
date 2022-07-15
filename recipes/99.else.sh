@@ -22,6 +22,8 @@ function doWork() {
     curl -k -L https://raw.githubusercontent.com/docker/cli/master/contrib/completion/zsh/_docker -o ~/.zsh/volatile/igorepst/_gh_release/_cache/_compl/_docker
     curl -k -L https://raw.githubusercontent.com/ohmyzsh/ohmyzsh/master/plugins/pip/_pip -o ~/.zsh/volatile/igorepst/_gh_release/_cache/_compl/_pip
 
+    touch ~/.hushlogin
+    
     # Run as login intercative shell to re-read config
     zsh -li -c "_updateDots"
 }
