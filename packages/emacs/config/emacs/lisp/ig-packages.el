@@ -333,6 +333,26 @@
 
 
 
+(with-eval-after-load 'ansi-color
+  (set-face-attribute 'ansi-color-black nil :foreground "#2E3436" :background "#2E3436")
+  (set-face-attribute 'ansi-color-red nil :foreground "#CC0000" :background "#CC0000")
+  (set-face-attribute 'ansi-color-green nil :foreground "#4E9A06" :background "#4E9A06")
+  (set-face-attribute 'ansi-color-yellow nil :foreground "#C4A000" :background "#C4A000")
+  (set-face-attribute 'ansi-color-blue nil :foreground "#3465A4" :background "#3465A4")
+  (set-face-attribute 'ansi-color-magenta nil :foreground "#75507B" :background "#75507B")
+  (set-face-attribute 'ansi-color-cyan nil :foreground "#06989A" :background "#06989A")
+  (set-face-attribute 'ansi-color-white nil :foreground "#D3D7CF" :background "#D3D7CF")
+  (set-face-attribute 'ansi-color-bright-black nil :foreground "#555753" :background "#555753")
+  (set-face-attribute 'ansi-color-bright-red nil :foreground "#EF2929" :background "#EF2929")
+  (set-face-attribute 'ansi-color-bright-green nil :foreground "#8AE234" :background "#8AE234")
+  (set-face-attribute 'ansi-color-bright-yellow nil :foreground "#FCE94F" :background "#FCE94F")
+  (set-face-attribute 'ansi-color-bright-blue nil :foreground "#729FCF" :background "#729FCF")
+  (set-face-attribute 'ansi-color-bright-magenta nil :foreground "#AD7FA8" :background "#AD7FA8")
+  (set-face-attribute 'ansi-color-bright-cyan nil :foreground "#34E2E2" :background "#34E2E2")
+  (set-face-attribute 'ansi-color-bright-white nil :foreground "#EEEEEC" :background "#EEEEEC"))
+
+
+
 (makunbound 'ig-selected-packages)
 ;; Local Variables:
 ;; byte-compile-warnings: (not free-vars unresolved)
