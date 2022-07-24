@@ -106,11 +106,11 @@ Refresh quickstart as needed automatically in install/delete."
     (if thing (describe-symbol thing) (call-interactively #'describe-symbol))))
 
 ;;;###autoload
-(defun ig-kitty-scrollback (input-line cur-x)
+(defun ig-kitty-scrollback (input-line cur-x cur-y)
   "Open and process Kitty terminal scrollback.
 
 INPUT-LINE - the number of lines a pager should scroll.
-CUR-X - cursor X."
+CUR-X and CUR-Y - cursor X and Y."
   (require 'ig-common)
   (let ((buf (find-file-noselect "/tmp/kitty_scrollback" t)))
     (switch-to-buffer buf))
@@ -118,14 +118,19 @@ CUR-X - cursor X."
   (goto-char (point-min))
   (while (re-search-forward "]8;;file:[^\\\\]*\\\\\\|]8;;\\\\\\\\|\\[m]133;[AC]\\\\" nil t)
     (replace-match ""))
+  (goto-char (point-min))
+  (while (re-search-forward "\\[39m \\[4m" nil t)
+    (replace-match " "))
   ;; Convert color to TextProperties. Copy without formatting
   ;; See also https://www.emacswiki.org/emacs/TtyFormat
   (require 'ansi-color)
   (ansi-color-apply-on-region (point-min) (point-max))
   (save-buffer)
   (goto-char (point-min))
-  (forward-line input-line)
-  (forward-char cur-x)
+  (forward-line (+ input-line cur-y))
+  (beginning-of-line)
+  (forward-char (- cur-x 1))
+  (recenter)
   (read-only-mode 1))
 
 ;; Local Variables:
