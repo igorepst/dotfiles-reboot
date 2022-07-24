@@ -27,13 +27,13 @@
   (setq save-place-file (expand-file-name "saveplace" ig-cache-dir)
 	save-place-version-control 'never
 	save-place-ignore-files-regexp
-	"\\(?:COMMIT_EDITMSG\\|MERGE_MSG\\|hg-editor-[[:alnum:]]+\\.txt\\|svn-commit\\.tmp\\|bzr_log\\.[[:alnum:]]+\\)$"))
+	"\\(?:COMMIT_EDITMSG\\|MERGE_MSG\\|hg-editor-[[:alnum:]]+\\.txt\\|svn-commit\\.tmp\\|bzr_log\\.[[:alnum:]]+\\)$\\|kitty_scrollback"))
 (save-place-mode)
 
 (with-eval-after-load 'recentf
   (setq recentf-save-file (expand-file-name "recentf" ig-cache-dir)
 	recentf-auto-cleanup 'never
-	recentf-exclude '("MERGE_MSG" "COMMIT_EDITMSG")))
+	recentf-exclude '("MERGE_MSG" "COMMIT_EDITMSG" "kitty_scrollback")))
 
 (with-eval-after-load 'org
   (setq org-fontify-whole-heading-line t
@@ -352,6 +352,9 @@
   (set-face-attribute 'ansi-color-bright-white nil :foreground "#EEEEEC" :background "#EEEEEC"))
 
 
+
+(with-eval-after-load 're-builder
+  (setq reb-re-syntax 'string))
 
 (makunbound 'ig-selected-packages)
 ;; Local Variables:

@@ -123,6 +123,9 @@ function _get_gh_releases() {
         ln -sf ~/.zsh/volatile/igorepst/_gh_release/kovidgoyal/kitty/share/terminfo/x/xterm-kitty ~/.terminfo/x/xterm-kitty
     fi
     get_gh_release --repo rclone/rclone --arch linux-amd64.zip --toPath rclone
+    if get_gh_release --repo claudiodangelis/qrcp --arch linux_x86_64.tar.gz --toPath qrcp; then
+	qrcp completion zsh > ~/.zsh/volatile/igorepst/_gh_release/_cache/_compl/_qrcp
+    fi
     get_gh_release --repo rust-analyzer/rust-analyzer --arch x86_64-unknown-linux-gnu.gz --toPath binx86_64-unknown-linux-gnu --rn rust-analyzer
 }
 
