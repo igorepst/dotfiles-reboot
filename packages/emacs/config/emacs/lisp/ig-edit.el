@@ -24,7 +24,7 @@
 ;;;###autoload
 (defun ig-duplicate-current-line-or-region (arg)
   "Duplicate the current line or all lines of the region ARG times."
-  (interactive "p")
+  (interactive "*p")
   (pcase-let* ((origin (point))
                (`(,beg . ,end) (ig-get-bounds-lines-rect))
                (region (buffer-substring-no-properties beg end)))
@@ -39,24 +39,73 @@
 (defun ig-copy-current-line-or-region ()
   "Copy current line or all lines of the region."
   (interactive)
-  (let ((cell (ig-get-bounds-lines-rect)))
-    (kill-ring-save (car cell) (cdr cell))))
+  (let ((bounds (ig-get-bounds-lines-rect)))
+    (kill-ring-save (car bounds) (cdr bounds))))
 
 ;;;###autoload
 (defun ig-kill-current-line-or-region ()
   "Kill current line or all lines of the region."
-  (interactive)
-  (let ((cell (ig-get-bounds-lines-rect)))
-    (kill-region (car cell) (cdr cell))))
+  (interactive "*")
+  (let ((bounds (ig-get-bounds-lines-rect)))
+    (kill-region (car bounds) (cdr bounds))))
 
 ;;;###autoload
 (defun ig-select-current-line-or-region ()
   "Select current line or all lines of the region."
   (interactive)
-  (let ((cell (ig-get-bounds-lines-rect)))
-    (set-mark (car cell))
-    (goto-char (cdr cell))
+  (let ((bounds (ig-get-bounds-lines-rect)))
+    (set-mark (car bounds))
+    (goto-char (cdr bounds))
     (activate-mark)))
+
+;;;###autoload
+(defun ig-delete-matching-lines (regexp)
+  "Delete lines matching REGEXP in region or buffer."
+  (interactive "*MFlush lines containing match for regexp: ")
+  (let ((bounds (ig-get-bounds-lines-rect t)))
+    (flush-lines regexp (car bounds) (cdr bounds) t)))
+
+;;;###autoload
+(defun ig-delete-non-matching-lines (regexp)
+  "Keep only lines matching REGEXP in region or buffer."
+  (interactive "*MKeep lines containing match for regexp: ")
+  (let ((bounds (ig-get-bounds-lines-rect t)))
+    (keep-lines regexp (car bounds) (cdr bounds) t)))
+
+;;;###autoload
+(defun ig-sort-lines (&optional reverse)
+  "Sort lines in region or buffer.
+Optional argument REVERSE - whether to reverse the sort."
+  (interactive "*")
+  (let ((bounds (ig-get-bounds-lines-rect t)))
+    (sort-lines reverse (car bounds) (cdr bounds))))
+
+;;;###autoload
+(defun ig-reverse-region ()
+  "Reverse lines in region or buffer."
+  (interactive "*")
+  (let ((bounds (ig-get-bounds-lines-rect t)))
+    (reverse-region (car bounds) (cdr bounds))))
+
+;;;###autoload
+(defun ig-font-inc (arg)
+  "Increase font size.
+ARG - scale."
+  (interactive "p")
+  (text-scale-increase arg))
+
+;;;###autoload
+(defun ig-font-dec (arg)
+  "Decrease font size.
+ARG - scale."
+  (interactive "p")
+  (text-scale-increase (- arg)))
+
+;;;###autoload
+(defun ig-font-restore ()
+  "Restore font size to default."
+  (interactive)
+  (text-scale-increase 0))
 
 (provide 'ig-edit)
 ;;; ig-edit.el ends here
