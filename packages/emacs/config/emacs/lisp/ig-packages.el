@@ -72,7 +72,30 @@
 	dired-recursive-copies 'always
 	dired-recursive-deletes 'always
 	dired-dwim-target t
-	dired-listing-switches "-alh --group-directories-first --time-style \"+%d-%m-%Y %H:%M\""))
+	dired-listing-switches (purecopy ig-ls-switches))
+  (defun ig-dired-sort-set-mode-line (_args)
+    "Override mode name."
+    (setq mode-name
+	  (concat
+	   (cond ((string-match-p
+		   "-v$" dired-actual-switches)
+		  "Dir name")
+		 ((string-match-p
+		   "-t$" dired-actual-switches)
+		  "Dir time")
+		 ((string-match-p
+		   "-S$" dired-actual-switches)
+		  "Dir size")
+		 ((string-match-p
+		   "-X$" dired-actual-switches)
+		  "Dir ext")
+		 (t
+		  (concat "Dired " dired-actual-switches)))
+	   (if (string-match-p "^--reverse" dired-actual-switches)
+	       " ↓" " ↑")))
+    (force-mode-line-update))
+  (advice-add 'dired-sort-set-mode-line :around #'ig-dired-sort-set-mode-line)
+  (ig-dired-sort "-v" nil))
 
 (with-eval-after-load 'man
   (set-face-attribute 'Man-overstrike nil :inherit font-lock-type-face :bold t)

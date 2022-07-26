@@ -133,6 +133,17 @@ CUR-X and CUR-Y - cursor X and Y."
   (recenter)
   (read-only-mode 1))
 
+;;;###autoload
+(defun ig-dired-sort (variant &optional reverse)
+  "Sort Dired by VARIANT, possibly in REVERSE order.
+The sorting mode will be used from now on."
+  (require 'ig-common)
+  (let ((switches (concat (purecopy ig-ls-switches) " " variant)))
+    (when reverse (setq switches (concat "--reverse " switches)))
+    (setq dired-listing-switches switches)
+    (when (eq major-mode 'dired-mode)
+      (dired-sort-other switches))))
+
 ;; Local Variables:
 ;; byte-compile-warnings: (not free-vars unresolved)
 ;; End:
