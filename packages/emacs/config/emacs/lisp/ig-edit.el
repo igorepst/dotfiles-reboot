@@ -23,9 +23,7 @@
 ;; https://github.com/bbatsov/crux/blob/master/crux.el
 ;;;###autoload
 (defun ig-duplicate-current-line-or-region (arg)
-  "Duplicates the current line or region ARG times.
-If there's no region, the current line will be duplicated.  However, if
-there's a region, all lines that region covers will be duplicated."
+  "Duplicate the current line or all lines of the region ARG times."
   (interactive "p")
   (pcase-let* ((origin (point))
                (`(,beg . ,end) (ig-get-bounds-lines-rect))
@@ -36,6 +34,29 @@ there's a region, all lines that region covers will be duplicated."
       (insert region)
       (setq end (point)))
     (goto-char (+ origin (* (length region) arg) arg))))
+
+;;;###autoload
+(defun ig-copy-current-line-or-region ()
+  "Copy current line or all lines of the region."
+  (interactive)
+  (let ((cell (ig-get-bounds-lines-rect)))
+    (kill-ring-save (car cell) (cdr cell))))
+
+;;;###autoload
+(defun ig-kill-current-line-or-region ()
+  "Kill current line or all lines of the region."
+  (interactive)
+  (let ((cell (ig-get-bounds-lines-rect)))
+    (kill-region (car cell) (cdr cell))))
+
+;;;###autoload
+(defun ig-select-current-line-or-region ()
+  "Select current line or all lines of the region."
+  (interactive)
+  (let ((cell (ig-get-bounds-lines-rect)))
+    (set-mark (car cell))
+    (goto-char (cdr cell))
+    (activate-mark)))
 
 (provide 'ig-edit)
 ;;; ig-edit.el ends here
