@@ -65,7 +65,10 @@
 				 (emacs-lock-mode 'kill))
 			       (with-current-buffer "*Messages*"
 				 (emacs-lock-mode 'kill))
-			       (delete-selection-mode)))
+			       (delete-selection-mode)
+			       (column-number-mode)
+			       (electric-pair-mode)
+			       (global-goto-address-mode)))
 
 (with-eval-after-load 'dired
   (require 'ig-dired))
@@ -90,7 +93,7 @@
   (and (vertico--remote-p string)
        (completion-basic-try-completion string table pred point)))
 (defun basic-remote-all-completions (string table pred point)
-   "Support TRAMP hostname completion with STRING, TABLE, PRED, POINT."
+  "Support TRAMP hostname completion with STRING, TABLE, PRED, POINT."
   (and (vertico--remote-p string)
        (completion-basic-all-completions string table pred point)))
 (push '(basic-remote basic-remote-try-completion basic-remote-all-completions nil) completion-styles-alist)
@@ -251,6 +254,7 @@
 (push 'cape ig-selected-packages)
 (push #'cape-file completion-at-point-functions)
 (push #'cape-dabbrev completion-at-point-functions)
+;; (push #'cape-line completion-at-point-functions)
 ;;(add-to-list 'completion-at-point-functions #'cape-history)
 ;;(add-to-list 'completion-at-point-functions #'cape-keyword)
 ;;(add-to-list 'completion-at-point-functions #'cape-tex)
@@ -282,8 +286,8 @@
 (setq prefix-help-command #'embark-prefix-help-command)
 (with-eval-after-load 'embark
   (push '("\\`\\*Embark Collect \\(Live\\|Completions\\)\\*" nil
-		 (window-parameters
-		  (mode-line-format . none))) display-buffer-alist))
+	  (window-parameters
+	   (mode-line-format . none))) display-buffer-alist))
 (define-key global-map [?\C-.] 'embark-act)
 (define-key global-map "\M-." 'embark-dwim)
 (define-key global-map "\C-hB" 'embark-bindings)
@@ -351,6 +355,9 @@
 
 (with-eval-after-load 're-builder
   (setq reb-re-syntax 'string))
+
+(add-hook 'after-save-hook
+	  'executable-make-buffer-file-executable-if-script-p)
 
 (makunbound 'ig-selected-packages)
 ;; Local Variables:

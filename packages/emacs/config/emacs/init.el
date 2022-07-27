@@ -28,7 +28,11 @@
       find-file-visit-truename t
       completion-cycle-threshold nil
       sentence-end-double-space nil
-      byte-compile-docstring-max-column 999)
+      byte-compile-docstring-max-column 999
+      require-final-newline t
+      save-interprogram-paste-before-kill t
+      help-window-select t
+      echo-keystrokes 0.01)
 
 (push ".zwc" completion-ignored-extensions)
 
@@ -41,6 +45,17 @@
 (load generated-autoload-file t t t)
 
 (load-theme 'adwaita t)
+
+(setq frame-title-format
+      '((:eval (let ((bname buffer-file-name))
+		 (cond
+		 (bname
+		     (concat (if (buffer-modified-p) "+" "")
+			     (file-name-nondirectory bname) " : "
+			     (abbreviate-file-name
+			      (file-name-directory bname))))
+		 ((eq major-mode 'dired-mode) (abbreviate-file-name dired-directory))
+		 (t "%b"))))))
 
 (require 'ig-fonts)
 (require 'ig-packages)
