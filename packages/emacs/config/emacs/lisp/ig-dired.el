@@ -28,35 +28,37 @@ The sorting mode will be used from now on."
   (interactive (list (alt-completing-read "Sort order: "
 					  '(("Name" . ("-v" . nil))
 					    ("Name reversed" . ("-v" . t))
-					    ("Time" . ("-t" . nil))
-					    ("Time reversed" . ("-t" . t))
-					    ("Size" . ("-S" . nil))
-					    ("Size reversed" . ("-S" . t))
+					    ("Time" . ("-t" . t))
+					    ("Time reversed" . ("-t" . nil))
+					    ("Size" . ("-S" . t))
+					    ("Size reversed" . ("-S" . nil))
 					    ("Ext" . ("-X" . nil))
 					    ("Ext reversed" . ("-X" . t))))))
   (ig-dired-sort-helper (car sort-order) (cdr sort-order)))
 
 (defun ig-dired-sort-set-mode-line (_args)
   "Override mode name."
-  (setq mode-name
-	(concat
-	 (cond ((string-match-p
-		 "-v$" dired-actual-switches)
-		"Dir name")
-	       ((string-match-p
-		 "-t$" dired-actual-switches)
-		"Dir time")
-	       ((string-match-p
-		 "-S$" dired-actual-switches)
-		"Dir size")
-	       ((string-match-p
-		 "-X$" dired-actual-switches)
-		"Dir ext")
-	       (t
-		(concat "Dired " dired-actual-switches)))
-	 (if (string-match-p "^--reverse" dired-actual-switches)
-	     " ↓" " ↑")))
-  (force-mode-line-update))
+  (let* ((asc t) (name (cond ((string-match-p
+				"-v$" dired-actual-switches)
+			       "Dir name")
+			      ((string-match-p
+				"-t$" dired-actual-switches)
+			       (setq asc nil)
+			       "Dir time")
+			      ((string-match-p
+				"-S$" dired-actual-switches)
+			       (setq asc nil)
+			       "Dir size")
+			      ((string-match-p
+				"-X$" dired-actual-switches)
+			       "Dir ext")
+			      (t
+			       (concat "Dired " dired-actual-switches)))))
+       (setq mode-name
+	     (concat name
+		     (if (string-match-p "^--reverse" dired-actual-switches)
+			 (if asc " ↑" " ↓") (if asc " ↓" " ↑"))))
+       (force-mode-line-update)))
 (advice-add 'dired-sort-set-mode-line :around #'ig-dired-sort-set-mode-line)
 
 (ig-dired-sort-helper "-v" nil)
