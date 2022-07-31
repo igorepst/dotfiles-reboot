@@ -104,6 +104,7 @@ function _updateDots(){
     ! ncu -gs -e 2 npm-check-updates && echo 'Updating npm-check-updates' && npm i -g npm-check-updates
     _install_lsp
     echo 'Updating Python packages'
+    pip install --upgrade pip
     echo 'Visidata:'
     pip3 install -U --user visidata
     rm -f ~/.zsh/volatile/zcompdump* 2>/dev/null
