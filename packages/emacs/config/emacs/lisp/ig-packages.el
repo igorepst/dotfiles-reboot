@@ -334,22 +334,22 @@
 
 
 (with-eval-after-load 'ansi-color
-  (set-face-attribute 'ansi-color-black nil :foreground "#2E3436" :background "#2E3436")
-  (set-face-attribute 'ansi-color-red nil :foreground "#CC0000" :background "#CC0000")
-  (set-face-attribute 'ansi-color-green nil :foreground "#4E9A06" :background "#4E9A06")
-  (set-face-attribute 'ansi-color-yellow nil :foreground "#C4A000" :background "#C4A000")
-  (set-face-attribute 'ansi-color-blue nil :foreground "#3465A4" :background "#3465A4")
-  (set-face-attribute 'ansi-color-magenta nil :foreground "#75507B" :background "#75507B")
-  (set-face-attribute 'ansi-color-cyan nil :foreground "#06989A" :background "#06989A")
-  (set-face-attribute 'ansi-color-white nil :foreground "#D3D7CF" :background "#D3D7CF")
-  (set-face-attribute 'ansi-color-bright-black nil :foreground "#555753" :background "#555753")
-  (set-face-attribute 'ansi-color-bright-red nil :foreground "#EF2929" :background "#EF2929")
-  (set-face-attribute 'ansi-color-bright-green nil :foreground "#8AE234" :background "#8AE234")
-  (set-face-attribute 'ansi-color-bright-yellow nil :foreground "#FCE94F" :background "#FCE94F")
-  (set-face-attribute 'ansi-color-bright-blue nil :foreground "#729FCF" :background "#729FCF")
-  (set-face-attribute 'ansi-color-bright-magenta nil :foreground "#AD7FA8" :background "#AD7FA8")
-  (set-face-attribute 'ansi-color-bright-cyan nil :foreground "#34E2E2" :background "#34E2E2")
-  (set-face-attribute 'ansi-color-bright-white nil :foreground "#EEEEEC" :background "#EEEEEC"))
+  (set-face-attribute 'ansi-color-black nil :foreground ig-color-black :background ig-color-black)
+  (set-face-attribute 'ansi-color-red nil :foreground ig-color-red :background ig-color-red)
+  (set-face-attribute 'ansi-color-green nil :foreground ig-color-green :background ig-color-green)
+  (set-face-attribute 'ansi-color-yellow nil :foreground ig-color-yellow :background ig-color-yellow)
+  (set-face-attribute 'ansi-color-blue nil :foreground ig-color-blue :background ig-color-blue)
+  (set-face-attribute 'ansi-color-magenta nil :foreground ig-color-magenta :background ig-color-magenta)
+  (set-face-attribute 'ansi-color-cyan nil :foreground ig-color-cyan :background ig-color-cyan)
+  (set-face-attribute 'ansi-color-white nil :foreground ig-color-white :background ig-color-white)
+  (set-face-attribute 'ansi-color-bright-black nil :foreground ig-color-bright-black :background ig-color-bright-black)
+  (set-face-attribute 'ansi-color-bright-red nil :foreground ig-color-bright-red :background ig-color-bright-red)
+  (set-face-attribute 'ansi-color-bright-green nil :foreground ig-color-bright-green :background ig-color-bright-green)
+  (set-face-attribute 'ansi-color-bright-yellow nil :foreground ig-color-bright-yellow :background ig-color-bright-yellow)
+  (set-face-attribute 'ansi-color-bright-blue nil :foreground ig-color-bright-blue :background ig-color-bright-blue)
+  (set-face-attribute 'ansi-color-bright-magenta nil :foreground ig-color-bright-magenta :background ig-color-bright-magenta)
+  (set-face-attribute 'ansi-color-bright-cyan nil :foreground ig-color-bright-cyan :background ig-color-bright-cyan)
+  (set-face-attribute 'ansi-color-bright-white nil :foreground ig-color-bright-white :background ig-color-bright-white))
 
 
 
@@ -358,6 +358,9 @@
 
 (add-hook 'after-save-hook
 	  'executable-make-buffer-file-executable-if-script-p)
+
+(push 'modus-themes ig-selected-packages)
+(load-theme 'modus-operandi t)
 
 (makunbound 'ig-selected-packages)
 ;; Local Variables:

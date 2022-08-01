@@ -44,8 +44,6 @@
 (push (file-name-directory generated-autoload-file) load-path)
 (load generated-autoload-file t t t)
 
-(load-theme 'adwaita t)
-
 (setq frame-title-format
       '((:eval (let ((bname buffer-file-name))
 		 (cond
