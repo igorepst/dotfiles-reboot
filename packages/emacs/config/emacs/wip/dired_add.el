@@ -1,4 +1,21 @@
-(push (list "\\(\\.mp4\\)$" '(".+" (dired-move-to-filename) nil (0 font-lock-variable-name-face))) dired-font-lock-keywords)
+(require 'dired)
+(defgroup ig-dired-faces nil
+  "Faces used by Dired."
+  :group 'dired
+  :group 'faces)
+(defface ig-dired-video-face
+  '((t :foreground "#FF0000" :weight bold))
+  "Face for Dired video files."
+  :group 'ig-dired-faces)
+
+(push (list "\\(\\.mp4\\)$" '(".+" (dired-move-to-filename) nil (0 'ig-dired-video-face))) dired-font-lock-keywords)
+
+
+
+
+
+
+
 
 
 
