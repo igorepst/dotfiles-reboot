@@ -11,7 +11,8 @@
 (push 'lua-mode ig-selected-packages)
 (push '("\\.lua\\'" . lua-mode) auto-mode-alist)
 
-(push '("\\(\\.\\(?:service\\|timer\\|target\\|slice\\|socket\\|path\\|network\\|automount\\|link\\|mount\\|netdev\\)\\)\\'" . conf-unix-mode) auto-mode-alist)
+;; "service" "timer" "target" "slice" "socket" "path" "network" "automount" "link" "mount" "netdev"
+(push '("\\.\\(?:automount\\|link\\|mount\\|net\\(?:dev\\|work\\)\\|path\\|s\\(?:ervice\\|lice\\|ocket\\)\\|t\\(?:arget\\|imer\\)\\)\\'" . conf-unix-mode) auto-mode-alist)
 
 (define-key 'help-command [? ] 'ig-describe-symbol)
 (define-key 'help-command "\C-l" 'find-library)
