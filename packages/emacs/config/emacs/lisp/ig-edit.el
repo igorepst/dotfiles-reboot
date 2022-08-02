@@ -107,5 +107,20 @@ ARG - scale."
   (interactive)
   (text-scale-increase 0))
 
+;;;###autoload
+(defun ig-font-lock-log-file ()
+  "Highlight severity keywords in log files."
+  (font-lock-add-keywords nil '(("\\<\\(ERROR\\|FATAL\\)\\>" 1 font-lock-warning-face t)))
+  (font-lock-add-keywords nil '(("\\<\\(WARN\\)\\>" 1 font-lock-keyword-face t)))
+  (font-lock-add-keywords nil '(("\\<\\(INFO\\)\\>" 1 font-lock-function-name-face t)))
+  (font-lock-add-keywords nil '(("\\<\\(DEBUG\\|TRACE\\)\\>" 1 font-lock-constant-face t))))
+
+;;;###autoload
+(defun font-lock-comment-annotations ()
+  "Highlight comment annotations."
+  (font-lock-add-keywords
+   nil '(("\\<\\(FIX\\(ME\\)?\\|TODO\\|NOSONAR\\|NOCOMMIT\\)"
+          1 font-lock-warning-face t))))
+
 (provide 'ig-edit)
 ;;; ig-edit.el ends here

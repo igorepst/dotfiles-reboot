@@ -32,7 +32,10 @@
       require-final-newline t
       save-interprogram-paste-before-kill t
       help-window-select t
-      echo-keystrokes 0.01)
+      echo-keystrokes 0.01
+      eval-expression-print-length nil
+      eval-expression-print-level nil
+      visual-line-fringe-indicators '(left-curly-arrow nil))
 
 (push ".zwc" completion-ignored-extensions)
 

@@ -17,12 +17,18 @@
 (define-key 'help-command [? ] 'ig-describe-symbol)
 (define-key 'help-command "\C-l" 'find-library)
 (define-key 'help-command "\C-f" 'find-function)
+(define-key 'help-command "\C-k" 'find-function-on-key)
 (define-key 'help-command "\C-v" 'find-variable)
+(define-key 'help-command "\C-c" 'describe-char)
+(define-key global-map [C-tab] 'bury-buffer)
+(define-key global-map "\C-c\C-d" 'ig-duplicate-current-line-or-region)
 
 (with-eval-after-load 'savehist
   (setq savehist-file (expand-file-name "savehist" ig-cache-dir)
+	history-length 250
 	savehist-additional-variables
-	'(search-ring regexp-search-ring compile-history)))
+	'(search-ring regexp-search-ring compile-history kill-ring
+		      shell-command-history)))
 
 (with-eval-after-load 'saveplace
   (setq save-place-file (expand-file-name "saveplace" ig-cache-dir)
@@ -362,6 +368,10 @@
 
 (push 'modus-themes ig-selected-packages)
 (load-theme 'modus-operandi t)
+
+(add-hook 'prog-mode-hook 'font-lock-comment-annotations)
+
+(push '("\\.[Ll][Oo][Gg]\\'" . ig-font-lock-log-file) auto-mode-alist)
 
 (makunbound 'ig-selected-packages)
 ;; Local Variables:

@@ -97,22 +97,27 @@ The sorting mode will be used from now on."
   "Face for Dired executable files."
   :group 'ig-dired-faces)
 
-(add-to-list 'dired-font-lock-keywords (list (concat dired-re-maybe-mark dired-re-inode-size "[-d]........\\(x\\)") '(".+" (dired-move-to-filename) nil (0 'ig-dired-exe-face))) t)
+(defconst ig-dired-font-lock-keywords '() "Dired font lock additional keywords.")
+
+(push (list (concat dired-re-maybe-mark dired-re-inode-size "[-d]........\\(x\\)") '(".+" (dired-move-to-filename) nil (0 'ig-dired-exe-face))) ig-dired-font-lock-keywords)
 
 ;; "mp4" "mp4v" "mkv" "mpg" "mpeg" "webm" "webp" "vob" "wmv" "avi" "ts" "mts" "vid" "flac" "midi" "mka" "mp3" "ogg" "wav" "oga" "opus" "spx"
-(add-to-list 'dired-font-lock-keywords (list "\\(?:\\.\\(?:avi\\|flac\\|m\\(?:idi\\|k[av]\\|p\\(?:4v\\|eg\\|[34g]\\)\\|ts\\)\\|o\\(?:g[ag]\\|pus\\)\\|spx\\|ts\\|v\\(?:id\\|ob\\)\\|w\\(?:av\\|eb[mp]\\|mv\\)\\)\\)$" '(".+" (dired-move-to-filename) nil (0 'ig-dired-media-face))) t)
+(push (list "\\(?:\\.\\(?:avi\\|flac\\|m\\(?:idi\\|k[av]\\|p\\(?:4v\\|eg\\|[34g]\\)\\|ts\\)\\|o\\(?:g[ag]\\|pus\\)\\|spx\\|ts\\|v\\(?:id\\|ob\\)\\|w\\(?:av\\|eb[mp]\\|mv\\)\\)\\)$" '(".+" (dired-move-to-filename) nil (0 'ig-dired-media-face))) ig-dired-font-lock-keywords)
 
 ;; "tar" "tgz" "lzma" "zip" "xz" "zst" "bz2" "bz" "deb" "rpm" "jar" "war" "rar" "cpio" "7z" "cab" "gz" "iso" "apk"
-(add-to-list 'dired-font-lock-keywords (list "\\(?:\\.\\(?:7z\\|apk\\|bz2?\\|c\\(?:ab\\|pio\\)\\|deb\\|gz\\|iso\\|jar\\|lzma\\|r\\(?:ar\\|pm\\)\\|t\\(?:ar\\|gz\\)\\|war\\|xz\\|z\\(?:ip\\|st\\)\\)\\)$" '(".+" (dired-move-to-filename) nil (0 'ig-dired-archive-face))) t)
+(push (list "\\(?:\\.\\(?:7z\\|apk\\|bz2?\\|c\\(?:ab\\|pio\\)\\|deb\\|gz\\|iso\\|jar\\|lzma\\|r\\(?:ar\\|pm\\)\\|t\\(?:ar\\|gz\\)\\|war\\|xz\\|z\\(?:ip\\|st\\)\\)\\)$" '(".+" (dired-move-to-filename) nil (0 'ig-dired-archive-face))) ig-dired-font-lock-keywords)
 
 ;; "jpg" "jpeg" "gif" "bmp" "pbm" "pgm" "ppm" "tga" "xbm" "xpm" "tif" "tiff" "png" "svg" "svgz" "ico" "xcf" "psd"
-(add-to-list 'dired-font-lock-keywords (list "\\(?:\\.\\(?:bmp\\|gif\\|ico\\|jp\\(?:e?g\\)\\|p\\(?:bm\\|gm\\|ng\\|pm\\|sd\\)\\|svgz?\\|t\\(?:ga\\|iff?\\)\\|x\\(?:bm\\|cf\\|pm\\)\\)\\)$" '(".+" (dired-move-to-filename) nil (0 'ig-dired-img-face))) t)
+(push (list "\\(?:\\.\\(?:bmp\\|gif\\|ico\\|jp\\(?:e?g\\)\\|p\\(?:bm\\|gm\\|ng\\|pm\\|sd\\)\\|svgz?\\|t\\(?:ga\\|iff?\\)\\|x\\(?:bm\\|cf\\|pm\\)\\)\\)$" '(".+" (dired-move-to-filename) nil (0 'ig-dired-img-face))) ig-dired-font-lock-keywords)
 
 ;; "doc" "docx" "odt" "xls" "xlsx" "ods" "pdf" "djvu"
-(add-to-list 'dired-font-lock-keywords (list "\\(?:\\.\\(?:d\\(?:jvu\\|ocx?\\)\\|od[st]\\|pdf\\|xlsx?\\)\\)$" '(".+" (dired-move-to-filename) nil (0 'ig-dired-doc-face))) t)
+(push (list "\\(?:\\.\\(?:d\\(?:jvu\\|ocx?\\)\\|od[st]\\|pdf\\|xlsx?\\)\\)$" '(".+" (dired-move-to-filename) nil (0 'ig-dired-doc-face))) ig-dired-font-lock-keywords)
 
 ;; "bak" "old" "orig" "part" "swp" "tmp" "dpkg-dist" "dpkg-old" "rpmnew" "rpmorig" "rpmsave" "pacnew" "pacsave" "eln"
-(add-to-list 'dired-font-lock-keywords (list "\\(?:\\.\\(?:bak\\|dpkg-\\(?:dist\\|old\\)\\|eln\\|o\\(?:ld\\|rig\\)\\|pa\\(?:c\\(?:new\\|save\\)\\|rt\\)\\|rpm\\(?:new\\|orig\\|save\\)\\|\\(?:sw\\|tm\\)p\\)\\)$" '(".+" (dired-move-to-filename) nil (0 dired-ignored-face))) t)
+(push (list "\\(?:\\.\\(?:bak\\|dpkg-\\(?:dist\\|old\\)\\|eln\\|o\\(?:ld\\|rig\\)\\|pa\\(?:c\\(?:new\\|save\\)\\|rt\\)\\|rpm\\(?:new\\|orig\\|save\\)\\|\\(?:sw\\|tm\\)p\\)\\)$" '(".+" (dired-move-to-filename) nil (0 dired-ignored-face))) ig-dired-font-lock-keywords)
+
+(nconc dired-font-lock-keywords (nreverse ig-dired-font-lock-keywords))
+(makunbound 'ig-dired-sort-font-lock-keywords)
 
 ;; Local Variables:
 ;; byte-compile-warnings: (not free-vars unresolved)
