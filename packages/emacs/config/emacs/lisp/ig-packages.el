@@ -14,14 +14,14 @@
 ;; "service" "timer" "target" "slice" "socket" "path" "network" "automount" "link" "mount" "netdev"
 (push '("\\.\\(?:automount\\|link\\|mount\\|net\\(?:dev\\|work\\)\\|path\\|s\\(?:ervice\\|lice\\|ocket\\)\\|t\\(?:arget\\|imer\\)\\)\\'" . conf-unix-mode) auto-mode-alist)
 
-(define-key 'help-command [? ] 'ig-describe-symbol)
-(define-key 'help-command "\C-l" 'find-library)
-(define-key 'help-command "\C-f" 'find-function)
-(define-key 'help-command "\C-k" 'find-function-on-key)
-(define-key 'help-command "\C-v" 'find-variable)
-(define-key 'help-command "\C-c" 'describe-char)
-(define-key global-map [C-tab] 'bury-buffer)
-(define-key global-map "\C-c\C-d" 'ig-duplicate-current-line-or-region)
+(define-key 'help-command [? ] #'ig-describe-symbol)
+(define-key 'help-command "\C-l" #'find-library)
+(define-key 'help-command "\C-f" #'find-function)
+(define-key 'help-command "\C-k" #'find-function-on-key)
+(define-key 'help-command "\C-v" #'find-variable)
+(define-key 'help-command "\C-c" #'describe-char)
+(define-key global-map [C-tab] #'bury-buffer)
+(define-key global-map "\C-c\C-d" #'ig-duplicate-current-line-or-region)
 
 (with-eval-after-load 'savehist
   (setq savehist-file (expand-file-name "savehist" ig-cache-dir)
@@ -34,13 +34,13 @@
   (setq save-place-file (expand-file-name "saveplace" ig-cache-dir)
 	save-place-version-control 'never
 	save-place-ignore-files-regexp
-	"\\(?:COMMIT_EDITMSG\\|MERGE_MSG\\|hg-editor-[[:alnum:]]+\\.txt\\|svn-commit\\.tmp\\|bzr_log\\.[[:alnum:]]+\\)$\\|kitty_scrollback"))
+	(concat "\\(?:" ig-kitty-scrollback-file "\\|COMMIT_EDITMSG\\|MERGE_MSG\\|hg-editor-[[:alnum:]]+\\.txt\\|svn-commit\\.tmp\\|bzr_log\\.[[:alnum:]]+\\)$")))
 (save-place-mode)
 
 (with-eval-after-load 'recentf
   (setq recentf-save-file (expand-file-name "recentf" ig-cache-dir)
 	recentf-auto-cleanup 'never
-	recentf-exclude '("MERGE_MSG" "COMMIT_EDITMSG" "kitty_scrollback")))
+	recentf-exclude `("MERGE_MSG" "COMMIT_EDITMSG" ,ig-kitty-scrollback-file)))
 
 (with-eval-after-load 'org
   (setq org-fontify-whole-heading-line t
@@ -67,15 +67,15 @@
 				 (global-hl-line-mode)
 				 (recentf-mode)
 				 (savehist-mode)
-				 (global-auto-revert-mode))
+				 (global-auto-revert-mode)
+				 (delete-selection-mode)
+				 (column-number-mode)
+				 (electric-pair-mode)
+				 (global-goto-address-mode))
 			       (with-current-buffer "*scratch*"
 				 (emacs-lock-mode 'kill))
 			       (with-current-buffer "*Messages*"
-				 (emacs-lock-mode 'kill))
-			       (delete-selection-mode)
-			       (column-number-mode)
-			       (electric-pair-mode)
-			       (global-goto-address-mode)))
+				 (emacs-lock-mode 'kill))))
 
 (with-eval-after-load 'dired
   (require 'ig-dired))
@@ -150,7 +150,7 @@
    consult-bookmark consult-recent-file consult-xref
    consult--source-bookmark consult--source-recent-file
    consult--source-project-recent-file
-   :preview-key (kbd "M-."))
+   :preview-key (kbd "C-;"))
 
   ;; Optionally configure the narrowing key.
   ;; Both < and C-+ work reasonably well.
@@ -371,7 +371,7 @@
 (push 'modus-themes ig-selected-packages)
 (load-theme 'modus-operandi t)
 
-(add-hook 'prog-mode-hook 'font-lock-comment-annotations)
+(add-hook 'prog-mode-hook #'font-lock-comment-annotations)
 
 (push '("\\.[Ll][Oo][Gg]\\'" . ig-font-lock-log-file) auto-mode-alist)
 

@@ -112,7 +112,7 @@ Refresh quickstart as needed automatically in install/delete."
 INPUT-LINE - the number of lines a pager should scroll.
 CUR-X and CUR-Y - cursor X and Y."
   (require 'ig-common)
-  (let ((buf (find-file-noselect "/tmp/kitty_scrollback" t)))
+  (let ((buf (find-file-noselect (expand-file-name ig-kitty-scrollback-file "/tmp") t)))
     (switch-to-buffer buf))
   (revert-buffer t t)
   (goto-char (point-min))
