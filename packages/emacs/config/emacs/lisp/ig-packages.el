@@ -287,6 +287,8 @@
 (define-key global-map "\C-cp&" 'cape-sgml)
 (define-key global-map "\C-cpr" 'cape-rfc1345)
 
+(add-hook 'emacs-lisp-mode-hook #'cape-elisp)
+
 
 
 (push 'embark ig-selected-packages)

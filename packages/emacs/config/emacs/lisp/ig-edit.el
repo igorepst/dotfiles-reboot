@@ -122,5 +122,11 @@ ARG - scale."
    nil '(("\\<\\(FIX\\(ME\\)?\\|TODO\\|NOSONAR\\|NOCOMMIT\\)"
           1 font-lock-warning-face t))))
 
+;;;###autoload
+(defun cape-elisp ()
+  "Define Cape for Elisp."
+  (setq-local completion-at-point-functions
+              (list (cape-super-capf #'elisp-completion-at-point #'cape-dabbrev) #'cape-file)))
+
 (provide 'ig-edit)
 ;;; ig-edit.el ends here
