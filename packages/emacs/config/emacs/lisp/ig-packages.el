@@ -88,8 +88,29 @@
 
 (push 'vertico ig-selected-packages)
 (vertico-mode)
+(setq vertico-cycle t)
+(vertico-mouse-mode)
 (define-key vertico-map [left] #'vertico-directory-up)
 (define-key vertico-map [right] #'vertico-directory-enter)
+
+(defun down-from-outside ()
+  "Move to next candidate in minibuffer, even when minibuffer isn't selected."
+  (interactive)
+  (with-selected-window (active-minibuffer-window)
+    (execute-kbd-macro [down])))
+
+(defun up-from-outside ()
+  "Move to previous candidate in minibuffer, even when minibuffer isn't selected."
+  (interactive)
+  (with-selected-window (active-minibuffer-window)
+    (execute-kbd-macro [up])))
+
+(defun to-and-from-minibuffer ()
+  "Go back and forth between minibuffer and other window."
+  (interactive)
+  (if (window-minibuffer-p (selected-window))
+      (select-window (minibuffer-selected-window))
+    (select-window (active-minibuffer-window))))
 
 
 
@@ -105,9 +126,8 @@
        (completion-basic-all-completions string table pred point)))
 (push '(basic-remote basic-remote-try-completion basic-remote-all-completions nil) completion-styles-alist)
 (setq completion-styles '(orderless basic)
+      completion-category-defaults nil
       completion-category-overrides '((file (styles basic-remote substring partial-completion))))
-
-;; (customize-set-variable 'completion-styles '(substring orderless basic))
 
 
 
@@ -212,6 +232,10 @@
 (define-key isearch-mode-map "\M-sL" 'consult-line-multi) ;; needed by consult-line to detect isearch
 (define-key minibuffer-local-map "\M-s" 'consult-history) ;; orig. next-matching-history-element
 (define-key minibuffer-local-map "\M-r" 'consult-history) ;; orig. previous-matching-history-element
+(vertico-multiform-mode)
+(setq vertico-multiform-categories
+      ;; Including ripgrep and git-grep
+      '((consult-grep buffer)))
 
 (push 'consult-flycheck ig-selected-packages)
 (define-key global-map "\M-gf" 'consult-flycheck)

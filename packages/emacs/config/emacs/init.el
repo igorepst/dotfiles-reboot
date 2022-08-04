@@ -35,7 +35,8 @@
       echo-keystrokes 0.01
       eval-expression-print-length nil
       eval-expression-print-level nil
-      visual-line-fringe-indicators '(left-curly-arrow nil))
+      visual-line-fringe-indicators '(left-curly-arrow nil)
+      enable-recursive-minibuffers t)
 
 (push ".zwc" completion-ignored-extensions)
 
