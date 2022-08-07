@@ -22,6 +22,7 @@
 (define-key 'help-command "\C-c" #'describe-char)
 (define-key global-map [C-tab] #'bury-buffer)
 (define-key global-map "\C-c\C-d" #'ig-duplicate-current-line-or-region)
+(define-key global-map "\C-k" #'ig-kill-current-line-or-region)
 
 (with-eval-after-load 'savehist
   (setq savehist-file (expand-file-name "savehist" ig-cache-dir)
@@ -332,7 +333,9 @@
 
 
 (push 'embark ig-selected-packages)
-(setq prefix-help-command #'embark-prefix-help-command)
+(setq prefix-help-command #'embark-prefix-help-command
+      embark-prompter #'embark-completing-read-prompter
+      embark-indicators '(embark-minimal-indicator embark-highlight-indicator embark-isearch-highlight-indicator))
 (with-eval-after-load 'embark
   (push '("\\`\\*Embark Collect \\(Live\\|Completions\\)\\*" nil
 	  (window-parameters

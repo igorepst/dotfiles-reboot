@@ -26,6 +26,12 @@
 	(minibuffer-complete)
      (vertico-insert)))
 
+;;;###autoload
+(defun cape-elisp ()
+  "Define Cape for Elisp."
+  (setq-local completion-at-point-functions
+              (list (cape-super-capf #'elisp-completion-at-point #'cape-dabbrev) #'cape-file)))
+
 ;; Local Variables:
 ;; byte-compile-warnings: (not unresolved)
 ;; End:
