@@ -89,7 +89,6 @@
 (push 'vertico ig-selected-packages)
 (vertico-mode)
 (setq vertico-cycle t)
-(vertico-mouse-mode)
 
 (define-key vertico-map [?\t] #'vertico-insert-unless-tramp)
 (define-key vertico-map [left] #'vertico-directory-delete-entry)
@@ -99,30 +98,39 @@
 (define-key global-map [?\C-c \C-up] #'minibuffer-up-from-outside)
 (define-key global-map "\C-cwm" #'to-and-from-minibuffer)
 
-(defun +completion-category-highlight-files (cand)
-  "Color directories CAND."
-  (let ((len (length cand)))
-    (when (and (> len 0)
-               (eq (aref cand (1- len)) ?/))
-      (add-face-text-property 0 len 'dired-directory 'append cand)))
-  cand)
+(defvar +vertico-transform-functions nil)
 
-(defvar +completion-category-hl-func-overrides
-  `((file . ,#'+completion-category-highlight-files))
-  "Alist mapping category to highlight functions.")
+(defun +vertico-transform (args)
+  "Transform Vertico ARGS."
+  (dolist (fun (ensure-list +vertico-transform-functions) args)
+    (setcar args (funcall fun (car args)))))
 
-(advice-add #'vertico--arrange-candidates :around
-            (defun vertico-format-candidates+ (func)
-              (let ((hl-func (or (alist-get (vertico--metadata-get 'category)
-                                            +completion-category-hl-func-overrides)
-                                 #'identity)))
-                (cl-letf* (((symbol-function 'actual-vertico-format-candidate)
-                            (symbol-function #'vertico--format-candidate))
-                           ((symbol-function #'vertico--format-candidate)
-                            (lambda (cand &rest args)
-                              (apply #'actual-vertico-format-candidate
-                                     (funcall hl-func cand) args))))
-                  (funcall func)))))
+(advice-add #'vertico--format-candidate :filter-args #'+vertico-transform)
+
+(defun +vertico-highlight-directory (file)
+  "Highlight FILE if it ends with a slash."
+  (if (string-suffix-p "/" file)
+      (propertize file 'face 'marginalia-file-priv-dir)
+    file))
+
+(defun +vertico-sort-directories-first (files)
+  "Sort FILES by directory-first."
+  (setq files (vertico-sort-alpha files))
+  (nconc (seq-filter (lambda (x) (string-suffix-p "/" x)) files)
+         (seq-remove (lambda (x) (string-suffix-p "/" x)) files)))
+
+(setq vertico-multiform-commands
+      '((find-file #'vertico-multiform-vertical
+         (vertico-sort-function . +vertico-sort-directories-first)
+         (+vertico-transform-functions . +vertico-highlight-directory))
+	(dired #'vertico-multiform-vertical
+         (vertico-sort-function . +vertico-sort-directories-first)
+         (+vertico-transform-functions . +vertico-highlight-directory))
+	(consult-grep buffer)
+	(consult-ripgrep buffer)
+	(consult-git-grep buffer)))
+
+(vertico-multiform-mode)
 
 
 
@@ -244,10 +252,6 @@
 (define-key isearch-mode-map "\M-sL" 'consult-line-multi) ;; needed by consult-line to detect isearch
 (define-key minibuffer-local-map "\M-s" 'consult-history) ;; orig. next-matching-history-element
 (define-key minibuffer-local-map "\M-r" 'consult-history) ;; orig. previous-matching-history-element
-(vertico-multiform-mode)
-(setq vertico-multiform-categories
-      ;; Including ripgrep and git-grep
-      '((consult-grep buffer)))
 
 (push 'consult-flycheck ig-selected-packages)
 (define-key global-map "\M-gf" 'consult-flycheck)
