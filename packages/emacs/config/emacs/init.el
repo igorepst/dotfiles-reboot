@@ -25,6 +25,7 @@
       backup-inhibited t
       create-lockfiles nil
       source-directory (expand-file-name "c-src/emacs" ig-cache-dir)
+      tramp-persistency-file-name (expand-file-name "tramp" ig-cache-dir)
       find-file-visit-truename t
       completion-cycle-threshold nil
       sentence-end-double-space nil

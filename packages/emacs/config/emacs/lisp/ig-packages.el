@@ -90,27 +90,39 @@
 (vertico-mode)
 (setq vertico-cycle t)
 (vertico-mouse-mode)
-(define-key vertico-map [left] #'vertico-directory-up)
+
+(define-key vertico-map [?\t] #'vertico-insert-unless-tramp)
+(define-key vertico-map [left] #'vertico-directory-delete-entry)
 (define-key vertico-map [right] #'vertico-directory-enter)
 
-(defun down-from-outside ()
-  "Move to next candidate in minibuffer, even when minibuffer isn't selected."
-  (interactive)
-  (with-selected-window (active-minibuffer-window)
-    (execute-kbd-macro [down])))
+(define-key global-map [?\C-c \C-down] #'minibuffer-down-from-outside)
+(define-key global-map [?\C-c \C-up] #'minibuffer-up-from-outside)
+(define-key global-map "\C-cwm" #'to-and-from-minibuffer)
 
-(defun up-from-outside ()
-  "Move to previous candidate in minibuffer, even when minibuffer isn't selected."
-  (interactive)
-  (with-selected-window (active-minibuffer-window)
-    (execute-kbd-macro [up])))
+(defun +completion-category-highlight-files (cand)
+  "Color directories CAND."
+  (let ((len (length cand)))
+    (when (and (> len 0)
+               (eq (aref cand (1- len)) ?/))
+      (add-face-text-property 0 len 'dired-directory 'append cand)))
+  cand)
 
-(defun to-and-from-minibuffer ()
-  "Go back and forth between minibuffer and other window."
-  (interactive)
-  (if (window-minibuffer-p (selected-window))
-      (select-window (minibuffer-selected-window))
-    (select-window (active-minibuffer-window))))
+(defvar +completion-category-hl-func-overrides
+  `((file . ,#'+completion-category-highlight-files))
+  "Alist mapping category to highlight functions.")
+
+(advice-add #'vertico--arrange-candidates :around
+            (defun vertico-format-candidates+ (func)
+              (let ((hl-func (or (alist-get (vertico--metadata-get 'category)
+                                            +completion-category-hl-func-overrides)
+                                 #'identity)))
+                (cl-letf* (((symbol-function 'actual-vertico-format-candidate)
+                            (symbol-function #'vertico--format-candidate))
+                           ((symbol-function #'vertico--format-candidate)
+                            (lambda (cand &rest args)
+                              (apply #'actual-vertico-format-candidate
+                                     (funcall hl-func cand) args))))
+                  (funcall func)))))
 
 
 
@@ -400,6 +412,7 @@
 (push '("\\.[Ll][Oo][Gg]\\'" . ig-font-lock-log-file) auto-mode-alist)
 
 (makunbound 'ig-selected-packages)
+
 ;; Local Variables:
 ;; byte-compile-warnings: (not free-vars unresolved)
 ;; End:

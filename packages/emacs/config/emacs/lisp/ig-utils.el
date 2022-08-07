@@ -51,7 +51,9 @@
   (interactive)
   (make-directory (file-name-directory generated-autoload-file) t)
   (let ((inhibit-message t))
-    (make-directory-autoloads `(,user-emacs-directory ,(expand-file-name "lisp" user-emacs-directory)) generated-autoload-file))
+    (make-directory-autoloads
+     `(,user-emacs-directory ,(expand-file-name "lisp" user-emacs-directory) ,(expand-file-name "lisp/autoload" user-emacs-directory))
+     generated-autoload-file))
   (kill-buffer (file-name-nondirectory generated-autoload-file)))
 
 ;;;###autoload
