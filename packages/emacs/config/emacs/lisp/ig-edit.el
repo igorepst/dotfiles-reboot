@@ -127,9 +127,8 @@ This function is suitable to add to `find-file-hook'."
          (file-remote-p (or buffer-file-name default-directory) 'user)
          "root")
     (let* ((warning "WARNING: EDITING AS ROOT!")
-	   ;; TODO: center it
-           (space (- (window-width) (length warning)))
-           (bracket (make-string (/ space 2) ?-))
+	   (space (- (+ 4 (window-width)) (length warning)))
+           (bracket (make-string (/ space 2) ? ))
            (warning (concat bracket warning bracket)))
       (setq header-line-format
             (propertize  warning 'face '(:foreground "white" :background "red3"))))))
