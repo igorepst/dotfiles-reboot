@@ -98,6 +98,9 @@
 (define-key global-map [?\C-c \C-down] #'minibuffer-down-from-outside)
 (define-key global-map [?\C-c \C-up] #'minibuffer-up-from-outside)
 (define-key global-map "\C-cwm" #'to-and-from-minibuffer)
+(define-key global-map "\C-c\C-r" #'ig-find-alternative-file-with-sudo)
+(add-hook 'find-file-hook 'ig-find-file-root-header-warning)
+(add-hook 'dired-mode-hook 'ig-find-file-root-header-warning)
 
 (defvar +vertico-transform-functions nil)
 
@@ -343,6 +346,40 @@
 (define-key global-map [?\C-.] 'embark-act)
 (define-key global-map "\M-." 'embark-dwim)
 (define-key global-map "\C-hB" 'embark-bindings)
+(require 'embark)
+(defun embark-target-this-buffer-file ()
+  "Target is the current file or buffer."
+  (cons 'this-buffer-file (or (buffer-file-name) (buffer-name))))
+
+(embark-define-keymap this-buffer-file-map
+      "Commands to act on current file or buffer."
+      ("l" load-file)
+      ("b" byte-compile-file)
+      ("S" ig-find-alternative-file-with-sudo)
+      ("r" rename-file-and-buffer)
+      ("d" diff-buffer-with-file)
+      ("=" ediff-buffers)
+      ("C-=" ediff-files)
+      ("!" shell-command)
+      ("&" async-shell-command)
+      ("x" consult-file-externally)
+      ("c" copy-file)
+      ("k" kill-buffer)
+      ("z" bury-buffer)
+      ("|" embark-shell-command-on-buffer)
+      ("g" revert-buffer))
+
+(defun embark-act-on-buffer-file (&optional arg)
+  "Act on the current file or buffer with ARG."
+  (interactive "P")
+  (let ((embark-target-finders '(embark-target-this-buffer-file))
+	(embark-keymap-alist '((this-buffer-file . this-buffer-file-map))))
+    (embark-act arg)))
+
+(global-set-key (kbd "C-c o") 'embark-act-on-buffer-file)
+
+;; (with-eval-after-load 'sh-script
+;;   (define-key sh-mode-map [remap display-local-help] #'man))
 
 (push 'embark-consult ig-selected-packages)
 (with-eval-after-load 'consult

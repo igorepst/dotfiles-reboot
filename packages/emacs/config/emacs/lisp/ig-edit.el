@@ -88,26 +88,6 @@ Optional argument REVERSE - whether to reverse the sort."
     (reverse-region (car bounds) (cdr bounds))))
 
 ;;;###autoload
-(defun ig-font-inc (arg)
-  "Increase font size.
-ARG - scale."
-  (interactive "p")
-  (text-scale-increase arg))
-
-;;;###autoload
-(defun ig-font-dec (arg)
-  "Decrease font size.
-ARG - scale."
-  (interactive "p")
-  (text-scale-increase (- arg)))
-
-;;;###autoload
-(defun ig-font-restore ()
-  "Restore font size to default."
-  (interactive)
-  (text-scale-increase 0))
-
-;;;###autoload
 (defun ig-font-lock-log-file ()
   "Highlight severity keywords in log files."
   (font-lock-add-keywords nil '(("\\<\\(ERROR\\|FATAL\\)\\>" 1 font-lock-warning-face t)))
@@ -121,6 +101,38 @@ ARG - scale."
   (font-lock-add-keywords
    nil '(("\\<\\(FIX\\(ME\\)?\\|TODO\\|NOSONAR\\|NOCOMMIT\\)"
           1 font-lock-warning-face t))))
+
+;; Open file with sudo. Warn on root
+;; http://stackoverflow.com/a/18951887/407953
+;;;###autoload
+(defun ig-find-alternative-file-with-sudo ()
+  "Open the file with 'sudo'."
+  (interactive)
+  (let ((bname (expand-file-name (or buffer-file-name
+                                     default-directory)))
+        (pt (point)))
+    (setq bname (or (file-remote-p bname 'localname)
+                    (concat "/sudo::" bname)))
+    (cl-flet ((server-buffer-done
+               (buffer &optional for-killing)
+               nil))
+      (find-alternate-file bname))
+    (goto-char pt)))
+
+;;;###autoload
+(defun ig-find-file-root-header-warning ()
+  "Display a warning in header line of the current buffer.
+This function is suitable to add to `find-file-hook'."
+  (when (string-equal
+         (file-remote-p (or buffer-file-name default-directory) 'user)
+         "root")
+    (let* ((warning "WARNING: EDITING AS ROOT!")
+	   ;; TODO: center it
+           (space (- (window-width) (length warning)))
+           (bracket (make-string (/ space 2) ?-))
+           (warning (concat bracket warning bracket)))
+      (setq header-line-format
+            (propertize  warning 'face '(:foreground "white" :background "red3"))))))
 
 (provide 'ig-edit)
 ;;; ig-edit.el ends here
