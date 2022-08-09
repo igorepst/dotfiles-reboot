@@ -73,6 +73,7 @@ Refresh quickstart as needed automatically in install/delete."
   ;; Ensure the list is not out of sync
   (princ "Updating selected packages\n")
   (ig-write-selected-packages)
+  (load (expand-file-name "packages/selected-packages" ig-cache-dir) t t nil)
   (princ "Done\n")
   (let ((not-installed (seq-remove #'package-installed-p package-selected-packages)))
     (if (not not-installed)
