@@ -349,9 +349,6 @@
 (define-key global-map "\C-hB" 'embark-bindings)
 (define-key global-map "\C-co" #'ig-embark-act-on-buffer-file)
 
-;; (with-eval-after-load 'sh-script
-;;   (define-key sh-mode-map [remap display-local-help] #'man))
-
 (push 'embark-consult ig-selected-packages)
 (with-eval-after-load 'consult
   (with-eval-after-load 'embark
