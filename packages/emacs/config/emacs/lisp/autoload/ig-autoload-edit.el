@@ -1,4 +1,4 @@
-;;; ig-edit.el --- Editing functions
+;;; ig-autoload-edit.el --- Editing functions
 
 ;;; Commentary:
 ;; Various helpers for editing.
@@ -133,5 +133,5 @@ This function is suitable to add to `find-file-hook'."
       (setq header-line-format
             (propertize  warning 'face '(:foreground "white" :background "red3"))))))
 
-(provide 'ig-edit)
-;;; ig-edit.el ends here
+(provide 'ig-autoload-edit)
+;;; ig-autoload-edit.el ends here

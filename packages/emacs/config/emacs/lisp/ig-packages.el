@@ -342,41 +342,12 @@
 (with-eval-after-load 'embark
   (push '("\\`\\*Embark Collect \\(Live\\|Completions\\)\\*" nil
 	  (window-parameters
-	   (mode-line-format . none))) display-buffer-alist))
+	   (mode-line-format . none))) display-buffer-alist)
+  (require 'ig-embark-this-file))
 (define-key global-map [?\C-.] 'embark-act)
 (define-key global-map "\M-." 'embark-dwim)
 (define-key global-map "\C-hB" 'embark-bindings)
-(require 'embark)
-(defun embark-target-this-buffer-file ()
-  "Target is the current file or buffer."
-  (cons 'this-buffer-file (or (buffer-file-name) (buffer-name))))
-
-(embark-define-keymap this-buffer-file-map
-      "Commands to act on current file or buffer."
-      ("l" load-file)
-      ("b" byte-compile-file)
-      ("S" ig-find-alternative-file-with-sudo)
-      ("r" rename-file-and-buffer)
-      ("d" diff-buffer-with-file)
-      ("=" ediff-buffers)
-      ("C-=" ediff-files)
-      ("!" shell-command)
-      ("&" async-shell-command)
-      ("x" consult-file-externally)
-      ("c" copy-file)
-      ("k" kill-buffer)
-      ("z" bury-buffer)
-      ("|" embark-shell-command-on-buffer)
-      ("g" revert-buffer))
-
-(defun embark-act-on-buffer-file (&optional arg)
-  "Act on the current file or buffer with ARG."
-  (interactive "P")
-  (let ((embark-target-finders '(embark-target-this-buffer-file))
-	(embark-keymap-alist '((this-buffer-file . this-buffer-file-map))))
-    (embark-act arg)))
-
-(global-set-key (kbd "C-c o") 'embark-act-on-buffer-file)
+(define-key global-map "\C-co" #'ig-embark-act-on-buffer-file)
 
 ;; (with-eval-after-load 'sh-script
 ;;   (define-key sh-mode-map [remap display-local-help] #'man))

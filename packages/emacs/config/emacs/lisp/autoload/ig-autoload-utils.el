@@ -1,4 +1,4 @@
-;;; ig-utils.el --- Utils  -*- lexical-binding: t; -*-
+;;; ig-autoload-utils.el --- Utils  -*- lexical-binding: t; -*-
 
 ;;; Commentary:
 ;; Provide various utils.
@@ -158,5 +158,5 @@ CUR-X and CUR-Y - cursor X and Y."
 ;; Local Variables:
 ;; byte-compile-warnings: (not free-vars unresolved)
 ;; End:
-(provide 'ig-utils)
-;;; ig-utils.el ends here
+(provide 'ig-autoload-utils)
+;;; ig-autoload-utils.el ends here
