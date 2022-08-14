@@ -5,7 +5,6 @@
 
 ;;; Code:
 
-;;;###autoload
 (defun ig-get-bounds-lines-rect (&optional buf)
   "Get bounds of region, line or buffer for BUF."
   (cond ((use-region-p)
@@ -46,8 +45,10 @@
 (defun ig-kill-current-line-or-region ()
   "Kill current line or all lines of the region."
   (interactive "*")
-  (let ((bounds (ig-get-bounds-lines-rect)))
-    (kill-region (car bounds) (cdr bounds))))
+  (let* ((bounds (ig-get-bounds-lines-rect))
+	 (pmax (point-max))
+	 (cdrb (cdr bounds)))
+    (kill-region (car bounds) (if (< cdrb pmax) (+ 1 cdrb) pmax))))
 
 ;;;###autoload
 (defun ig-select-current-line-or-region ()
