@@ -57,7 +57,7 @@ local setup = function()
     })
     local update = function(upd)
         for _, bn in ipairs(upd) do
-            local level = bn.battery_level == 'None' and (bn.percentage .. '%') or bn.battery_level
+	   local level = bn.battery_level == 'None' and string.sub(bn.percentage, 1, -3) or bn.battery_level
             w:get_children_by_id('txt')[1].markup = level
             local color
             if string.match(bn.icon_name, 'full') or string.match(bn.icon_name, 'good') then
