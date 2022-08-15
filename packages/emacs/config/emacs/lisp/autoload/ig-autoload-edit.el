@@ -46,9 +46,10 @@
   "Kill current line or all lines of the region."
   (interactive "*")
   (let* ((bounds (ig-get-bounds-lines-rect))
-	 (pmax (point-max))
-	 (cdrb (cdr bounds)))
-    (kill-region (car bounds) (if (< cdrb pmax) (+ 1 cdrb) pmax))))
+	 (carb (car bounds)))
+    (kill-region carb (cdr bounds))
+    (delete-char (if (= 1 carb) 1 -1))
+    (move-beginning-of-line (if (= 1 carb) 1 2))))
 
 ;;;###autoload
 (defun ig-select-current-line-or-region ()
