@@ -9,7 +9,7 @@
 
 (defun embark-target-this-buffer-file ()
   "Target is the current file or buffer."
-  (cons 'this-buffer-file (or (buffer-file-name) (buffer-name))))
+  (cons 'this-buffer-file (buffer-name)))
 
 ;; TODO change actions
 (embark-define-keymap this-buffer-file-map

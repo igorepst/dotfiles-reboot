@@ -135,5 +135,16 @@ This function is suitable to add to `find-file-hook'."
       (setq header-line-format
             (propertize  warning 'face '(:foreground "white" :background "red3"))))))
 
+;; https://github.com/oantolin/emacs-config/blob/master/my-lisp/window-extras.el
+;;;###autoload
+(defun transpose-windows ()
+  "Swap the buffers shown in current and next window."
+  (interactive)
+  (let ((this-buffer (window-buffer))
+        (next-window (next-window nil :no-minibuf nil)))
+    (set-window-buffer nil (window-buffer next-window))
+    (set-window-buffer next-window this-buffer)
+    (select-window next-window)))
+
 (provide 'ig-autoload-edit)
 ;;; ig-autoload-edit.el ends here
