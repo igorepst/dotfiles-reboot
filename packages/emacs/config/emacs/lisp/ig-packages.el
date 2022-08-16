@@ -157,14 +157,10 @@
 
 (push 'marginalia ig-selected-packages)
 (marginalia-mode)
-(add-hook 'minibuffer-setup-hook (lambda() (define-key minibuffer-local-map "\M-A" 'marginalia-cycle)))
 
 
 
 (push 'consult ig-selected-packages)
-;; Optionally configure the register formatting. This improves the register
-;; preview for `consult-register', `consult-register-load',
-;; `consult-register-store' and the Emacs built-ins.
 (setq register-preview-delay 0.5
       register-preview-function #'consult-register-format)
 
@@ -194,34 +190,15 @@
    consult-bookmark consult-recent-file consult-xref
    consult--source-bookmark consult--source-recent-file
    consult--source-project-recent-file
-   :preview-key (kbd "C-;"))
+   :preview-key [?\C-;])
+  (setq consult-narrow-key [?\C-+])
+  (define-key consult-narrow-map (vconcat consult-narrow-key "?") #'consult-narrow-help))
 
-  ;; Optionally configure the narrowing key.
-  ;; Both < and C-+ work reasonably well.
-  (setq consult-narrow-key "<") ;; (kbd "C-+")
-
-  ;; Optionally make narrowing help available in the minibuffer.
-  ;; You may want to use `embark-prefix-help-command' or which-key instead.
-  ;; (define-key consult-narrow-map (vconcat consult-narrow-key "?") #'consult-narrow-help)
-
-  ;; By default `consult-project-function' uses `project-root' from project.el.
-  ;; Optionally configure a different project root function.
-  ;; There are multiple reasonable alternatives to chose from.
-  ;;;; 1. project.el (the default)
-  ;; (setq consult-project-function #'consult--default-project--function)
-  ;;;; 2. projectile.el (projectile-project-root)
-  ;; (autoload 'projectile-project-root "projectile")
-  ;; (setq consult-project-function (lambda (_) (projectile-project-root)))
-  ;;;; 3. vc.el (vc-root-dir)
-  ;; (setq consult-project-function (lambda (_) (vc-root-dir)))
-  ;;;; 4. locate-dominating-file
-  ;; (setq consult-project-function (lambda (_) (locate-dominating-file "." ".git")))
-  )
-(define-key global-map "\C-x\C-a" 'consult-recent-file)
 (define-key global-map "\C-ch" 'consult-history)
 (define-key global-map "\C-ck" 'consult-kmacro)
 (define-key global-map "\C-x\M-:" 'consult-complex-command) ;; orig. repeat-complex-command
-(define-key global-map "\C-xb" 'consult-buffer) ;; orig. switch-to-buffer
+(define-key global-map "\C-xb" 'consult-buffer)
+(define-key global-map "\C-x\C-b" 'consult-buffer)
 (define-key global-map "\C-x4b" 'consult-buffer-other-window) ;; orig. switch-to-buffer-other-window
 (define-key global-map "\C-x5b" 'consult-buffer-other-frame) ;; orig. switch-to-buffer-other-frame
 (define-key global-map "\C-xrb" 'consult-bookmark) ;; orig. bookmark-jump
@@ -233,16 +210,12 @@
 (define-key 'help-command "a" 'consult-apropos) ;; orig. apropos-command
 (define-key global-map "\M-ge" 'consult-compile-error)
 (define-key global-map "\M-gg" 'consult-goto-line) ;; orig. goto-line
-(define-key global-map "\M-g\M-g" 'consult-goto-line) ;; orig. goto-line
 (define-key global-map "\M-go" 'consult-outline)
 (define-key global-map "\M-gm" 'consult-mark)
 (define-key global-map "\M-gk" 'consult-global-mark)
 (define-key global-map "\M-gi" 'consult-imenu)
 (define-key global-map "\M-gI" 'consult-imenu-multi)
 (define-key global-map "\M-sd" 'consult-find)
-(define-key global-map "\M-sD" 'consult-locate)
-(define-key global-map "\M-sg" 'consult-grep)
-(define-key global-map "\M-sG" 'consult-git-grep)
 (define-key global-map "\M-sr" 'consult-ripgrep)
 (define-key global-map "\M-sl" 'consult-line)
 (define-key global-map "\M-sL" 'consult-line-multi)
