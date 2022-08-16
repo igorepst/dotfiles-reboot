@@ -80,12 +80,12 @@ function _updateDots(){
     emulate zsh; setopt localoptions
     setopt no_pushd_ignore_dups
     if [ -d ~/.work ]; then
-        echo 'Updating work Git code and submodules'
+	_print_section_header 'Updating work Git code and submodules'
         pushd ~/.work >/dev/null
         git pull origin $(git rev-parse --abbrev-ref HEAD)
         popd >/dev/null
     fi
-    echo 'Updating Git code and submodules'
+    _print_section_header 'Updating Git code and submodules'
     pushd ~/dotfiles-reboot >/dev/null
     git pull origin $(git rev-parse --abbrev-ref HEAD)
     zcompile-many ~/dotfiles-reboot/links/.zsh/helpers/*.zsh
@@ -97,15 +97,16 @@ function _updateDots(){
     popd >/dev/null
     source ${(%):-%x}
     rehash
+    _print_section_header 'Updating executables'
     IG_GH_REL_UPDATE=1
     source ~/.zsh/supp/get_gh_release.zsh
     for i ("$_ig_update_funcs[@]") $i
     _get_gh_releases
-    ! ncu -gs -e 2 npm-check-updates && echo 'Updating npm-check-updates' && npm i -g npm-check-updates
+    ! ncu -gs -e 2 npm-check-updates && _print_section_header 'Updating npm-check-updates' && npm i -g npm-check-updates
     _install_lsp
-    echo 'Updating Python packages'
+    _print_section_header 'Updating Python packages'
     pip install --upgrade pip
-    echo 'Visidata:'
+    print "\033[32mVisidata:\033[0m"
     pip3 install -U --user visidata
     rm -f ~/.zsh/volatile/zcompdump* 2>/dev/null
 }
@@ -135,13 +136,13 @@ function _install_npm_lsp() {
     setopt no_autopushd
     local res=1
     if [ ! -d "${1}" ]; then
-        echo "Installing ${2} LSP"
+	print "\033[32mInstalling ${2} LSP\033[0m"
         mkdir -p "${1}"
         pushd "${1}" > /dev/null
         npm install ${3}
 	res=$?
     else
-        echo "Updating ${2}"
+	print "\033[32mUpdating ${2}\033[0m"
         pushd "${1}" > /dev/null
         ! ncu -us -e 2 && npm install
 	res=$?
@@ -150,10 +151,15 @@ function _install_npm_lsp() {
     return res
 }
 
+function _print_section_header() {
+    print "\033[32m********************************\n${1}\n********************************\033[0m"
+}
+
 function _install_lsp() {
     emulate -L zsh
     setopt no_autopushd
     local parentDir=~/.cache/lspServers
+    _print_section_header 'Updating LSP'
     # Bash
     if _install_npm_lsp "${parentDir}/bash" 'Bash' 'bash-language-server'; then
 	 mkdir -p ~/.local/bin
@@ -194,7 +200,7 @@ function _install_lsp() {
     # Go
     local gopls_status
     command -v gopls >/dev/null && gopls_status='Updating' || gopls_status='Installing'
-    echo "${gopls_status} Go LSP"
+    print "\033[32m${gopls_status} Go LSP\033[0m"
     go install golang.org/x/tools/gopls@latest
     rehash
     gopls version
