@@ -162,21 +162,15 @@
 
 (push 'consult ig-selected-packages)
 (setq register-preview-delay 0.5
-      register-preview-function #'consult-register-format)
-
-;; Optionally tweak the register preview window.
-;; This adds thin lines, sorting and hides the mode line of the window.
-(advice-add #'register-preview :override #'consult-register-window)
-
-;; Use Consult to select xref locations with preview
-(setq xref-show-xrefs-function #'consult-xref
+      register-preview-function #'consult-register-format
+      xref-show-xrefs-function #'consult-xref
       xref-show-definitions-function #'consult-xref)
+(advice-add #'register-preview :override #'consult-register-window)
 
 (with-eval-after-load 'consult
   ;; Enable automatic preview at point in the *Completions* buffer. This is
   ;; relevant when you use the default completion UI.
   (add-hook 'completion-list-mode-hook 'consult-preview-at-point-mode)
-  ;; Optionally configure preview. The default value
   ;; is 'any, such that any key triggers the preview.
   ;; (setq consult-preview-key 'any)
   ;; (setq consult-preview-key (kbd "M-."))
@@ -190,12 +184,11 @@
    consult-bookmark consult-recent-file consult-xref
    consult--source-bookmark consult--source-recent-file
    consult--source-project-recent-file
-   :preview-key [?\C-;])
+   :preview-key [?\C-\;])
   (setq consult-narrow-key [?\C-+])
   (define-key consult-narrow-map (vconcat consult-narrow-key "?") #'consult-narrow-help))
 
 (define-key global-map "\C-ch" 'consult-history)
-(define-key global-map "\C-ck" 'consult-kmacro)
 (define-key global-map "\C-x\M-:" 'consult-complex-command) ;; orig. repeat-complex-command
 (define-key global-map "\C-xb" 'consult-buffer)
 (define-key global-map "\C-x\C-b" 'consult-buffer)
@@ -203,23 +196,15 @@
 (define-key global-map "\C-x5b" 'consult-buffer-other-frame) ;; orig. switch-to-buffer-other-frame
 (define-key global-map "\C-xrb" 'consult-bookmark) ;; orig. bookmark-jump
 (define-key global-map "\C-xpb" 'consult-project-buffer) ;; orig. project-switch-to-buffer
-(define-key global-map "\M-#" 'consult-register-load)
-(define-key global-map "\M-'" 'consult-register-store) ;; orig. abbrev-prefix-mark (unrelated)
-(define-key global-map [?\C-\M-#] 'consult-register)
-(define-key global-map "\M-y" 'consult-yank-pop) ;; orig. yank-pop
+(define-key global-map "\M-y" 'consult-yank-from-kill-ring)
 (define-key 'help-command "a" 'consult-apropos) ;; orig. apropos-command
 (define-key global-map "\M-ge" 'consult-compile-error)
-(define-key global-map "\M-gg" 'consult-goto-line) ;; orig. goto-line
-(define-key global-map "\M-go" 'consult-outline)
-(define-key global-map "\M-gm" 'consult-mark)
-(define-key global-map "\M-gk" 'consult-global-mark)
+(define-key global-map "\M-gg" 'consult-goto-line)
 (define-key global-map "\M-gi" 'consult-imenu)
-(define-key global-map "\M-gI" 'consult-imenu-multi)
 (define-key global-map "\M-sd" 'consult-find)
 (define-key global-map "\M-sr" 'consult-ripgrep)
 (define-key global-map "\M-sl" 'consult-line)
 (define-key global-map "\M-sL" 'consult-line-multi)
-(define-key global-map "\M-sm" 'consult-multi-occur)
 (define-key global-map "\M-sk" 'consult-keep-lines)
 (define-key global-map "\M-su" 'consult-focus-lines)
 (define-key global-map "\M-se" 'consult-isearch-history)
