@@ -188,6 +188,15 @@
   (setq consult-narrow-key [?\C-+])
   (define-key consult-narrow-map (vconcat consult-narrow-key "?") #'consult-narrow-help))
 
+(defun ig-consult-keep-lines()
+  "Call consult-keep-lines with full lines reqion."
+  (interactive)
+  (when (use-region-p)
+    (ig-select-current-line-or-region)
+    ;; consult-keep-lines has an issue with line merging
+    (exchange-point-and-mark))
+  (call-interactively 'consult-keep-lines))
+
 (define-key global-map "\C-ch" 'consult-history)
 (define-key global-map "\C-x\M-:" 'consult-complex-command) ;; orig. repeat-complex-command
 (define-key global-map "\C-xb" 'consult-buffer)
@@ -205,7 +214,7 @@
 (define-key global-map "\M-sr" 'consult-ripgrep)
 (define-key global-map "\M-sl" 'consult-line)
 (define-key global-map "\M-sL" 'consult-line-multi)
-(define-key global-map "\M-sk" 'consult-keep-lines)
+(define-key global-map "\M-sk" 'ig-consult-keep-lines)
 (define-key global-map "\M-su" 'consult-focus-lines)
 (define-key global-map "\M-se" 'consult-isearch-history)
 (define-key isearch-mode-map "\M-e" 'consult-isearch-history) ;; orig. isearch-edit-string
