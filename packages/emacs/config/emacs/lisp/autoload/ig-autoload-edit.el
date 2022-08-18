@@ -58,21 +58,8 @@
   (let ((bounds (ig-get-bounds-lines-rect)))
     (set-mark (car bounds))
     (goto-char (cdr bounds))
-    (activate-mark)))
-
-;;;###autoload
-(defun ig-delete-matching-lines (regexp)
-  "Delete lines matching REGEXP in region or buffer."
-  (interactive "*MFlush lines containing match for regexp: ")
-  (let ((bounds (ig-get-bounds-lines-rect t)))
-    (flush-lines regexp (car bounds) (cdr bounds) t)))
-
-;;;###autoload
-(defun ig-delete-non-matching-lines (regexp)
-  "Keep only lines matching REGEXP in region or buffer."
-  (interactive "*MKeep lines containing match for regexp: ")
-  (let ((bounds (ig-get-bounds-lines-rect t)))
-    (keep-lines regexp (car bounds) (cdr bounds) t)))
+    (activate-mark)
+  bounds))
 
 ;;;###autoload
 (defun ig-sort-lines (&optional reverse)
@@ -145,6 +132,17 @@ This function is suitable to add to `find-file-hook'."
     (set-window-buffer nil (window-buffer next-window))
     (set-window-buffer next-window this-buffer)
     (select-window next-window)))
+
+;;;###autoload
+(defun ig-consult-keep-lines()
+  "Call consult-keep-lines with full lines reqion."
+  (interactive)
+  (when (use-region-p)
+    ;; include last selected line
+    (let ((bounds (ig-select-current-line-or-region)))
+      (set-mark (+ 1 (cdr bounds)))
+    (goto-char (car bounds))))
+  (call-interactively 'consult-keep-lines))
 
 (provide 'ig-autoload-edit)
 ;;; ig-autoload-edit.el ends here

@@ -168,9 +168,6 @@
 (advice-add #'register-preview :override #'consult-register-window)
 
 (with-eval-after-load 'consult
-  ;; Enable automatic preview at point in the *Completions* buffer. This is
-  ;; relevant when you use the default completion UI.
-  (add-hook 'completion-list-mode-hook 'consult-preview-at-point-mode)
   ;; is 'any, such that any key triggers the preview.
   ;; (setq consult-preview-key 'any)
   ;; (setq consult-preview-key (kbd "M-."))
@@ -188,16 +185,8 @@
   (setq consult-narrow-key [?\C-+])
   (define-key consult-narrow-map (vconcat consult-narrow-key "?") #'consult-narrow-help))
 
-(defun ig-consult-keep-lines()
-  "Call consult-keep-lines with full lines reqion."
-  (interactive)
-  (when (use-region-p)
-    (ig-select-current-line-or-region)
-    ;; consult-keep-lines has an issue with line merging
-    (exchange-point-and-mark))
-  (call-interactively 'consult-keep-lines))
-
 (define-key global-map "\C-ch" 'consult-history)
+(define-key global-map "\C-x\C-a" 'consult-file-externally)
 (define-key global-map "\C-x\M-:" 'consult-complex-command) ;; orig. repeat-complex-command
 (define-key global-map "\C-xb" 'consult-buffer)
 (define-key global-map "\C-x\C-b" 'consult-buffer)
@@ -205,10 +194,11 @@
 (define-key global-map "\C-x5b" 'consult-buffer-other-frame) ;; orig. switch-to-buffer-other-frame
 (define-key global-map "\C-xrb" 'consult-bookmark) ;; orig. bookmark-jump
 (define-key global-map "\C-xpb" 'consult-project-buffer) ;; orig. project-switch-to-buffer
-(define-key global-map "\M-y" 'consult-yank-from-kill-ring)
+(define-key global-map "\M-y" 'consult-yank-from-kill-ring) ;; orig. yank-pop
 (define-key 'help-command "a" 'consult-apropos) ;; orig. apropos-command
 (define-key global-map "\M-ge" 'consult-compile-error)
-(define-key global-map "\M-gg" 'consult-goto-line)
+(define-key global-map "\M-gg" 'consult-goto-line) ;; orig. goto-line
+(define-key global-map "\M-g\M-g" 'consult-goto-line) ;; orig. goto-line
 (define-key global-map "\M-gi" 'consult-imenu)
 (define-key global-map "\M-sd" 'consult-find)
 (define-key global-map "\M-sr" 'consult-ripgrep)
