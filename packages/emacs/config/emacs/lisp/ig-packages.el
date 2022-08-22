@@ -53,6 +53,7 @@
 	search-upper-case nil
 	isearch-wrap-pause 'no-ding)
   ;; http://stackoverflow.com/a/287067/407953
+  ;; TODO rewrite to use newer advice-add
   (defadvice isearch-search (after isearch-no-fail activate)
     "Wraps isearch automatically."
     (unless isearch-success

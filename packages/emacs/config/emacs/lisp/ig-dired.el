@@ -54,6 +54,12 @@ The sorting mode will be used from now on."
 	    (if (string-match-p "^--reverse" das)
 		(if asc " ↑" " ↓") (if asc " ↓" " ↑")))))
 
+;; "mp4" "mp4v" "mkv" "mpg" "mpeg" "webm" "webp" "vob" "wmv" "avi" "ts" "mts" "vid" "flac" "midi" "mka" "mp3" "ogg" "wav" "oga" "opus" "spx"
+(defconst ig-dired-media-ext "\\(?:\\.\\(?:avi\\|flac\\|m\\(?:idi\\|k[av]\\|p\\(?:4v\\|eg\\|[34g]\\)\\|ts\\)\\|o\\(?:g[ag]\\|pus\\)\\|spx\\|ts\\|v\\(?:id\\|ob\\)\\|w\\(?:av\\|eb[mp]\\|mv\\)\\)\\)$" "Dired media files extensions.")
+
+(require 'dired-x)
+(setq dired-guess-shell-alist-user `((,ig-dired-media-ext "nohup 1>/dev/null 2>/dev/null mpv")))
+
 ;; TODO add this
 ;; LS_COLORS='rs=0:di=01;34:ln=01;36:mh=00:pi=40;33:so=01;35:do=01;35:bd=40;33;01:cd=40;33;01:or=40;31;01:mi=00:su=37;41:sg=30;43:ca=00:tw=30;42:ow=34;42:st=37;44:ex=01;32
 
@@ -91,8 +97,7 @@ The sorting mode will be used from now on."
 
 (push (list (concat dired-re-maybe-mark dired-re-inode-size "[-d]........\\(x\\)") '(".+" (dired-move-to-filename) nil (0 'ig-dired-exe-face))) ig-dired-font-lock-keywords)
 
-;; "mp4" "mp4v" "mkv" "mpg" "mpeg" "webm" "webp" "vob" "wmv" "avi" "ts" "mts" "vid" "flac" "midi" "mka" "mp3" "ogg" "wav" "oga" "opus" "spx"
-(push (list "\\(?:\\.\\(?:avi\\|flac\\|m\\(?:idi\\|k[av]\\|p\\(?:4v\\|eg\\|[34g]\\)\\|ts\\)\\|o\\(?:g[ag]\\|pus\\)\\|spx\\|ts\\|v\\(?:id\\|ob\\)\\|w\\(?:av\\|eb[mp]\\|mv\\)\\)\\)$" '(".+" (dired-move-to-filename) nil (0 'ig-dired-media-face))) ig-dired-font-lock-keywords)
+(push (list ig-dired-media-ext '(".+" (dired-move-to-filename) nil (0 'ig-dired-media-face))) ig-dired-font-lock-keywords)
 
 ;; "tar" "tgz" "lzma" "zip" "xz" "zst" "bz2" "bz" "deb" "rpm" "jar" "war" "rar" "cpio" "7z" "cab" "gz" "iso" "apk"
 (push (list "\\(?:\\.\\(?:7z\\|apk\\|bz2?\\|c\\(?:ab\\|pio\\)\\|deb\\|gz\\|iso\\|jar\\|lzma\\|r\\(?:ar\\|pm\\)\\|t\\(?:ar\\|gz\\)\\|war\\|xz\\|z\\(?:ip\\|st\\)\\)\\)$" '(".+" (dired-move-to-filename) nil (0 'ig-dired-archive-face))) ig-dired-font-lock-keywords)

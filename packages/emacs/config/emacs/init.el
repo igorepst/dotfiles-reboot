@@ -39,7 +39,8 @@
       eval-expression-print-level nil
       visual-line-fringe-indicators '(left-curly-arrow nil)
       enable-recursive-minibuffers t
-      delete-by-moving-to-trash nil)
+      delete-by-moving-to-trash nil
+      confirm-kill-processes nil)
 
 (push ".zwc" completion-ignored-extensions)
 
