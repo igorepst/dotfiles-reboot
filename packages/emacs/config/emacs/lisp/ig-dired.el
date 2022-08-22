@@ -13,12 +13,14 @@
       dired-recursive-copies 'always
       dired-recursive-deletes 'always
       dired-dwim-target t
-      dired-listing-switches (purecopy ig-ls-switches))
+      dired-listing-switches (concat ig-ls-switches " -v")
+      dired-switches-in-mode-line #'ig-dired-sort-set-mode-line
+      dired-isearch-filenames t)
 
 (defun ig-dired-sort-helper (variant &optional reverse)
   "Sort Dired by VARIANT, possibly in REVERSE order.
 The sorting mode will be used from now on."
-  (let ((switches (concat (purecopy ig-ls-switches) " " variant)))
+  (let ((switches (concat ig-ls-switches " " variant)))
     (when reverse (setq switches (concat "--reverse " switches)))
     (setq dired-listing-switches switches)
     (when (eq major-mode 'dired-mode)
@@ -39,33 +41,20 @@ The sorting mode will be used from now on."
     (when (and so (string-match-p "\\(?:-[SXtv]\\)$" so))
       (ig-dired-sort-helper so (cdr sort-order)))))
 
-(defun ig-dired-sort-set-mode-line (_args)
-  "Override mode name."
-  (let* ((asc t) (name (cond ((string-match-p
-			       "-v$" dired-actual-switches)
-			      "Dir name")
-			     ((string-match-p
-			       "-t$" dired-actual-switches)
-			      (setq asc nil)
-			      "Dir time")
-			     ((string-match-p
-			       "-S$" dired-actual-switches)
-			      (setq asc nil)
-			      "Dir size")
-			     ((string-match-p
-			       "-X$" dired-actual-switches)
-			      "Dir ext")
-			     (t
-			      (concat "Dired " dired-actual-switches)))))
-    (setq mode-name
-	  (concat name
-		  (if (string-match-p "^--reverse" dired-actual-switches)
-		      (if asc " ↑" " ↓") (if asc " ↓" " ↑"))))
-    (force-mode-line-update)))
-(advice-add 'dired-sort-set-mode-line :around #'ig-dired-sort-set-mode-line)
+(defun ig-dired-sort-set-mode-line (das)
+  "Override mode name according to DAS - 'dired-actual-switches'."
+  (let* ((asc t) (name (cond ((string-match-p "-v$" das) "name")
+			     ((string-match-p "-t$" das)
+			      (setq asc nil) "time")
+			     ((string-match-p "-S$" das)
+			      (setq asc nil) "size")
+			     ((string-match-p "-X$" das) "ext")
+			     (t das))))
+    (concat name
+	    (if (string-match-p "^--reverse" das)
+		(if asc " ↑" " ↓") (if asc " ↓" " ↑")))))
 
-(ig-dired-sort-helper "-v" nil)
-
+;; TODO add this
 ;; LS_COLORS='rs=0:di=01;34:ln=01;36:mh=00:pi=40;33:so=01;35:do=01;35:bd=40;33;01:cd=40;33;01:or=40;31;01:mi=00:su=37;41:sg=30;43:ca=00:tw=30;42:ow=34;42:st=37;44:ex=01;32
 
 (defgroup ig-dired-faces nil

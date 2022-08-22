@@ -38,7 +38,8 @@
       eval-expression-print-length nil
       eval-expression-print-level nil
       visual-line-fringe-indicators '(left-curly-arrow nil)
-      enable-recursive-minibuffers t)
+      enable-recursive-minibuffers t
+      delete-by-moving-to-trash nil)
 
 (push ".zwc" completion-ignored-extensions)
 
