@@ -368,6 +368,13 @@
 
 
 
+(with-eval-after-load 'eshell
+  (defconst ig-eshell-dir (expand-file-name "eshell" ig-cache-dir) "Eshell volatile dir.")
+  (make-directory ig-eshell-dir t)
+  (setq eshell-history-file-name (expand-file-name "history" ig-eshell-dir)))
+
+
+
 (with-eval-after-load 're-builder
   (setq reb-re-syntax 'string))
 

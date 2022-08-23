@@ -58,7 +58,9 @@ The sorting mode will be used from now on."
 (defconst ig-dired-media-ext "\\(?:\\.\\(?:avi\\|flac\\|m\\(?:idi\\|k[av]\\|p\\(?:4v\\|eg\\|[34g]\\)\\|ts\\)\\|o\\(?:g[ag]\\|pus\\)\\|spx\\|ts\\|v\\(?:id\\|ob\\)\\|w\\(?:av\\|eb[mp]\\|mv\\)\\)\\)$" "Dired media files extensions.")
 
 (require 'dired-x)
-(setq dired-guess-shell-alist-user `((,ig-dired-media-ext "nohup 1>/dev/null 2>/dev/null mpv")))
+(setq dired-guess-shell-alist-user
+      `((,ig-dired-media-ext "mpv")
+	("\\.\\(?:pdf\\|djvu\\)\\'" "evince")))
 
 ;; TODO add this
 ;; LS_COLORS='rs=0:di=01;34:ln=01;36:mh=00:pi=40;33:so=01;35:do=01;35:bd=40;33;01:cd=40;33;01:or=40;31;01:mi=00:su=37;41:sg=30;43:ca=00:tw=30;42:ow=34;42:st=37;44:ex=01;32
@@ -113,6 +115,23 @@ The sorting mode will be used from now on."
 
 (nconc dired-font-lock-keywords (nreverse ig-dired-font-lock-keywords))
 (makunbound 'ig-dired-sort-font-lock-keywords)
+
+(defun ig-dired-run-proc-async-nohup (nohup)
+  "Run async process according to NOHUP."
+  (interactive)
+  (let* ((files (dired-get-marked-files t current-prefix-arg))
+	 (cmd (dired-guess-default files))
+	 (cmd-prefix (if nohup "nohup 1>/dev/null 2>&1 " "")))
+    (when (listp cmd) (setq cmd (car cmd)))
+    (when (or (null cmd) (not (executable-find cmd)))
+	(setq cmd (read-shell-command "Run async cmd: " nil 'dired-shell-command-history)))
+    (when (equal cmd "") (setq cmd "xdg-open"))
+    (start-process
+     cmd nil shell-file-name
+     shell-command-switch
+     (concat cmd-prefix cmd " '" (mapconcat #'expand-file-name files "' '") "'"))))
+
+(define-key dired-mode-map "r" #'(lambda() (interactive) (ig-dired-run-proc-async-nohup t)))
 
 ;; Local Variables:
 ;; byte-compile-warnings: (not free-vars unresolved)
