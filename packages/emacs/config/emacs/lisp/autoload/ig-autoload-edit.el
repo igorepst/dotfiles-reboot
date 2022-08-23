@@ -59,7 +59,7 @@
     (set-mark (car bounds))
     (goto-char (cdr bounds))
     (activate-mark)
-  bounds))
+    bounds))
 
 ;;;###autoload
 (defun ig-sort-lines (&optional reverse)
@@ -138,11 +138,17 @@ This function is suitable to add to `find-file-hook'."
   "Call consult-keep-lines with full lines reqion."
   (interactive)
   (when (use-region-p)
-    ;; include last selected line
+    ;; Include last selected line
     (let ((bounds (ig-select-current-line-or-region)))
       (set-mark (+ 1 (cdr bounds)))
-    (goto-char (car bounds))))
+      (goto-char (car bounds))))
   (call-interactively 'consult-keep-lines))
+
+;;;###autoload
+(defun ig-indent-buffer()
+  "Indent the whole buffer."
+  (interactive)
+  (indent-region (point-min) (point-max)))
 
 (provide 'ig-autoload-edit)
 ;;; ig-autoload-edit.el ends here

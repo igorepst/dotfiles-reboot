@@ -124,14 +124,13 @@ The sorting mode will be used from now on."
 	 (cmd-prefix (if nohup "nohup 1>/dev/null 2>&1 " "")))
     (when (listp cmd) (setq cmd (car cmd)))
     (when (or (null cmd) (not (executable-find cmd)))
-	(setq cmd (read-shell-command "Run async cmd: " nil 'dired-shell-command-history)))
+      (setq cmd (read-shell-command "Run async cmd: " nil 'dired-shell-command-history)))
     (when (equal cmd "") (setq cmd "xdg-open"))
-    (start-process
-     cmd nil shell-file-name
-     shell-command-switch
-     (concat cmd-prefix cmd " '" (mapconcat #'expand-file-name files "' '") "'"))))
+    (start-process cmd nil shell-file-name shell-command-switch
+		   (concat cmd-prefix cmd " '" (mapconcat #'expand-file-name files "' '") "'"))))
 
 (define-key dired-mode-map "r" #'(lambda() (interactive) (ig-dired-run-proc-async-nohup t)))
+(define-key dired-mode-map "'" 'eshell)
 
 ;; Local Variables:
 ;; byte-compile-warnings: (not free-vars unresolved)

@@ -1,0 +1,5 @@
+alias ll ls -alh $*
+alias q exit
+alias FF find-file-other-window $1
+alias ff find-file $1
+alias d dired $1

@@ -114,7 +114,7 @@ Refresh quickstart as needed automatically in install/delete."
 
 INPUT-LINE - the number of lines a pager should scroll.
 CUR-X and CUR-Y - cursor X and Y."
-  (require 'ig-common)
+  (require 'ig-packages)
   (let ((buf (find-file-noselect (expand-file-name ig-kitty-scrollback-file "/tmp") t)))
     (switch-to-buffer buf))
   (revert-buffer t t)
@@ -126,14 +126,21 @@ CUR-X and CUR-Y - cursor X and Y."
     (replace-match " "))
   ;; Convert color to TextProperties. Copy without formatting
   ;; See also https://www.emacswiki.org/emacs/TtyFormat
-  (require 'ansi-color)
-  (ansi-color-apply-on-region (point-min) (point-max))
+  ;; (require 'ansi-color)
+  ;; (ansi-color-apply-on-region (point-min) (point-max))
+  ;; (setq xterm-color-names `[,ig-color-black ,ig-color-red ,ig-color-green ,ig-color-yellow ,ig-color-blue ,ig-color-magenta ,ig-color-cyan ,ig-color-white]
+  ;; 	xterm-color-names-bright `[,ig-color-bright-black ,ig-color-bright-red ,ig-color-bright-green ,ig-color-bright-yellow
+  ;; 							  ,ig-color-bright-blue ,ig-color-bright-magenta ,ig-color-bright-cyan ,ig-color-bright-white])
+  (font-lock-mode -1)
+  ;; TODO fix colors. Note 'ls' output
+  (xterm-color-colorize-buffer)
   (save-buffer)
   (goto-char (point-min))
   (forward-line (+ input-line cur-y))
   (beginning-of-line)
   (forward-char (- cur-x 1))
   (recenter)
+  ;; TODO doesn't work
   (read-only-mode 1))
 
 ;; http://www.howardism.org/Technical/Emacs/alt-completing-read.html
@@ -155,6 +162,13 @@ CUR-X and CUR-Y - cursor X and Y."
                      ((assoc-list-p collection) (alist-get choice collection def nil 'equal))
                      (t                         choice))))
       results)))
+
+;; TODO it freezes sometimes
+;;;###autoload
+(defun ig-restart-emacs-daemon()
+  "Restart Emacs daemon."
+  (interactive)
+  (start-process "Remd" nil shell-file-name shell-command-switch "systemctl --user restart emacs"))
 
 ;; Local Variables:
 ;; byte-compile-warnings: (not free-vars unresolved)

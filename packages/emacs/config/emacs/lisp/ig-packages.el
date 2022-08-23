@@ -126,11 +126,11 @@
 
 (setq vertico-multiform-commands
       '((find-file #'vertico-multiform-vertical
-         (vertico-sort-function . +vertico-sort-directories-first)
-         (+vertico-transform-functions . +vertico-highlight-directory))
+		   (vertico-sort-function . +vertico-sort-directories-first)
+		   (+vertico-transform-functions . +vertico-highlight-directory))
 	(dired #'vertico-multiform-vertical
-         (vertico-sort-function . +vertico-sort-directories-first)
-         (+vertico-transform-functions . +vertico-highlight-directory))
+               (vertico-sort-function . +vertico-sort-directories-first)
+               (+vertico-transform-functions . +vertico-highlight-directory))
 	(consult-grep buffer)
 	(consult-ripgrep buffer)
 	(consult-git-grep buffer)))
@@ -368,10 +368,28 @@
 
 
 
+(push 'xterm-color ig-selected-packages)
+(with-eval-after-load 'xterm-color
+  (setq xterm-color-names `[,ig-color-black ,ig-color-red ,ig-color-green ,ig-color-yellow ,ig-color-blue ,ig-color-magenta ,ig-color-cyan ,ig-color-white]
+	xterm-color-names-bright `[,ig-color-bright-black ,ig-color-bright-red ,ig-color-bright-green ,ig-color-bright-yellow
+							  ,ig-color-bright-blue ,ig-color-bright-magenta ,ig-color-bright-cyan ,ig-color-bright-white]))
+
+(with-eval-after-load 'esh-mode
+  (add-hook 'eshell-mode-hook
+            (lambda ()
+	      (progn
+		(setq xterm-color-preserve-properties t)
+		(setenv "TERM" "xterm-256color"))))
+
+  (push 'xterm-color-filter eshell-preoutput-filter-functions)
+  (setq eshell-output-filter-functions (remove 'eshell-handle-ansi-color eshell-output-filter-functions)))
+
 (with-eval-after-load 'eshell
   (defconst ig-eshell-dir (expand-file-name "eshell" ig-cache-dir) "Eshell volatile dir.")
   (make-directory ig-eshell-dir t)
   (setq eshell-history-file-name (expand-file-name "history" ig-eshell-dir)))
+
+(define-key global-map "\C-c\C-e" #'eshell)
 
 
 
