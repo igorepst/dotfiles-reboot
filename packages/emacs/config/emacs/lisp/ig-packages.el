@@ -72,7 +72,6 @@
 				 (global-auto-revert-mode)
 				 (delete-selection-mode)
 				 (column-number-mode)
-				 (electric-pair-mode)
 				 (global-goto-address-mode))
 			       (with-current-buffer "*scratch*"
 				 (emacs-lock-mode 'kill))
@@ -370,7 +369,8 @@
 
 (push 'xterm-color ig-selected-packages)
 (with-eval-after-load 'xterm-color
-  (setq xterm-color-names `[,ig-color-black ,ig-color-red ,ig-color-green ,ig-color-yellow ,ig-color-blue ,ig-color-magenta ,ig-color-cyan ,ig-color-white]
+  (setq xterm-color-use-bold-for-bright t
+	xterm-color-names `[,ig-color-black ,ig-color-red ,ig-color-green ,ig-color-yellow ,ig-color-blue ,ig-color-magenta ,ig-color-cyan ,ig-color-white]
 	xterm-color-names-bright `[,ig-color-bright-black ,ig-color-bright-red ,ig-color-bright-green ,ig-color-bright-yellow
 							  ,ig-color-bright-blue ,ig-color-bright-magenta ,ig-color-bright-cyan ,ig-color-bright-white]))
 
