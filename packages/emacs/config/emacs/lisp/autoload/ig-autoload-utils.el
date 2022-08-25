@@ -163,6 +163,12 @@ CUR-X and CUR-Y - cursor X and Y."
   (savehist-save)
   (start-process "Remd" nil shell-file-name shell-command-switch "systemctl --user restart emacs"))
 
+;;;###autoload
+(defun ig-dired-emacs-dir()
+  "Open 'user-emacs-directory' in 'Dired'."
+  (interactive)
+  (dired user-emacs-directory))
+
 ;; Local Variables:
 ;; byte-compile-warnings: (not free-vars unresolved)
 ;; End:

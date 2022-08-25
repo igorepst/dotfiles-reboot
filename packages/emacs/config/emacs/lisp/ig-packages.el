@@ -23,6 +23,7 @@
 (define-key global-map [C-tab] #'bury-buffer)
 (define-key global-map "\C-c\C-d" #'ig-duplicate-current-line-or-region)
 (define-key global-map "\C-k" #'ig-kill-current-line-or-region)
+(define-key global-map [C-f1] #'ig-dired-emacs-dir)
 
 (with-eval-after-load 'savehist
   (setq savehist-file (expand-file-name "savehist" ig-cache-dir)
