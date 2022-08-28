@@ -194,6 +194,7 @@
 (define-key global-map "\M-gg" 'consult-goto-line) ;; orig. goto-line
 (define-key global-map "\M-g\M-g" 'consult-goto-line) ;; orig. goto-line
 (define-key global-map "\M-gi" 'consult-imenu)
+(define-key global-map "\M-go" 'consult-outline)
 (define-key global-map "\M-sd" 'consult-find)
 (define-key global-map "\M-sr" 'consult-ripgrep)
 (define-key global-map "\M-sl" 'consult-line)
@@ -357,8 +358,16 @@
 	eshell-buffer-maximum-lines 10240
 	xterm-color-preserve-properties t)
   (setenv "TERM" "xterm-256color"))
+;; Jump to prompts with consult-outline
+(add-hook 'eshell-mode-hook (lambda () (setq outline-regexp eshell-prompt-regexp)))
 
-(define-key global-map "\C-c\C-e" #'eshell)
+(defun ig-eshell-switch-or-new (&optional arg)
+  "Create or switch to Eshell buffer with ARG."
+  (interactive "P")
+  (if (eq major-mode 'eshell-mode)
+      (eshell (or arg t)) (eshell arg)))
+
+(define-key global-map "\C-z" #'ig-eshell-switch-or-new)
 
 
 
