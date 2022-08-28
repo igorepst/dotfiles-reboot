@@ -169,12 +169,6 @@
 (advice-add #'register-preview :override #'consult-register-window)
 
 (with-eval-after-load 'consult
-  ;; is 'any, such that any key triggers the preview.
-  ;; (setq consult-preview-key 'any)
-  ;; (setq consult-preview-key (kbd "M-."))
-  ;; (setq consult-preview-key (list (kbd "<S-down>") (kbd "<S-up>")))
-  ;; For some commands and buffer sources it is useful to configure the
-  ;; :preview-key on a per-command basis using the `consult-customize' macro.
   (consult-customize
    consult-theme
    :preview-key '(:debounce 0.2 any)
@@ -187,7 +181,6 @@
   (define-key consult-narrow-map (vconcat consult-narrow-key "?") #'consult-narrow-help))
 
 (define-key global-map "\C-ch" 'consult-history)
-(define-key global-map "\C-x\C-a" 'consult-file-externally)
 (define-key global-map "\C-x\M-:" 'consult-complex-command) ;; orig. repeat-complex-command
 (define-key global-map "\C-xb" 'consult-buffer)
 (define-key global-map "\C-x\C-b" 'consult-buffer)
@@ -263,31 +256,7 @@
 (push 'cape ig-selected-packages)
 (push #'cape-file completion-at-point-functions)
 (push #'cape-dabbrev completion-at-point-functions)
-;; (push #'cape-line completion-at-point-functions)
-;;(add-to-list 'completion-at-point-functions #'cape-history)
-;;(add-to-list 'completion-at-point-functions #'cape-keyword)
-;;(add-to-list 'completion-at-point-functions #'cape-tex)
-;;(add-to-list 'completion-at-point-functions #'cape-sgml)
-;;(add-to-list 'completion-at-point-functions #'cape-rfc1345)
-;;(add-to-list 'completion-at-point-functions #'cape-abbrev)
-;;(add-to-list 'completion-at-point-functions #'cape-ispell)
-;;(add-to-list 'completion-at-point-functions #'cape-dict)
-;;(add-to-list 'completion-at-point-functions #'cape-symbol)
-;;(add-to-list 'completion-at-point-functions #'cape-line)
-(define-key global-map "\C-cpp" 'completion-at-point)
-(define-key global-map "\C-cpt" 'complete-tag)
-(define-key global-map "\C-cpd" 'cape-dabbrev)
-(define-key global-map "\C-cph" 'cape-history)
 (define-key global-map "\C-cpf" 'cape-file)
-(define-key global-map "\C-cpk" 'cape-keyword)
-(define-key global-map "\C-cps" 'cape-symbol)
-(define-key global-map "\C-cpa" 'cape-abbrev)
-(define-key global-map "\C-cpi" 'cape-ispell)
-(define-key global-map "\C-cpl" 'cape-line)
-(define-key global-map "\C-cpw" 'cape-dict)
-(define-key global-map "\C-cp\\" 'cape-tex)
-(define-key global-map "\C-cp&" 'cape-sgml)
-(define-key global-map "\C-cpr" 'cape-rfc1345)
 
 (add-hook 'emacs-lisp-mode-hook #'cape-elisp)
 
@@ -376,19 +345,18 @@
 							  ,ig-color-bright-blue ,ig-color-bright-magenta ,ig-color-bright-cyan ,ig-color-bright-white]))
 
 (with-eval-after-load 'esh-mode
-  (add-hook 'eshell-mode-hook
-            (lambda ()
-	      (progn
-		(setq xterm-color-preserve-properties t)
-		(setenv "TERM" "xterm-256color"))))
-
   (push 'xterm-color-filter eshell-preoutput-filter-functions)
   (setq eshell-output-filter-functions (remove 'eshell-handle-ansi-color eshell-output-filter-functions)))
 
 (with-eval-after-load 'eshell
   (defconst ig-eshell-dir (expand-file-name "eshell" ig-cache-dir) "Eshell volatile dir.")
   (make-directory ig-eshell-dir t)
-  (setq eshell-history-file-name (expand-file-name "history" ig-eshell-dir)))
+  (setq eshell-history-file-name (expand-file-name "history" ig-eshell-dir)
+	eshell-hist-ignoredups 'erase
+	eshell-banner-message ""
+	eshell-buffer-maximum-lines 10240
+	xterm-color-preserve-properties t)
+  (setenv "TERM" "xterm-256color"))
 
 (define-key global-map "\C-c\C-e" #'eshell)
 
