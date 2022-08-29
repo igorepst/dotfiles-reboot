@@ -260,6 +260,10 @@
 (define-key global-map "\C-cpf" 'cape-file)
 
 (add-hook 'emacs-lisp-mode-hook #'cape-elisp)
+;; Sanitize the `pcomplete-completions-at-point' Capf.
+;; The Capf has undesired side effects on Emacs 28 and earlier.
+(advice-add 'pcomplete-completions-at-point :around #'cape-wrap-silent)
+(advice-add 'pcomplete-completions-at-point :around #'cape-wrap-purify)
 
 
 
