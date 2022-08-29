@@ -357,6 +357,7 @@
   (defconst ig-eshell-dir (expand-file-name "eshell" ig-cache-dir) "Eshell volatile dir.")
   (make-directory ig-eshell-dir t)
   (setq eshell-history-file-name (expand-file-name "history" ig-eshell-dir)
+	eshell-last-dir-ring-file-name (expand-file-name "lastdir" ig-eshell-dir)
 	eshell-hist-ignoredups 'erase
 	eshell-banner-message ""
 	eshell-buffer-maximum-lines 10240
