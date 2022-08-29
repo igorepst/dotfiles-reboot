@@ -180,13 +180,15 @@ function _install_lsp() {
     url=$(sed -ne 's/.*browser_download_url.*"\(http.*linux-x64.vsix\)"/\1/p' <<< $(curl -s https://api.github.com/repos/sumneko/vscode-lua/releases/latest))
     version=$(sed -ne 's|.*/v\(.*\)/.*|\1|p' <<< "${url}")
     if [ ! -d "${parentDir}/lua" ]; then
-        printf 'Installing Lua LSP, version: %s\n' "${version}"
+	print "\033[32mInstalling Lua LSP\033[0m"
+        print "version: ${version}"
         inst_lua=1
         mkdir -p "${parentDir}/lua"
     else
         local cur_ver
         cur_ver=$(sed -ne 's/.*version\": "\(.*\)".*/\1/p' "${parentDir}/lua/sumneko-lua/extension/package.json")
-        printf 'Updating Lua LSP, current version: %s, new version: %s\n' "${cur_ver}" "${version}"
+	print "\033[32mUpdating Lua LSP\033[0m"
+        print "current version: ${cur_ver}, new version: ${version}"
         [ "${cur_ver}" != "${version}" ] && inst_lua=1
     fi
     if [ -n "${inst_lua}" ]; then
