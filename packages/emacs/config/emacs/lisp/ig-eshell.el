@@ -54,10 +54,11 @@
 
 (defun eshell/gps()
   "Git push."
-  (with-temp-buffer
-    (and
-     (vc-git--out-ok "push" "origin" (ig-git-get-branch))
-     (buffer-substring-no-properties (point-min) (point-max)))))
+  (eshell-interactive-print
+   (with-temp-buffer
+     (and
+      (vc-git--out-ok "push" "origin" (ig-git-get-branch))
+      (buffer-substring-no-properties (point-min) (point-max))))))
 
 (defun ig-eshell-prompt()
   "Define custom Eshell prompt."
