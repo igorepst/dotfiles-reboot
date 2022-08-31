@@ -382,13 +382,22 @@
     (let* ((vc-be (vc-responsible-backend default-directory t))
 	   (prompt (concat
 		    (ig-with-face (abbreviate-file-name (eshell/pwd)) :weight 'bold :foreground ig-color-blue)
-		    (when vc-be (ig-with-face (concat " on " (if (eq 'Git vc-be) "" (format "%s" vc-be))) :foreground ig-color-magenta))
+		    (when vc-be (ig-with-face (concat " on "
+						      (if (eq 'Git vc-be)
+							  (concat " "
+								  (progn (require 'vc-git)
+									 (with-temp-buffer
+									   (and
+									    (vc-git--out-ok "rev-parse" "--abbrev-ref" "HEAD")
+									    (buffer-substring-no-properties (point-min) ( - (point-max) 1))))))
+							(format "%s" vc-be)))
+					      :foreground ig-color-magenta))
 		    (ig-with-face (concat (format-time-string "  %H:%M" (current-time))
 					  (when ig-eshell-last-command-time (concat "  " ig-eshell-last-command-time)))
 				  :foreground ig-color-bright-blue)
 		    "\n"
-		    (ig-with-face (if (= (user-uid) 0) "#" "❯")
-				  :foreground (if (= ig-eshell-last-command-status 0) ig-color-green ig-color-red))
+		    (ig-with-face (if (zerop (user-uid)) "#" "❯")
+				  :foreground (if (zerop ig-eshell-last-command-status) ig-color-green ig-color-red))
 		    " ")))
       (add-text-properties 0 (length prompt) '(read-only t
 							 front-sticky (read-only)
