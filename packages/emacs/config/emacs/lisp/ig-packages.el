@@ -353,68 +353,7 @@
   (push 'xterm-color-filter eshell-preoutput-filter-functions)
   (setq eshell-output-filter-functions (remove 'eshell-handle-ansi-color eshell-output-filter-functions)))
 
-(defvar-local ig-eshell-last-command-status 0)
-(defvar-local ig-eshell-last-command-start-time nil)
-(defvar-local ig-eshell-last-command-time nil)
-(with-eval-after-load 'eshell
-  (defconst ig-eshell-dir (expand-file-name "eshell" ig-cache-dir) "Eshell volatile dir.")
-  (make-directory ig-eshell-dir t)
-
-  (defun ig-with-face (str &rest face-plist)
-    (propertize str 'face face-plist))
-
-  (defun ig-eshell-pre-command()
-    "Run on Eshell pre command."
-    (setq ig-eshell-last-command-start-time (current-time)))
-
-  (defun ig-eshell-post-command()
-    "Run on Eshell post command."
-    (if ig-eshell-last-command-start-time
-	(setq ig-eshell-last-command-time
-	      (let ((last-cmd-time (float-time (time-subtract (current-time) ig-eshell-last-command-start-time))))
-		(if (> 1 last-cmd-time) nil (format "%.0fs" last-cmd-time)))
-	      ig-eshell-last-command-start-time nil)
-      (setq ig-eshell-last-command-time nil))
-    (setq ig-eshell-last-command-status eshell-last-command-status)
-    (eshell-interactive-print "\n"))
-
-  (defun ig-eshell-prompt()
-    (let* ((vc-be (vc-responsible-backend default-directory t))
-	   (prompt (concat
-		    (ig-with-face (abbreviate-file-name (eshell/pwd)) :weight 'bold :foreground ig-color-blue)
-		    (when vc-be (ig-with-face (concat " on "
-						      (if (eq 'Git vc-be)
-							  (concat " "
-								  (progn (require 'vc-git)
-									 (with-temp-buffer
-									   (and
-									    (vc-git--out-ok "rev-parse" "--abbrev-ref" "HEAD")
-									    (buffer-substring-no-properties (point-min) ( - (point-max) 1))))))
-							(format "%s" vc-be)))
-					      :foreground ig-color-magenta))
-		    (ig-with-face (concat (format-time-string "  %H:%M" (current-time))
-					  (when ig-eshell-last-command-time (concat "  " ig-eshell-last-command-time)))
-				  :foreground ig-color-bright-blue)
-		    "\n"
-		    (ig-with-face (if (zerop (user-uid)) "#" "❯")
-				  :foreground (if (zerop ig-eshell-last-command-status) ig-color-green ig-color-red))
-		    " ")))
-      (add-text-properties 0 (length prompt) '(read-only t
-							 front-sticky (read-only)
-							 rear-nonsticky (read-only))
-			   prompt)
-      prompt))
-  
-  (setq eshell-history-file-name (expand-file-name "history" ig-eshell-dir)
-	eshell-last-dir-ring-file-name (expand-file-name "lastdir" ig-eshell-dir)
-	eshell-hist-ignoredups 'erase
-	eshell-banner-message ""
-	eshell-buffer-maximum-lines 10240
-	xterm-color-preserve-properties t
-	eshell-highlight-prompt nil
-	eshell-prompt-regexp "^[#❯] "
-	eshell-prompt-function #'ig-eshell-prompt)
-  (setenv "TERM" "xterm-256color"))
+(with-eval-after-load 'eshell (require 'ig-eshell))
 (add-hook 'eshell-mode-hook (lambda ()
 			      ;; Jump to prompts with consult-outline
 			      (setq outline-regexp eshell-prompt-regexp)
