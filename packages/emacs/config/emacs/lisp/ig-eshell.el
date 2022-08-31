@@ -52,13 +52,18 @@
      (vc-git--out-ok "rev-parse" "--abbrev-ref" "HEAD")
      (buffer-substring-no-properties (point-min) ( - (point-max) 1)))))
 
-(defun eshell/gps()
+(defun eshell/gpss()
   "Git push."
   (eshell-interactive-print
    (with-temp-buffer
      (and
       (vc-git--out-ok "push" "origin" (ig-git-get-branch))
       (buffer-substring-no-properties (point-min) (point-max))))))
+
+(defun eshell/gps()
+  "Git push."
+  (throw 'eshell-replace-command
+	 (eshell-parse-command (concat "git push origin " (ig-git-get-branch)))))
 
 (defun ig-eshell-prompt()
   "Define custom Eshell prompt."
