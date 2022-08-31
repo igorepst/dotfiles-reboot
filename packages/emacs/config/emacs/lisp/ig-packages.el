@@ -384,7 +384,7 @@
 		    (ig-with-face (abbreviate-file-name (eshell/pwd)) :weight 'bold :foreground ig-color-blue)
 		    (when vc-be (ig-with-face (concat " on " (if (eq 'Git vc-be) "" (format "%s" vc-be))) :foreground ig-color-magenta))
 		    (ig-with-face (concat (format-time-string "  %H:%M" (current-time))
-					  (when ig-eshell-last-command-time (concat ", took " ig-eshell-last-command-time)))
+					  (when ig-eshell-last-command-time (concat "  " ig-eshell-last-command-time)))
 				  :foreground ig-color-bright-blue)
 		    "\n"
 		    (ig-with-face (if (= (user-uid) 0) "#" "❯")
