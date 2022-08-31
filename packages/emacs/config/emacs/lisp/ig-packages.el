@@ -349,10 +349,6 @@
 	xterm-color-names-bright `[,ig-color-bright-black ,ig-color-bright-red ,ig-color-bright-green ,ig-color-bright-yellow
 							  ,ig-color-bright-blue ,ig-color-bright-magenta ,ig-color-bright-cyan ,ig-color-bright-white]))
 
-(with-eval-after-load 'esh-mode
-  (push 'xterm-color-filter eshell-preoutput-filter-functions)
-  (setq eshell-output-filter-functions (remove 'eshell-handle-ansi-color eshell-output-filter-functions)))
-
 (with-eval-after-load 'eshell (require 'ig-eshell))
 (add-hook 'eshell-mode-hook (lambda ()
 			      ;; Jump to prompts with consult-outline
@@ -360,12 +356,6 @@
 			      (setq-local global-hl-line-mode nil)
 			      (add-hook 'eshell-pre-command-hook #'ig-eshell-pre-command nil t)
 			      (add-hook 'eshell-post-command-hook #'ig-eshell-post-command nil t)))
-
-(defun ig-eshell-switch-or-new (&optional arg)
-  "Create or switch to Eshell buffer with ARG."
-  (interactive "P")
-  (if (eq major-mode 'eshell-mode)
-      (eshell (or arg t)) (eshell arg)))
 
 (define-key global-map "\C-z" #'ig-eshell-switch-or-new)
 
