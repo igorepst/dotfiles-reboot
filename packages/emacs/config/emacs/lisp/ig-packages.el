@@ -24,6 +24,7 @@
 (define-key global-map "\C-c\C-d" #'ig-duplicate-current-line-or-region)
 (define-key global-map "\C-k" #'ig-kill-current-line-or-region)
 (define-key global-map [C-f1] #'ig-dired-emacs-dir)
+(define-key global-map "\M-g\M-g" 'ig-read-pathmarks-dwim)
 
 (with-eval-after-load 'savehist
   (setq savehist-file (expand-file-name "savehist" ig-cache-dir)
@@ -192,7 +193,6 @@
 (define-key 'help-command "a" 'consult-apropos) ;; orig. apropos-command
 (define-key global-map "\M-ge" 'consult-compile-error)
 (define-key global-map "\M-gg" 'consult-goto-line) ;; orig. goto-line
-(define-key global-map "\M-g\M-g" 'consult-goto-line) ;; orig. goto-line
 (define-key global-map "\M-gi" 'consult-imenu)
 (define-key global-map "\M-go" 'consult-outline)
 (define-key global-map "\M-sd" 'consult-find)

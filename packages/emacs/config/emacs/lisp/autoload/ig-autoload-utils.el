@@ -170,7 +170,7 @@ CUR-X and CUR-Y - cursor X and Y."
   (dired user-emacs-directory))
 
 ;;;###autoload
-(defun ig-read-pathmarks()
+(defun ig-read-pathmarks-dwim()
   "Read Pathmarks file from ZSH."
   (interactive)
   (let ((choice
@@ -181,8 +181,8 @@ CUR-X and CUR-Y - cursor X and Y."
 	     (while (not (eobp))
 	       (let* ((line (buffer-substring (point)
 					      (progn (forward-line 1) (- (point) 1))))
-		      (spl (split-string line ": "))
-		      (spath (abbreviate-file-name (string-trim (cadr spl))))
+		      (spl (split-string line ":" t "\\s-+"))
+		      (spath (abbreviate-file-name (cadr spl)))
 		      (fpath (concat (car spl) " -> " spath)))
 		 (push `(,fpath . ,spath) cand)))
 	     (alt-completing-read "Choose pathmark: " (nreverse cand) t)))))
@@ -191,7 +191,11 @@ CUR-X and CUR-Y - cursor X and Y."
 	('eshell-mode
 	 (eshell-interactive-print (concat "cd " choice))
 	 (eshell/cd choice)
-	 (eshell-send-input))))))
+	 (eshell-send-input))
+	('dired-mode
+	 (dired choice))
+	(_
+	 (kill-new choice))))))
 
 ;; Local Variables:
 ;; byte-compile-warnings: (not free-vars unresolved)
