@@ -5,8 +5,7 @@
 
 ;;; Code:
 
-(let ((additional-lisp-dir (expand-file-name "lisp" user-emacs-directory)))
-  (push additional-lisp-dir load-path))
+(push (expand-file-name "lisp" user-emacs-directory) load-path)
 (require 'ig-common)
 (push (expand-file-name "eln-cache" ig-cache-dir) native-comp-eln-load-path)
 (defvar ig--file-name-handler-alist file-name-handler-alist)
