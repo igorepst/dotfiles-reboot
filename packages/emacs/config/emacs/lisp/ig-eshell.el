@@ -37,6 +37,7 @@
       xterm-color-preserve-properties t)
 (setenv "TERM" "xterm-256color")
 ;; Autoloaded commands
+(push "gpl" eshell-complex-commands)
 (push "gps" eshell-complex-commands)
 
 (defun ig-with-face (str &rest fpl)
@@ -88,5 +89,8 @@
 			 prompt)
     prompt))
 
+;; Local Variables:
+;; byte-compile-warnings: (not free-vars)
+;; End:
 (provide 'ig-eshell)
 ;;; ig-eshell.el ends here

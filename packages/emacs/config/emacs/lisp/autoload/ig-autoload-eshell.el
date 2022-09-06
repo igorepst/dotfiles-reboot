@@ -12,13 +12,22 @@
   (if (eq major-mode 'eshell-mode)
       (eshell (or arg t)) (eshell arg)))
 
-;;;###autoload
-(defun eshell/gps()
-  "Git push."
+(defun ig-eshell-git-cmd (cmd)
+  "Git helper for CMD."
   (let ((gb (ig-git-get-branch)))
     (when gb
       (throw 'eshell-replace-command
-	     (eshell-parse-command (concat "*git push origin " gb))))))
+	     (eshell-parse-command (concat "*git " cmd " origin " gb))))))
+
+;;;###autoload
+(defun eshell/gps()
+  "Git push."
+  (ig-eshell-git-cmd "push"))
+  
+;;;###autoload
+(defun eshell/gpl()
+  "Git push."
+  (ig-eshell-git-cmd "pull"))
 
 ;; Local Variables:
 ;; byte-compile-warnings: (not unresolved)
