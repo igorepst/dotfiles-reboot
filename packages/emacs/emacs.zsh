@@ -1,6 +1,6 @@
 function _ig_update_emacs() {
     printf '\033[0;32m%s\033[0m\n' 'Updating Emacs packages'
-    if emacs --batch -l ~/.config/emacs/early-init.el -l ~/.config/emacs/lisp/autoload/ig-autoload-utils.el -f ig-update-packages
+    if emacs --batch -l ~/.config/emacs/early-init.el -l ~/.config/emacs/lisp/ig-packages-load.el -l ~/.config/emacs/lisp/autoload/ig-autoload-utils.el -f ig-update-packages
     then
 	systemctl --user restart emacs
     fi

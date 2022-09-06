@@ -65,6 +65,7 @@
 
 (run-with-idle-timer 0.1 nil (lambda()
 			       (require 'ig-fonts)
+			       (require 'ig-packages-load)
 			       (require 'ig-packages)))
 
 ;; Local Variables:

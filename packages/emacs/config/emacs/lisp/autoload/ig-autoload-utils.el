@@ -66,7 +66,7 @@ Refresh quickstart as needed automatically in install/delete."
       (error "Rewrite to use built-in functions!"))
   (ignore-errors (exit-minibuffer))
   (princ "Refreshing package contents\n")
-  (require 'package)
+  (require 'ig-packages-load)
   (package-refresh-contents)
   (princ "Done\n")
   (package--archives-initialize)
