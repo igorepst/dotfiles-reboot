@@ -55,16 +55,17 @@
 (setq frame-title-format
       '((:eval (let ((bname buffer-file-name))
 		 (cond
-		 (bname
-		     (concat (if (buffer-modified-p) "+" "")
-			     (file-name-nondirectory bname) " : "
-			     (abbreviate-file-name
-			      (file-name-directory bname))))
-		 ((eq major-mode 'dired-mode) (abbreviate-file-name dired-directory))
-		 (t "%b"))))))
+		  (bname
+		   (concat (if (buffer-modified-p) "+" "")
+			   (file-name-nondirectory bname) " : "
+			   (abbreviate-file-name
+			    (file-name-directory bname))))
+		  ((eq major-mode 'dired-mode) (abbreviate-file-name dired-directory))
+		  (t "%b"))))))
 
-(require 'ig-fonts)
-(require 'ig-packages)
+(run-with-idle-timer 0.1 nil (lambda()
+			       (require 'ig-fonts)
+			       (require 'ig-packages)))
 
 ;; Local Variables:
 ;; byte-compile-warnings: (not free-vars)

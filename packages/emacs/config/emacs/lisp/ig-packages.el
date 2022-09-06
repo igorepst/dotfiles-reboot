@@ -66,19 +66,18 @@
       (ad-activate 'isearch-search)))
   (define-key isearch-mode-map [remap isearch-delete-char] 'isearch-del-char))
 
-(run-with-idle-timer 0.1 nil (lambda()
-			       (let ((inhibit-message t))
-				 (global-hl-line-mode)
-				 (recentf-mode)
-				 (savehist-mode)
-				 (global-auto-revert-mode)
-				 (delete-selection-mode)
-				 (column-number-mode)
-				 (global-goto-address-mode))
-			       (with-current-buffer "*scratch*"
-				 (emacs-lock-mode 'kill))
-			       (with-current-buffer "*Messages*"
-				 (emacs-lock-mode 'kill))))
+(let ((inhibit-message t))
+  (global-hl-line-mode)
+  (recentf-mode)
+  (savehist-mode)
+  (global-auto-revert-mode)
+  (delete-selection-mode)
+  (column-number-mode)
+  (global-goto-address-mode))
+(with-current-buffer "*scratch*"
+  (emacs-lock-mode 'kill))
+(with-current-buffer "*Messages*"
+  (emacs-lock-mode 'kill))
 
 (with-eval-after-load 'dired
   (require 'ig-dired))
