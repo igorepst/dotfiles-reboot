@@ -69,8 +69,9 @@
 (defun ig-eshell-prompt()
   "Define custom Eshell prompt."
   (let* ((vc-be (vc-responsible-backend default-directory t))
+	 (cur-dir (abbreviate-file-name (eshell/pwd)))
 	 (prompt (concat
-		  (ig-with-face (abbreviate-file-name (eshell/pwd)) :weight 'bold :foreground ig-color-blue)
+		  (ig-with-face (concat (if (equal cur-dir "~") " " " ") cur-dir) :weight 'bold :foreground ig-color-blue)
 		  (when vc-be (ig-with-face (concat " on "
 						    (if (eq 'Git vc-be)
 							(concat " " (ig-git-get-branch))

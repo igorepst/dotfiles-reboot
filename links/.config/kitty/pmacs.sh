@@ -1,6 +1,6 @@
-#!/bin/sh
+#!/bin/bash
 
-cp /dev/stdin /tmp/kitty_scrollback
+cat - > /tmp/kitty_scrollback
 
 emacsclient -cne "(ig-kitty-scrollback $1 $2 $3)"
 

@@ -180,11 +180,12 @@ CUR-X and CUR-Y - cursor X and Y."
 	   (let ((cand '()))
 	     (while (not (eobp))
 	       (let* ((line (buffer-substring (point)
-					      (progn (forward-line 1) (- (point) 1))))
+					      (progn (forward-line 1) (point))))
 		      (spl (split-string line ":" t "\\s-+"))
 		      (spath (abbreviate-file-name (cadr spl)))
 		      (fpath (concat (car spl) " -> " spath)))
 		 (push `(,fpath . ,spath) cand)))
+	     (push `(,(concat "emacs -> " user-emacs-directory) . ,user-emacs-directory) cand)
 	     (alt-completing-read "Choose pathmark: " (nreverse cand) t)))))
     (when choice
       (pcase major-mode
