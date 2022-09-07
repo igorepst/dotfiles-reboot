@@ -334,11 +334,15 @@ theme.taglist_squares_sel = nil
 theme.taglist_squares_unsel = nil
 
 -- Set different colors for urgent notifications.
-rnotification.connect_signal('request::rules', function()
+rnotification.connect_signal(function()
     rnotification.append_rule {
         rule       = { urgency = 'critical' },
         properties = { bg = '#ff0000', fg = '#ffffff' }
     }
-end)
+end, 'request::rules')
+
+theme.battery_good = '#4E9A06'
+theme.battery_low = '#C4A000'
+theme.battery_empty = '#CC0000'
 
 return theme
