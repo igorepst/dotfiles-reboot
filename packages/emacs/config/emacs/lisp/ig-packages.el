@@ -177,7 +177,10 @@
    consult--source-bookmark consult--source-recent-file
    consult--source-project-recent-file
    :preview-key [?\C-\;])
-  (setq consult-narrow-key [?\C-+])
+  (setq consult-narrow-key [?\C-+]
+	consult-ripgrep-args
+	(concat "rg --null --line-buffered --color=never --max-columns=1000 --path-separator /\
+   --ignore-case --no-heading --line-number --ignore-file " (getenv "HOME") "/.config/ripgrep/ignore --hidden ."))
   (define-key consult-narrow-map (vconcat consult-narrow-key "?") #'consult-narrow-help))
 
 (define-key global-map "\C-ch" 'consult-history)

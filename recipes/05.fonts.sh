@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 
-function doWork(){
-    printf "${GREEN}Installing fonts:${RESET}\n\n"
+function updateFonts(){
+     printf "${GREEN}Installing fonts:${RESET}\n\n"
 
     local FONTS_DIR=${HOME}/.local/share/fonts
     mkdir -p "${FONTS_DIR}"
@@ -21,11 +21,14 @@ function doWork(){
             curl -o "${FONTS_DIR}/${FNAME}.ttf" -L -O "$URL"
         else
             printf "${GREEN}${FNAME}.ttf is installed${RESET}\n"
-            [ ! -f "${FONTS_DIR}/${FNAME}.otf" ] && CONV_NEEDED=1
         fi
     done
 
     fc-cache
+}
+
+function doWork(){
+    updateFonts
 
     local XFONTS=${HOME}/.theme/currentTheme.Xfonts
     local ROFI_SETTINGS=${HOME}/.theme/rofiSettings.rasi
