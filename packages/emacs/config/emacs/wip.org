@@ -1,4 +1,7 @@
+
+* TODO 
 https://github.com/karthink/project-x
+#+BEGIN_SRC emacs-lisp
 (require 'project)
 (defcustom project-x-local-identifier ".project"
   "Filename(s) that identifies a directory as a project.
@@ -18,3 +21,11 @@ DIR must include a .project file to be considered a project."
       (cons 'local root)))
 
 (add-hook 'project-find-functions 'project-x-try-local 90)
+#+END_SRC
+
+* TODO Fix C-k to also include '\n'
+
+* TODO recentf-auto-cleanup use customize
+
+* TODO save state on daemon exit
+

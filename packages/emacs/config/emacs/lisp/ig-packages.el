@@ -42,12 +42,21 @@
 
 (with-eval-after-load 'recentf
   (setq recentf-save-file (expand-file-name "recentf" ig-cache-dir)
-	recentf-auto-cleanup 'never
+	recentf-auto-cleanup 600
 	recentf-exclude `("MERGE_MSG" "COMMIT_EDITMSG" ,ig-kitty-scrollback-file)))
+
+(with-eval-after-load 'bookmark
+  (setq bookmark-default-file (expand-file-name "bookmarks" ig-cache-dir)))
 
 (with-eval-after-load 'org
   (setq org-fontify-whole-heading-line t
-	org-startup-with-inline-images t))
+	org-startup-with-inline-images t
+	org-default-notes-file "~/notes/tasks.org"))
+
+(with-eval-after-load 'org-capture
+  (setq org-capture-templates
+	`(("t" "Task" entry (file+headline org-default-notes-file "Tasks") "* TODO %?\n  %u\n  %a" :empty-lines 1)
+	  ("e" "Emacs WIP"  entry (file ,(expand-file-name "wip.org" user-emacs-directory)) "* TODO %?" :empty-lines 1))))
 
 (with-eval-after-load 'isearch
   (setq isearch-lazy-count t
