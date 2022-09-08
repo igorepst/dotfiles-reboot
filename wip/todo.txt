@@ -1,3 +1,4 @@
+Fix git-refresh: if there is a previous stash, it is applied
 copy manpages from packages
 continue with vifm, incl. helpers/vifm
 pathmarks file is not filled
