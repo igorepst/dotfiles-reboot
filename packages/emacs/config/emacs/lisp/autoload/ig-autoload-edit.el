@@ -47,7 +47,9 @@
   (interactive "*")
   (let* ((bounds (ig-get-bounds-lines-rect))
 	 (carb (car bounds)))
-    (kill-region carb (cdr bounds))
+    (let ((filter-buffer-substring-function (lambda(beg end delete)
+					      (concat (buffer-substring--filter beg end delete) "\n"))))
+      (kill-region carb (cdr bounds)))
     (delete-char (if (= 1 carb) 1 -1))
     (move-beginning-of-line (if (= 1 carb) 1 2))))
 

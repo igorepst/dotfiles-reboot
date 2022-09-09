@@ -21,10 +21,27 @@
 (define-key 'help-command "\C-v" #'find-variable)
 (define-key 'help-command "\C-c" #'describe-char)
 (define-key global-map [C-tab] #'bury-buffer)
-(define-key global-map "\C-c\C-d" #'ig-duplicate-current-line-or-region)
 (define-key global-map "\C-k" #'ig-kill-current-line-or-region)
 (define-key global-map [C-f1] #'ig-dired-emacs-dir)
 (define-key global-map "\M-g\M-g" 'ig-read-pathmarks-dwim)
+
+(defvar ig-ctrl-comma-map
+  (let ((map (make-sparse-keymap)))
+    (define-key map "I" #'ig-indent-buffer)
+    (define-key map "d" #'ig-duplicate-current-line-or-region)
+    (define-key map "k" #'ig-kill-current-line-or-region)
+    map)
+  "Custom Ctrl-, keymap.")
+(fset 'ig-ctrl-comma-map ig-ctrl-comma-map)
+(define-key global-map [?\C-\,] #'ig-ctrl-comma-map)
+(defvar ig-ctrl-comma-repeatable-map
+  (let ((map (make-sparse-keymap)))
+    (define-key map "d" #'ig-duplicate-current-line-or-region)
+    (define-key map "k" #'ig-kill-current-line-or-region)
+    map)
+  "Custom Ctrl-, repeatable-keymap.")
+(put 'ig-duplicate-current-line-or-region 'repeat-map 'ig-ctrl-comma-repeatable-map)
+(put 'ig-kill-current-line-or-region 'repeat-map 'ig-ctrl-comma-repeatable-map)
 
 (with-eval-after-load 'savehist
   (setq savehist-file (expand-file-name "savehist" ig-cache-dir)
@@ -82,7 +99,8 @@
   (global-auto-revert-mode)
   (delete-selection-mode)
   (column-number-mode)
-  (global-goto-address-mode))
+  (global-goto-address-mode)
+  (repeat-mode))
 (with-current-buffer "*scratch*"
   (emacs-lock-mode 'kill))
 (with-current-buffer "*Messages*"

@@ -22,10 +22,3 @@ DIR must include a .project file to be considered a project."
 
 (add-hook 'project-find-functions 'project-x-try-local 90)
 #+END_SRC
-
-* TODO Fix C-k to also include '\n'
-
-* TODO recentf-auto-cleanup use customize
-
-* TODO save state on daemon exit
-
