@@ -47,8 +47,10 @@
   (interactive "*")
   (let* ((bounds (ig-get-bounds-lines-rect))
 	 (carb (car bounds)))
-    (let ((filter-buffer-substring-function (lambda(beg end delete)
-					      (concat (buffer-substring--filter beg end delete) "\n"))))
+    (let ((filter-buffer-substring-function
+	   (lambda(beg end delete)
+	     (let ((str (buffer-substring--filter beg end delete)))
+	       (if (string-suffix-p "\n" str) str (concat str "\n"))))))
       (kill-region carb (cdr bounds)))
     (delete-char (if (= 1 carb) 1 -1))
     (move-beginning-of-line (if (= 1 carb) 1 2))))
@@ -100,13 +102,13 @@ Optional argument REVERSE - whether to reverse the sort."
   "Open the file with 'sudo'."
   (interactive)
   (let ((bname (expand-file-name (or buffer-file-name
-                                     default-directory)))
+				     default-directory)))
         (pt (point)))
     (setq bname (or (file-remote-p bname 'localname)
-                    (concat "/sudo::" bname)))
+		    (concat "/sudo::" bname)))
     (cl-flet ((server-buffer-done
-               (buffer &optional for-killing)
-               nil))
+	       (buffer &optional for-killing)
+	       nil))
       (find-alternate-file bname))
     (goto-char pt)))
 
@@ -122,7 +124,7 @@ This function is suitable to add to `find-file-hook'."
            (bracket (make-string (/ space 2) ? ))
            (warning (concat bracket warning bracket)))
       (setq header-line-format
-            (propertize  warning 'face '(:foreground "white" :background "red3"))))))
+	    (propertize  warning 'face '(:foreground "white" :background "red3"))))))
 
 ;; https://github.com/oantolin/emacs-config/blob/master/my-lisp/window-extras.el
 ;;;###autoload
