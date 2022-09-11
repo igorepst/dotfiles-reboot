@@ -43,6 +43,7 @@
       confirm-kill-processes nil)
 
 (push ".zwc" completion-ignored-extensions)
+(push '("-2d" . ig-open-dired-2pane) command-switch-alist)
 
 (setq-default indicate-empty-lines t
 	      read-process-output-max (* 1024 1024))

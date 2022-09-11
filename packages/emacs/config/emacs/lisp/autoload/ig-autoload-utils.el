@@ -170,6 +170,19 @@ CUR-X and CUR-Y - cursor X and Y."
   (dired user-emacs-directory))
 
 ;;;###autoload
+(defun ig-open-dired-2pane (&optional switch)
+  "Open Dired in 2 panes.
+
+SWITCH is used when called from cmd."
+  (interactive)
+  (ignore switch)
+  (when (called-interactively-p 'any)
+    (select-frame (make-frame)))
+  (dired default-directory)
+  (split-window-vertically)
+  (find-file-other-window "~"))
+
+;;;###autoload
 (defun ig-read-pathmarks-dwim()
   "Read Pathmarks file from ZSH."
   (interactive)
