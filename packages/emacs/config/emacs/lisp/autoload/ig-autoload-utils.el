@@ -170,17 +170,27 @@ CUR-X and CUR-Y - cursor X and Y."
   (dired user-emacs-directory))
 
 ;;;###autoload
-(defun ig-open-dired-2pane (&optional switch)
+(defun ig-open-dired-2pane (&optional switch first-dir sec-dir split-hor)
   "Open Dired in 2 panes.
 
-SWITCH is used when called from cmd."
+SWITCH - is used when calling from cmd.
+FIRST-DIR, SEC-DIR - optional directories.
+SPLIT-HOR - do the split horizontally."
   (interactive)
+  ;; TODO parse switch to options
   (ignore switch)
   (when (called-interactively-p 'any)
     (select-frame (make-frame)))
-  (dired default-directory)
-  (split-window-vertically)
-  (find-file-other-window "~"))
+  (dired (or first-dir "~"))
+  (goto-char (point-min))
+  (dired-next-dirline 1)
+  (if split-hor
+      (split-window-horizontally)
+    (split-window-vertically))
+  (find-file-other-window (or sec-dir "~"))
+  (goto-char (point-min))
+  (dired-next-dirline 1)
+  (other-window -1))
 
 ;;;###autoload
 (defun ig-read-pathmarks-dwim()

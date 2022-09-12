@@ -1,8 +1,57 @@
 #!/bin/bash
 
-case "${MYFEXP}" in
-    vifm)
-        ${MYTERM} --class "${MYTERM}-vifm" -e vifm;;
-    *)
-        xdg-open ~;;
-esac
+function main() {
+    local in_kitty in_term dir_p dir_passed
+    while getopts "kt" o; do
+	case "${o}" in
+            k)
+		in_kitty=0
+		;;
+	    t)
+		in_term=0
+		;;
+            *)
+		;;
+	esac
+    done
+    shift $((OPTIND-1))
+
+    dir_p="$1"
+    if [ -z "$dir_p" ]; then
+	dir_p="$HOME"
+    else
+	dir_passed=0
+    fi
+
+    case "${MYFEXP}" in
+	emacs)
+	    local first_dir
+	    [ -n "$dir_passed" ] && first_dir="\"$dir_p\"" || first_dir="nil"
+	    if [ -n "$in_kitty" ]; then
+		emacsclient -ute "(ig-open-dired-2pane nil $first_dir nil t)"
+	    elif [ -n "$in_term" ]; then
+		emacsclient -ute "(ig-open-dired-2pane nil $first_dir nil nil)"
+	    else
+		emacsclient -nuce "(ig-open-dired-2pane nil $first_dir nil nil)"
+	    fi
+	    ;;
+	vifm)
+	    if [ -n "$in_kitty" ]; then
+		vifm "$dir_p"
+	    elif [ -n "$in_term" ]; then
+		if [ -n "$dir_passed" ]; then
+		    vifm "$dir_p"
+		else
+		    vifm
+		fi
+	    else
+		${MYTERM} --class "${MYTERM}-vifm" -e vifm
+	    fi
+	    ;;
+	*)
+            xdg-open "$dir_p"
+	    ;;
+    esac
+}
+
+main "$@"

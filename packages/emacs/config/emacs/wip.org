@@ -22,3 +22,8 @@ DIR must include a .project file to be considered a project."
 
 (add-hook 'project-find-functions 'project-x-try-local 90)
 #+END_SRC
+
+* TODO ig-open-dired-2pane:
+parse cmd arg "-2d" for reg. Emacs
+fix title when using x/x. - see https://github.com/CyberShadow/term-title
+

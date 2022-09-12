@@ -8,7 +8,7 @@ PATH=~/bin:~/.zsh/volatile/igorepst/_gh_release/_cache/_bin:~/.local/bin:~/.carg
 [ -d ~/.work/bin ] && PATH=~/.work/bin:$PATH
 export PATH
 export MYTERM=kitty
-export MYFEXP=vifm
+export MYFEXP=emacs
 export _JAVA_OPTIONS='-Dawt.useSystemAAFontSettings=on'
 
 [ -f ~/.cache/.my_pc_is ] && source ~/.cache/.my_pc_is

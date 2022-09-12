@@ -31,9 +31,9 @@ alias sstat='systemctl status --no-pager --full'
 alias sstart='sudo systemctl start'
 alias sstop='sudo systemctl stop'
 
-alias x='${MYFEXP}'
+alias x='tfm -t'
 function x.(){
-    "${MYFEXP}" .
+    tfm -t "$PWD"
 }
 
 alias S='sudoedit'
