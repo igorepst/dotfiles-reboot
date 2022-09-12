@@ -43,6 +43,7 @@ function doWork(){
     link "bin"
     link ".toprc"
     link ".config/awesome"
+    link ".config/iwgtk.conf"
 }
 
 doWork

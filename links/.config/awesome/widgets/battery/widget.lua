@@ -82,7 +82,7 @@ local setup = function()
 			else
 				iconName = "100"
 			end
-			if (string.find(bn.icon_name, "-charging-")) then iconName = iconName .. "C" end
+			if (string.find(bn.icon_name, "-charg")) then iconName = iconName .. "C" end
 			pp.widget:get_children_by_id('txt')[1].markup = '<span font_size="large" weight="bold">Status:</span>\r'
 				 .. sm('Level', level, color)
 				 .. sm('State', bn.state, color)

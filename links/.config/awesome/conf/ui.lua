@@ -102,7 +102,7 @@ screen.connect_signal('request::desktop_decoration', function(s)
         widget_template = default_template,
     })
 
-    local volume_widget = require('awesome-wm-widgets.volume-widget.volume')
+    -- local volume_widget = require('awesome-wm-widgets.volume-widget.volume')
     local upower_bat = require('widgets.battery.widget')
     local systray = wibox.widget.systray()
     systray:set_base_size(dpi(24))
@@ -150,10 +150,10 @@ screen.connect_signal('request::desktop_decoration', function(s)
             layout = wfixed.horizontal,
             spacing = dpi(7),
             mykeyboardlayout(),
-            volume_widget({
-		  device = 'default',
-		  widget_type = 'icon_and_text',
-            }),
+            -- volume_widget({
+	    -- 	  device = 'default',
+	    -- 	  widget_type = 'icon_and_text',
+            -- }),
             upower_bat(),
             wmargin(systray, 0, 0, dpi(3), 0),
             wmargin(clock, 0, dpi(3), 0, 0),

@@ -82,6 +82,8 @@ doWork() {
     
     mkdir -p ~/.zsh/volatile/autostart
     ln -sf "${cdir}"/emacs-autostart.zsh ~/.zsh/volatile/autostart/emacs-autostart.zsh
+
+    systemctl --user restart emacs
 }
 
 doWork "$@"

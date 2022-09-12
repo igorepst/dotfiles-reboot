@@ -10,6 +10,7 @@ _inst() {
     local inst_dir="${1}"
     local bin_dir="${2}"
     local compl_dir="${3}"
+    killall -9 vifm
     cp -r data src/vifm src/vifm-pause data/shell-completion/zsh/_vifm "${inst_dir}"
     ln -sf "${inst_dir}/vifm" "${bin_dir}/vifm"
     ln -sf "${inst_dir}/vifm-pause" "${bin_dir}/vifm-pause"

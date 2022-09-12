@@ -10,6 +10,7 @@ _INST_SRC_CONF_PARAMS=--disable-check
 _inst() {
     local inst_dir="${1}"
     local bin_dir="${2}"
+    killall -9 rofi
     cp -r rofi "${inst_dir}"
     ln -sf "${inst_dir}/rofi" "${bin_dir}/rofi"
 }
