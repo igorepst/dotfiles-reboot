@@ -105,7 +105,7 @@ screen.connect_signal('request::desktop_decoration', function(s)
     -- local volume_widget = require('awesome-wm-widgets.volume-widget.volume')
     local upower_bat = require('widgets.battery.widget')
     local systray = wibox.widget.systray()
-    systray:set_base_size(dpi(24))
+    systray:set_base_size(dpi(21))
 
     local cal = awful.popup({
         widget = {
@@ -155,7 +155,7 @@ screen.connect_signal('request::desktop_decoration', function(s)
 	    -- 	  widget_type = 'icon_and_text',
             -- }),
             upower_bat(),
-            wmargin(systray, 0, 0, dpi(3), 0),
+            wmargin(systray, 0, 0, dpi(5), 0),
             wmargin(clock, 0, dpi(3), 0, 0),
         },
     }

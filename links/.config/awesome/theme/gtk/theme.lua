@@ -345,4 +345,6 @@ theme.battery_good = '#4E9A06'
 theme.battery_low = '#C4A000'
 theme.battery_empty = '#CC0000'
 
+theme.systray_icon_spacing = 5
+
 return theme
