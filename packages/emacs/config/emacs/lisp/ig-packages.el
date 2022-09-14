@@ -48,7 +48,7 @@
 	history-length 250
 	savehist-additional-variables
 	'(search-ring regexp-search-ring compile-history kill-ring
-		      shell-command-history)))
+		      shell-command-history vertico-repeat-history)))
 
 (with-eval-after-load 'saveplace
   (setq save-place-file (expand-file-name "saveplace" ig-cache-dir)
@@ -113,6 +113,13 @@
   (set-face-attribute 'Man-overstrike nil :inherit font-lock-type-face :bold t)
   (set-face-attribute 'Man-underline nil :inherit font-lock-keyword-face :underline nil))
 
+(define-key global-map [?\C-c \C-down] #'minibuffer-down-from-outside)
+(define-key global-map [?\C-c \C-up] #'minibuffer-up-from-outside)
+(define-key global-map "\C-cwm" #'to-and-from-minibuffer)
+(define-key global-map "\C-c\C-r" #'ig-find-alternative-file-with-sudo)
+(add-hook 'find-file-hook 'ig-find-file-root-header-warning)
+(add-hook 'dired-mode-hook 'ig-find-file-root-header-warning)
+
 
 
 (push 'vertico ig-selected-packages)
@@ -122,13 +129,8 @@
 (define-key vertico-map [?\t] #'vertico-insert-unless-tramp)
 (define-key vertico-map [left] #'vertico-directory-delete-entry)
 (define-key vertico-map [right] #'vertico-directory-enter)
-
-(define-key global-map [?\C-c \C-down] #'minibuffer-down-from-outside)
-(define-key global-map [?\C-c \C-up] #'minibuffer-up-from-outside)
-(define-key global-map "\C-cwm" #'to-and-from-minibuffer)
-(define-key global-map "\C-c\C-r" #'ig-find-alternative-file-with-sudo)
-(add-hook 'find-file-hook 'ig-find-file-root-header-warning)
-(add-hook 'dired-mode-hook 'ig-find-file-root-header-warning)
+(add-hook 'minibuffer-setup-hook #'vertico-repeat-save)
+(add-hook 'rfn-eshadow-update-overlay-hook #'vertico-directory-tidy)
 
 (defvar +vertico-transform-functions nil)
 
