@@ -40,7 +40,8 @@
       visual-line-fringe-indicators '(left-curly-arrow nil)
       enable-recursive-minibuffers t
       delete-by-moving-to-trash nil
-      confirm-kill-processes nil)
+      confirm-kill-processes nil
+      warning-minimum-level :error)
 
 (push ".zwc" completion-ignored-extensions)
 (push '("-2d" . ig-open-dired-2pane) command-switch-alist)

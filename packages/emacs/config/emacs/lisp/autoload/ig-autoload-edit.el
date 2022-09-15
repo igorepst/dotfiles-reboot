@@ -154,5 +154,12 @@ This function is suitable to add to `find-file-hook'."
   (interactive)
   (indent-region (point-min) (point-max)))
 
+;;;###autoload
+(defun ig-open-new-line()
+  "Open new line below."
+  (interactive)
+  (end-of-line)
+  (newline-and-indent))
+
 (provide 'ig-autoload-edit)
 ;;; ig-autoload-edit.el ends here

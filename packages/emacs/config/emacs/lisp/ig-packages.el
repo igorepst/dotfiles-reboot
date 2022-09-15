@@ -24,6 +24,7 @@
 (define-key global-map "\C-k" #'ig-kill-current-line-or-region)
 (define-key global-map [C-f1] #'ig-dired-emacs-dir)
 (define-key global-map "\M-g\M-g" 'ig-read-pathmarks-dwim)
+(define-key global-map [C-return] #'ig-open-new-line)
 
 (defvar ig-ctrl-comma-map
   (let ((map (make-sparse-keymap)))
@@ -353,6 +354,11 @@
 
 
 
+(push 'rainbow-delimiters ig-selected-packages)
+(add-hook 'prog-mode-hook #'rainbow-delimiters-mode)
+
+
+
 (with-eval-after-load 'ansi-color
   (set-face-attribute 'ansi-color-black nil :foreground ig-color-black :background ig-color-black)
   (set-face-attribute 'ansi-color-red nil :foreground ig-color-red :background ig-color-red)
@@ -388,7 +394,7 @@
 			      (add-hook 'eshell-pre-command-hook #'ig-eshell-pre-command nil t)
 			      (add-hook 'eshell-post-command-hook #'ig-eshell-post-command nil t)))
 
-(define-key global-map "\C-z" #'ig-eshell-switch-or-new)
+(define-key ig-ctrl-comma-map "'" #'ig-eshell-switch-or-new)
 
 
 
@@ -400,6 +406,7 @@
 
 (push 'modus-themes ig-selected-packages)
 (load-theme 'modus-operandi t)
+(set-cursor-color ig-color-orange)
 
 (add-hook 'prog-mode-hook #'font-lock-comment-annotations)
 

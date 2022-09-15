@@ -24,6 +24,7 @@
 (defconst ig-color-bright-magenta "#AD7FA8" "Bright magenta color.")
 (defconst ig-color-bright-cyan "#34E2E2" "Bright cyan color.")
 (defconst ig-color-bright-white "#EEEEEC" "Bright white color.")
+(defconst ig-color-orange "#FC971E" "Orange color.")
 
 (provide 'ig-common)
 ;;; ig-common.el ends here

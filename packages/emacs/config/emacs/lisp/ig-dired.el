@@ -117,7 +117,9 @@ The sorting mode will be used from now on."
 (makunbound 'ig-dired-sort-font-lock-keywords)
 
 (define-key dired-mode-map "r" #'(lambda() (interactive) (ig-dired-run-proc-async-nohup t)))
-(define-key dired-mode-map "'" #'eshell)
+(define-key dired-mode-map "'" #'ig-eshell-switch-or-new)
+(define-key dired-mode-map "," #'dired-up-directory)
+(define-key dired-mode-map "/" #'dired-isearch-filenames)
 (define-key dired-mode-map "z" #'ig-dired-get-size)
 
 ;; Local Variables:

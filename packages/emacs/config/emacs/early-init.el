@@ -9,7 +9,7 @@
 (require 'ig-common)
 (push (expand-file-name "eln-cache" ig-cache-dir) native-comp-eln-load-path)
 (defvar ig--file-name-handler-alist file-name-handler-alist)
-(setq default-frame-alist '((font . "DejaVuSansMono Nerd Font Mono-14") (tool-bar-lines . 0))
+(setq default-frame-alist `((font . "DejaVuSansMono Nerd Font Mono-14") (cursor-color . ,ig-color-orange))
       gc-cons-threshold most-positive-fixnum
       gc-cons-percentage 0.6
       file-name-handler-alist nil
@@ -31,6 +31,9 @@
 		  gc-cons-percentage 0.1
 		  file-name-handler-alist ig--file-name-handler-alist)
 	    (makunbound 'ig--file-name-handler-alist)))
+
+(tool-bar-mode -1)
+(blink-cursor-mode -1)
 
 ;; Local Variables:
 ;; byte-compile-warnings: (not free-vars)
