@@ -16,6 +16,16 @@
       (eshell (or arg t)) (eshell arg)))
 
 ;;;###autoload
+(defun ig-eshell-up()
+  "Go to the parent directory."
+  (interactive)
+  (let ((parent-dir (file-name-directory (directory-file-name default-directory))))
+    (when (not (equal default-directory parent-dir))
+      (eshell-interactive-print (concat "cd " parent-dir))
+      (eshell/cd parent-dir)
+      (eshell-send-input))))
+
+;;;###autoload
 (defun eshell/q()
   "Exit Eshell."
   (when (< 1 (length (window-list)))

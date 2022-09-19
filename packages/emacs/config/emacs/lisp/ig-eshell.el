@@ -91,6 +91,8 @@
 			 prompt)
     prompt))
 
+(define-key eshell-mode-map [\M-up] #'ig-eshell-up)
+
 ;; Local Variables:
 ;; byte-compile-warnings: (not free-vars)
 ;; End:
