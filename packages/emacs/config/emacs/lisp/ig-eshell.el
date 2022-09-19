@@ -39,6 +39,7 @@
 ;; Autoloaded commands
 (push "gpl" eshell-complex-commands)
 (push "gps" eshell-complex-commands)
+(push "q" eshell-complex-commands)
 
 (defun ig-with-face (str &rest fpl)
   "Propertize STR with FPL."

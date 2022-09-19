@@ -2,5 +2,4 @@ alias gs git status -s
 alias d dired $1
 alias ff find-file $1
 alias FF find-file-other-window $1
-alias q exit
 alias ll ls -alh $*

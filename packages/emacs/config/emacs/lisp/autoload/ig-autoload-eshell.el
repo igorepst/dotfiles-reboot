@@ -9,8 +9,18 @@
 (defun ig-eshell-switch-or-new (&optional arg)
   "Create or switch to Eshell buffer with ARG."
   (interactive "P")
+  (when (not (window-in-direction 'below))
+    (split-window-below))
+  (windmove-down)
   (if (eq major-mode 'eshell-mode)
       (eshell (or arg t)) (eshell arg)))
+
+;;;###autoload
+(defun eshell/q()
+  "Exit Eshell."
+  (when (< 1 (length (window-list)))
+    (delete-window))
+  (eshell/exit))
 
 (defun ig-eshell-git-cmd (cmd)
   "Git helper for CMD."
@@ -23,7 +33,7 @@
 (defun eshell/gps()
   "Git push."
   (ig-eshell-git-cmd "push"))
-  
+
 ;;;###autoload
 (defun eshell/gpl()
   "Git push."
