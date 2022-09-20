@@ -34,16 +34,16 @@
 (defun ig-write-selected-packages ()
   "Write selected packages to cache."
   (with-temp-buffer
-    (insert-file-contents (expand-file-name "lisp/ig-packages.el" user-emacs-directory))
+    (insert-file-contents (concat user-emacs-directory "lisp/ig-packages.el"))
     (keep-lines "ig-selected-packages")
     (flush-lines "makunbound")
     (eval-buffer))
-  (let ((additional-lisp-dir (expand-file-name "lisp" user-emacs-directory)))
+  (let ((additional-lisp-dir (concat user-emacs-directory "lisp")))
     (push additional-lisp-dir load-path))
   (require 'ig-common)
   (write-region
    (concat "(setq package-selected-packages '("  (mapconcat #'symbol-name ig-selected-packages " ") "))\n")
-   nil (expand-file-name "packages/selected-packages" ig-cache-dir) nil))
+   nil (concat ig-cache-dir "packages/selected-packages") nil))
 
 ;;;###autoload
 (defun ig-update-local-autoloads ()
@@ -52,7 +52,7 @@
   (make-directory (file-name-directory generated-autoload-file) t)
   (let ((inhibit-message t))
     (make-directory-autoloads
-     `(,user-emacs-directory ,(expand-file-name "lisp" user-emacs-directory) ,(expand-file-name "lisp/autoload" user-emacs-directory))
+     `(,user-emacs-directory ,(concat user-emacs-directory "lisp") ,(concat user-emacs-directory "lisp/autoload"))
      generated-autoload-file))
   (kill-buffer (file-name-nondirectory generated-autoload-file)))
 
@@ -73,7 +73,7 @@ Refresh quickstart as needed automatically in install/delete."
   ;; Ensure the list is not out of sync
   (princ "Updating selected packages\n")
   (ig-write-selected-packages)
-  (load (expand-file-name "packages/selected-packages" ig-cache-dir) t t nil)
+  (load (concat ig-cache-dir "packages/selected-packages") t t nil)
   (princ "Done\n")
   (let ((not-installed (seq-remove #'package-installed-p package-selected-packages)))
     (if (not not-installed)
@@ -115,7 +115,7 @@ Refresh quickstart as needed automatically in install/delete."
 INPUT-LINE - the number of lines a pager should scroll.
 CUR-X and CUR-Y - cursor X and Y."
   (require 'ig-packages)
-  (let ((buf (find-file-noselect (expand-file-name ig-kitty-scrollback-file "/tmp") t)))
+  (let ((buf (find-file-noselect (concat "/tmp/" ig-kitty-scrollback-file) t)))
     (pop-to-buffer-same-window buf))
   (revert-buffer t t)
   (goto-char (point-min))

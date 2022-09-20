@@ -118,9 +118,10 @@ The sorting mode will be used from now on."
 
 (define-key dired-mode-map "r" #'(lambda() (interactive) (ig-dired-run-proc-async-nohup t)))
 (define-key dired-mode-map "'" #'ig-eshell-switch-or-new)
-(define-key dired-mode-map "," #'dired-up-directory)
+(define-key dired-mode-map [\M-up] #'dired-up-directory)
 (define-key dired-mode-map "/" #'dired-isearch-filenames)
 (define-key dired-mode-map "z" #'ig-dired-get-size)
+(define-key dired-mode-map "w" #'ig-dired-copy-filename-as-kill)
 
 ;; Local Variables:
 ;; byte-compile-warnings: (not free-vars unresolved)

@@ -23,11 +23,11 @@
 (defvar-local ig-eshell-last-command-start-time nil)
 (defvar-local ig-eshell-last-command-time nil)
 
-(defconst ig-eshell-dir (expand-file-name "eshell" ig-cache-dir) "Eshell volatile dir.")
+(defconst ig-eshell-dir (concat ig-cache-dir "eshell/") "Eshell volatile dir.")
 (make-directory ig-eshell-dir t)
 
-(setq eshell-history-file-name (expand-file-name "history" ig-eshell-dir)
-      eshell-last-dir-ring-file-name (expand-file-name "lastdir" ig-eshell-dir)
+(setq eshell-history-file-name (concat ig-eshell-dir "history")
+      eshell-last-dir-ring-file-name (concat ig-eshell-dir "lastdir")
       eshell-hist-ignoredups 'erase
       eshell-banner-message ""
       eshell-buffer-maximum-lines 10240

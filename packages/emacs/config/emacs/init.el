@@ -24,9 +24,9 @@
       auto-save-list-file-prefix nil
       backup-inhibited t
       create-lockfiles nil
-      source-directory (expand-file-name "c-src/emacs" ig-cache-dir)
-      tramp-persistency-file-name (expand-file-name "tramp" ig-cache-dir)
-      project-list-file (expand-file-name "projects" ig-cache-dir)
+      source-directory (concat ig-cache-dir "c-src/emacs")
+      tramp-persistency-file-name (concat ig-cache-dir "tramp")
+      project-list-file (concat ig-cache-dir "projects")
       find-file-visit-truename t
       completion-cycle-threshold nil
       sentence-end-double-space nil

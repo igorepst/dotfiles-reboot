@@ -34,6 +34,16 @@
     (start-process cmd nil shell-file-name shell-command-switch
 		   (concat cmd-prefix cmd " '" (mapconcat #'expand-file-name files "' '") "'"))))
 
+;;;###autoload
+(defun ig-dired-copy-filename-as-kill (&optional arg)
+  "Perform `dired-copy-filename-as-kill' swapping no/zero ARG."
+  (interactive "P")
+  (let ((new-arg
+	 (if arg
+	     (if (zerop (prefix-numeric-value arg)) nil arg)
+	   0)))
+    (let ((current-prefix-arg new-arg))
+      (call-interactively 'dired-copy-filename-as-kill))))
 
 ;; Local Variables:
 ;; byte-compile-warnings: (not unresolved)

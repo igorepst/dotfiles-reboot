@@ -5,9 +5,9 @@
 
 ;;; Code:
 
-(push (expand-file-name "lisp" user-emacs-directory) load-path)
+(push (concat user-emacs-directory "lisp") load-path)
 (require 'ig-common)
-(push (expand-file-name "eln-cache" ig-cache-dir) native-comp-eln-load-path)
+(push (concat ig-cache-dir "eln-cache") native-comp-eln-load-path)
 (defvar ig--file-name-handler-alist file-name-handler-alist)
 (setq default-frame-alist `((font . "DejaVuSansMono Nerd Font Mono-14") (cursor-color . ,ig-color-orange))
       gc-cons-threshold most-positive-fixnum
@@ -15,7 +15,7 @@
       file-name-handler-alist nil
       frame-resize-pixelwise t
       frame-inhibit-implied-resize t
-      generated-autoload-file (expand-file-name "local-autoloads/loaddefs.el" ig-cache-dir)
+      generated-autoload-file (concat ig-cache-dir "local-autoloads/loaddefs.el")
       package-enable-at-startup nil)
 (setq-default inhibit-redisplay t
               inhibit-message t

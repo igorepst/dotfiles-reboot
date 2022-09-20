@@ -45,26 +45,26 @@
 (put 'ig-kill-current-line-or-region 'repeat-map 'ig-ctrl-comma-repeatable-map)
 
 (with-eval-after-load 'savehist
-  (setq savehist-file (expand-file-name "savehist" ig-cache-dir)
+  (setq savehist-file (concat ig-cache-dir "savehist")
 	history-length 250
 	savehist-additional-variables
 	'(search-ring regexp-search-ring compile-history kill-ring
 		      shell-command-history vertico-repeat-history)))
 
 (with-eval-after-load 'saveplace
-  (setq save-place-file (expand-file-name "saveplace" ig-cache-dir)
+  (setq save-place-file (concat ig-cache-dir "saveplace")
 	save-place-version-control 'never
 	save-place-ignore-files-regexp
 	(concat "\\(?:" ig-kitty-scrollback-file "\\|COMMIT_EDITMSG\\|MERGE_MSG\\|hg-editor-[[:alnum:]]+\\.txt\\|svn-commit\\.tmp\\|bzr_log\\.[[:alnum:]]+\\)$")))
 (save-place-mode)
 
 (with-eval-after-load 'recentf
-  (setq recentf-save-file (expand-file-name "recentf" ig-cache-dir)
+  (setq recentf-save-file (concat ig-cache-dir "recentf")
 	recentf-auto-cleanup 3600
 	recentf-exclude `("MERGE_MSG" "COMMIT_EDITMSG" ,ig-kitty-scrollback-file)))
 
 (with-eval-after-load 'bookmark
-  (setq bookmark-default-file (expand-file-name "bookmarks" ig-cache-dir)))
+  (setq bookmark-default-file (concat ig-cache-dir "bookmarks")))
 
 (with-eval-after-load 'org
   (setq org-fontify-whole-heading-line t
@@ -73,7 +73,7 @@
 
 (with-eval-after-load 'org-capture
   (setq org-capture-templates
-	`(("e" "Emacs WIP"  entry (file ,(expand-file-name "wip.org" user-emacs-directory)) "* TODO %?" :empty-lines 1)
+	`(("e" "Emacs WIP"  entry (file ,(concat user-emacs-directory "wip.org")) "* TODO %?" :empty-lines 1)
 	  ("t" "Task" entry (file+headline org-default-notes-file "Tasks") "* TODO %?\n  %u\n  %a" :empty-lines 1))))
 
 (with-eval-after-load 'isearch
@@ -282,7 +282,7 @@
   (add-to-list 'corfu-margin-formatters #'kind-icon-margin-formatter))
 
 (with-eval-after-load 'svg-lib
-  (setq svg-lib-icons-dir (expand-file-name "svg-lib" ig-cache-dir)))
+  (setq svg-lib-icons-dir (concat ig-cache-dir "svg-lib")))
 
 
 
@@ -335,14 +335,14 @@
   (define-key lsp-mode-map (kbd "C-c l") lsp-command-map)
   (setq lsp-log-io nil
 	lsp-enable-suggest-server-download nil
-	lsp-session-file (expand-file-name "lsp-session-v1" ig-cache-dir)
+	lsp-session-file (concat ig-cache-dir "lsp-session-v1")
 	lsp-warn-no-matched-clients nil
 	lsp-enable-snippet nil
 	lsp-completion-provider :none
 	lsp-lua-diagnostics-globals ["vim" "awesome" "client" "screen" "tag" "mouse" "keygrabber"])
-  (let* ((ig--sumneko-root-path "~/.cache/lspServers/lua/sumneko-lua/extension/server")
-	 (ig--sumneko-bin (expand-file-name "bin/lua-language-server" ig--sumneko-root-path))
-	 (ig--sumneko-main (expand-file-name "main.lua" ig--sumneko-root-path)))
+  (let* ((ig--sumneko-root-path "~/.cache/lspServers/lua/sumneko-lua/extension/server/")
+	 (ig--sumneko-bin (concat ig--sumneko-root-path "bin/lua-language-server"))
+	 (ig--sumneko-main (concat ig--sumneko-root-path "main.lua")))
     (setq lsp-clients-lua-language-server-install-dir ig--sumneko-root-path
 	  lsp-clients-lua-language-server-bin ig--sumneko-bin
 	  lsp-clients-lua-language-server-main-location ig--sumneko-main)))

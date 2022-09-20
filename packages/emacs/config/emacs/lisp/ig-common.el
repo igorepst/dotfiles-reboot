@@ -5,7 +5,7 @@
 
 ;;; Code:
 
-(defconst ig-cache-dir "~/.cache/emacs" "Emacs cache directory.")
+(defconst ig-cache-dir "~/.cache/emacs/" "Emacs cache directory.")
 (defconst ig-kitty-scrollback-file "kitty_scrollback" "Kitty scrollback file and buffer name.")
 
 (defconst ig-color-black "#2E3436" "Black color.")
