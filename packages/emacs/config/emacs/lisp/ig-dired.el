@@ -118,10 +118,17 @@ The sorting mode will be used from now on."
 
 (define-key dired-mode-map "r" #'(lambda() (interactive) (ig-dired-run-proc-async-nohup t)))
 (define-key dired-mode-map "'" #'ig-eshell-switch-or-new)
-(define-key dired-mode-map [\M-up] #'dired-up-directory)
+(define-key dired-mode-map [M-up] #'dired-up-directory)
 (define-key dired-mode-map "/" #'dired-isearch-filenames)
 (define-key dired-mode-map "z" #'ig-dired-get-size)
 (define-key dired-mode-map "w" #'ig-dired-copy-filename-as-kill)
+
+;; This defines LEFT click. For the explanation of mouse-1 vs mouse-2 in Dired buffers, see https://emacs.stackexchange.com/a/36330/2477
+(define-key dired-mode-map [mouse-2] #'dired-mouse-find-file)
+(define-key dired-mode-map [C-mouse-1] #'mouse-set-point)
+(define-key dired-mode-map [C-down-mouse-1] #'dired-mouse-find-file-other-window)
+(define-key dired-mode-map [M-mouse-1] #'mouse-set-point)
+(define-key dired-mode-map [M-down-mouse-1] #'dired-up-directory)
 
 ;; Local Variables:
 ;; byte-compile-warnings: (not free-vars unresolved)
