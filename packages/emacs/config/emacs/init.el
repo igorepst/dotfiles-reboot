@@ -59,10 +59,11 @@
 		 (cond
 		  (bname
 		   (concat (if (buffer-modified-p) "+" "")
-			   (file-name-nondirectory bname) " : "
+			   (file-name-nondirectory bname) ": "
 			   (abbreviate-file-name
 			    (file-name-directory bname))))
-		  ((eq major-mode 'dired-mode) (abbreviate-file-name dired-directory))
+		  ((eq major-mode 'dired-mode) (abbreviate-file-name default-directory))
+		  ((eq major-mode 'eshell-mode) (concat "Eshell: " (abbreviate-file-name default-directory)))
 		  (t "%b"))))))
 
 (run-with-idle-timer 0.1 nil (lambda()

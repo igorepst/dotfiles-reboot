@@ -164,37 +164,8 @@ CUR-X and CUR-Y - cursor X and Y."
   (start-process "Remd" nil shell-file-name shell-command-switch "systemctl --user restart emacs"))
 
 ;;;###autoload
-(defun ig-dired-emacs-dir()
-  "Open 'user-emacs-directory' in 'Dired'."
-  (interactive)
-  (dired user-emacs-directory))
-
-;;;###autoload
-(defun ig-open-dired-2pane (&optional switch first-dir sec-dir split-hor)
-  "Open Dired in 2 panes.
-
-SWITCH - is used when calling from cmd.
-FIRST-DIR, SEC-DIR - optional directories.
-SPLIT-HOR - do the split horizontally."
-  (interactive)
-  ;; TODO parse switch to options
-  (ignore switch)
-  (when (called-interactively-p 'any)
-    (select-frame (make-frame)))
-  (dired (or first-dir "~"))
-  (goto-char (point-min))
-  (dired-next-dirline 1)
-  (if split-hor
-      (split-window-horizontally)
-    (split-window-vertically))
-  (find-file-other-window (or sec-dir "~"))
-  (goto-char (point-min))
-  (dired-next-dirline 1)
-  (other-window -1))
-
-;;;###autoload
 (defun ig-read-pathmarks-dwim()
-  "Read Pathmarks file from ZSH."
+  "Read Pathmarks file from Zsh."
   (interactive)
   (let ((choice
 	 (with-temp-buffer

@@ -19,20 +19,22 @@
                  (match-string 1))))))
 
 ;;;###autoload
-(defun ig-dired-run-proc-async-nohup (nohup)
-  "Run async process according to NOHUP."
+(defun ig-dired-run-proc-async-nohup (&optional attached)
+  "Run async process according to ATTACHED."
   (interactive)
-  (let* ((files (dired-get-marked-files t current-prefix-arg))
-	 (cmd (dired-guess-default files))
-	 (cmd-prefix (if nohup "nohup 1>/dev/null 2>&1 " "")))
-    (when (listp cmd) (setq cmd (car cmd)))
-    (cond ((null cmd)
-	   (setq cmd (read-shell-command "Run async cmd with: " nil 'dired-shell-command-history)))
-	  ((and (= 1 (length (split-string cmd "[[:space:]]"))) (not (executable-find cmd)))
-	   (setq cmd (read-shell-command (concat "Run async cmd ('" cmd "' does not exist): ") nil 'dired-shell-command-history))))
-    (when (equal cmd "") (setq cmd "xdg-open"))
-    (start-process cmd nil shell-file-name shell-command-switch
-		   (concat cmd-prefix cmd " '" (mapconcat #'expand-file-name files "' '") "'"))))
+  (let ((files (dired-get-marked-files t current-prefix-arg)))
+    (if files
+	(let ((cmd (dired-guess-default files))
+	      (cmd-prefix (if attached "" "nohup 1>/dev/null 2>&1 ")))
+	  (when (listp cmd) (setq cmd (car cmd)))
+	  (cond ((null cmd)
+		 (setq cmd (read-shell-command "Run async cmd with: " nil 'dired-shell-command-history)))
+		((and (= 1 (length (split-string cmd "[[:space:]]"))) (not (executable-find cmd)))
+		 (setq cmd (read-shell-command (concat "Run async cmd ('" cmd "' does not exist): ") nil 'dired-shell-command-history))))
+	  (when (equal cmd "") (setq cmd "xdg-open"))
+	  (start-process cmd nil shell-file-name shell-command-switch
+			 (concat cmd-prefix cmd " '" (mapconcat #'expand-file-name files "' '") "'")))
+      (message "No marked files"))))
 
 ;;;###autoload
 (defun ig-dired-copy-filename-as-kill (&optional arg)
@@ -44,6 +46,36 @@
 	   0)))
     (let ((current-prefix-arg new-arg))
       (call-interactively 'dired-copy-filename-as-kill))))
+
+
+;;;###autoload
+(defun ig-dired-emacs-dir()
+  "Open `user-emacs-directory' in Dired."
+  (interactive)
+  (dired user-emacs-directory))
+
+;;;###autoload
+(defun ig-open-dired-2pane (&optional switch first-dir sec-dir split-hor)
+  "Open Dired in 2 panes.
+
+SWITCH - is used when calling from cmd.
+FIRST-DIR, SEC-DIR - optional directories.
+SPLIT-HOR - do the split horizontally."
+  (interactive)
+  ;; TODO parse switch to options
+  (ignore switch)
+  (when (called-interactively-p 'any)
+    (select-frame (make-frame)))
+  (dired (or first-dir "~"))
+  (goto-char (point-min))
+  (dired-next-dirline 1)
+  (if split-hor
+      (split-window-horizontally)
+    (split-window-vertically))
+  (find-file-other-window (or sec-dir "~"))
+  (goto-char (point-min))
+  (dired-next-dirline 1)
+  (other-window -1))
 
 ;; Local Variables:
 ;; byte-compile-warnings: (not unresolved)

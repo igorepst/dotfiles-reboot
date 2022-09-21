@@ -46,7 +46,7 @@
 
 ;;;###autoload
 (defun eshell/gpl()
-  "Git push."
+  "Git pull."
   (ig-eshell-git-cmd "pull"))
 
 ;; Local Variables:

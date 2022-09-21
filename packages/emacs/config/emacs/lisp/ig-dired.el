@@ -42,7 +42,7 @@ The sorting mode will be used from now on."
       (ig-dired-sort-helper so (cdr sort-order)))))
 
 (defun ig-dired-sort-set-mode-line (das)
-  "Override mode name according to DAS - 'dired-actual-switches'."
+  "Override mode name according to DAS - `dired-actual-switches'."
   (let* ((asc t) (name (cond ((string-match-p "-v$" das) "name")
 			     ((string-match-p "-t$" das)
 			      (setq asc nil) "time")
@@ -58,7 +58,8 @@ The sorting mode will be used from now on."
 (defconst ig-dired-media-ext "\\(?:\\.\\(?:avi\\|flac\\|m\\(?:idi\\|k[av]\\|p\\(?:4v\\|eg\\|[34g]\\)\\|ts\\)\\|o\\(?:g[ag]\\|pus\\)\\|spx\\|ts\\|v\\(?:id\\|ob\\)\\|w\\(?:av\\|eb[mp]\\|mv\\)\\)\\)$" "Dired media files extensions.")
 
 (require 'dired-x)
-(setq dired-guess-shell-alist-user
+(setq dired-clean-confirm-killing-deleted-buffers nil
+      dired-guess-shell-alist-user
       `((,ig-dired-media-ext "mpv")
 	("\\.\\(?:pdf\\|djvu\\)\\'" "evince")))
 
@@ -116,7 +117,7 @@ The sorting mode will be used from now on."
 (nconc dired-font-lock-keywords (nreverse ig-dired-font-lock-keywords))
 (makunbound 'ig-dired-sort-font-lock-keywords)
 
-(define-key dired-mode-map "r" #'(lambda() (interactive) (ig-dired-run-proc-async-nohup t)))
+(define-key dired-mode-map "r" #'ig-dired-run-proc-async-nohup)
 (define-key dired-mode-map "'" #'ig-eshell-switch-or-new)
 (define-key dired-mode-map [M-up] #'dired-up-directory)
 (define-key dired-mode-map "/" #'dired-isearch-filenames)

@@ -84,7 +84,7 @@
   ;; http://stackoverflow.com/a/287067/407953
   ;; TODO rewrite to use newer advice-add
   (defadvice isearch-search (after isearch-no-fail activate)
-    "Wraps isearch automatically."
+    "Wrap isearch automatically."
     (unless isearch-success
       (ad-disable-advice 'isearch-search 'after 'isearch-no-fail)
       (ad-activate 'isearch-search)
@@ -170,7 +170,6 @@
 
 
 (push 'orderless ig-selected-packages)
-;; Support TRAMP hostname completion
 (defun basic-remote-try-completion (string table pred point)
   "Support TRAMP hostname completion with STRING, TABLE, PRED, POINT."
   (and (vertico--remote-p string)

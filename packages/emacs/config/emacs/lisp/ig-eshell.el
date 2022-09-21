@@ -94,7 +94,7 @@
 (define-key eshell-mode-map [\M-up] #'ig-eshell-up)
 
 ;; Local Variables:
-;; byte-compile-warnings: (not free-vars)
+;; byte-compile-warnings: (not free-vars unresolved)
 ;; End:
 (provide 'ig-eshell)
 ;;; ig-eshell.el ends here
