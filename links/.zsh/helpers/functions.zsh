@@ -114,7 +114,6 @@ function _updateDots(){
 function _get_gh_releases() {
     get_gh_release --repo koalaman/shellcheck --arch linux.x86_64.tar.xz --toPath shellcheck
     get_gh_release --repo mvdan/sh --arch linux_amd64 --toPath binlinux_amd64 --unarchive 0 --rn shfmt
-    get_gh_release --repo JohnnyMorganz/StyLua --arch linux.zip --toPath stylua
     if get_gh_release --repo sharkdp/bat --arch x86_64-unknown-linux-gnu.tar.gz --toPath bat --toCompletionPath autocomplete/bat.zsh --rnc _bat; then
         rehash
         bat cache --build
@@ -128,7 +127,7 @@ function _get_gh_releases() {
     if get_gh_release --repo claudiodangelis/qrcp --arch linux_x86_64.tar.gz --toPath qrcp; then
 	qrcp completion zsh > ~/.zsh/volatile/igorepst/_gh_release/_cache/_compl/_qrcp
     fi
-    get_gh_release --repo rust-analyzer/rust-analyzer --arch x86_64-unknown-linux-gnu.gz --toPath binx86_64-unknown-linux-gnu --rn rust-analyzer
+    # get_gh_release --repo rust-analyzer/rust-analyzer --arch x86_64-unknown-linux-gnu.gz --toPath binx86_64-unknown-linux-gnu --rn rust-analyzer
 }
 
 function _install_npm_lsp() {
@@ -200,10 +199,10 @@ function _install_lsp() {
         popd > /dev/null
     fi
     # Go
-    local gopls_status
-    command -v gopls >/dev/null && gopls_status='Updating' || gopls_status='Installing'
-    print "\033[32m${gopls_status} Go LSP\033[0m"
-    go install golang.org/x/tools/gopls@latest
-    rehash
-    gopls version
+    # local gopls_status
+    # command -v gopls >/dev/null && gopls_status='Updating' || gopls_status='Installing'
+    # print "\033[32m${gopls_status} Go LSP\033[0m"
+    # go install golang.org/x/tools/gopls@latest
+    # rehash
+    # gopls version
 }
