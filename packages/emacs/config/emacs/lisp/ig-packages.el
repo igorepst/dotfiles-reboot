@@ -399,8 +399,19 @@
 
 (with-eval-after-load 'ediff
   (setq ediff-window-setup-function 'ediff-setup-windows-plain
-       ediff-split-window-function 'split-window-horizontally
-       ediff-diff-options "-w"))
+	ediff-split-window-function 'split-window-horizontally
+	ediff-diff-options "-w"))
+
+
+
+;; Do not ask to save the `sudo' password
+(connection-local-set-profile-variables
+ 'remote-without-auth-sources '((auth-sources . nil)))
+(connection-local-set-profiles
+ '(:application tramp :protocol "sudo" :user "root") 'remote-without-auth-sources)
+;; TODO do it for local `sudo' connections only???
+(with-eval-after-load 'tramp
+  (push (concat "TIME_STYLE=" (getenv "TIME_STYLE")) tramp-remote-process-environment))
 
 
 

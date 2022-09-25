@@ -7,7 +7,7 @@
 
 (require 'ig-common)
 
-(defconst ig-ls-switches "-AlhgG --group-directories-first \"--time-style=+%d-%m-%Y %H:%M\"" "'ls' switches.")
+(defconst ig-ls-switches "-AlhgG --group-directories-first" "'ls' switches.")
 
 (setq dired-use-ls-dired t
       dired-recursive-copies 'always
