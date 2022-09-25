@@ -397,6 +397,13 @@
 
 
 
+(with-eval-after-load 'ediff
+  (setq ediff-window-setup-function 'ediff-setup-windows-plain
+       ediff-split-window-function 'split-window-horizontally
+       ediff-diff-options "-w"))
+
+
+
 (with-eval-after-load 're-builder
   (setq reb-re-syntax 'string))
 
