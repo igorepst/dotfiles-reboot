@@ -14,62 +14,6 @@
 ;; "service" "timer" "target" "slice" "socket" "path" "network" "automount" "link" "mount" "netdev"
 (push '("\\.\\(?:automount\\|link\\|mount\\|net\\(?:dev\\|work\\)\\|path\\|s\\(?:ervice\\|lice\\|ocket\\)\\|t\\(?:arget\\|imer\\)\\)\\'" . conf-unix-mode) auto-mode-alist)
 
-(define-key 'help-command [? ] #'ig-describe-symbol)
-(define-key 'help-command "\C-l" #'find-library)
-(define-key 'help-command "\C-f" #'find-function)
-(define-key 'help-command "\C-k" #'find-function-on-key)
-(define-key 'help-command "\C-v" #'find-variable)
-(define-key 'help-command "\C-c" #'describe-char)
-(define-key global-map [C-tab] #'bury-buffer)
-(define-key global-map [remap kill-line] #'ig-kill-current-line-or-region)
-(define-key global-map [C-f1] #'ig-dired-emacs-dir)
-(define-key global-map "\M-g\M-g" 'ig-read-pathmarks-dwim)
-(define-key global-map [C-return] #'ig-open-new-line)
-
-(defvar ig-custom-keymap
-  (let ((map (make-sparse-keymap)))
-    (define-key map "'" #'ig-eshell-switch-or-new)
-    map)
-  "Custom keymap.")
-(fset 'ig-custom-keymap ig-custom-keymap)
-(define-key global-map [?\C-\,] #'ig-custom-keymap)
-(defvar ig-custom-line-keymap
-  (let ((map (make-sparse-keymap)))
-    (define-key map "d" #'ig-duplicate-current-line-or-region)
-    (define-key map "k" #'ig-kill-current-line-or-region)
-    (define-key map "c" #'ig-copy-current-line-or-region)
-    (define-key map "s" #'ig-select-current-line-or-region)
-    map)
-  "Custom line keymap.")
-(fset 'ig-custom-line-keymap ig-custom-line-keymap)
-(define-key ig-custom-keymap "l" #'ig-custom-line-keymap)
-(defvar ig-custom-buffer-keymap
-  (let ((map (make-sparse-keymap)))
-    (define-key map "i" #'ig-indent-buffer)
-    (define-key map "s" #'ig-sort-lines)
-    (define-key map "r" #'ig-reverse-region)
-    (define-key map "u" #'ig-find-alternative-file-with-sudo)
-    map)
-  "Custom buffer keymap.")
-(fset 'ig-custom-buffer-keymap ig-custom-buffer-keymap)
-(define-key ig-custom-keymap "b" #'ig-custom-buffer-keymap)
-(defvar ig-custom-window-keymap
-  (let ((map (make-sparse-keymap)))
-    (define-key map "t" #'transpose-windows)
-    map)
-  "Custom window keymap.")
-(fset 'ig-custom-window-keymap ig-custom-window-keymap)
-(define-key ig-custom-keymap "w" #'ig-custom-window-keymap)
-;; TODO add transpose-windows to repeatable-keymap, but separate from existing bindings
-(defvar ig-custom-repeatable-map
-  (let ((map (make-sparse-keymap)))
-    (define-key map "d" #'ig-duplicate-current-line-or-region)
-    (define-key map "k" #'ig-kill-current-line-or-region)
-    map)
-  "Custom repeatable keymap.")
-(put 'ig-duplicate-current-line-or-region 'repeat-map 'ig-custom-repeatable-map)
-(put 'ig-kill-current-line-or-region 'repeat-map 'ig-custom-repeatable-map)
-
 (with-eval-after-load 'savehist
   (setq savehist-file (concat ig-cache-dir "savehist")
 	history-length 250
@@ -140,9 +84,6 @@
   (set-face-attribute 'Man-overstrike nil :inherit font-lock-type-face :bold t)
   (set-face-attribute 'Man-underline nil :inherit font-lock-keyword-face :underline nil))
 
-(define-key global-map [?\C-c \C-down] #'minibuffer-down-from-outside)
-(define-key global-map [?\C-c \C-up] #'minibuffer-up-from-outside)
-(define-key global-map "\C-cwm" #'to-and-from-minibuffer)
 (add-hook 'find-file-hook 'ig-find-file-root-header-warning)
 (add-hook 'dired-mode-hook 'ig-find-file-root-header-warning)
 
@@ -154,7 +95,7 @@
 
 (define-key vertico-map [?\t] #'vertico-insert-unless-tramp)
 (define-key vertico-map [\M-left] #'vertico-directory-delete-entry)
-(define-key vertico-map [right] #'vertico-directory-enter)
+(define-key vertico-map [\M-right] #'vertico-directory-enter)
 (add-hook 'minibuffer-setup-hook #'vertico-repeat-save)
 (add-hook 'rfn-eshadow-update-overlay-hook #'vertico-directory-tidy)
 
@@ -453,6 +394,84 @@
 (push '("\\.[Ll][Oo][Gg]\\'" . ig-font-lock-log-file) auto-mode-alist)
 
 (makunbound 'ig-selected-packages)
+
+
+
+(define-key 'help-command [? ] #'ig-describe-symbol)
+(define-key 'help-command "\C-l" #'find-library)
+(define-key 'help-command "\C-f" #'find-function)
+(define-key 'help-command "\C-k" #'find-function-on-key)
+(define-key 'help-command "\C-v" #'find-variable)
+(define-key 'help-command "\C-c" #'describe-char)
+(define-key global-map [C-tab] #'bury-buffer)
+(define-key global-map [remap kill-line] #'ig-kill-current-line-or-region)
+(define-key global-map "\M-g\M-g" 'ig-read-pathmarks-dwim)
+(define-key global-map [C-return] #'ig-open-new-line)
+
+(defvar ig-custom-map
+  (let ((map (make-sparse-keymap)))
+    (define-key map "'" #'ig-eshell-switch-or-new)
+    map)
+  "Custom map.")
+(fset 'ig-custom-map ig-custom-map)
+(define-key global-map [?\C-\,] #'ig-custom-map)
+
+(defvar ig-custom-line-map
+  (let ((map (make-sparse-keymap)))
+    (define-key map "d" #'ig-duplicate-current-line-or-region)
+    (define-key map "k" #'ig-kill-current-line-or-region)
+    (define-key map "c" #'ig-copy-current-line-or-region)
+    (define-key map "s" #'ig-select-current-line-or-region)
+    map)
+  "Custom line map.")
+(fset 'ig-custom-line-map ig-custom-line-map)
+(define-key ig-custom-map "l" #'ig-custom-line-map)
+
+(defvar ig-custom-line-repeatable-map
+  (let ((map (make-sparse-keymap)))
+    (define-key map "d" #'ig-duplicate-current-line-or-region)
+    (define-key map "k" #'ig-kill-current-line-or-region)
+    map)
+  "Custom repeatable line map.")
+(put 'ig-duplicate-current-line-or-region 'repeat-map 'ig-custom-line-repeatable-map)
+(put 'ig-kill-current-line-or-region 'repeat-map 'ig-custom-line-repeatable-map)
+
+(defvar ig-custom-buffer-map
+  (let ((map (make-sparse-keymap)))
+    (define-key map "i" #'ig-indent-buffer)
+    (define-key map "s" #'ig-sort-lines)
+    (define-key map "r" #'ig-reverse-region)
+    (define-key map "u" #'ig-find-alternative-file-with-sudo)
+    map)
+  "Custom buffer map.")
+(fset 'ig-custom-buffer-map ig-custom-buffer-map)
+(define-key ig-custom-map "b" #'ig-custom-buffer-map)
+
+(defvar ig-custom-window-map
+  (let ((map (make-sparse-keymap)))
+    (define-key map "t" #'transpose-windows)
+    map)
+  "Custom window map.")
+(fset 'ig-custom-window-map ig-custom-window-map)
+(put 'transpose-windows 'repeat-map 'ig-custom-window-map)
+(define-key ig-custom-map "w" #'ig-custom-window-map)
+
+(defvar ig-custom-minibuffer-map
+  (let ((map (make-sparse-keymap)))
+    (define-key map "m" #'to-and-from-minibuffer)
+    (define-key map [down] #'minibuffer-down-from-outside)
+    (define-key map [up] #'minibuffer-up-from-outside)
+    map)
+  "Custom minibuffer map.")
+(fset 'ig-custom-minibuffer-map ig-custom-minibuffer-map)
+(define-key ig-custom-map "m" #'ig-custom-minibuffer-map)
+
+(defvar ig-custom-repeatable-minibuffer-map
+  (let ((map (make-sparse-keymap)))
+    (define-key map "m" #'to-and-from-minibuffer)
+    map)
+  "Custom repeatable minibuffer map.")
+(put 'to-and-from-minibuffer 'repeat-map 'ig-custom-repeatable-minibuffer-map)
 
 ;; Local Variables:
 ;; byte-compile-warnings: (not free-vars unresolved)

@@ -47,13 +47,6 @@
     (let ((current-prefix-arg new-arg))
       (call-interactively 'dired-copy-filename-as-kill))))
 
-
-;;;###autoload
-(defun ig-dired-emacs-dir()
-  "Open `user-emacs-directory' in Dired."
-  (interactive)
-  (dired user-emacs-directory))
-
 ;;;###autoload
 (defun ig-open-dired-2pane (&optional switch first-dir sec-dir split-hor)
   "Open Dired in 2 panes.
