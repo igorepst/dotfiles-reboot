@@ -123,7 +123,7 @@ The sorting mode will be used from now on."
 (define-key dired-mode-map "/" #'dired-isearch-filenames)
 (define-key dired-mode-map "z" #'ig-dired-get-size)
 (define-key dired-mode-map "w" #'ig-dired-copy-filename-as-kill)
-(define-key dired-mode-map "e" #'ora-ediff-files)
+(define-key dired-mode-map "e" #'ig-ediff-files)
 
 ;; This defines LEFT click. For the explanation of mouse-1 vs mouse-2 in Dired buffers, see https://emacs.stackexchange.com/a/36330/2477
 (define-key dired-mode-map [mouse-2] #'dired-mouse-find-file)

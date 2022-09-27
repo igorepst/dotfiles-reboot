@@ -21,28 +21,54 @@
 (define-key 'help-command "\C-v" #'find-variable)
 (define-key 'help-command "\C-c" #'describe-char)
 (define-key global-map [C-tab] #'bury-buffer)
-(define-key global-map "\C-k" #'ig-kill-current-line-or-region)
+(define-key global-map [remap kill-line] #'ig-kill-current-line-or-region)
 (define-key global-map [C-f1] #'ig-dired-emacs-dir)
 (define-key global-map "\M-g\M-g" 'ig-read-pathmarks-dwim)
 (define-key global-map [C-return] #'ig-open-new-line)
 
-(defvar ig-ctrl-comma-map
+(defvar ig-custom-keymap
   (let ((map (make-sparse-keymap)))
-    (define-key map "I" #'ig-indent-buffer)
-    (define-key map "d" #'ig-duplicate-current-line-or-region)
-    (define-key map "k" #'ig-kill-current-line-or-region)
+    (define-key map "'" #'ig-eshell-switch-or-new)
     map)
-  "Custom Ctrl-, keymap.")
-(fset 'ig-ctrl-comma-map ig-ctrl-comma-map)
-(define-key global-map [?\C-\,] #'ig-ctrl-comma-map)
-(defvar ig-ctrl-comma-repeatable-map
+  "Custom keymap.")
+(fset 'ig-custom-keymap ig-custom-keymap)
+(define-key global-map [?\C-\,] #'ig-custom-keymap)
+(defvar ig-custom-line-keymap
   (let ((map (make-sparse-keymap)))
     (define-key map "d" #'ig-duplicate-current-line-or-region)
     (define-key map "k" #'ig-kill-current-line-or-region)
+    (define-key map "c" #'ig-copy-current-line-or-region)
+    (define-key map "s" #'ig-select-current-line-or-region)
     map)
-  "Custom Ctrl-, repeatable-keymap.")
-(put 'ig-duplicate-current-line-or-region 'repeat-map 'ig-ctrl-comma-repeatable-map)
-(put 'ig-kill-current-line-or-region 'repeat-map 'ig-ctrl-comma-repeatable-map)
+  "Custom line keymap.")
+(fset 'ig-custom-line-keymap ig-custom-line-keymap)
+(define-key ig-custom-keymap "l" #'ig-custom-line-keymap)
+(defvar ig-custom-buffer-keymap
+  (let ((map (make-sparse-keymap)))
+    (define-key map "i" #'ig-indent-buffer)
+    (define-key map "s" #'ig-sort-lines)
+    (define-key map "r" #'ig-reverse-region)
+    (define-key map "u" #'ig-find-alternative-file-with-sudo)
+    map)
+  "Custom buffer keymap.")
+(fset 'ig-custom-buffer-keymap ig-custom-buffer-keymap)
+(define-key ig-custom-keymap "b" #'ig-custom-buffer-keymap)
+(defvar ig-custom-window-keymap
+  (let ((map (make-sparse-keymap)))
+    (define-key map "t" #'transpose-windows)
+    map)
+  "Custom window keymap.")
+(fset 'ig-custom-window-keymap ig-custom-window-keymap)
+(define-key ig-custom-keymap "w" #'ig-custom-window-keymap)
+;; TODO add transpose-windows to repeatable-keymap, but separate from existing bindings
+(defvar ig-custom-repeatable-map
+  (let ((map (make-sparse-keymap)))
+    (define-key map "d" #'ig-duplicate-current-line-or-region)
+    (define-key map "k" #'ig-kill-current-line-or-region)
+    map)
+  "Custom repeatable keymap.")
+(put 'ig-duplicate-current-line-or-region 'repeat-map 'ig-custom-repeatable-map)
+(put 'ig-kill-current-line-or-region 'repeat-map 'ig-custom-repeatable-map)
 
 (with-eval-after-load 'savehist
   (setq savehist-file (concat ig-cache-dir "savehist")
@@ -117,7 +143,6 @@
 (define-key global-map [?\C-c \C-down] #'minibuffer-down-from-outside)
 (define-key global-map [?\C-c \C-up] #'minibuffer-up-from-outside)
 (define-key global-map "\C-cwm" #'to-and-from-minibuffer)
-(define-key global-map "\C-c\C-r" #'ig-find-alternative-file-with-sudo)
 (add-hook 'find-file-hook 'ig-find-file-root-header-warning)
 (add-hook 'dired-mode-hook 'ig-find-file-root-header-warning)
 
@@ -128,7 +153,7 @@
 (setq vertico-cycle t)
 
 (define-key vertico-map [?\t] #'vertico-insert-unless-tramp)
-(define-key vertico-map [left] #'vertico-directory-delete-entry)
+(define-key vertico-map [\M-left] #'vertico-directory-delete-entry)
 (define-key vertico-map [right] #'vertico-directory-enter)
 (add-hook 'minibuffer-setup-hook #'vertico-repeat-save)
 (add-hook 'rfn-eshadow-update-overlay-hook #'vertico-directory-tidy)
@@ -392,8 +417,6 @@
 			      (setq-local global-hl-line-mode nil)
 			      (add-hook 'eshell-pre-command-hook #'ig-eshell-pre-command nil t)
 			      (add-hook 'eshell-post-command-hook #'ig-eshell-post-command nil t)))
-
-(define-key ig-ctrl-comma-map "'" #'ig-eshell-switch-or-new)
 
 
 

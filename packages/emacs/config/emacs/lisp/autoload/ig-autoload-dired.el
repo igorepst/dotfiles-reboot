@@ -79,9 +79,11 @@ SPLIT-HOR - do the split horizontally."
 
 ;; https://oremacs.com/2017/03/18/dired-ediff/
 ;;;###autoload
-(defun ora-ediff-files ()
+(defun ig-ediff-files ()
   "Ediff 2 files in Dired."
   (interactive)
+  (when (not (eq major-mode 'dired-mode))
+    (error "Use Dired mode"))
   (let ((files (dired-get-marked-files))
         (wnd (current-window-configuration)))
     (if (<= (length files) 2)
@@ -89,7 +91,7 @@ SPLIT-HOR - do the split horizontally."
               (file2 (if (cdr files)
                          (cadr files)
                        (read-file-name
-                        "file: "
+                        "Second file: "
                         (dired-dwim-target-directory)))))
           (if (file-newer-than-file-p file1 file2)
               (ediff-files file2 file1)
