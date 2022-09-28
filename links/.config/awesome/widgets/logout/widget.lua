@@ -3,6 +3,7 @@ local capi = { keygrabber = keygrabber }
 local wibox = require('wibox')
 local gears = require('gears')
 local beautiful = require('beautiful')
+local colors = require('gears.color').recolor_image
 
 local logout = {}
 
@@ -63,6 +64,7 @@ local function create_button(icon, action_name, color, label_color, onclick, ico
 				forced_height = icon_size,
 				forced_width = icon_size,
 				widget = wibox.widget.imagebox,
+				id = 'icon'
 			},
 			margins = icon_margin,
 			widget = wibox.container.margin,
@@ -74,10 +76,12 @@ local function create_button(icon, action_name, color, label_color, onclick, ico
 
 	result:connect_signal('mouse::enter', function(c)
 		c:set_bg(color)
+		c:get_children_by_id('icon')[1].image = colors(icon, beautiful.fg_focus)
 		action:set_markup('<span color="' .. label_color .. '" size="20000">' .. action_name .. '</span>')
 	end)
 	result:connect_signal('mouse::leave', function(c)
 		c:set_bg(def_color)
+		c:get_children_by_id('icon')[1].image = icon
 		action:set_text('')
 	end)
 	result:connect_signal('button::press', function()
@@ -95,7 +99,7 @@ function logout.setup()
 	local img_path = gears.filesystem.get_configuration_dir() .. 'widgets/logout/icons/'
 
 	local bg_color = beautiful.bg_normal
-	local accent_color = beautiful.fg_normal
+	local accent_color = beautiful.bg_focus
 	local text_color = beautiful.fg_normal
 	local icon_size = 40
 	local icon_margin = 16

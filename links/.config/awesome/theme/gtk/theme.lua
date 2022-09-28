@@ -66,21 +66,21 @@ local function reduce_contrast(color, ratio)
     return darker(color, is_dark(color) and -ratio or ratio)
 end
 
-local function choose_contrast_color(reference, candidate1, candidate2)  -- luacheck: no unused
-    if is_dark(reference) then
-        if not is_dark(candidate1) then
-            return candidate1
-        else
-            return candidate2
-        end
-    else
-        if is_dark(candidate1) then
-            return candidate1
-        else
-            return candidate2
-        end
-    end
-end
+-- local function choose_contrast_color(reference, candidate1, candidate2)  -- luacheck: no unused
+--     if is_dark(reference) then
+--         if not is_dark(candidate1) then
+--             return candidate1
+--         else
+--             return candidate2
+--         end
+--     else
+--         if is_dark(candidate1) then
+--             return candidate1
+--         else
+--             return candidate2
+--         end
+--     end
+-- end
 
 
 -- inherit xresources theme:
