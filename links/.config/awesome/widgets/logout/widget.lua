@@ -53,7 +53,7 @@ local function create_button(icon, action_name, color, label_color, onclick, ico
 		onclick()
 	end
 
-	local def_color = beautiful.fg_normal
+	local def_color = beautiful.wibar_bg
 
 	local result = wibox.widget({
 		{
@@ -95,7 +95,7 @@ function logout.setup()
 	local img_path = gears.filesystem.get_configuration_dir() .. 'widgets/logout/icons/'
 
 	local bg_color = beautiful.bg_normal
-	local accent_color = beautiful.wibar_bg
+	local accent_color = beautiful.fg_normal
 	local text_color = beautiful.fg_normal
 	local icon_size = 40
 	local icon_margin = 16
