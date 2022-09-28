@@ -190,7 +190,8 @@ CUR-X and CUR-Y - cursor X and Y."
 	('dired-mode
 	 (dired choice))
 	(_
-	 (kill-new choice))))))
+	 (kill-new choice)
+	 (message (concat "Path '" choice "' is copied")))))))
 
 ;; Local Variables:
 ;; byte-compile-warnings: (not free-vars unresolved)
