@@ -11,14 +11,20 @@
   "Move to next candidate in minibuffer, even when minibuffer isn't selected."
   (interactive)
   (with-selected-window (active-minibuffer-window)
-    (execute-kbd-macro [down])))
+    (vertico-next)
+    (vertico--exhibit)
+    (when consult--preview-function
+      (funcall consult--preview-function))))
 
 ;;;###autoload
 (defun minibuffer-up-from-outside ()
   "Move to previous candidate in minibuffer, even when minibuffer isn't selected."
   (interactive)
   (with-selected-window (active-minibuffer-window)
-    (execute-kbd-macro [up])))
+    (vertico-previous)
+    (vertico--exhibit)
+    (when consult--preview-function
+      (funcall consult--preview-function))))
 
 ;;;###autoload
 (defun to-and-from-minibuffer ()
@@ -28,5 +34,8 @@
       (select-window (minibuffer-selected-window))
     (select-window (active-minibuffer-window))))
 
+;; Local Variables:
+;; byte-compile-warnings: (not free-vars unresolved)
+;; End:
 (provide 'ig-autoload-minibuffer)
 ;;; ig-autoload-minibuffer.el ends here

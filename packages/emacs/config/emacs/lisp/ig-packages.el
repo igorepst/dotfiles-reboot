@@ -465,13 +465,9 @@
   "Custom minibuffer map.")
 (fset 'ig-custom-minibuffer-map ig-custom-minibuffer-map)
 (define-key ig-custom-map "m" #'ig-custom-minibuffer-map)
-
-(defvar ig-custom-repeatable-minibuffer-map
-  (let ((map (make-sparse-keymap)))
-    (define-key map "m" #'to-and-from-minibuffer)
-    map)
-  "Custom repeatable minibuffer map.")
-(put 'to-and-from-minibuffer 'repeat-map 'ig-custom-repeatable-minibuffer-map)
+(put 'to-and-from-minibuffer 'repeat-map 'ig-custom-minibuffer-map)
+(put 'minibuffer-down-from-outside 'repeat-map 'ig-custom-minibuffer-map)
+(put 'minibuffer-up-from-outside 'repeat-map 'ig-custom-minibuffer-map)
 
 ;; Local Variables:
 ;; byte-compile-warnings: (not free-vars unresolved)
