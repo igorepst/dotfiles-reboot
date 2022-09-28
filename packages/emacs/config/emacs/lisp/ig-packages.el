@@ -305,7 +305,7 @@
 	lsp-enable-snippet nil
 	lsp-completion-provider :none
 	lsp-lua-diagnostics-globals ["vim" "awesome" "client" "screen" "tag" "mouse" "keygrabber"])
-  (let* ((ig--sumneko-root-path "~/.cache/lspServers/lua/sumneko-lua/extension/server/")
+  (let* ((ig--sumneko-root-path (expand-file-name "~/.cache/lspServers/lua/sumneko-lua/extension/server/"))
 	 (ig--sumneko-bin (concat ig--sumneko-root-path "bin/lua-language-server"))
 	 (ig--sumneko-main (concat ig--sumneko-root-path "main.lua")))
     (setq lsp-clients-lua-language-server-install-dir ig--sumneko-root-path

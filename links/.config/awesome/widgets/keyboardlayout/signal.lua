@@ -178,7 +178,7 @@ local function get_groups_from_group_names(group_names)
 
     -- Split 'group_names' into 'tokens'.  The separator is "+".
     local tokens = {}
-    string.gsub(group_names, '[^+]+', function(match)
+    local _ = string.gsub(group_names, '[^+]+', function(match)
         table.insert(tokens, match)
     end)
 

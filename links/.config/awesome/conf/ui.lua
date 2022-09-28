@@ -149,7 +149,7 @@ screen.connect_signal('request::desktop_decoration', function(s)
         {
             layout = wfixed.horizontal,
             spacing = dpi(7),
-            mykeyboardlayout(),
+            wmargin(mykeyboardlayout(), 0, 0, dpi(2), 0),
             -- volume_widget({
 	    -- 	  device = 'default',
 	    -- 	  widget_type = 'icon_and_text',
