@@ -163,8 +163,6 @@
       xref-show-definitions-function #'consult-xref)
 (advice-add #'register-preview :override #'consult-register-window)
 
-(eval-when-compile
-  (require 'consult))
 (with-eval-after-load 'consult
   (consult-customize
    consult-ripgrep consult-git-grep consult-grep

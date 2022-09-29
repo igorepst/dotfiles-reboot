@@ -101,6 +101,17 @@ Refresh quickstart as needed automatically in install/delete."
   (ig-update-local-autoloads)
   (princ "Done\n"))
 
+(defun ig-byte-recompile-config()
+  "Byte-recompile all the config files.
+
+This requires all the selected packages to be available at compile time,
+hence is suitable to be called in batch mode only."
+  (princ "Byte-recompile the config\n")
+  (load (concat ig-cache-dir "packages/selected-packages") t t nil)
+  (mapc #'require package-selected-packages)
+  (byte-recompile-directory user-emacs-directory 0 t)
+  (princ "Done\n"))
+
 ;;;###autoload
 (defun ig-describe-symbol ()
   "Describe symbol at point."

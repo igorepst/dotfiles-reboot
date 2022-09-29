@@ -172,8 +172,6 @@ function _install_lsp() {
     fi
     # HTML/CSS/JSON/ESLint (JS/TS)
     _install_npm_lsp "${parentDir}/vscode-langservers-extracted" 'HTML/CSS/JSON/ESLint' 'vscode-langservers-extracted'
-    # Dockerfile
-    _install_npm_lsp "${parentDir}/dockerfile" 'Dockerfile' 'dockerfile-language-server-nodejs'
     # Lua
     local inst_lua url version
     url=$(sed -ne 's/.*browser_download_url.*"\(http.*linux-x64.vsix\)"/\1/p' <<< $(curl -s https://api.github.com/repos/sumneko/vscode-lua/releases/latest))
