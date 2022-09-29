@@ -165,13 +165,13 @@
 
 (with-eval-after-load 'consult
   (consult-customize
-   consult-theme
-   :preview-key '(:debounce 0.2 any)
    consult-ripgrep consult-git-grep consult-grep
    consult-bookmark consult-recent-file consult-xref
    consult--source-bookmark consult--source-recent-file
    consult--source-project-recent-file
-   :preview-key [?\C-\;])
+   :preview-key [?\C-\;]
+   consult-theme
+   :preview-key '(:debounce 0.2 any))
   (setq consult-narrow-key [?\C-+]
 	consult-ripgrep-args
 	(concat "rg --null --line-buffered --color=never --max-columns=1000 --path-separator /\
