@@ -164,15 +164,18 @@
 (advice-add #'register-preview :override #'consult-register-window)
 
 (with-eval-after-load 'consult
-  (consult-customize
-   consult-ripgrep consult-git-grep consult-grep
-   consult-bookmark consult-recent-file consult-xref
-   consult--source-bookmark consult--source-recent-file
-   consult--source-project-recent-file
-   :preview-key [?\C-\;]
-   consult-theme
-   :preview-key '(:debounce 0.2 any))
-  (setq consult-narrow-key [?\C-+]
+  (setq consult--read-config
+	'((consult-ripgrep :preview-key [?\C-\;])
+	  (consult-git-grep :preview-key [?\C-\;])
+	  (consult-grep :preview-key [?\C-\;])
+	  (consult-bookmark :preview-key [?\C-\;])
+	  (consult-recent-file :preview-key [?\C-\;])
+	  (consult-xref :preview-key [?\C-\;])
+	  (consult--source-bookmark :preview-key [?\C-\;])
+	  (consult--source-recent-file :preview-key [?\C-\;])
+	  (consult--source-project-recent-file :preview-key [?\C-\;])
+	  (consult-theme :preview-key '(:debounce 0.2 any)))
+	consult-narrow-key [?\C-+]
 	consult-ripgrep-args
 	(concat "rg --null --line-buffered --color=never --max-columns=1000 --path-separator /\
    --ignore-case --no-heading --line-number --ignore-file " (getenv "HOME") "/.config/ripgrep/ignore --hidden ."))
