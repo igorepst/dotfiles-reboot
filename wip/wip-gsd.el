@@ -1,69 +1,84 @@
-;;; wip-gsd.el --- GSD code -*- lexical-binding: t; -*-
+;;; wip-gsd.el --- `Gitstatusd' wrapper -*- lexical-binding: t; -*-
 
 ;;; Commentary:
-;; GSD
+;; `Gitstatusd' wrapper
 
 ;;; Code:
 
 (require 'cl-lib)
 
-;;      4. Commit hash that HEAD is pointing to. 40 hex digits.
-;;      5. Local branch name or empty if not on a branch.
-;;      6. Upstream branch name. Can be empty.
-;;      7. The remote name, e.g. "upstream" or "origin".
-;;      8. Remote URL. Can be empty.
-;;      9. Repository state, A.K.A. action. Can be empty.
-;;     10. The number of files in the index.
-;;     11. The number of staged changes.
-;;     12. The number of unstaged changes.
-;;     13. The number of conflicted changes.
-;;     14. The number of untracked files.
-;;     15. Number of commits the current branch is ahead of upstream.
-;;     16. Number of commits the current branch is behind upstream.
-;;     17. The number of stashes.
-;;     18. The last tag (in lexicographical order) that points to the same
-;;         commit as HEAD.
-;;     19. The number of unstaged deleted files.
-;;     20. The number of staged new files.
-;;     21. The number of staged deleted files.
-;;     22. The push remote name, e.g. "upstream" or "origin".
-;;     23. Push remote URL. Can be empty.
-;;     24. Number of commits the current branch is ahead of push remote.
-;;     25. Number of commits the current branch is behind push remote.
-;;     26. Number of files in the index with skip-worktree bit set.
-;;     27. Number of files in the index with assume-unchanged bit set.
-;;     28. Encoding of the HEAD's commit message. Empty value means UTF-8.
-;;     29. The first paragraph of the HEAD's commit message as one line.
+(defgroup gitstatusd nil
+  "Emacs interface to `gitstatusd'."
+  :group 'tools)
 
+(defcustom gistatusd-exe "~/.cache/gitstatus/gitstatusd-linux-x86_64"
+  "`Gitstatusd' executable path."
+  :type '(string)
+  :group 'gitstatusd)
 
-(cl-defstruct (gsd-resp
+(defun gitstatusd--init-cmd-args(_ _)
+  "Initialize `gitstatusd-cmd-args' with the default values."
+  (concat "-s -1" " -u -1" " -d -1" " -c -1" " -m -1" " -v FATAL" " -t " (format "%s" (* 2 (num-processors)))))
+
+(defcustom gistatusd-cmd-args nil "`Gitstatusd' command line arguments."
+  :initialize #'gitstatusd--init-cmd-args
+  :type '(string)
+  :group 'gitstatusd)
+
+(cl-defstruct (gitstatusd
 	       (:constructor nil)
-	       (:constructor gsd-resp-create (req-id is-git-repo &optional abs-path))
+	       (:constructor gitstatusd-create (req-id is-git-repo &optional abs-path commit-hash local-branch upstream-branch
+						     remote-name remote-url repo-state index-num staged-num unstaged-num
+						     conflict-num untrack-num commit-ahead-num commit-behind-num stash-num
+						     last-tag unstaged-deleted-num staged-new-num staged-deleted-num push-remote-name
+						     push-remote-url push-commit-ahead-num push-commit-behind-num skip-worktree-num
+						     assume-unchanged-num commit-msg-encoding commit-msg-par))
 	       (:copier nil))
   "Gitstatusd response."
   (req-id nil :documentation "Request id. The same as the first field in the request.")
   (is-git-repo nil :documentation "1 - if git repo. 0 - otherwise, all the following is missing.")
-  (abs-path nil :documentation "Absolute path to the git repository workdir."))
+  (abs-path nil :documentation "Absolute path to the git repository workdir.")
+  (commit-hash nil :documentation "Commit hash that HEAD is pointing to. 40 hex digits.")
+  (local-branch nil :documentation "Local branch name or empty if not on a branch.")
+  (upstream-branch nil :documentation "Upstream branch name. Can be empty.")
+  (remote-name nil :documentation "The remote name, e.g. `upstream' or `origin'.")
+  (remote-url nil :documentation " Remote URL. Can be empty.")
+  (repo-state nil :documentation "Repository state, A.K.A. action. Can be empty.")
+  (index-num nil :documentation "The number of files in the index.")
+  (staged-num nil :documentation "The number of staged changes.")
+  (unstaged-num nil :documentation "The number of unstaged changes.")
+  (conflict-num nil :documentation "The number of conflicted changes.")
+  (untrack-num nil :documentation "The number of untracked files.")
+  (commit-ahead-num nil :documentation "Number of commits the current branch is ahead of upstream.")
+  (commit-behind-num nil :documentation "Number of commits the current branch is behind upstream.")
+  (stash-num nil :documentation "The number of stashes.")
+  (last-tag nil :documentation "The last tag (in lexicographical order) that points to the same commit as HEAD.")
+  (unstaged-deleted-num nil :documentation "The number of unstaged deleted files.")
+  (staged-new-num nil :documentation "The number of staged new files.")
+  (staged-deleted-num nil :documentation "The number of staged deleted files.")
+  (push-remote-name nil :documentation " The push remote name, e.g. `upstream' or `origin'.")
+  (push-remote-url nil :documentation "Push remote URL. Can be empty.")
+  (push-commit-ahead-num nil :documentation "Number of commits the current branch is ahead of push remote.")
+  (push-commit-behind-num nil :documentation "Number of commits the current branch is behind push remote.")
+  (skip-worktree-num nil :documentation "Number of files in the index with skip-worktree bit set.")
+  (assume-unchanged-num nil :documentation "Number of files in the index with assume-unchanged bit set.")
+  (commit-msg-encoding nil :documentation "Encoding of the HEAD's commit message. Empty value means UTF-8.")
+  (commit-msg-par nil :documentation "The first paragraph of the HEAD's commit message as one line."))
 
-(defun gsd-filter (_ str)
-  "Filter GSD STR output."
-  (let* ((res (split-string str ""))
-	 (ret (gsd-resp-create (nth 0 res) (nth 1 res) (nth 2 res))))
-    (message (if (gsd-resp-p ret) "YES" "NO"))
-    (message (format "%s" res)))
+(defun gitstatusd-filter (_ str)
+  "Filter `Gitstatusd' STR output."
+  (let ((ret (apply #'gitstatusd-create (split-string str ""))))
+    (message (format "%s" (gitstatusd-unstaged-num ret)))
+    )
   )
 
-;; ~/.cache/gitstatus/gitstatusd-linux-x86_64 -G v1.5.4 -s -1 -u -1 -d -1 -c -1 -m -1 -v FATAL -t 16
 (let ((proc
        (make-process
-	:name "gsd"
-	:buffer "gsd"
+	:name "gitstatusd"
+	:buffer "gitstatusd"
 	:connection-type 'pipe
-	:filter #'gsd-filter
-	:command `(,(expand-file-name "~/.cache/gitstatus/gitstatusd-linux-x86_64")
-		   "-G" "v1.5.4" "-s" "-1" "-u" "-1" "-d" "-1" "-c" "-1" "-m" "-1" "-v" "FATAL" "-t" "16"
-		   ))
-       ))
+	:filter #'gitstatusd-filter
+	:command `(,(expand-file-name gistatusd-exe) ,gitstatusd-cmd-args))))
   
 
   (process-send-string proc (concat "ddd" "" (expand-file-name "~/dotfiles-reboot") "0"))
@@ -71,6 +86,6 @@
   )
 
 
-(provide 'gsd)
+(provide 'gitstatusd)
 ;;; wip-gsd.el ends here
 

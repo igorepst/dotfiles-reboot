@@ -164,17 +164,18 @@
 (advice-add #'register-preview :override #'consult-register-window)
 
 (with-eval-after-load 'consult
-  (setq consult--read-config
-	'((consult-ripgrep :preview-key [?\C-\;])
-	  (consult-git-grep :preview-key [?\C-\;])
-	  (consult-grep :preview-key [?\C-\;])
-	  (consult-bookmark :preview-key [?\C-\;])
-	  (consult-recent-file :preview-key [?\C-\;])
-	  (consult-xref :preview-key [?\C-\;])
-	  (consult--source-bookmark :preview-key [?\C-\;])
-	  (consult--source-recent-file :preview-key [?\C-\;])
-	  (consult--source-project-recent-file :preview-key [?\C-\;])
-	  (consult-theme :preview-key '(:debounce 0.2 any)))
+  (setq consult--customize-alist
+	`((,#'consult-buffer-other-frame :preview-key nil)
+	  (,#'consult-ripgrep :preview-key [?\C-\;])
+	  (,#'consult-git-grep :preview-key [?\C-\;])
+	  (,#'consult-grep :preview-key [?\C-\;])
+	  (,#'consult-bookmark :preview-key [?\C-\;])
+	  (,#'consult-recent-file :preview-key [?\C-\;])
+	  (,#'consult-xref :preview-key [?\C-\;])
+	  (,#'consult--source-bookmark :preview-key [?\C-\;])
+	  (,#'consult--source-recent-file :preview-key [?\C-\;])
+	  (,#'consult--source-project-recent-file :preview-key [?\C-\;])
+	  (,#'consult-theme :preview-key '(:debounce 0.2 any)))
 	consult-narrow-key [?\C-+]
 	consult-ripgrep-args
 	(concat "rg --null --line-buffered --color=never --max-columns=1000 --path-separator /\
