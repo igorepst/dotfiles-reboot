@@ -1,7 +1,7 @@
-;;; wip-gsd.el --- `Gitstatusd' wrapper -*- lexical-binding: t; -*-
+;;; gitstatusd.el --- `gitstatusd' wrapper -*- lexical-binding: t; -*-
 
 ;;; Commentary:
-;; `Gitstatusd' wrapper
+;; `gitstatusd' wrapper
 
 ;;; Code:
 
@@ -11,28 +11,41 @@
   "Emacs interface to `gitstatusd'."
   :group 'tools)
 
-(defcustom gistatusd-exe "~/.cache/gitstatus/gitstatusd-linux-x86_64"
+(defcustom gitstatusd-exe nil
   "`Gitstatusd' executable path."
   :type '(string)
   :group 'gitstatusd)
 
-(defun gitstatusd--init-cmd-args(_ _)
-  "Initialize `gitstatusd-cmd-args' with the default values."
-  (concat "-s -1" " -u -1" " -d -1" " -c -1" " -m -1" " -v FATAL" " -t " (format "%s" (* 2 (num-processors)))))
-
-(defcustom gistatusd-cmd-args nil "`Gitstatusd' command line arguments."
-  :initialize #'gitstatusd--init-cmd-args
+(defcustom gitstatusd-cmd-args (concat "-s -1 -u -1 -d -1 -c -1 -m -1 -v FATAL -t " (format "%s" (* 2 (num-processors))))
+  "`Gitstatusd' command line arguments."
   :type '(string)
   :group 'gitstatusd)
+
+(defcustom gitstatusd-callback nil
+  "Callback used when an answer arrives."
+  :type '(function)
+  :group 'gitstatusd)
+(make-variable-buffer-local 'gitstatusd-callback)
+
+(defcustom gitstatusd-compute-by-index t
+  "Whether to perform computations by reading `git' index."
+  :type 'boolean
+  :group 'gitstatusd)
+
+(defvar-local gitstatusd--proc nil "`Gitstatusd' process.")
+
+(defconst gitstatusd--record-sep "" "Record separator.")
+
+(defconst gitstatusd--unit-sep "" "Record separator.")
 
 (cl-defstruct (gitstatusd
 	       (:constructor nil)
 	       (:constructor gitstatusd-create (req-id is-git-repo &optional abs-path commit-hash local-branch upstream-branch
-						     remote-name remote-url repo-state index-num staged-num unstaged-num
-						     conflict-num untrack-num commit-ahead-num commit-behind-num stash-num
-						     last-tag unstaged-deleted-num staged-new-num staged-deleted-num push-remote-name
-						     push-remote-url push-commit-ahead-num push-commit-behind-num skip-worktree-num
-						     assume-unchanged-num commit-msg-encoding commit-msg-par))
+						      remote-name remote-url repo-state index-num staged-num unstaged-num
+						      conflict-num untrack-num commit-ahead-num commit-behind-num stash-num
+						      last-tag unstaged-deleted-num staged-new-num staged-deleted-num push-remote-name
+						      push-remote-url push-commit-ahead-num push-commit-behind-num skip-worktree-num
+						      assume-unchanged-num commit-msg-encoding commit-msg-par))
 	       (:copier nil))
   "Gitstatusd response."
   (req-id nil :documentation "Request id. The same as the first field in the request.")
@@ -65,27 +78,44 @@
   (commit-msg-encoding nil :documentation "Encoding of the HEAD's commit message. Empty value means UTF-8.")
   (commit-msg-par nil :documentation "The first paragraph of the HEAD's commit message as one line."))
 
-(defun gitstatusd-filter (_ str)
+(defun gitstatusd--filter (_ str)
   "Filter `Gitstatusd' STR output."
-  (let ((ret (apply #'gitstatusd-create (split-string str ""))))
-    (message (format "%s" (gitstatusd-unstaged-num ret)))
-    )
-  )
+  (when gitstatusd-callback
+    ;; TODO split by rec sep
+    (let ((proc (apply #'gitstatusd-create (split-string str gitstatusd--unit-sep))))
+      (funcall gitstatusd-callback proc))))
 
-(let ((proc
-       (make-process
-	:name "gitstatusd"
-	:buffer "gitstatusd"
-	:connection-type 'pipe
-	:filter #'gitstatusd-filter
-	:command `(,(expand-file-name gistatusd-exe) ,gitstatusd-cmd-args))))
-  
+(defun make--gitstatusd-process ()
+  "Create `Gitstatusd' process if it doesn't exist."
+  (when (not gitstatusd--proc)
+    (let* ((cmd-args (split-string gitstatusd-cmd-args))
+	   (proc (push (expand-file-name gitstatusd-exe) cmd-args)))
+      (setq gitstatusd--proc
+	    (make-process
+	     :name "gitstatusd"
+	     :buffer "gitstatusd"
+	     :connection-type 'pipe
+	     :filter #'gitstatusd--filter
+	     :command proc))))
+  gitstatusd--proc)
 
-  (process-send-string proc (concat "ddd" "" (expand-file-name "~/dotfiles-reboot") "0"))
+;;;###autoload
+(defun gitstatusd-async (path)
+  "Make asynchronous request to `gitstatusd' for PATH.
 
-  )
+Immediately return the request ID."
+  (let* ((req-id (concat "ppp" (number-to-string (time-convert nil 'integer))))
+	 (record (concat req-id gitstatusd--unit-sep (expand-file-name path)
+			 gitstatusd--unit-sep
+			 (if gitstatusd-compute-by-index "0" : "1")
+			 gitstatusd--record-sep)))
+    (process-send-string (make--gitstatusd-process) record)
+    req-id))
 
+(setq gitstatusd-exe "~/.cache/gitstatus/gitstatusd-linux-x86_64")
+(setq gitstatusd-callback #'(lambda (c) (message (gitstatusd-commit-msg-par c))))
+(gitstatusd-async "~/dotfiles-reboot")
 
 (provide 'gitstatusd)
-;;; wip-gsd.el ends here
+;;; gitstatusd.el ends here
 
