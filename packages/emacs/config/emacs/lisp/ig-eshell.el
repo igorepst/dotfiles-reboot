@@ -60,24 +60,11 @@
   (setq ig-eshell-last-command-status eshell-last-command-status)
   (eshell-interactive-print "\n"))
 
-(defun ig-git-get-branch()
-  "Return current Git branch."
-  (with-temp-buffer
-    (and
-     (vc-git--out-ok "rev-parse" "--abbrev-ref" "HEAD")
-     (buffer-substring-no-properties (point-min) ( - (point-max) 1)))))
-
 (defun ig-eshell-prompt()
   "Define custom Eshell prompt."
-  (let* ((vc-be (vc-responsible-backend default-directory t))
-	 (cur-dir (abbreviate-file-name (eshell/pwd)))
+  (let* ((cur-dir (abbreviate-file-name (eshell/pwd)))
 	 (prompt (concat
 		  (ig-with-face (concat (if (equal cur-dir "~") " " " ") cur-dir) :weight 'bold :foreground ig-color-blue)
-		  (when vc-be (ig-with-face (concat " on "
-						    (if (eq 'Git vc-be)
-							(concat " " (ig-git-get-branch))
-						      (format "%s" vc-be)))
-					    :foreground ig-color-magenta))
 		  (ig-with-face (concat (format-time-string "  %H:%M" (current-time))
 					(when ig-eshell-last-command-time (concat "  " ig-eshell-last-command-time)))
 				:foreground ig-color-bright-blue)
@@ -92,6 +79,48 @@
     prompt))
 
 (define-key eshell-mode-map [\M-up] #'ig-eshell-up)
+(define-key eshell-mode-map "\C-l" #'ig-eshell-clear)
+;; Various issues prevent mapping to eshell/q directly
+(define-key eshell-mode-map "\C-d" #'kill-buffer-and-window)
+
+(setq gitstatusd-exe "~/.cache/gitstatus/gitstatusd-linux-x86_64")
+(setq gitstatusd-callback #'ig-eshell-gitstatusd-callback)
+(add-hook 'eshell-before-prompt-hook #'ig-eshell-before-prompt)
+(defvar-local ig-eshell-gitstatusd-req-id nil "`gitstatusd' request ID.")
+(defun ig-eshell-before-prompt()
+  "Before prompt of `eshell'."
+  (setq ig-eshell-gitstatusd-req-id
+	(gitstatusd-get-status default-directory)))
+
+(defmacro ig-eshell-gitstatusd-callback-helper (val sym msgl)
+  "Helper to add SYM and VAL to MSGL."
+  `(unless (equal "0" ,val)
+     (push (concat ,sym ,val) ,msgl)))
+
+;; TODO find right buffer and place to change
+(defun ig-eshell-gitstatusd-callback(res)
+  "Callback on `gitstatusd' result, represented by RES."
+  (when (and (equal "1" (gitstatusd-is-git-repo res))
+	     (equal ig-eshell-gitstatusd-req-id (gitstatusd-req-id res)))
+    (let ((msgl '()))
+      (ig-eshell-gitstatusd-callback-helper
+       (gitstatusd-unstaged-num res) "!" msgl)
+      (ig-eshell-gitstatusd-callback-helper
+       (gitstatusd-untrack-num res) "?" msgl)
+      (save-excursion
+	(re-search-backward eshell-prompt-regexp nil t 1)
+	(backward-char)
+	(let* ((pos (point))
+	       (branch (gitstatusd-local-branch res))
+	       (msg (concat " on  "
+			    (when branch (concat branch " "))
+			    (mapconcat 'identity (reverse msgl) " ")))
+	       (inhibit-read-only t))
+	  (insert (propertize msg 'face `(:foreground ,ig-color-magenta)))
+	  (add-text-properties pos (+ pos (length msg))
+			       '(read-only t
+					   front-sticky (read-only)
+					   rear-nonsticky (read-only))))))))
 
 ;; Local Variables:
 ;; byte-compile-warnings: (not free-vars unresolved)

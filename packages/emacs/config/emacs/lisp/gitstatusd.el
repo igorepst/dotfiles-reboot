@@ -25,7 +25,7 @@
   "Callback used when an answer arrives."
   :type '(function)
   :group 'gitstatusd)
-(make-variable-buffer-local 'gitstatusd-callback)
+;; (make-variable-buffer-local 'gitstatusd-callback)
 
 (defcustom gitstatusd-compute-by-index t
   "Whether to perform computations by reading `git' index."
@@ -87,7 +87,7 @@
 
 (defun make--gitstatusd-process ()
   "Create `Gitstatusd' process if it doesn't exist."
-  (when (not gitstatusd--proc)
+  (unless gitstatusd--proc
     (let* ((cmd-args (split-string gitstatusd-cmd-args))
 	   (proc (push (expand-file-name gitstatusd-exe) cmd-args)))
       (setq gitstatusd--proc
@@ -100,21 +100,21 @@
   gitstatusd--proc)
 
 ;;;###autoload
-(defun gitstatusd-async (path)
+(defun gitstatusd-get-status (path)
   "Make asynchronous request to `gitstatusd' for PATH.
 
 Immediately return the request ID."
-  (let* ((req-id (concat "ppp" (number-to-string (time-convert nil 'integer))))
-	 (record (concat req-id gitstatusd--unit-sep (expand-file-name path)
+  ;; TODO what if file is sent
+  (let* ((dir (expand-file-name path))
+	 (req-id (concat
+		  (file-name-nondirectory (directory-file-name dir)) "-"
+		  (number-to-string (time-convert nil 'integer))))
+	 (record (concat req-id gitstatusd--unit-sep dir
 			 gitstatusd--unit-sep
 			 (if gitstatusd-compute-by-index "0" : "1")
 			 gitstatusd--record-sep)))
     (process-send-string (make--gitstatusd-process) record)
     req-id))
-
-(setq gitstatusd-exe "~/.cache/gitstatus/gitstatusd-linux-x86_64")
-(setq gitstatusd-callback #'(lambda (c) (message (gitstatusd-commit-msg-par c))))
-(gitstatusd-async "~/dotfiles-reboot")
 
 (provide 'gitstatusd)
 ;;; gitstatusd.el ends here

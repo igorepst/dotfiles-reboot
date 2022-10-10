@@ -75,7 +75,7 @@ SPLIT-HOR - do the split horizontally."
 (defun ig-ediff-files ()
   "Ediff 2 files in Dired."
   (interactive)
-  (when (not (eq major-mode 'dired-mode))
+  (unless (eq major-mode 'dired-mode)
     (error "Use Dired mode"))
   (let ((files (dired-get-marked-files))
         (wnd (current-window-configuration)))
