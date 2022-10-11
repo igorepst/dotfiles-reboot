@@ -35,13 +35,83 @@
   :type '(string)
   :group 'gitstatus)
 
-(defcustom gitstatus-branch-truncation-sep "..."
+(defcustom gitstatus-branch-truncate-after 30
+  "Truncate branch name after this much characters."
+  :type '(integer)
+  :group 'gitstatus)
+
+(defcustom gitstatus-branch-truncation-sep "…"
   "In case the branch name is truncated, use this as a separator."
   :type '(string)
   :group 'gitstatus)
 
 (defcustom gitstatus-branch-icon ""
-  "Branch icon."
+  "Icon for the branch."
+  :type '(string)
+  :group 'gitstatus)
+
+(defcustom gitstatus-tag-icon "@"
+  "Icon for the tag."
+  :type '(string)
+  :group 'gitstatus)
+
+(defcustom gitstatus-hash-icon "#"
+  "Icon for the hash."
+  :type '(string)
+  :group 'gitstatus)
+
+(defcustom gitstatus-upstream-sep ":"
+  "Separator netween local and upstream branch."
+  :type '(string)
+  :group 'gitstatus)
+
+(defcustom gitstatus-commit-behind-icon "⇣"
+  "Icon for the number of commits the current branch is behind upstream."
+  :type '(string)
+  :group 'gitstatus)
+
+(defcustom gitstatus-commit-ahead-icon "⇡"
+  "Icon for the number of commits the current branch is ahead of upstream."
+  :type '(string)
+  :group 'gitstatus)
+
+(defcustom gitstatus-push-commit-behind-icon "⇠"
+  "Icon for the number of commits the current branch is behind push remote."
+  :type '(string)
+  :group 'gitstatus)
+
+(defcustom gitstatus-push-commit-ahead-icon "⇢"
+  "Icon for the number of commits the current branch is ahead of push-remote."
+  :type '(string)
+  :group 'gitstatus)
+
+(defcustom gitstatus-stash-icon "*"
+  "Icon for the number of stashes."
+  :type '(string)
+  :group 'gitstatus)
+
+(defcustom gitstatus-conflict-icon "~"
+  "Icon for the number of conflicted changes."
+  :type '(string)
+  :group 'gitstatus)
+
+(defcustom gitstatus-staged-icon "+"
+  "Icon for the number of staged changes."
+  :type '(string)
+  :group 'gitstatus)
+
+(defcustom gitstatus-unstaged-icon "!"
+  "Icon for the number of unstaged changes."
+  :type '(string)
+  :group 'gitstatus)
+
+(defcustom gitstatus-untracked-icon "?"
+  "Icon for the number of untracked files."
+  :type '(string)
+  :group 'gitstatus)
+
+(defcustom gitstatus-unstaged-unknown-icon "─"
+  "Icon when the number of unstaged changes is unknown."
   :type '(string)
   :group 'gitstatus)
 
@@ -139,19 +209,19 @@ Propertize with FACE."
 (defun gitstatus--get-counters (res)
   "Get counters according to RES."
   (let ((msgl '())
-	 (unstaged (gitstatusd-unstaged-num res)))
-    (gitstatus--push-prop (gitstatusd-commit-behind-num res) "⇣" msgl 'gitstatus-clean-face)
-    (gitstatus--push-prop (gitstatusd-commit-ahead-num res) "⇡" msgl 'gitstatus-clean-face)
-    (gitstatus--push-prop (gitstatusd-push-commit-behind-num res) "⇠" msgl 'gitstatus-clean-face)
-    (gitstatus--push-prop (gitstatusd-push-commit-ahead-num res) "⇢" msgl 'gitstatus-clean-face)
-    (gitstatus--push-prop (gitstatusd-stash-num res) "*" msgl 'gitstatus-clean-face)
+	(unstaged (gitstatusd-unstaged-num res)))
+    (gitstatus--push-prop (gitstatusd-commit-behind-num res) gitstatus-commit-behind-icon msgl 'gitstatus-clean-face)
+    (gitstatus--push-prop (gitstatusd-commit-ahead-num res) gitstatus-commit-ahead-icon msgl 'gitstatus-clean-face)
+    (gitstatus--push-prop (gitstatusd-push-commit-behind-num res) gitstatus-push-commit-behind-icon msgl 'gitstatus-clean-face)
+    (gitstatus--push-prop (gitstatusd-push-commit-ahead-num res) gitstatus-push-commit-ahead-icon msgl 'gitstatus-clean-face)
+    (gitstatus--push-prop (gitstatusd-stash-num res) gitstatus-stash-icon msgl 'gitstatus-clean-face)
     (gitstatus--push-prop (gitstatusd-repo-state res) nil msgl 'gitstatus-conflicted-face)
-    (gitstatus--push-prop (gitstatusd-conflict-num res) "~" msgl 'gitstatus-conflicted-face)
-    (gitstatus--push-prop (gitstatusd-staged-num res) "+" msgl 'gitstatus-modified-face)
-    (gitstatus--push-prop unstaged "!" msgl 'gitstatus-modified-face)
-    (gitstatus--push-prop (gitstatusd-untrack-num res) "?" msgl 'gitstatus-untracked-face)
+    (gitstatus--push-prop (gitstatusd-conflict-num res) gitstatus-conflict-icon msgl 'gitstatus-conflicted-face)
+    (gitstatus--push-prop (gitstatusd-staged-num res) gitstatus-staged-icon msgl 'gitstatus-modified-face)
+    (gitstatus--push-prop unstaged gitstatus-unstaged-icon msgl 'gitstatus-modified-face)
+    (gitstatus--push-prop (gitstatusd-untrack-num res) gitstatus-untracked-icon msgl 'gitstatus-untracked-face)
     (when (string= "-1" unstaged)
-      (push (propertize "─" 'face 'gitstatus-modified-face) msgl))
+      (push (propertize gitstatus-unstaged-unknown-icon 'face 'gitstatus-modified-face) msgl))
     msgl))
 
 (defun gitstatus--get-branch-name (res)
@@ -168,24 +238,27 @@ Propertize with FACE."
       (if (gitstatus--string-not-empty-p ret)
 	  (setq ret
 		(concat
-		 (propertize "#" 'face 'gitstatus-default-face)
+		 (propertize gitstatus-tag-icon 'face 'gitstatus-default-face)
 		 (propertize (gitstatus--branch-truncate branch) 'face 'gitstatus-clean-face)))
 	(setq ret (gitstatusd-commit-hash res))
 	(setq ret
 	      (concat
-	       (propertize "@" 'face 'gitstatus-default-face)
+	       (propertize gitstatus-hash-icon 'face 'gitstatus-default-face)
 	       (propertize (substring branch 0 7) 'face 'gitstatus-clean-face)))))
     (when (and (gitstatus--string-not-empty-p up-branch) (not (string= up-branch branch)))
       (setq ret (concat ret
-			(propertize ":" 'face 'gitstatus-default-face)
+			(propertize gitstatus-upstream-sep 'face 'gitstatus-default-face)
 			(propertize (gitstatus--branch-truncate up-branch) 'face 'gitstatus-clean-face))))
     ret))
 
 (defun gitstatus--branch-truncate (branch)
   "Truncate the name of the BRANCH."
-  (if (> (length branch) 32)
-      (concat (substring branch 0 12) gitstatus-branch-truncation-sep (substring branch -12))
-    branch))
+  (if (length< branch gitstatus-branch-truncate-after)
+      branch
+    (let ((end
+	   (if (> 15 gitstatus-branch-truncate-after) 3
+	     (if (> 30 gitstatus-branch-truncate-after) 7 10))))
+      (concat (substring branch 0 end) gitstatus-branch-truncation-sep (substring branch (- 0 end))))))
 
 (defun gitstatus--string-not-empty-p (string)
   "Check whether STRING is not null and not empty."
