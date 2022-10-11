@@ -1,37 +1,23 @@
-;;; gitstatus.el --- Front-end for `gitstatusd' -*- lexical-binding: t; -*-
+;;; gitstatus.el --- Common front-end for `gitstatusd' -*- lexical-binding: t; -*-
 
 ;;; Commentary:
-;; Front-end for `gitstatusd'
+;; Common front-end for `gitstatusd'
+
+;;; Code:
 
 (require 'gitstatusd)
-(require 'em-prompt)
 
 (defgroup gitstatus nil
   "Front-end for `gitstatusd'."
   :group 'gitstatusd)
 
-(defcustom gitstatus-eshell-neighbor-regex "\\($\\)"
-  "Neighbor of the gitstatus in `eshell' prompt."
-  :type '(string)
-  :group 'gitstatus)
-
-(defcustom gitstatus-eshell-neighbor-append nil
-  "Whether to append (or prepend) the gitstatus to the `eshell' prompt."
-  :type '(string)
-  :group 'gitstatus)
-
-(defcustom gitstatus-eshell-prompt-lines 1
-  "Search for `gitstatus-eshell-neighbor-regex' in this many lines."
-  :type '(integer)
-  :group 'gitstatus)
-
 (defcustom gitstatus-prefix nil
-  "Prefix to prepend to the gitstatus."
+  "Prefix to prepend to the `gitstatus'."
   :type '(string)
   :group 'gitstatus)
 
 (defcustom gitstatus-suffix nil
-  "Suffix to append to the gitstatus."
+  "Suffix to append to the `gitstatus'."
   :type '(string)
   :group 'gitstatus)
 
@@ -61,7 +47,7 @@
   :group 'gitstatus)
 
 (defcustom gitstatus-upstream-sep ":"
-  "Separator netween local and upstream branch."
+  "Separator between local and upstream branch."
   :type '(string)
   :group 'gitstatus)
 
@@ -116,82 +102,53 @@
   :group 'gitstatus)
 
 (defgroup gitstatus-faces nil
-  "Faces used by gitstatus."
+  "Faces used by `gitstatus'."
   :group 'gitstatus
   :group 'faces)
 
 (defface gitstatus-default-face
   '((t (:inherit default)))
-  "Default face for gitstatus."
+  "Default face for `gitstatus'."
   :group 'gitstatus-faces)
 
 (defface gitstatus-clean-face
   '((t (:inherit success)))
-  "Clean face for gitstatus."
+  "Clean face for `gitstatus'."
   :group 'gitstatus-faces)
 
 (defface gitstatus-modified-face
   '((t (:inherit font-lock-constant-face)))
-  "Modified face for gitstatus."
+  "Modified face for `gitstatus'."
   :group 'gitstatus-faces)
 
 (defface gitstatus-untracked-face
   '((t (:inherit font-lock-comment-face)))
-  "Untracked face for gitstatus."
+  "Untracked face for `gitstatus'."
   :group 'gitstatus-faces)
 
 (defface gitstatus-conflicted-face
   '((t (:inherit warning)))
-  "Conflicted face for gitstatus."
+  "Conflicted face for `gitstatus'."
   :group 'gitstatus-faces)
 
-(setq gitstatusd-callback #'gitstatus-build-eshell)
 (defvar-local gitstatusd--req-id nil "`gitstatusd' request ID.")
 
 ;;;###autoload
 (defun gitstatus-start ()
-  "Run `gitstatusd' to get the gitstatus information."
+  "Run `gitstatusd' to get the `gitstatus' information."
   (setq gitstatusd--req-id
 	(gitstatusd-get-status default-directory)))
-
-;; TODO find right buffer and place to change
-(defun gitstatus-build-eshell (res)
-  "Build `eshell' prompt based on `gitstatusd' result, represented by RES."
-  (let ((msg (gitstatus-build-str res)))
-    (when (gitstatus--string-not-empty-p msg)
-      (save-excursion
-	(save-match-data
-	  (goto-char (point-max))
-	  (re-search-backward eshell-prompt-regexp nil t 1)
-	  (forward-line -1)
-	  (beginning-of-line)
-	  (let ((place nil)
-		(str (buffer-substring (line-beginning-position) (line-end-position))))
-	    (string-match gitstatus-eshell-neighbor-regex str)
-	    (setq place
-		  (if gitstatus-eshell-neighbor-append
-		      (match-end 1)
-		    (match-beginning 1)))
-	    (when place
-	      (forward-char place)
-	      (let* ((pos (point))
-		     (inhibit-read-only t))
-		(insert " " msg)
-		(add-text-properties pos (+ 1 pos (length msg))
-				     '(read-only t
-						 front-sticky (read-only)
-						 rear-nonsticky (read-only)))))))))))
 
 (defmacro gitstatus--push-prop (val sym msgl face)
   "Helper to add SYM and VAL to MSGL.
 
 Propertize with FACE."
-  `(when (gitstatus--has-counter ,val)
+  `(when (and (gitstatus--string-not-empty-p ,val) (not (string= "0" ,val)))
      (let ((msg (propertize (concat ,sym ,val) 'face ,face)))
        (push msg ,msgl))))
 
 (defun gitstatus-build-str (res)
-  "Build gitstatus string from RES."
+  "Build `gitstatus' string from RES."
   (when (and (string= "1" (gitstatusd-is-git-repo res))
 	     (string= gitstatusd--req-id (gitstatusd-req-id res)))
     (let ((branch (gitstatus--get-branch-name res)))
@@ -263,10 +220,5 @@ Propertize with FACE."
   "Check whether STRING is not null and not empty."
   (not (or (null string) (string= string ""))))
 
-(defun gitstatus--has-counter (val)
-  "Check whether the VAL exists."
-  (and (gitstatus--string-not-empty-p val) (not (string= "0" val))))
-
-;;; Code:
 (provide 'gitstatus)
 ;;; gitstatus.el ends here

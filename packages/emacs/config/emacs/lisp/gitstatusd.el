@@ -36,7 +36,7 @@
 
 (defconst gitstatusd--record-sep "" "Record separator.")
 
-(defconst gitstatusd--unit-sep "" "Record separator.")
+(defconst gitstatusd--unit-sep "" "Unit separator.")
 
 (cl-defstruct (gitstatusd
 	       (:constructor nil)
