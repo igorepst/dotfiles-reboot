@@ -155,7 +155,6 @@
 	(gitstatusd-get-status default-directory)))
 
 ;; TODO find right buffer and place to change
-;; TODO customize truncation
 (defun gitstatus-build-eshell (res)
   "Build `eshell' prompt based on `gitstatusd' result, represented by RES."
   (let ((msg (gitstatus-build-str res)))
