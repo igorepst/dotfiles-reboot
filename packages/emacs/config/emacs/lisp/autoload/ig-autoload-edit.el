@@ -116,7 +116,7 @@ Optional argument REVERSE - whether to reverse the sort."
 (defun ig-find-file-root-header-warning ()
   "Display a warning in header line of the current buffer.
 This function is suitable to add to `find-file-hook'."
-  (when (string-equal
+  (when (string=
          (file-remote-p (or buffer-file-name default-directory) 'user)
          "root")
     (let* ((warning "WARNING: EDITING AS ROOT!")

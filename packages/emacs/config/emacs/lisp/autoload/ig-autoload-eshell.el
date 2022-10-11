@@ -21,7 +21,7 @@
   (interactive)
   (let* ((cur-dir (expand-file-name default-directory))
 	 (parent-dir (file-name-directory (directory-file-name cur-dir))))
-    (unless (equal cur-dir parent-dir)
+    (unless (string= cur-dir parent-dir)
       (eshell-interactive-print (concat "cd " parent-dir))
       (eshell/cd parent-dir)
       (eshell-send-input))))

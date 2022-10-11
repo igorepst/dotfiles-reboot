@@ -11,7 +11,7 @@
   "Emacs interface to `gitstatusd'."
   :group 'tools)
 
-(defcustom gitstatusd-exe nil
+(defcustom gitstatusd-exe "gitstatusd"
   "`Gitstatusd' executable path."
   :type '(string)
   :group 'gitstatusd)

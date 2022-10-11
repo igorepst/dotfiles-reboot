@@ -362,6 +362,19 @@
 			      (setq-local global-hl-line-mode nil)
 			      (add-hook 'eshell-pre-command-hook #'ig-eshell-pre-command nil t)
 			      (add-hook 'eshell-post-command-hook #'ig-eshell-post-command nil t)))
+(with-eval-after-load 'gitstatusd
+  (setq gitstatusd-exe "~/.cache/gitstatus/gitstatusd-linux-x86_64"))
+(with-eval-after-load 'gitstatus
+  (setq gitstatus-eshell-neighbor-regex "\\( \\)"
+	gitstatus-eshell-prompt-lines 2
+	gitstatus-prefix "on"
+	gitstatus-branch-truncation-sep "…")
+  (set-face-attribute 'gitstatus-default-face nil :foreground ig-color-bright-black)
+  (set-face-attribute 'gitstatus-clean-face nil :foreground ig-color-bright-green)
+  (set-face-attribute 'gitstatus-modified-face nil :foreground ig-color-yellow)
+  (set-face-attribute 'gitstatus-untracked-face nil :foreground ig-color-bright-blue)
+  (set-face-attribute 'gitstatus-conflicted-face nil :foreground ig-color-bright-red))
+(add-hook 'eshell-before-prompt-hook #'gitstatus-start)
 
 
 
