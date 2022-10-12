@@ -127,9 +127,9 @@ Immediately return the request ID."
 (defun gitstatusd--filter (_ str)
   "Filter gitstatusd STR output."
   (when gitstatusd-callback
-    ;; TODO split by rec sep
-    (let ((proc (apply #'gitstatusd-create (split-string str gitstatusd--unit-sep))))
-      (funcall gitstatusd-callback proc))))
+    (dolist (res (split-string str gitstatusd--record-sep t))
+      (let ((proc (apply #'gitstatusd-create (split-string res gitstatusd--unit-sep))))
+	(funcall gitstatusd-callback proc)))))
 
 (defun gitstatusd--make-process ()
   "Create gitstatusd process if it doesn't exist."
