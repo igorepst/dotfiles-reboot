@@ -1,12 +1,34 @@
 ;;; gitstatus-eshell.el --- `eshell' front-end for `gitstatusd' -*- lexical-binding: t; -*-
 
+;; Copyright (C) 2022 Igor Epstein
+
+;; This file is not part of GNU Emacs.
+
+;; This program is free software: you can redistribute it and/or modify
+;; it under the terms of the GNU General Public License as published by
+;; the Free Software Foundation, either version 3 of the License, or
+;; (at your option) any later version.
+
+;; This program is distributed in the hope that it will be useful,
+;; but WITHOUT ANY WARRANTY; without even the implied warranty of
+;; MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+;; GNU General Public License for more details.
+
+;; You should have received a copy of the GNU General Public License
+;; along with this program.  If not, see <https://www.gnu.org/licenses/>.
+
 ;;; Commentary:
-;; `eshell' front-end for `gitstatusd'
+
+;; `eshell' front-end for `gitstatusd'.
+;; This is an extra package to allow adding the information to the `eshell' prompt.
 
 ;;; Code:
 
 (require 'gitstatus)
 (require 'em-prompt)
+
+
+;;; Customizable variables
 
 (defgroup gitstatus-eshell nil
   "`eshell' front-end for `gitstatusd'."
@@ -14,18 +36,21 @@
 
 (defcustom gitstatus-eshell-neighbour-regex "\\($\\)"
   "Neighbour of the `gitstatus' in `eshell' prompt."
-  :type '(string)
+  :type 'string
   :group 'gitstatus-eshell)
 
-(defcustom is-gitstatus-eshell-neighbour-append nil
+(defcustom gitstatus-eshell-is-neighbour-append nil
   "Whether to append (or prepend) the `gitstatus' to the `eshell' prompt."
-  :type '(string)
+  :type 'boolean
   :group 'gitstatus-eshell)
 
 (defcustom gitstatus-eshell-prompt-lines 1
   "Search for `gitstatus-eshell-neighbour-regex' in this many lines."
-  :type '(integer)
+  :type 'integer
   :group 'gitstatus-eshell)
+
+
+;;; Public interface
 
 ;; TODO find right buffer to change
 ;;;###autoload
@@ -46,6 +71,9 @@
 						 front-sticky (read-only)
 						 rear-nonsticky (read-only)))))))))))
 
+
+;;; Utility functions
+
 (defun gitstatus--eshell-find-place ()
   "Find the right place in `eshell' prompt."
   (goto-char (point-max))
@@ -60,7 +88,7 @@
 	       (str (buffer-substring start end)))
 	  (string-match gitstatus-eshell-neighbour-regex str)
 	  (setq place
-		(if is-gitstatus-eshell-neighbour-append
+		(if gitstatus-eshell-is-neighbour-append
 		    (match-end 1)
 		  (match-beginning 1)))
 	  (if place

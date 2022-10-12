@@ -64,7 +64,7 @@
   "Define custom Eshell prompt."
   (let* ((cur-dir (abbreviate-file-name (eshell/pwd)))
 	 (prompt (concat
-		  (ig-with-face (concat (if (string= cur-dir "~") " " " ") cur-dir) :weight 'bold :foreground ig-color-blue)
+		  (ig-with-face (concat (if (string-equal cur-dir "~") " " " ") cur-dir) :weight 'bold :foreground ig-color-blue)
 		  (ig-with-face (concat (format-time-string "  %H:%M" (current-time))
 					(when ig-eshell-last-command-time (concat "  " ig-eshell-last-command-time)))
 				:foreground ig-color-bright-blue)

@@ -31,7 +31,7 @@
 		 (setq cmd (read-shell-command "Run async cmd with: " nil 'dired-shell-command-history)))
 		((and (= 1 (length (split-string cmd "[[:space:]]"))) (not (executable-find cmd)))
 		 (setq cmd (read-shell-command (concat "Run async cmd ('" cmd "' does not exist): ") nil 'dired-shell-command-history))))
-	  (when (string= cmd "") (setq cmd "xdg-open"))
+	  (when (string-equal cmd "") (setq cmd "xdg-open"))
 	  (start-process cmd nil shell-file-name shell-command-switch
 			 (concat cmd-prefix cmd " '" (mapconcat #'expand-file-name files "' '") "'")))
       (message "No marked files"))))
