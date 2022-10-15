@@ -77,8 +77,14 @@
 (with-current-buffer "*Messages*"
   (emacs-lock-mode 'kill))
 
+
+
+(push 'dired-rsync ig-selected-packages)
+
 (with-eval-after-load 'dired
   (require 'ig-dired))
+
+
 
 (with-eval-after-load 'man
   (set-face-attribute 'Man-overstrike nil :inherit font-lock-type-face :bold t)
