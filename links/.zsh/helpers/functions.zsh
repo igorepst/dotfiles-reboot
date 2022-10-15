@@ -127,6 +127,7 @@ function _get_gh_releases() {
     if get_gh_release --repo claudiodangelis/qrcp --arch linux_x86_64.tar.gz --toPath qrcp; then
 	qrcp completion zsh > ~/.zsh/volatile/igorepst/_gh_release/_cache/_compl/_qrcp
     fi
+    get_gh_release --repo dundee/gdu --arch linux_amd64.tgz --toPath gdu_linux_amd64 --rn gdu
     # get_gh_release --repo rust-analyzer/rust-analyzer --arch x86_64-unknown-linux-gnu.gz --toPath binx86_64-unknown-linux-gnu --rn rust-analyzer
 }
 
