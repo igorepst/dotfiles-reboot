@@ -9,11 +9,10 @@
   "Set fonts overrides.
 
 Emoji is supported OOB by Noto Color Emoji font."
-  (run-with-timer 0.5 nil (lambda()
-			    (set-face-font 'fixed-pitch-serif "DejaVu Serif-14")
-			    (set-face-font 'variable-pitch "DejaVu Sans-14")
-			    (dolist (charset '((#x10000 . #x1ffff)))
-			      (set-fontset-font t charset "Noto Sans Symbols2-14" nil 'append)))))
+  (set-face-font 'fixed-pitch-serif "DejaVu Serif-14")
+  (set-face-font 'variable-pitch "DejaVu Sans-14")
+  (dolist (charset '((#x10000 . #x1ffff)))
+    (set-fontset-font t charset "Noto Sans Symbols2-14" nil 'append)))
 
 (defun ig-daemon-font ()
   "Font overrides helper."

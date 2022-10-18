@@ -1,4 +1,4 @@
-;;; gitstatus-eshell.el --- `eshell' front-end for `gitstatusd' -*- lexical-binding: t; -*-
+;;; gitstatus-eshell.el --- Front-end for `eshell' and `gitstatusd' -*- lexical-binding: t; -*-
 
 ;; Copyright (C) 2022 Igor Epstein
 
@@ -27,7 +27,7 @@
 (require 'gitstatusd)
 (require 'gitstatus)
 (require 'em-prompt)
-(eval-when-compile (require 'cl-macs))
+(eval-when-compile (require 'cl-lib))
 
 
 ;;; Customizable variables
@@ -54,7 +54,7 @@
 
 ;;; Internal variables
 
-(defvar-local gitstatusd--req-id nil "`gitstatusd' request ID.")
+(defvar-local gitstatus-eshell--req-id nil "`gitstatusd' request ID.")
 
 
 ;;; Public interface
@@ -62,19 +62,19 @@
 ;;;###autoload
 (defun gitstatus-eshell-start ()
   "Run `gitstatusd' to get the `gitstatus' information."
-  (setq gitstatusd--req-id (gitstatusd-get-status default-directory)))
+  (setq gitstatus-eshell--req-id (gitstatusd-get-status default-directory)))
 
 ;;;###autoload
 (defun gitstatus-eshell-build (res)
   "Build `eshell' prompt based on `gitstatusd' result, represented by RES."
-  (let ((buf (gitstatus--eshell-get-buffer res)))
+  (let ((buf (gitstatus-eshell--get-buffer res)))
     (when buf
       (with-current-buffer buf
 	(save-mark-and-excursion
 	  (let ((msg (gitstatus-build-str res)))
 	    (when (gitstatus--string-not-empty-p msg)
 	      (save-match-data
-		(let ((place (gitstatus--eshell-find-place)))
+		(let ((place (gitstatus-eshell--find-place)))
 		  (when place
 		    (forward-char place)
 		    (let* ((pos (point))
@@ -88,15 +88,15 @@
 
 ;;; Utility functions
 
-(defun gitstatus--eshell-get-buffer (res)
+(defun gitstatus-eshell--get-buffer (res)
   "Return the buffer the request came from with result RES."
   (let ((res-id (gitstatusd-req-id res)))
     (cl-dolist (buf (buffer-list))
       (when (string-equal res-id
-			  (buffer-local-value 'gitstatusd--req-id buf))
+			  (buffer-local-value 'gitstatus-eshell--req-id buf))
 	(cl-return buf)))))
 
-(defun gitstatus--eshell-find-place ()
+(defun gitstatus-eshell--find-place ()
   "Find the right place in `eshell' prompt."
   (goto-char (point-max))
   (re-search-backward eshell-prompt-regexp nil t 1)

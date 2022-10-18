@@ -1,4 +1,4 @@
-;;; gitstatusd.el --- gitstatusd wrapper -*- lexical-binding: t; -*-
+;;; gitstatusd.el --- Wrapper for gitstatusd -*- lexical-binding: t; -*-
 
 ;; Copyright (C) 2022 Igor Epstein
 
@@ -20,6 +20,7 @@
 ;;; Commentary:
 
 ;; The wrapper around an external gitstatusd executable.
+;; Errors are written into `*gitstatusd err*' buffer
 
 ;;; Code:
 
@@ -37,7 +38,10 @@
   :type 'file
   :group 'gitstatusd)
 
-(defcustom gitstatusd-cmd-args (concat "-s -1 -u -1 -d -1 -c -1 -m -1 -v FATAL -t " (format "%s" (* 2 (num-processors))))
+(defcustom gitstatusd-cmd-args
+  (concat "-s -1 -u -1 -d -1 -c -1 -m -1 -v FATAL -t "
+	  (format "%s" (* 2
+			  (if (fboundp 'num-processors) (num-processors) 1))))
   "Gitstatusd command line arguments."
   :type 'string
   :group 'gitstatusd)
@@ -110,16 +114,18 @@
 
 Immediately return the request ID."
   (let ((proc (gitstatusd--make-process)))
+    ;; As gitstatusd is a daemon we assume that when the process dies,
+    ;; its output is either an error or a garbage
     (when (process-live-p proc)
       (let* ((dir (expand-file-name path))
 	     (req-id (concat
 		      (file-name-nondirectory (directory-file-name dir)) "-"
 		      (mapconcat #'number-to-string (current-time) "")))
-	     (record (concat req-id gitstatusd--unit-sep dir
-			     gitstatusd--unit-sep
-			     (if gitstatusd-is-compute-by-index "0" : "1")
-			     gitstatusd--record-sep)))
-	(process-send-string (gitstatusd--make-process) record)
+	     (rec (concat req-id gitstatusd--unit-sep dir
+			  gitstatusd--unit-sep
+			  (if gitstatusd-is-compute-by-index "0" : "1")
+			  gitstatusd--record-sep)))
+	(process-send-string (gitstatusd--make-process) rec)
 	req-id))))
 
 
@@ -131,25 +137,26 @@ Immediately return the request ID."
       (when gitstatusd-callback
 	(dolist (res (split-string str gitstatusd--record-sep t))
 	  (let ((proc (apply #'gitstatusd-create (split-string res gitstatusd--unit-sep))))
-	    (funcall gitstatusd-callback proc)))))
-  (with-current-buffer (get-buffer-create "*gitstatusd err*")
-    (insert str)))
+	    (funcall gitstatusd-callback proc))))
+    (with-current-buffer (get-buffer-create "*gitstatusd err*")
+      (when (not (executable-find gitstatusd-exe))
+	(insert "Cannot find gitstatusd executable. See https://github.com/romkatv/gitstatus
+for the installation instructions and ensure it is in path.\n"))
+      (insert str))))
 
 (defun gitstatusd--make-process ()
   "Create gitstatusd process if it doesn't exist."
   (unless gitstatusd--proc
-    (if (executable-find gitstatusd-exe)
-	(let* ((cmd-args (split-string gitstatusd-cmd-args))
-	       (proc (push (expand-file-name gitstatusd-exe) cmd-args)))
-	  (setq gitstatusd--proc
-		(make-process
-		 :name "gitstatusd"
-		 :connection-type 'pipe
-		 :sentinel #'gitstatusd--sentinel
-		 :filter #'gitstatusd--filter
-		 :command proc)))
-      (message "Cannot find gitstatusd executable. See https://github.com/romkatv/gitstatus
-for the installation instructions and ensure it is in path.")))
+    (let* ((cmd-args (split-string gitstatusd-cmd-args))
+	   (proc (push (expand-file-name gitstatusd-exe) cmd-args)))
+      (setq gitstatusd--proc
+	    (make-process
+	     :name "gitstatusd"
+	     :connection-type 'pipe
+	     :sentinel #'gitstatusd--sentinel
+	     :filter #'gitstatusd--filter
+	     :command proc))
+      (set-process-query-on-exit-flag gitstatusd--proc nil)))
   gitstatusd--proc)
 
 (defun gitstatusd--sentinel (proc _)

@@ -6,7 +6,7 @@
 ;; Version: 0.1.0
 ;; Keywords: tools, processes
 ;; URL: https://github.com/igorepst/gitstatus-el
-;; Package-Requires: ((emacs "25.1") cl-lib)
+;; Package-Requires: ((emacs "25.1"))
 
 ;; This file is not part of GNU Emacs.
 

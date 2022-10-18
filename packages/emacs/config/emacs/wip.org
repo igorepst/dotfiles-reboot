@@ -27,3 +27,10 @@ DIR must include a .project file to be considered a project."
 parse cmd arg "-2d" for reg. Emacs
 fix title when using x/x. - see https://github.com/CyberShadow/term-title
 
+* TODO gitstatusd
+(setq gitstatusd-callback #'(lambda(s) (message (gitstatus-build-str s)))
+      gitstatus-is-fontify t)
+(gitstatus-start-with-path "~/dotfiles-reboot/README.md")
+
+;; https://github.com/melpa/melpa#example-multiple-packages-in-one-repository
+;; gitstatusd should be buffer local!

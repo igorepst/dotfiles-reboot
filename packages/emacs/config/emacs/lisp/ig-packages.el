@@ -301,6 +301,8 @@
 (with-eval-after-load 'flycheck
   (setq flycheck-emacs-lisp-load-path 'inherit))
 
+(push 'package-lint ig-selected-packages)
+
 
 
 (push 'lsp-mode ig-selected-packages)
@@ -370,17 +372,17 @@
 			      (add-hook 'eshell-post-command-hook #'ig-eshell-post-command nil t)
 			      (setq-local gitstatusd-callback #'gitstatus-eshell-build)))
 (with-eval-after-load 'gitstatusd
-  (setq gitstatusd-exe "~/.cache/gitstatus/gitstatusd-linux-x86_64"))
+  (customize-set-variable 'gitstatusd-exe "~/.cache/gitstatus/gitstatusd-linux-x86_64"))
 (with-eval-after-load 'gitstatus
-  (setq gitstatus-prefix "on")
+  (customize-set-variable 'gitstatus-prefix "on")
   (set-face-attribute 'gitstatus-default-face nil :foreground ig-color-bright-black)
   (set-face-attribute 'gitstatus-clean-face nil :foreground ig-color-bright-green)
   (set-face-attribute 'gitstatus-modified-face nil :foreground ig-color-yellow)
   (set-face-attribute 'gitstatus-untracked-face nil :foreground ig-color-bright-blue)
   (set-face-attribute 'gitstatus-conflicted-face nil :foreground ig-color-bright-red))
 (with-eval-after-load 'gitstatus-eshell
-  (setq gitstatus-eshell-neighbour-regex "\\( \\)"
-	gitstatus-eshell-prompt-lines 2))
+  (customize-set-variable 'gitstatus-eshell-neighbour-regex "\\( \\)")
+  (customize-set-variable 'gitstatus-eshell-prompt-lines 2))
 (add-hook 'eshell-before-prompt-hook #'gitstatus-eshell-start)
 
 
