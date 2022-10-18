@@ -46,7 +46,6 @@
   "Callback used when an answer arrives."
   :type 'function
   :group 'gitstatusd)
-;; (make-variable-buffer-local 'gitstatusd-callback)
 
 (defcustom gitstatusd-is-compute-by-index t
   "Whether to perform computations by reading Git index."

@@ -27,8 +27,9 @@
 (make-directory ig-eshell-dir t)
 
 (setq eshell-history-file-name (concat ig-eshell-dir "history")
-      eshell-last-dir-ring-file-name (concat ig-eshell-dir "lastdir")
+      eshell-history-size 1000
       eshell-hist-ignoredups 'erase
+      eshell-last-dir-ring-file-name (concat ig-eshell-dir "lastdir")
       eshell-banner-message ""
       eshell-buffer-maximum-lines 10240
       eshell-highlight-prompt nil
