@@ -27,6 +27,7 @@
 (require 'gitstatusd)
 (require 'gitstatus)
 (require 'em-prompt)
+(eval-when-compile (require 'cl-macs))
 
 
 ;;; Customizable variables
@@ -63,28 +64,37 @@
   "Run `gitstatusd' to get the `gitstatus' information."
   (setq gitstatusd--req-id (gitstatusd-get-status default-directory)))
 
-;; TODO find right buffer to change
 ;;;###autoload
 (defun gitstatus-eshell-build (res)
   "Build `eshell' prompt based on `gitstatusd' result, represented by RES."
-  (when (string-equal gitstatusd--req-id (gitstatusd-req-id res))
-    (save-excursion
-      (let ((msg (gitstatus-build-str res)))
-	(when (gitstatus--string-not-empty-p msg)
-	  (save-match-data
-	    (let ((place (gitstatus--eshell-find-place)))
-	      (when place
-		(forward-char place)
-		(let* ((pos (point))
-		       (inhibit-read-only t))
-		  (insert (concat " " msg))
-		  (add-text-properties pos (+ 1 pos (length msg))
-				       '(read-only t
-						   front-sticky (read-only)
-						   rear-nonsticky (read-only))))))))))))
+  (let ((buf (gitstatus--eshell-get-buffer res)))
+    (when buf
+      (with-current-buffer buf
+	(save-mark-and-excursion
+	  (let ((msg (gitstatus-build-str res)))
+	    (when (gitstatus--string-not-empty-p msg)
+	      (save-match-data
+		(let ((place (gitstatus--eshell-find-place)))
+		  (when place
+		    (forward-char place)
+		    (let* ((pos (point))
+			   (inhibit-read-only t))
+		      (insert (concat " " msg))
+		      (add-text-properties pos (+ 1 pos (length msg))
+					   '(read-only t
+						       front-sticky (read-only)
+						       rear-nonsticky (read-only))))))))))))))
 
 
 ;;; Utility functions
+
+(defun gitstatus--eshell-get-buffer (res)
+  "Return the buffer the request came from with result RES."
+  (let ((res-id (gitstatusd-req-id res)))
+    (cl-dolist (buf (buffer-list))
+      (when (string-equal res-id
+			  (buffer-local-value 'gitstatusd--req-id buf))
+	(cl-return buf)))))
 
 (defun gitstatus--eshell-find-place ()
   "Find the right place in `eshell' prompt."
