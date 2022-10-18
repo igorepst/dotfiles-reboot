@@ -109,40 +109,53 @@
   "Make asynchronous request to gitstatusd for PATH.
 
 Immediately return the request ID."
-  (let* ((dir (expand-file-name path))
-	 (req-id (concat
-		  (file-name-nondirectory (directory-file-name dir)) "-"
-		  (mapconcat #'number-to-string (current-time) "")))
-	 (record (concat req-id gitstatusd--unit-sep dir
-			 gitstatusd--unit-sep
-			 (if gitstatusd-is-compute-by-index "0" : "1")
-			 gitstatusd--record-sep)))
-    (process-send-string (gitstatusd--make-process) record)
-    req-id))
+  (let ((proc (gitstatusd--make-process)))
+    (when (process-live-p proc)
+      (let* ((dir (expand-file-name path))
+	     (req-id (concat
+		      (file-name-nondirectory (directory-file-name dir)) "-"
+		      (mapconcat #'number-to-string (current-time) "")))
+	     (record (concat req-id gitstatusd--unit-sep dir
+			     gitstatusd--unit-sep
+			     (if gitstatusd-is-compute-by-index "0" : "1")
+			     gitstatusd--record-sep)))
+	(process-send-string (gitstatusd--make-process) record)
+	req-id))))
 
 
 ;;; Utility functions
 
-(defun gitstatusd--filter (_ str)
-  "Filter gitstatusd STR output."
-  (when gitstatusd-callback
-    (dolist (res (split-string str gitstatusd--record-sep t))
-      (let ((proc (apply #'gitstatusd-create (split-string res gitstatusd--unit-sep))))
-	(funcall gitstatusd-callback proc)))))
+(defun gitstatusd--filter (proc str)
+  "Filter gitstatusd PROC process's STR output."
+  (if (process-live-p proc)
+      (when gitstatusd-callback
+	(dolist (res (split-string str gitstatusd--record-sep t))
+	  (let ((proc (apply #'gitstatusd-create (split-string res gitstatusd--unit-sep))))
+	    (funcall gitstatusd-callback proc)))))
+  (with-current-buffer (get-buffer-create "*gitstatusd err*")
+    (insert str)))
 
 (defun gitstatusd--make-process ()
   "Create gitstatusd process if it doesn't exist."
   (unless gitstatusd--proc
-    (let* ((cmd-args (split-string gitstatusd-cmd-args))
-	   (proc (push (expand-file-name gitstatusd-exe) cmd-args)))
-      (setq gitstatusd--proc
-	    (make-process
-	     :name "gitstatusd"
-	     :buffer "gitstatusd"
-	     :connection-type 'pipe
-	     :filter #'gitstatusd--filter
-	     :command proc))))
+    (if (executable-find gitstatusd-exe)
+	(let* ((cmd-args (split-string gitstatusd-cmd-args))
+	       (proc (push (expand-file-name gitstatusd-exe) cmd-args)))
+	  (setq gitstatusd--proc
+		(make-process
+		 :name "gitstatusd"
+		 :connection-type 'pipe
+		 :sentinel #'gitstatusd--sentinel
+		 :filter #'gitstatusd--filter
+		 :command proc)))
+      (message "Cannot find gitstatusd executable. See https://github.com/romkatv/gitstatus
+for the installation instructions and ensure it is in path.")))
   gitstatusd--proc)
+
+(defun gitstatusd--sentinel (proc _)
+  "Process PROC sentinel."
+  (when (memq (process-status proc) '(exit signal))
+    (setq gitstatusd--proc nil)))
 
 (provide 'gitstatusd)
 ;;; gitstatusd.el ends here
