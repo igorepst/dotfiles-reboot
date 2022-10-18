@@ -367,10 +367,10 @@
 			      (setq outline-regexp eshell-prompt-regexp)
 			      (setq-local global-hl-line-mode nil)
 			      (add-hook 'eshell-pre-command-hook #'ig-eshell-pre-command nil t)
-			      (add-hook 'eshell-post-command-hook #'ig-eshell-post-command nil t)))
+			      (add-hook 'eshell-post-command-hook #'ig-eshell-post-command nil t)
+			      (setq-local gitstatusd-callback #'gitstatus-eshell-build)))
 (with-eval-after-load 'gitstatusd
-  (setq gitstatusd-exe "~/.cache/gitstatus/gitstatusd-linux-x86_64"
-	gitstatusd-callback #'gitstatus-eshell-build))
+  (setq gitstatusd-exe "~/.cache/gitstatus/gitstatusd-linux-x86_64"))
 (with-eval-after-load 'gitstatus
   (setq gitstatus-prefix "on")
   (set-face-attribute 'gitstatus-default-face nil :foreground ig-color-bright-black)
@@ -381,7 +381,7 @@
 (with-eval-after-load 'gitstatus-eshell
   (setq gitstatus-eshell-neighbour-regex "\\( \\)"
 	gitstatus-eshell-prompt-lines 2))
-(add-hook 'eshell-before-prompt-hook #'gitstatus-start)
+(add-hook 'eshell-before-prompt-hook #'gitstatus-eshell-start)
 
 
 

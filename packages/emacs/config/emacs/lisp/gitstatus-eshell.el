@@ -24,6 +24,7 @@
 
 ;;; Code:
 
+(require 'gitstatusd)
 (require 'gitstatus)
 (require 'em-prompt)
 
@@ -50,26 +51,37 @@
   :group 'gitstatus-eshell)
 
 
+;;; Internal variables
+
+(defvar-local gitstatusd--req-id nil "`gitstatusd' request ID.")
+
+
 ;;; Public interface
+
+;;;###autoload
+(defun gitstatus-eshell-start ()
+  "Run `gitstatusd' to get the `gitstatus' information."
+  (setq gitstatusd--req-id (gitstatusd-get-status default-directory)))
 
 ;; TODO find right buffer to change
 ;;;###autoload
 (defun gitstatus-eshell-build (res)
   "Build `eshell' prompt based on `gitstatusd' result, represented by RES."
-  (let ((msg (gitstatus-build-str res)))
-    (when (gitstatus--string-not-empty-p msg)
-      (save-excursion
-	(save-match-data
-	  (let ((place (gitstatus--eshell-find-place)))
-	    (when place
-	      (forward-char place)
-	      (let* ((pos (point))
-		     (inhibit-read-only t))
-		(insert (concat " " msg))
-		(add-text-properties pos (+ 1 pos (length msg))
-				     '(read-only t
-						 front-sticky (read-only)
-						 rear-nonsticky (read-only)))))))))))
+  (when (string-equal gitstatusd--req-id (gitstatusd-req-id res))
+    (save-excursion
+      (let ((msg (gitstatus-build-str res)))
+	(when (gitstatus--string-not-empty-p msg)
+	  (save-match-data
+	    (let ((place (gitstatus--eshell-find-place)))
+	      (when place
+		(forward-char place)
+		(let* ((pos (point))
+		       (inhibit-read-only t))
+		  (insert (concat " " msg))
+		  (add-text-properties pos (+ 1 pos (length msg))
+				       '(read-only t
+						   front-sticky (read-only)
+						   rear-nonsticky (read-only))))))))))))
 
 
 ;;; Utility functions

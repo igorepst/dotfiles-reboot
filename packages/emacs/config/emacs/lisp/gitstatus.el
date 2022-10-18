@@ -179,11 +179,6 @@
   :group 'gitstatus-faces)
 
 
-;;; Internal variables
-
-(defvar-local gitstatusd--req-id nil "`gitstatusd' request ID.")
-
-
 ;;; Macros and defsubst
 
 (defsubst gitstatus--string-not-empty-p (string)
@@ -206,20 +201,9 @@ Propertize with FACE if needed."
 ;;; Public interface
 
 ;;;###autoload
-(defun gitstatus-start ()
-  "Run `gitstatusd' to get the `gitstatus' information."
-  (gitstatus-start-with-path default-directory))
-
-;;;###autoload
-(defun gitstatus-start-with-path (path)
-  "Run `gitstatusd' to get the `gitstatus' information for PATH."
-  (setq gitstatusd--req-id (gitstatusd-get-status path)))
-
-;;;###autoload
 (defun gitstatus-build-str (res)
   "Build `gitstatus' string from RES."
-  (when (and (string-equal "1" (gitstatusd-is-git-repo res))
-	     (string-equal gitstatusd--req-id (gitstatusd-req-id res)))
+  (when (string-equal "1" (gitstatusd-is-git-repo res))
     (let ((branch (gitstatus--get-branch-name res)))
       (let ((case-fold-search nil)
 	    (wip (string-match "[^[:alnum:]]\*\\(wip\\|WIP\\)[^[:alnum:]]\*" (gitstatusd-commit-msg-par res))))
