@@ -66,6 +66,8 @@
 		  ((eq major-mode 'eshell-mode) (concat "Eshell: " (abbreviate-file-name default-directory)))
 		  (t "%b"))))))
 
+(set-default-coding-systems 'utf-8)
+
 (run-with-idle-timer 0.1 nil (lambda()
 			       (require 'ig-fonts)
 			       (require 'ig-packages-load)

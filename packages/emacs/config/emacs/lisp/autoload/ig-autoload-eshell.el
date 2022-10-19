@@ -34,6 +34,13 @@
     (delete-window))
   (eshell/exit))
 
+;;;###autoload
+(defun ig-eshell-kill-window()
+  "Exit Eshell."
+  (interactive)
+  (ignore-errors
+    (kill-buffer-and-window)))
+
 (defun ig-git-get-branch()
   "Return current Git branch."
   (with-temp-buffer

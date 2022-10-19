@@ -39,7 +39,8 @@
 (with-eval-after-load 'org
   (setq org-fontify-whole-heading-line t
 	org-startup-with-inline-images t
-	org-default-notes-file "~/notes/tasks.org"))
+	org-default-notes-file "~/notes/tasks.org"
+	org-support-shift-select t))
 
 (with-eval-after-load 'org-capture
   (setq org-capture-templates

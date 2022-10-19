@@ -66,7 +66,7 @@
   (let* ((cur-dir (abbreviate-file-name (eshell/pwd)))
 	 (prompt (concat
 		  (ig-with-face (concat (if (string-equal cur-dir "~") " " " ") cur-dir) :weight 'bold :foreground ig-color-blue)
-		  (ig-with-face (concat (format-time-string "  %H:%M" (current-time))
+		  (ig-with-face (concat "  " (format-time-string "%H:%M" (current-time))
 					(when ig-eshell-last-command-time (concat "  " ig-eshell-last-command-time)))
 				:foreground ig-color-bright-blue)
 		  "\n"
@@ -82,7 +82,7 @@
 (define-key eshell-mode-map [\M-up] #'ig-eshell-up)
 (define-key eshell-mode-map "\C-l" #'ig-eshell-clear)
 ;; Various issues prevent mapping to eshell/q directly
-(define-key eshell-mode-map "\C-d" #'kill-buffer-and-window)
+(define-key eshell-mode-map "\C-d" #'ig-eshell-kill-window)
 
 ;; Local Variables:
 ;; byte-compile-warnings: (not free-vars unresolved)
