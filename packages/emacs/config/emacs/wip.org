@@ -32,5 +32,5 @@ fix title when using x/x. - see https://github.com/CyberShadow/term-title
       gitstatus-is-fontify t)
 (gitstatus-start-with-path "~/dotfiles-reboot/README.md")
 
-;; https://github.com/melpa/melpa#example-multiple-packages-in-one-repository
+https://github.com/melpa/melpa/blob/master/CONTRIBUTING.org
 ;; gitstatusd should be buffer local!

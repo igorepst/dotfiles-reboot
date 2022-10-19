@@ -220,7 +220,7 @@ Propertize with FACE if needed."
 
 (defun gitstatus--get-counters (res)
   "Get counters according to RES."
-  (let ((msgl '())
+  (let ((msgl (list))
 	(unstaged (gitstatusd-unstaged-num res)))
     (gitstatus--push-prop (gitstatusd-commit-behind-num res) gitstatus-commit-behind-icon msgl 'gitstatus-clean-face)
     (gitstatus--push-prop (gitstatusd-commit-ahead-num res) gitstatus-commit-ahead-icon msgl 'gitstatus-clean-face)
