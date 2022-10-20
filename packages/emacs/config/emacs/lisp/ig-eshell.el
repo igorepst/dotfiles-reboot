@@ -11,9 +11,10 @@
 (require 'em-hist)
 (require 'em-dirs)
 (require 'em-prompt)
-(require 'em-banner)
 (require 'vc-git)
 (require 'ig-common)
+(require 'em-tramp)
+(require 'esh-module)
 
 (with-eval-after-load 'esh-mode
   (push 'xterm-color-filter eshell-preoutput-filter-functions)
@@ -26,16 +27,23 @@
 (defconst ig-eshell-dir (concat ig-cache-dir "eshell/") "Eshell volatile dir.")
 (make-directory ig-eshell-dir t)
 
+(delete 'eshell-banner eshell-modules-list)
+(push 'eshell-tramp eshell-modules-list)
+
 (setq eshell-history-file-name (concat ig-eshell-dir "history")
       eshell-history-size 1000
       eshell-hist-ignoredups 'erase
       eshell-last-dir-ring-file-name (concat ig-eshell-dir "lastdir")
-      eshell-banner-message ""
       eshell-buffer-maximum-lines 10240
       eshell-highlight-prompt nil
       eshell-prompt-regexp "^[#❯] "
       eshell-prompt-function #'ig-eshell-prompt
-      xterm-color-preserve-properties t)
+      xterm-color-preserve-properties t
+      ;; Enable password caching by using sudo from em-tramp
+      eshell-prefer-lisp-functions t
+      eshell-prefer-lisp-variables t
+      password-cache t
+      password-cache-expiry 3600)
 (setenv "TERM" "xterm-256color")
 ;; Autoloaded commands
 (push "gpl" eshell-complex-commands)

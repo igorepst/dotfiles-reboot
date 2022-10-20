@@ -36,3 +36,5 @@ https://github.com/melpa/melpa/blob/master/CONTRIBUTING.org
 ;; gitstatusd should be buffer local and then it should be killed when eshell exits!
 
 work git: permission denied publickey
+only when started by systemd before X
+https://github.com/purcell/exec-path-from-shell
