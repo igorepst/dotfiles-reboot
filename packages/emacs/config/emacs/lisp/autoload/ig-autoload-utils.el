@@ -144,6 +144,15 @@ CUR-X and CUR-Y - cursor X and Y."
   (forward-char (- cur-x 1))
   (recenter))
 
+;; https://emacs.stackexchange.com/a/8177/2477
+;;;###autoload
+(defun presorted-completion-table (completions)
+  "Disable sorting of COMPLETIONS."
+  (lambda (string pred action)
+    (if (eq action 'metadata)
+        `(metadata (display-sort-function . ,#'identity))
+      (complete-with-action action completions string pred))))
+
 ;; http://www.howardism.org/Technical/Emacs/alt-completing-read.html
 ;;;###autoload
 (defun alt-completing-read (prompt collection &optional nosort def)
@@ -152,11 +161,7 @@ CUR-X and CUR-Y - cursor X and Y."
     (let* ((choice
             (completing-read prompt
 			     (if nosort
-				 (lambda (string predicate action)
-				   (if (eq action 'metadata)
-				       `(metadata (display-sort-function . ,#'identity)
-						  (cycle-sort-function . ,#'identity))
-				     (complete-with-action action collection string predicate)))
+				 (presorted-completion-table collection)
 			       collection)))
            (results (cond
                      ((hash-table-p collection) (gethash choice collection))

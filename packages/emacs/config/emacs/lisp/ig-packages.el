@@ -368,10 +368,11 @@
 (add-hook 'eshell-mode-hook (lambda ()
 			      ;; Jump to prompts with consult-outline
 			      (setq outline-regexp eshell-prompt-regexp)
-			      (setq-local global-hl-line-mode nil)
 			      (add-hook 'eshell-pre-command-hook #'ig-eshell-pre-command nil t)
 			      (add-hook 'eshell-post-command-hook #'ig-eshell-post-command nil t)
-			      (setq-local gitstatusd-callback #'gitstatus-eshell-build)))
+			      (setq-local global-hl-line-mode nil
+					  gitstatusd-callback #'gitstatus-eshell-build
+					  imenu-generic-expression `(("Prompt" ,(concat eshell-prompt-regexp "\\(.*\\)") 1)))))
 (with-eval-after-load 'gitstatusd
   (customize-set-variable 'gitstatusd-exe "~/.cache/gitstatus/gitstatusd-linux-x86_64"))
 (with-eval-after-load 'gitstatus

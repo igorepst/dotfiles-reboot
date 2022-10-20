@@ -73,8 +73,28 @@
   (unless skip-prompt
     (eshell-emit-prompt)))
 
+;;;###autoload
+(defun ig-eshell-insert-history ()
+  "Display the `eshell' history and insert selected candidate."
+  (interactive)
+  (let ((beg) (end) (old-input) (input))
+    (save-excursion
+      (beginning-of-line)
+      (and eshell-skip-prompt-function
+	   (funcall eshell-skip-prompt-function))
+      (setq beg (point))
+      (end-of-line)
+      (setq end (point))
+      (setq old-input (buffer-substring beg end)))
+    (setq input (completing-read "Eshell history: "
+				 (presorted-completion-table (cl-sort (ring-elements eshell-history-ring) 'string-lessp :key 'downcase))
+				 nil nil old-input))
+    (when input
+      (delete-region beg end)
+      (insert input))))
+
 ;; Local Variables:
-;; byte-compile-warnings: (not unresolved)
+;; byte-compile-warnings: (not free-vars unresolved)
 ;; End:
 (provide 'ig-autoload-eshell)
 ;;; ig-autoload-eshell.el ends here

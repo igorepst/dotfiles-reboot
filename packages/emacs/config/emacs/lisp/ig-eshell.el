@@ -44,6 +44,7 @@
       eshell-prefer-lisp-variables t
       password-cache t
       password-cache-expiry 3600)
+
 (setenv "TERM" "xterm-256color")
 ;; Autoloaded commands
 (push "gpl" eshell-complex-commands)
@@ -88,9 +89,10 @@
     prompt))
 
 (define-key eshell-mode-map [\M-up] #'ig-eshell-up)
-(define-key eshell-mode-map "\C-l" #'ig-eshell-clear)
+(define-key eshell-mode-map "\C-c\C-z" #'ig-eshell-clear)
 ;; Various issues prevent mapping to eshell/q directly
 (define-key eshell-mode-map "\C-d" #'ig-eshell-kill-window)
+(define-key eshell-hist-mode-map "\C-c\C-l" #'ig-eshell-insert-history)
 
 ;; Local Variables:
 ;; byte-compile-warnings: (not free-vars unresolved)
