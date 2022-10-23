@@ -95,6 +95,13 @@ SPLIT-HOR - do the split horizontally."
                       (set-window-configuration wnd))))
       (error "No more than 2 files should be marked"))))
 
+;;;###autoload
+(defun ig-find-name-dired (pattern)
+  "Search `default-directory' for PATTERN."
+    (interactive
+   "sFind-name (filename wildcard): ")
+    (find-dired default-directory (concat find-name-arg " " (shell-quote-argument pattern))))
+
 ;; Local Variables:
 ;; byte-compile-warnings: (not free-vars unresolved)
 ;; End:

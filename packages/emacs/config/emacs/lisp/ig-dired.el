@@ -51,8 +51,9 @@ The sorting mode will be used from now on."
 			     ((string-match-p "-X$" das) "ext")
 			     (t das))))
     (concat name
-	    (if (string-match-p "^--reverse" das)
-		(if asc " ↑" " ↓") (if asc " ↓" " ↑")))))
+	    (unless (string-equal "*Find*" (buffer-name (current-buffer)))
+	      (if (string-match-p "^--reverse" das)
+		  (if asc " ↑" " ↓") (if asc " ↓" " ↑"))))))
 
 ;; "mp4" "mp4v" "mkv" "mpg" "mpeg" "webm" "webp" "vob" "wmv" "avi" "ts" "mts" "vid" "flac" "midi" "mka" "mp3" "ogg" "wav" "oga" "opus" "spx"
 (defconst ig-dired-media-ext "\\(?:\\.\\(?:avi\\|flac\\|m\\(?:idi\\|k[av]\\|p\\(?:4v\\|eg\\|[34g]\\)\\|ts\\)\\|o\\(?:g[ag]\\|pus\\)\\|spx\\|ts\\|v\\(?:id\\|ob\\)\\|w\\(?:av\\|eb[mp]\\|mv\\)\\)\\)$" "Dired media files extensions.")
@@ -61,7 +62,8 @@ The sorting mode will be used from now on."
 (setq dired-clean-confirm-killing-deleted-buffers nil
       dired-guess-shell-alist-user
       `((,ig-dired-media-ext "mpv")
-	("\\.\\(?:pdf\\|djvu\\)\\'" "evince")))
+	("\\.\\(?:pdf\\|djvu\\)\\'" "evince")
+	("\\.\\(?:docx?\\|odt\\|xlsx?\\|pptx?\\)\\'" "soffice")))
 
 ;; TODO add this
 ;; LS_COLORS='rs=0:di=01;34:ln=01;36:mh=00:pi=40;33:so=01;35:do=01;35:bd=40;33;01:cd=40;33;01:or=40;31;01:mi=00:su=37;41:sg=30;43:ca=00:tw=30;42:ow=34;42:st=37;44:ex=01;32
@@ -121,6 +123,7 @@ The sorting mode will be used from now on."
 (define-key dired-mode-map "'" #'ig-eshell-switch-or-new)
 (define-key dired-mode-map [M-up] #'dired-up-directory)
 (define-key dired-mode-map "/" #'dired-isearch-filenames)
+(define-key dired-mode-map "\M-/" #'ig-find-name-dired)
 (define-key dired-mode-map "z" #'ig-dired-get-size)
 (define-key dired-mode-map "w" #'ig-dired-copy-filename-as-kill)
 (define-key dired-mode-map "e" #'ig-ediff-files)

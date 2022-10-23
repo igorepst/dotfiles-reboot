@@ -31,7 +31,7 @@
 (with-eval-after-load 'recentf
   (setq recentf-save-file (concat ig-cache-dir "recentf")
 	recentf-auto-cleanup 3600
-	recentf-exclude `("MERGE_MSG" "COMMIT_EDITMSG" ,ig-kitty-scrollback-file)))
+	recentf-exclude `("MERGE_MSG" "COMMIT_EDITMSG" "bookmarks" ,ig-kitty-scrollback-file)))
 
 (with-eval-after-load 'bookmark
   (setq bookmark-default-file (concat ig-cache-dir "bookmarks")))
