@@ -51,7 +51,7 @@ The sorting mode will be used from now on."
 			     ((string-match-p "-X$" das) "ext")
 			     (t das))))
     (concat name
-	    (unless (string-equal "*Find*" (buffer-name (current-buffer)))
+	    (unless (string-match-p "^\\*.*\\*$" (buffer-name (current-buffer)))
 	      (if (string-match-p "^--reverse" das)
 		  (if asc " ↑" " ↓") (if asc " ↓" " ↑"))))))
 

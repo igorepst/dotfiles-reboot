@@ -97,10 +97,10 @@ SPLIT-HOR - do the split horizontally."
 
 ;;;###autoload
 (defun ig-find-name-dired (pattern)
-  "Search `default-directory' for PATTERN."
+  "Search `default-directory' for PATTERN, surrounded by asterisks automatically."
     (interactive
-   "sFind-name (filename wildcard): ")
-    (find-dired default-directory (concat find-name-arg " " (shell-quote-argument pattern))))
+     "sFind-name (filename wildcard): ")
+    (find-dired default-directory (concat "-iname \\*" (shell-quote-argument pattern) "\\*")))
 
 ;; Local Variables:
 ;; byte-compile-warnings: (not free-vars unresolved)
