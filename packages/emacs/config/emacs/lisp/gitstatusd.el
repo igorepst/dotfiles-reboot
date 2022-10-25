@@ -46,11 +46,6 @@
   :type 'string
   :group 'gitstatusd)
 
-(defcustom gitstatusd-callback nil
-  "Callback used when an answer arrives."
-  :type 'function
-  :group 'gitstatusd)
-
 (defcustom gitstatusd-is-compute-by-index t
   "Whether to perform computations by reading Git index."
   :type 'boolean
@@ -60,6 +55,8 @@
 ;;; Internal variables
 
 (defvar gitstatusd--proc nil "Gitstatusd process.")
+
+(defvar gitstatusd--callbacks nil "Gitstatusd callbacks structure.")
 
 (defconst gitstatusd--record-sep "" "Record separator.")
 
@@ -109,8 +106,8 @@
   (commit-msg-par nil :documentation "The first paragraph of the HEAD's commit message as one line."))
 
 ;;;###autoload
-(defun gitstatusd-get-status (path)
-  "Make asynchronous request to gitstatusd for PATH.
+(defun gitstatusd-get-status (path callback)
+  "Make asynchronous request to gitstatusd for PATH with CALLBACK.
 
 Immediately return the request ID."
   (let ((proc (gitstatusd--make-process)))
@@ -125,8 +122,22 @@ Immediately return the request ID."
 			  gitstatusd--unit-sep
 			  (if gitstatusd-is-compute-by-index "0" : "1")
 			  gitstatusd--record-sep)))
+	(when callback
+	  (unless gitstatusd--callbacks
+	    (setq gitstatusd--callbacks (make-hash-table :test 'equal)))
+	  (puthash req-id callback gitstatusd--callbacks))
 	(process-send-string (gitstatusd--make-process) rec)
 	req-id))))
+
+(defun gitstatusd-kill ()
+  "Kill gitstatusd process and clear callbacks.
+
+They will be recreated on the next request."
+  (interactive)
+  (when gitstatusd--proc
+    (delete-process gitstatusd--proc)
+    (setq gitstatusd--proc nil))
+  (gitstatusd--clear-callbacks))
 
 
 ;;; Utility functions
@@ -134,6 +145,7 @@ Immediately return the request ID."
 (defun gitstatusd--make-process ()
   "Create gitstatusd process if it doesn't exist."
   (unless gitstatusd--proc
+    (gitstatusd--clear-callbacks)
     (let* ((cmd-args (split-string gitstatusd-cmd-args))
 	   (proc (push (expand-file-name gitstatusd-exe) cmd-args)))
       (setq gitstatusd--proc
@@ -149,10 +161,14 @@ Immediately return the request ID."
 (defun gitstatusd--filter (proc str)
   "Filter gitstatusd PROC process's STR output."
   (if (process-live-p proc)
-      (when gitstatusd-callback
-	(dolist (res (split-string str gitstatusd--record-sep t))
-	  (let ((proc (apply #'gitstatusd-create (split-string res gitstatusd--unit-sep))))
-	    (funcall gitstatusd-callback proc))))
+      (dolist (res (split-string str gitstatusd--record-sep t))
+	(let* ((proc-out (apply #'gitstatusd-create (split-string res gitstatusd--unit-sep)))
+	       (req-id (gitstatusd-req-id proc-out))
+	       (gitstatusd-callback (gethash req-id gitstatusd--callbacks)))
+	  (when gitstatusd-callback
+	    (remhash req-id gitstatusd--callbacks)
+	    (funcall gitstatusd-callback proc-out))))
+    (gitstatusd--clear-callbacks)
     ;; Create this buffer only in case of an error, as the process' buffer is nil
     (with-current-buffer (get-buffer-create "*gitstatusd err*")
       (when (not (executable-find gitstatusd-exe))
@@ -164,6 +180,12 @@ for the installation instructions and ensure it is in path.\n"))
   "Process PROC sentinel."
   (when (memq (process-status proc) '(exit signal))
     (setq gitstatusd--proc nil)))
+
+(defun gitstatusd--clear-callbacks ()
+  "Clear callbacks structure."
+  (when gitstatusd--callbacks
+    (clrhash gitstatusd--callbacks)
+    (setq gitstatusd--callbacks nil)))
 
 (provide 'gitstatusd)
 ;;; gitstatusd.el ends here

@@ -62,7 +62,8 @@
 ;;;###autoload
 (defun gitstatus-eshell-start ()
   "Run `gitstatusd' to get the `gitstatus' information."
-  (setq gitstatus-eshell--req-id (gitstatusd-get-status default-directory)))
+  (setq gitstatus-eshell--req-id
+	(gitstatusd-get-status default-directory #'gitstatus-eshell-build)))
 
 ;;;###autoload
 (defun gitstatus-eshell-build (res)
