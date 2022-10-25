@@ -38,6 +38,7 @@ The sorting mode will be used from now on."
 					    ("Ext" . ("-X" . nil))
 					    ("Ext reversed" . ("-X" . t))) t)))
   (let ((so (car sort-order)))
+        (message "so=%s" so)
     (when (and so (string-match-p "\\(?:-[SXtv]\\)$" so))
       (ig-dired-sort-helper so (cdr sort-order)))))
 
@@ -54,6 +55,12 @@ The sorting mode will be used from now on."
 	    (unless (string-match-p "^\\*.*\\*$" (buffer-name (current-buffer)))
 	      (if (string-match-p "^--reverse" das)
 		  (if asc " ↑" " ↓") (if asc " ↓" " ↑"))))))
+
+(with-eval-after-load 'wdired
+  (setq wdired-allow-to-change-permissions t
+	wdired-use-dired-vertical-movement t)
+;; Fix issue with switches not shown in mode-line when exiting `wdired'
+(advice-add 'wdired-change-to-dired-mode :after #'dired-sort-set-mode-line))
 
 ;; "mp4" "mp4v" "mkv" "mpg" "mpeg" "webm" "webp" "vob" "wmv" "avi" "ts" "mts" "vid" "flac" "midi" "mka" "mp3" "ogg" "wav" "oga" "opus" "spx"
 (defconst ig-dired-media-ext "\\(?:\\.\\(?:avi\\|flac\\|m\\(?:idi\\|k[av]\\|p\\(?:4v\\|eg\\|[34g]\\)\\|ts\\)\\|o\\(?:g[ag]\\|pus\\)\\|spx\\|ts\\|v\\(?:id\\|ob\\)\\|w\\(?:av\\|eb[mp]\\|mv\\)\\)\\)$" "Dired media files extensions.")

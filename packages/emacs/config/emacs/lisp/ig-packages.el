@@ -101,7 +101,7 @@
 (setq vertico-cycle t)
 
 (define-key vertico-map [?\t] #'vertico-insert-unless-tramp)
-(define-key vertico-map [\M-left] #'vertico-directory-delete-entry)
+(define-key vertico-map [\M-up] #'vertico-directory-delete-entry)
 (define-key vertico-map [\M-right] #'vertico-directory-enter)
 (add-hook 'minibuffer-setup-hook #'vertico-repeat-save)
 (add-hook 'rfn-eshadow-update-overlay-hook #'vertico-directory-tidy)

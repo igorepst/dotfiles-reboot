@@ -131,19 +131,6 @@ Immediately return the request ID."
 
 ;;; Utility functions
 
-(defun gitstatusd--filter (proc str)
-  "Filter gitstatusd PROC process's STR output."
-  (if (process-live-p proc)
-      (when gitstatusd-callback
-	(dolist (res (split-string str gitstatusd--record-sep t))
-	  (let ((proc (apply #'gitstatusd-create (split-string res gitstatusd--unit-sep))))
-	    (funcall gitstatusd-callback proc))))
-    (with-current-buffer (get-buffer-create "*gitstatusd err*")
-      (when (not (executable-find gitstatusd-exe))
-	(insert "Cannot find gitstatusd executable. See https://github.com/romkatv/gitstatus
-for the installation instructions and ensure it is in path.\n"))
-      (insert str))))
-
 (defun gitstatusd--make-process ()
   "Create gitstatusd process if it doesn't exist."
   (unless gitstatusd--proc
@@ -155,9 +142,23 @@ for the installation instructions and ensure it is in path.\n"))
 	     :connection-type 'pipe
 	     :sentinel #'gitstatusd--sentinel
 	     :filter #'gitstatusd--filter
-	     :command proc))
-      (set-process-query-on-exit-flag gitstatusd--proc nil)))
+	     :noquery t
+	     :command proc))))
   gitstatusd--proc)
+
+(defun gitstatusd--filter (proc str)
+  "Filter gitstatusd PROC process's STR output."
+  (if (process-live-p proc)
+      (when gitstatusd-callback
+	(dolist (res (split-string str gitstatusd--record-sep t))
+	  (let ((proc (apply #'gitstatusd-create (split-string res gitstatusd--unit-sep))))
+	    (funcall gitstatusd-callback proc))))
+    ;; Create this buffer only in case of an error, as the process' buffer is nil
+    (with-current-buffer (get-buffer-create "*gitstatusd err*")
+      (when (not (executable-find gitstatusd-exe))
+	(insert "Cannot find gitstatusd executable. See https://github.com/romkatv/gitstatus
+for the installation instructions and ensure it is in path.\n"))
+      (insert str))))
 
 (defun gitstatusd--sentinel (proc _)
   "Process PROC sentinel."
