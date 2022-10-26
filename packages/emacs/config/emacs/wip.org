@@ -33,7 +33,10 @@ fix title when using x/x. - see https://github.com/CyberShadow/term-title
 (gitstatus-start-with-path "~/dotfiles-reboot/README.md")
 
 https://github.com/melpa/melpa/blob/master/CONTRIBUTING.org
-;; gitstatusd should be buffer local and then it should be killed when eshell exits!
+** ~/dotfiles-reboot $    master
+with point after $
+** colors after that are left green
+** what if there is another $ in cmd
 
 work git: permission denied publickey
 only when started by systemd before X
