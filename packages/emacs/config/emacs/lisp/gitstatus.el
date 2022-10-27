@@ -273,12 +273,12 @@ Propertize with FACE if needed."
 	  (setq ret
 		(concat
 		 (gitstatus--fontify gitstatus-tag-icon 'gitstatus-default-face)
-		 (gitstatus--fontify (gitstatus--branch-truncate branch) 'gitstatus-clean-face)))
+		 (gitstatus--fontify (gitstatus--branch-truncate ret) 'gitstatus-clean-face)))
 	(setq ret (gitstatusd-commit-hash res))
 	(setq ret
 	      (concat
 	       (gitstatus--fontify gitstatus-hash-icon 'gitstatus-default-face)
-	       (gitstatus--fontify (substring branch 0 7) 'gitstatus-clean-face)))))
+	       (gitstatus--fontify (substring ret 0 7) 'gitstatus-clean-face)))))
     (when (and (gitstatus--string-not-empty-p up-branch) (not (string-equal up-branch branch)))
       (setq ret (concat ret
 			(gitstatus--fontify gitstatus-upstream-sep 'gitstatus-default-face)
