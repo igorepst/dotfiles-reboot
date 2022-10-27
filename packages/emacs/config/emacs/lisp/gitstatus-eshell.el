@@ -107,9 +107,8 @@
     (when (and mstart (> cnt 0))
       (while (> cnt 0)
 	(let* ((start (if (= cnt gitstatus-eshell-prompt-lines) mstart (line-beginning-position)))
-	       (end (if (= cnt gitstatus-eshell-prompt-lines) (match-end 0) (line-end-position)))
-	       (str (buffer-substring start end)))
-	  (string-match gitstatus-eshell-neighbour-regex str)
+	       (end (if (= cnt gitstatus-eshell-prompt-lines) (match-end 0) (line-end-position))))
+	  (string-match gitstatus-eshell-neighbour-regex (buffer-substring start end))
 	  (setq place
 		(if gitstatus-eshell-is-neighbour-append
 		    (match-end 1)
