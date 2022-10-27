@@ -76,12 +76,12 @@
   :type 'string
   :group 'gitstatus)
 
-(defcustom gitstatus-tag-icon "@"
+(defcustom gitstatus-tag-icon "#"
   "Icon for the tag."
   :type 'string
   :group 'gitstatus)
 
-(defcustom gitstatus-hash-icon "#"
+(defcustom gitstatus-hash-icon "@"
   "Icon for the hash."
   :type 'string
   :group 'gitstatus)
