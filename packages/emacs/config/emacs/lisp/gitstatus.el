@@ -51,7 +51,7 @@
   "Front-end for `gitstatusd'."
   :group 'gitstatusd)
 
-(defcustom gitstatus-prefix nil
+(defcustom gitstatus-prefix "on "
   "Prefix to prepend to the `gitstatus'."
   :type 'string
   :group 'gitstatus)

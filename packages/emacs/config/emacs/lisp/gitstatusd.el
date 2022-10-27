@@ -110,24 +110,25 @@
   "Make asynchronous request to gitstatusd for PATH with CALLBACK.
 
 Immediately return the request ID."
-  (let ((proc (gitstatusd--make-process)))
-    ;; As gitstatusd is a daemon we assume that when the process dies,
-    ;; its output is either an error or a garbage
-    (when (process-live-p proc)
-      (let* ((dir (expand-file-name path))
-	     (req-id (concat
-		      (file-name-nondirectory (directory-file-name dir)) "-"
-		      (mapconcat #'number-to-string (current-time) "")))
-	     (rec (concat req-id gitstatusd--unit-sep dir
-			  gitstatusd--unit-sep
-			  (if gitstatusd-is-compute-by-index "0" : "1")
-			  gitstatusd--record-sep)))
-	(when callback
-	  (unless gitstatusd--callbacks
-	    (setq gitstatusd--callbacks (make-hash-table :test 'equal)))
-	  (puthash req-id callback gitstatusd--callbacks))
-	(process-send-string (gitstatusd--make-process) rec)
-	req-id))))
+  (let ((dir (expand-file-name path)))
+    (unless (file-remote-p dir)
+      (let ((proc (gitstatusd--make-process)))
+	;; As gitstatusd is a daemon we assume that when the process dies,
+	;; its output is either an error or a garbage
+	(when (process-live-p proc)
+	  (let* ((req-id (concat
+			  (file-name-nondirectory (directory-file-name dir)) "-"
+			  (mapconcat #'number-to-string (current-time) "")))
+		 (rec (concat req-id gitstatusd--unit-sep dir
+			      gitstatusd--unit-sep
+			      (if gitstatusd-is-compute-by-index "0" : "1")
+			      gitstatusd--record-sep)))
+	    (when callback
+	      (unless gitstatusd--callbacks
+		(setq gitstatusd--callbacks (make-hash-table :test 'equal)))
+	      (puthash req-id callback gitstatusd--callbacks))
+	    (process-send-string (gitstatusd--make-process) rec)
+	    req-id))))))
 
 (defun gitstatusd-kill ()
   "Kill gitstatusd process and clear callbacks.

@@ -375,7 +375,6 @@
 (with-eval-after-load 'gitstatusd
   (customize-set-variable 'gitstatusd-exe "~/.cache/gitstatus/gitstatusd-linux-x86_64"))
 (with-eval-after-load 'gitstatus
-  (customize-set-variable 'gitstatus-prefix "on ")
   (set-face-attribute 'gitstatus-default-face nil :foreground ig-color-bright-black)
   (set-face-attribute 'gitstatus-clean-face nil :foreground ig-color-bright-green)
   (set-face-attribute 'gitstatus-modified-face nil :foreground ig-color-yellow)
