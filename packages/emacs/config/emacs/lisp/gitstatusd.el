@@ -139,6 +139,11 @@ They will be recreated on the next request."
     (setq gitstatusd--proc nil))
   (gitstatusd--clear-callbacks))
 
+(defun gitstatusd-remove-callback (req-id)
+  "Remove callback with REQ-ID."
+  (when gitstatusd--callbacks
+    (remhash req-id gitstatusd--callbacks)))
+
 
 ;;; Utility functions
 
