@@ -76,12 +76,12 @@
   :type 'string
   :group 'gitstatus)
 
-(defcustom gitstatus-tag-icon "#"
+(defcustom gitstatus-tag-icon ""
   "Icon for the tag."
   :type 'string
   :group 'gitstatus)
 
-(defcustom gitstatus-hash-icon "@"
+(defcustom gitstatus-hash-icon ""
   "Icon for the hash."
   :type 'string
   :group 'gitstatus)
@@ -271,14 +271,13 @@ Propertize with FACE if needed."
       (setq ret (gitstatusd-last-tag res))
       (if (gitstatus--string-not-empty-p ret)
 	  (setq ret
-		(concat
-		 (gitstatus--fontify gitstatus-tag-icon 'gitstatus-default-face)
-		 (gitstatus--fontify (gitstatus--branch-truncate ret) 'gitstatus-clean-face)))
-	(setq ret (gitstatusd-commit-hash res))
+		(gitstatus--fontify
+		 (concat gitstatus-tag-icon " " (gitstatus--branch-truncate ret))
+		 'gitstatus-clean-face))
 	(setq ret
-	      (concat
-	       (gitstatus--fontify gitstatus-hash-icon 'gitstatus-default-face)
-	       (gitstatus--fontify (substring ret 0 7) 'gitstatus-clean-face)))))
+	      (gitstatus--fontify
+	       (concat gitstatus-hash-icon " " (substring (gitstatusd-commit-hash res) 0 7))
+	       'gitstatus-clean-face))))
     (when (and (gitstatus--string-not-empty-p up-branch) (not (string-equal up-branch branch)))
       (setq ret (concat ret
 			(gitstatus--fontify gitstatus-upstream-sep 'gitstatus-default-face)
