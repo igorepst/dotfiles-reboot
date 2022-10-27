@@ -34,7 +34,6 @@ fix title when using x/x. - see https://github.com/CyberShadow/term-title
 
 https://github.com/melpa/melpa/blob/master/CONTRIBUTING.org
 ** what if there is another $ in cmd
-** add gh/bitbucket icons
 ** what if something selected + what happens to point & mark
 
 

@@ -42,6 +42,7 @@
 ;;; Code:
 
 (require 'gitstatusd)
+(eval-when-compile (require 'cl-lib))
 
 
 ;;; Customizable variables
@@ -84,6 +85,15 @@
   "Icon for the hash."
   :type 'string
   :group 'gitstatus)
+
+(defcustom gitstatus-default-remote-icon ""
+  "Default icon for the remote URL."
+  :type 'string
+  :group 'gitstatus)
+
+(defcustom gitstatus-remote-icons '(("github" "") ("bitbucket" "") ("stash" "") ("gitlab" ""))
+  "Icons for the remote URLs."
+  :type '(alist :key-type (group string) :value-type (group string)))
 
 (defcustom gitstatus-upstream-sep ":"
   "Separator between local and upstream branch."
@@ -210,6 +220,7 @@ Propertize with FACE if needed."
 	  (msgl-s (mapconcat 'identity (reverse (gitstatus--get-counters res)) " ")))
       (concat
        (when (gitstatus--string-not-empty-p gitstatus-prefix) (gitstatus--fontify gitstatus-prefix 'gitstatus-default-face))
+       (gitstatus--fontify (concat (gitstatus--get-remote-icon res) " ") 'gitstatus-clean-face)
        branch
        (when wip (concat " " (gitstatus--fontify "wip" 'gitstatus-modified-face)))
        (when (gitstatus--string-not-empty-p msgl-s) (concat " " msgl-s))
@@ -235,6 +246,17 @@ Propertize with FACE if needed."
     (when (string-equal "-1" unstaged)
       (push (gitstatus--fontify gitstatus-unstaged-unknown-icon 'gitstatus-modified-face) msgl))
     msgl))
+
+(defun gitstatus--get-remote-icon (res)
+  "Get branch name according to RES."
+  (let ((remote-url (gitstatusd-remote-url res))
+	(icon))
+    (when remote-url
+      (cl-dolist (rem gitstatus-remote-icons)
+	(when (string-match-p (car rem) remote-url)
+	  (setq icon (car (cdr rem)))
+	  (cl-return))))
+    (if icon icon gitstatus-default-remote-icon)))
 
 (defun gitstatus--get-branch-name (res)
   "Get branch name according to RES."
