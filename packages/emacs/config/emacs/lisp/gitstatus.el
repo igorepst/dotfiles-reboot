@@ -204,16 +204,16 @@ Propertize with FACE if needed."
 (defun gitstatus-build-str (res)
   "Build `gitstatus' string from RES."
   (when (string-equal "1" (gitstatusd-is-git-repo res))
-    (let ((branch (gitstatus--get-branch-name res)))
-      (let ((case-fold-search nil)
-	    (wip (string-match "[^[:alnum:]]\*\\(wip\\|WIP\\)[^[:alnum:]]\*" (gitstatusd-commit-msg-par res))))
-	(let ((msgl-s (mapconcat 'identity (reverse (gitstatus--get-counters res)) " ")))
-	  (concat
-	   (when (gitstatus--string-not-empty-p gitstatus-prefix) (gitstatus--fontify gitstatus-prefix 'gitstatus-default-face))
-	   (when (gitstatus--string-not-empty-p branch) (concat " " branch))
-	   (when wip (concat " " (gitstatus--fontify "wip" 'gitstatus-modified-face)))
-	   (when (gitstatus--string-not-empty-p msgl-s) (concat " " msgl-s))
-	   (when (gitstatus--string-not-empty-p gitstatus-suffix) (gitstatus--fontify gitstatus-suffix 'gitstatus-default-face))))))))
+    (let ((branch (gitstatus--get-branch-name res))
+	  (case-fold-search nil)
+	  (wip (string-match "[^[:alnum:]]\*\\(wip\\|WIP\\)[^[:alnum:]]\*" (gitstatusd-commit-msg-par res)))
+	  (msgl-s (mapconcat 'identity (reverse (gitstatus--get-counters res)) " ")))
+      (concat
+       (when (gitstatus--string-not-empty-p gitstatus-prefix) (gitstatus--fontify gitstatus-prefix 'gitstatus-default-face))
+       branch
+       (when wip (concat " " (gitstatus--fontify "wip" 'gitstatus-modified-face)))
+       (when (gitstatus--string-not-empty-p msgl-s) (concat " " msgl-s))
+       (when (gitstatus--string-not-empty-p gitstatus-suffix) (gitstatus--fontify gitstatus-suffix 'gitstatus-default-face))))))
 
 
 ;;; Utility functions

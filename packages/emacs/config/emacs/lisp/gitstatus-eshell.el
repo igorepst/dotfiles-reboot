@@ -36,7 +36,7 @@
   "`eshell' front-end for `gitstatusd'."
   :group 'gitstatus)
 
-(defcustom gitstatus-eshell-neighbour-regex "\\($\\)"
+(defcustom gitstatus-eshell-neighbour-regex "\\( [$#]\\)"
   "Neighbour of the `gitstatus' in `eshell' prompt."
   :type 'string
   :group 'gitstatus-eshell)
@@ -83,8 +83,8 @@
 		      (insert (concat " " msg))
 		      (add-text-properties pos (+ 1 pos (length msg))
 					   '(read-only t
-						       front-sticky (read-only)
-						       rear-nonsticky (read-only))))))))))))))
+						       front-sticky (face read-only)
+						       rear-nonsticky (face read-only))))))))))))))
 
 
 ;;; Utility functions
