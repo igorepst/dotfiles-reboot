@@ -38,11 +38,18 @@
   :type 'file
   :group 'gitstatusd)
 
-(defcustom gitstatusd-cmd-args
-  (concat "-s -1 -u -1 -d -1 -c -1 -m -1 -v FATAL -t "
-	  (format "%s" (* 2
-			  (if (fboundp 'num-processors) (num-processors) 1))))
-  "Gitstatusd command line arguments."
+(defcustom gitstatusd-threads-num #'gitstatusd-calc-threads-num
+  "Number of threads to use for gitstatusd.
+Possible values:
+ * Integer:  Use the specified number of threads.
+ * Function: Calculate the number of threads."
+  :group 'gitstatusd
+  :type '(choice
+	  (integer  :tag "Use the specified number of threads" :value 2)
+	  (function :tag "Calculate the number of threads"     :value gitstatusd-calc-threads-num)))
+
+(defcustom gitstatusd-cmd-args "-s -1 -u -1 -d -1 -c -1 -m -1 -v FATAL"
+  "Gitstatusd command line arguments without threads argument."
   :type 'string
   :group 'gitstatusd)
 
@@ -145,6 +152,10 @@ They will be recreated on the next request."
   (when gitstatusd--callbacks
     (remhash req-id gitstatusd--callbacks)))
 
+(defun gitstatusd-calc-threads-num ()
+  "Calculates number of threads to use for gitstatusd."
+  (* 2 (if (fboundp 'num-processors) (num-processors) 1)))
+
 
 ;;; Utility functions
 
@@ -152,8 +163,13 @@ They will be recreated on the next request."
   "Create gitstatusd process if it doesn't exist."
   (unless gitstatusd--proc
     (gitstatusd--clear-callbacks)
-    (let* ((cmd-args (split-string gitstatusd-cmd-args))
-	   (proc (push (expand-file-name gitstatusd-exe) cmd-args)))
+    (let* ((numt (cond
+		  ((integerp gitstatusd-threads-num)
+		   gitstatusd-threads-num)
+		  ((functionp gitstatusd-threads-num)
+		   (funcall gitstatusd-threads-num))
+		  (t 2)))
+	   (cmd-args (split-string (concat gitstatusd-cmd-args " -t " (number-to-string numt)))))
       (setq gitstatusd--proc
 	    (make-process
 	     :name "gitstatusd"
@@ -161,7 +177,7 @@ They will be recreated on the next request."
 	     :sentinel #'gitstatusd--sentinel
 	     :filter #'gitstatusd--filter
 	     :noquery t
-	     :command proc))))
+	     :command (push (expand-file-name gitstatusd-exe) cmd-args)))))
   gitstatusd--proc)
 
 (defun gitstatusd--filter (proc str)
