@@ -154,7 +154,26 @@ They will be recreated on the next request."
 
 (defun gitstatusd-calc-threads-num ()
   "Calculates number of threads to use for gitstatusd."
-  (* 2 (if (fboundp 'num-processors) (num-processors) 1)))
+  (* 2
+     (if (fboundp 'num-processors)
+	 (num-processors)
+       (let ((num-proc
+	      ;; Based on "Counting Processor Cores in Emacs" by Christopher Wellons
+	      ;; https://nullprogram.com/blog/2015/10/14/
+	      (cond ((eq system-type 'windows-nt)
+		     (let ((number-of-processors (getenv "NUMBER_OF_PROCESSORS")))
+		       (when number-of-processors
+			 (string-to-number number-of-processors))))
+		    ((or (eq system-type 'darwin) (eq system-type 'berkeley-unix))
+		     (with-temp-buffer
+		       (ignore-errors
+			 (when (zerop (call-process "sysctl" nil t nil "-n" "hw.ncpu"))
+			   (string-to-number (buffer-string))))))
+		    (t (when (file-exists-p "/proc/cpuinfo")
+			 (with-temp-buffer
+			   (insert-file-contents "/proc/cpuinfo")
+			   (how-many "^processor[[:space:]]+:")))))))
+	 (or num-proc 1)))))
 
 
 ;;; Utility functions
@@ -169,7 +188,8 @@ They will be recreated on the next request."
 		  ((functionp gitstatusd-threads-num)
 		   (funcall gitstatusd-threads-num))
 		  (t 2)))
-	   (cmd-args (split-string (concat gitstatusd-cmd-args " -t " (number-to-string numt)))))
+	   (cmd-args (split-string (concat gitstatusd-cmd-args " -t "
+					   (number-to-string (if (< numt 1) 1 numt))))))
       (setq gitstatusd--proc
 	    (make-process
 	     :name "gitstatusd"

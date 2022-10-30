@@ -67,6 +67,7 @@
 		  (t "%b"))))))
 
 (set-default-coding-systems 'utf-8)
+(push '(".*" . utf-8) process-coding-system-alist)
 
 (run-with-idle-timer 0.1 nil (lambda()
 			       (require 'ig-fonts)
