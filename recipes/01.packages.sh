@@ -15,7 +15,7 @@ function doWork() {
 
     local add_arr
     case "${OS_ID}" in
-        arch) add_arr=(polkit python python-pip terminus-font xorg-server xorg-xrdb xorg-xinit unzip ttf-dejavu upower acpilight picom noto-fonts ilock xorg-xrandr autorandr hsetroot intel-media-driver) ;;
+        arch) add_arr=(polkit python python-pip terminus-font xorg-server xorg-xrdb xorg-xinit unzip ttf-dejavu upower acpilight picom noto-fonts ilock xorg-xrandr autorandr hsetroot intel-media-driver gnome-keyring) ;;
         ubuntu)
             add_arr=(python3 python3-pip fonts-terminus x11-xserver-utils gnome-shell-extension-dash-to-panel p7zip-full p7zip-rar fonts-noto)
             if ! grep -q "^deb .*git-core" "/etc/apt/sources.list" "/etc/apt/sources.list.d/*" 2> /dev/null; then
