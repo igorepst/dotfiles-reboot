@@ -1,28 +1,3 @@
-
-* TODO 
-https://github.com/karthink/project-x
-#+BEGIN_SRC emacs-lisp
-(require 'project)
-(defcustom project-x-local-identifier ".project"
-  "Filename(s) that identifies a directory as a project.
-You can specify a single filename or a list of names."
-  :type '(choice (string :tag "Single file")
-                 (repeat (string :tag "Filename")))
-  :group 'project-x)
-
-(defun project-x-try-local (dir)
-  "Determine if DIR is a non-VC project.
-DIR must include a .project file to be considered a project."
-  (if-let ((root (if (listp project-x-local-identifier)
-                     (seq-some (lambda (n)
-                                 (locate-dominating-file dir n))
-                               project-x-local-identifier)
-                   (locate-dominating-file dir project-x-local-identifier))))
-      (cons 'local root)))
-
-(add-hook 'project-find-functions 'project-x-try-local 90)
-#+END_SRC
-
 * TODO ig-open-dired-2pane:
 parse cmd arg "-2d" for reg. Emacs
 fix title when using x/x. - see https://github.com/CyberShadow/term-title

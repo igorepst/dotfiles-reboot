@@ -6,6 +6,7 @@
 ;;; Code:
 
 (setq vc-follow-symlinks t
+      vc-handled-backends '(Git)
       completion-ignore-case t
       tab-always-indent 'complete
       read-buffer-completion-ignore-case t

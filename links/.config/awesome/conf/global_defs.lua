@@ -43,6 +43,12 @@ awful.keyboard.append_global_keybindings({
         description = 'Show logout screen',
         group = 'custom',
     }),
+    awful.key({ }, 'Print', function()
+        awful.spawn('gnome-screenshot -i')
+    end, {
+        description = 'run file explorer',
+        group = 'launcher',
+    }),
     awful.key({ modkey }, 'Left', awful.tag.viewprev, { description = 'view previous', group = 'tag' }),
     awful.key({ modkey }, 'Right', awful.tag.viewnext, { description = 'view next', group = 'tag' }),
     awful.key({ modkey }, 'Escape', awful.tag.history.restore, { description = 'go back', group = 'tag' }),

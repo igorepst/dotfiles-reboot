@@ -495,6 +495,26 @@
 (put 'minibuffer-down-from-outside 'repeat-map 'ig-custom-minibuffer-map)
 (put 'minibuffer-up-from-outside 'repeat-map 'ig-custom-minibuffer-map)
 
+
+
+;; https://github.com/karthink/project-x
+;; It is not on Melpa
+(with-eval-after-load 'project
+  
+  (defvar project-x-local-identifier ".emacs-project"
+    "Filename that identifies a directory as a project.")
+  
+  (defun project-x-try-local (dir)
+    "Determine if DIR is a project."
+    (let ((root (locate-dominating-file dir project-x-local-identifier)))
+      (if root (cons 'local root) nil)))
+
+  (cl-defmethod project-root ((project (head local)))
+  "Return root directory of current PROJECT."
+  (cdr project))
+
+  (add-hook 'project-find-functions 'project-x-try-local -90))
+
 ;; Local Variables:
 ;; byte-compile-warnings: (not free-vars unresolved)
 ;; End:
