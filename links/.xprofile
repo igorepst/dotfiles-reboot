@@ -1,14 +1,22 @@
 #!/bin/sh
+# shellcheck disable=SC1090
 
 userresources=$HOME/.Xresources
 if [ -f "${userresources}" ]; then
     xrdb -merge "${userresources}"
 fi
 
-for f in $HOME/.theme/*.Xresources; do xrdb -merge "${f}"; done
+for f in ~/.theme/*.Xresources; do xrdb -merge "${f}"; done
 
 currentThemeXFonts=$HOME/.theme/currentTheme.Xfonts
 if [ -f "${currentThemeXFonts}" ]; then
     xrdb -merge "${currentThemeXFonts}"
 fi
 
+case "${MY_PC_IS}" in
+    home)
+        ;;
+    *)
+	for f in ~/.zsh/volatile/autostart/*.zsh; do . "$f"; done
+        ;;
+esac

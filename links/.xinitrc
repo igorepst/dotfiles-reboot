@@ -26,7 +26,6 @@ case "${MY_PC_IS}" in
         exec awesome >>/tmp/awesome-stdout 2>>/tmp/awesome-stderr
         ;;
     *)
-	for f in ~/.zsh/volatile/autostart/*.zsh; do . "$f"; done
         ;;
 esac
 
