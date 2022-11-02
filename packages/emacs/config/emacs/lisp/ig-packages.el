@@ -40,7 +40,8 @@
   (setq org-fontify-whole-heading-line t
 	org-startup-with-inline-images t
 	org-default-notes-file "~/notes/tasks.org"
-	org-support-shift-select t))
+	org-support-shift-select t)
+  (push 'texinfo org-export-backends))
 
 (with-eval-after-load 'org-capture
   (setq org-capture-templates
@@ -514,6 +515,18 @@
   (cdr project))
 
   (add-hook 'project-find-functions 'project-x-try-local -90))
+
+
+
+;; Vertico handles these
+(with-eval-after-load 'tmm
+  (advice-add #'tmm-add-prompt :after #'minibuffer-hide-completions))
+
+(with-eval-after-load 'ffap
+  (advice-add #'ffap-menu-ask :around (lambda (&rest args)
+                                   (cl-letf (((symbol-function #'minibuffer-completion-help)
+                                              #'ignore))
+                                     (apply args)))))
 
 ;; Local Variables:
 ;; byte-compile-warnings: (not free-vars unresolved)

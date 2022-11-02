@@ -11,7 +11,7 @@ function doWork() {
     local pnames=""
     printf "${GREEN}Checking prerequisites packages to install:${RESET}\n\n"
 
-    local arr=(git zsh mpv xclip curl jq npm imagemagick p7zip mediainfo evince rsync gnome-screenshot)
+    local arr=(git zsh mpv xclip curl jq npm imagemagick p7zip mediainfo evince rsync gnome-screenshot texinfo)
 
     local add_arr
     case "${OS_ID}" in
