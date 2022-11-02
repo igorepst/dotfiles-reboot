@@ -13,7 +13,6 @@ export _JAVA_OPTIONS='-Dawt.useSystemAAFontSettings=on'
 export TIME_STYLE='+%d-%m-%Y %H:%M'
 
 [ -f ~/.cache/.my_pc_is ] && source ~/.cache/.my_pc_is
-for f in ~/.zsh/volatile/autostart/*.zsh; do source $f; done
 
 if [ "${MY_PC_IS}" = 'home' ] && [ -z "${DISPLAY}" ] && [ "${XDG_VTNR}" -eq 1 ]; then
   exec startx
