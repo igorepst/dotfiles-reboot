@@ -1,1 +1,2 @@
-Reboot, loosely based on [dotfiles by Maxim Baz](https://github.com/maximbaz/dotfiles)
+Dotfiles for ArchLinux and Ubuntu 20.04.
+Incl. ZSH/Emacs ++
