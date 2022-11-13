@@ -373,6 +373,8 @@
 			      (add-hook 'eshell-post-command-hook #'ig-eshell-post-command nil t)
 			      (setq-local global-hl-line-mode nil
 					  imenu-generic-expression `(("Prompt" ,(concat eshell-prompt-regexp "\\(.*\\)") 1)))))
+
+(push 'gitstatus ig-selected-packages)
 (with-eval-after-load 'gitstatusd
   (customize-set-variable 'gitstatusd-exe "~/.cache/gitstatus/gitstatusd-linux-x86_64"))
 (with-eval-after-load 'gitstatus
