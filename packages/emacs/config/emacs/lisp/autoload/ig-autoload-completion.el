@@ -30,7 +30,7 @@
 (defun cape-elisp ()
   "Define Cape for Elisp."
   (setq-local completion-at-point-functions
-              (list (cape-super-capf #'elisp-completion-at-point #'cape-dabbrev) #'cape-file)))
+              (list (cape-super-capf #'cape-dabbrev #'elisp-completion-at-point) #'cape-file)))
 
 ;; Local Variables:
 ;; byte-compile-warnings: (not unresolved)
