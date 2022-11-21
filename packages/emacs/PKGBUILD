@@ -1,0 +1,122 @@
+# Maintainer: Juergen Hoetzel <juergen@archlinux.org>
+# Maintainer: Frederik Schwan <freswa at archlinux dot org>
+# Contributor: Jaroslav Lichtblau <svetlemodry@archlinux.org>
+# Contributor: Renchi Raju <renchi@green.tam.uiuc.edu>
+
+pkgbase=emacs
+pkgname=(emacs-git)
+pkgver=29.0.50.1
+pkgdesc="The extensible, customizable, self-documenting real-time display editor. Development master branch."
+pkgrel=1
+arch=('x86_64')
+url='https://www.gnu.org/software/emacs/emacs.html'
+license=('GPL3')
+depends=(
+    gmp
+    gnutls
+    jansson
+    lcms2
+    acl
+    alsa-lib
+    dbus
+    fontconfig
+    freetype2
+    libgccjit
+    gtk3
+    harfbuzz
+    ncurses
+    pango
+    systemd-libs
+    mailutils
+    zlib
+    gpm
+    libxfixes
+    libxml2
+    libxpm
+    libjpeg-turbo
+    libtiff
+    giflib
+    libpng
+    librsvg
+    libwebp
+    sqlite
+    libotf
+    libice
+    gdk-pixbuf2
+    glib2
+    libsm
+    m17n-lib
+    xcb-util
+    libxcb
+    libxi
+    webkit2gtk
+    imagemagick
+)
+provides=('emacs')
+replaces=('emacs')
+makedepends=('git' 'xorgproto' 'libxi')
+options=(!strip)
+
+pkgver() {
+    if [[ -d "$srcdir/emacs-git" ]]; then
+	printf "%s.1" \
+	       $(grep AC_INIT "$srcdir/emacs-git/configure.ac" | \
+		     awk -F',' '{ gsub("[ \\[\\]]","",$2); print $2 }')
+    else printf "29.0.50.1"
+    fi
+}
+
+prepare() {
+    # Shallow clones are NOT supported on Arch's makepkg
+    if [[ -d "$srcdir/emacs-git" ]]; then
+	cd "$srcdir/emacs-git"
+	git pull origin $(git rev-parse --abbrev-ref HEAD)
+    else
+	git clone --depth=1 https://git.savannah.gnu.org/git/emacs.git "$srcdir/emacs-git"
+	cd "$srcdir/emacs-git"
+    fi
+    [[ -x configure ]] || ( ./autogen.sh all )
+    mkdir -p "$srcdir/../build"
+}
+
+build() {
+    local _confflags="--sysconfdir=/etc \
+    --prefix=/usr \
+    --libexecdir=/usr/lib \
+    --localstatedir=/var \
+    --with-cairo \
+    --with-harfbuzz \
+    --with-libsystemd \
+    --with-modules \
+    --with-x-toolkit=gtk3 \
+    --with-mailutils \
+    --with-sound=alsa \
+    --with-imagemagick \
+    --with-json \
+    --with-native-compilation=aot \
+    --without-xaw3d \
+    --without-gsettings \
+    --without-gconf \
+    --with-small-ja-dic \
+    --with-xwidgets \
+    --without-compress-install"
+
+    export ac_cv_lib_gif_EGifPutExtensionLast=yes
+
+    cd "$srcdir/../build"
+    $srcdir/emacs-git/configure $_confflags
+    make bootstrap
+}
+
+package() {
+
+    cd "$srcdir/../build"
+    make DESTDIR="${pkgdir}" install
+
+    # remove conflict with ctags package
+    mv "${pkgdir}"/usr/bin/{ctags,ctags.emacs}
+    mv "${pkgdir}"/usr/share/man/man1/{ctags.1,ctags.emacs.1}
+
+    # fix user/root permissions on usr/share files
+    find "${pkgdir}"/usr/share/emacs/* -exec chown root:root {} \;
+}

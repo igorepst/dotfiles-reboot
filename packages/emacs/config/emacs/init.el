@@ -25,9 +25,10 @@
       auto-save-list-file-prefix nil
       backup-inhibited t
       create-lockfiles nil
-      source-directory (concat ig-cache-dir "c-src/emacs")
+      source-directory "~/aur/emacs-git/src/emacs-git/"
       tramp-persistency-file-name (concat ig-cache-dir "tramp")
       project-list-file (concat ig-cache-dir "projects")
+      multisession-directory (concat ig-cache-dir "multisession")
       find-file-visit-truename t
       completion-cycle-threshold nil
       sentence-end-double-space nil
@@ -42,7 +43,13 @@
       enable-recursive-minibuffers t
       delete-by-moving-to-trash nil
       confirm-kill-processes nil
-      warning-minimum-level :error)
+      warning-minimum-level :error
+      help-clean-buttons t
+      help-window-keep-selected t
+      show-paren-context-when-offscreen t
+      transient-levels-file (concat ig-cache-dir "transient/levels.el")
+      transient-values-file (concat ig-cache-dir "transient/values.el")
+      transient-history-file (concat ig-cache-dir "transient/history.el"))
 
 (push ".zwc" completion-ignored-extensions)
 (push '("-2d" . ig-open-dired-2pane) command-switch-alist)
@@ -75,7 +82,7 @@
 			       (require 'ig-packages-load)
 			       (require 'ig-packages)))
 
-;; Local Variables:
+ ;; Local Variables:
 ;; byte-compile-warnings: (not free-vars)
 ;; End:
 (provide 'init)

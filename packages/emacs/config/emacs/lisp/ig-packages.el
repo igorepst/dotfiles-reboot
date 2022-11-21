@@ -73,6 +73,7 @@
   (delete-selection-mode)
   (column-number-mode)
   (global-goto-address-mode)
+  (undelete-frame-mode)
   (repeat-mode))
 (with-current-buffer "*scratch*"
   (emacs-lock-mode 'kill))

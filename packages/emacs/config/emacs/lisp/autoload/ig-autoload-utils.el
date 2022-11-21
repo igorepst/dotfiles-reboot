@@ -5,32 +5,6 @@
 
 ;;; Code:
 
-(defun package-update (name)
-  "Update package NAME if a newer version exists."
-  (interactive
-   (list (completing-read
-          "Update package: " (package--updateable-packages) nil t)))
-  (let ((package (if (symbolp name)
-                     name
-                   (intern name))))
-    (package-delete (cadr (assq package package-alist)) 'force)
-    (package-install package 'dont-select)))
-
-(defun package--updateable-packages ()
-  "Initialize the package system to get the list of package symbols for completion."
-  (package--archives-initialize)
-  (mapcar
-   #'car
-   (seq-filter
-    (lambda (elt)
-      (let ((available
-             (assq (car elt) package-archive-contents)))
-        (and available
-             (version-list-<
-              (package-desc-priority-version (cadr elt))
-              (package-desc-priority-version (cadr available))))))
-    package-alist)))
-
 (defun ig-write-selected-packages ()
   "Write selected packages to cache."
   (with-temp-buffer
@@ -62,8 +36,6 @@
 
 Refresh quickstart as needed automatically in install/delete."
   (interactive)
-  (if (version< "29.0" emacs-version)
-      (error "Rewrite to use built-in functions!"))
   (ignore-errors (exit-minibuffer))
   (princ "Refreshing package contents\n")
   (require 'ig-packages-load)
@@ -82,13 +54,6 @@ Refresh quickstart as needed automatically in install/delete."
       (mapc (lambda (p) (package-install p 'dont-select)) not-installed)
       (princ "Done\n")))
   (setq package-selected-packages (copy-tree ig-selected-packages))
-  (let ((updateable (package--updateable-packages)))
-    (if (not updateable)
-        (princ "No packages to update\n")
-      (princ (format "Updating packages: %s\n" (mapconcat #'symbol-name updateable " ")))
-      (mapc #'package-update updateable)
-      (princ "Done\n")))
-  (setq package-selected-packages (copy-tree ig-selected-packages))
   (let ((removable (package--removable-packages)))
     (if (not removable)
 	(princ "No packages to remove\n")
@@ -96,6 +61,13 @@ Refresh quickstart as needed automatically in install/delete."
       (mapc (lambda (p)
 	      (package-delete (cadr (assq p package-alist)) t))
             removable)
+      (princ "Done\n")))
+  (setq package-selected-packages (copy-tree ig-selected-packages))
+  (let ((updateable (package--updateable-packages)))
+    (if (not updateable)
+        (princ "No packages to update\n")
+      (princ (format "Updating packages: %s\n" (mapconcat #'symbol-name updateable " ")))
+      (mapc #'package-update updateable)
       (princ "Done\n")))
   (princ "Updating local autoloads\n")
   (ig-update-local-autoloads)

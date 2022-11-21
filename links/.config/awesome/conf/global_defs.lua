@@ -34,6 +34,12 @@ awful.keyboard.append_global_keybindings({
     end, {
         description = 'run visual editor',
         group = 'launcher',
+     }),
+     awful.key({ modkey }, 'u', function()
+        awful.spawn('emacsReopenFrame')
+    end, {
+        description = 'reopen Emacs frame',
+        group = 'launcher',
     }),
     awful.key({}, 'XF86PowerOff', function()
         local logoutw = require('widgets.logout.widget')

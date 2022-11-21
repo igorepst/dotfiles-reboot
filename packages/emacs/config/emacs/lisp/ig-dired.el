@@ -65,7 +65,6 @@ The sorting mode will be used from now on."
 ;; "mp4" "mp4v" "mkv" "mpg" "mpeg" "webm" "webp" "vob" "wmv" "avi" "ts" "mts" "vid" "flac" "midi" "mka" "mp3" "ogg" "wav" "oga" "opus" "spx"
 (defconst ig-dired-media-ext "\\(?:\\.\\(?:avi\\|flac\\|m\\(?:idi\\|k[av]\\|p\\(?:4v\\|eg\\|[34g]\\)\\|ts\\)\\|o\\(?:g[ag]\\|pus\\)\\|spx\\|ts\\|v\\(?:id\\|ob\\)\\|w\\(?:av\\|eb[mp]\\|mv\\)\\)\\)$" "Dired media files extensions.")
 
-(require 'dired-x)
 (setq dired-clean-confirm-killing-deleted-buffers nil
       dired-guess-shell-alist-user
       `((,ig-dired-media-ext "mpv")
