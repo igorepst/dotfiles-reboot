@@ -25,7 +25,10 @@
   (let ((files (dired-get-marked-files t current-prefix-arg)))
     (if files
 	(let ((cmd (dired-guess-default files))
-	      (cmd-prefix (if attached "" "nohup 1>/dev/null 2>&1 ")))
+	      (cmd-prefix
+	       (unless attached
+		 (if (daemonp) "systemd-run --user --collect "
+		   "nohup 1>/dev/null 2>&1 "))))
 	  (when (listp cmd) (setq cmd (car cmd)))
 	  (cond ((null cmd)
 		 (setq cmd (read-shell-command "Run async cmd with: " nil 'dired-shell-command-history)))

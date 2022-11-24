@@ -99,7 +99,7 @@ Optional argument REVERSE - whether to reverse the sort."
 ;; http://stackoverflow.com/a/18951887/407953
 ;;;###autoload
 (defun ig-find-alternative-file-with-sudo ()
-  "Open the file with 'sudo'."
+  "Open the file with \=sudo\=."
   (interactive)
   (let ((bname (expand-file-name (or buffer-file-name
 				     default-directory)))

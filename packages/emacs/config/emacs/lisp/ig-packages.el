@@ -53,17 +53,10 @@
 	isearch-lazy-highlight t
 	search-upper-case nil
 	isearch-wrap-pause 'no-ding)
-  ;; http://stackoverflow.com/a/287067/407953
-  ;; TODO rewrite to use newer advice-add
-  (defadvice isearch-search (after isearch-no-fail activate)
-    "Wrap isearch automatically."
-    (unless isearch-success
-      (ad-disable-advice 'isearch-search 'after 'isearch-no-fail)
-      (ad-activate 'isearch-search)
-      (isearch-repeat (if isearch-forward 'forward))
-      (ad-enable-advice 'isearch-search 'after 'isearch-no-fail)
-      (ad-activate 'isearch-search)))
-  (define-key isearch-mode-map [remap isearch-delete-char] 'isearch-del-char))
+  (defun ig-clear-isearch()
+    (interactive)
+    (isearch-del-char most-positive-fixnum))
+  (define-key isearch-mode-map [\C-backspace] #'ig-clear-isearch))
 
 (let ((inhibit-message t))
   (global-hl-line-mode)

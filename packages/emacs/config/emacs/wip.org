@@ -2,12 +2,40 @@
 parse cmd arg "-2d" for reg. Emacs
 fix title when using x/x. - see https://github.com/CyberShadow/term-title
 
-* TODO gitstatusd
-
-https://github.com/melpa/melpa/blob/master/CONTRIBUTING.org
-
 
 work git: permission denied publickey
 only when started by systemd before X
 https://github.com/purcell/exec-path-from-shell
+
+
+Undelete frame:
+https://lists.gnu.org/archive/html/bug-gnu-emacs/2022-11/msg02036.html
+
+(defun undelete-frame (&optional arg)
+  "Undelete a frame deleted with `delete-frame'.
+Without a prefix argument, undelete the most recently deleted
+frame.
+With a numerical prefix argument ARG between 1 and 16, where 1 is
+most recently deleted frame, undelete the ARGth deleted frame.
+When called from Lisp, returns the new frame."
+  (interactive "P")
+  (if (not undelete-frame-mode)
+      (user-error "Undelete-Frame mode is disabled")
+    (if (consp arg)
+        (user-error "Missing deleted frame number argument")
+      (let* ((number (pcase arg ('nil 1) ('- -1) (_ arg)))
+             (frame-data (nth (1- number) undelete-frame--deleted-frames)))
+        (if (not (<= 1 number 16))
+            (user-error "%d is not a valid deleted frame number argument"
+                        number)
+          (if (not frame-data)
+              (user-error "No deleted frame with number %d" number)
+              (setq undelete-frame--deleted-frames
+                    (delq frame-data undelete-frame--deleted-frames))
+              (let* ((default-frame-alist (nth 1 frame-data))
+                     (frame (make-frame '((window-system . x)))))
+                (window-state-put (nth 2 frame-data) (frame-root-window frame) 'safe)
+                (select-frame-set-input-focus frame)
+                frame)))))))
+
 

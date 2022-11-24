@@ -2,10 +2,11 @@
 # Maintainer: Frederik Schwan <freswa at archlinux dot org>
 # Contributor: Jaroslav Lichtblau <svetlemodry@archlinux.org>
 # Contributor: Renchi Raju <renchi@green.tam.uiuc.edu>
+# Maintainer: Pedro A. López-Valencia <https://aur.archlinux.org/users/vorbote>
 
 pkgbase=emacs
 pkgname=(emacs-git)
-pkgver=29.0.50.1
+pkgver=29.0.50.162463
 pkgdesc="The extensible, customizable, self-documenting real-time display editor. Development master branch."
 pkgrel=1
 arch=('x86_64')
@@ -51,30 +52,26 @@ depends=(
     libxi
     webkit2gtk
     imagemagick
+    tree-sitter
 )
 provides=('emacs')
 replaces=('emacs')
 makedepends=('git' 'xorgproto' 'libxi')
 options=(!strip)
+source=("emacs-git::git+https://git.savannah.gnu.org/git/emacs.git")
+b2sums=('SKIP')
 
 pkgver() {
-    if [[ -d "$srcdir/emacs-git" ]]; then
-	printf "%s.1" \
-	       $(grep AC_INIT "$srcdir/emacs-git/configure.ac" | \
-		     awk -F',' '{ gsub("[ \\[\\]]","",$2); print $2 }')
-    else printf "29.0.50.1"
-    fi
+    cd "$srcdir/emacs-git"
+
+    printf "%s.%s" \
+	   $(grep AC_INIT configure.ac | \
+		 awk -F',' '{ gsub("[ \\[\\]]","",$2); print $2 }') \
+	   $(git rev-list --count HEAD)
 }
 
 prepare() {
-    # Shallow clones are NOT supported on Arch's makepkg
-    if [[ -d "$srcdir/emacs-git" ]]; then
-	cd "$srcdir/emacs-git"
-	git pull origin $(git rev-parse --abbrev-ref HEAD)
-    else
-	git clone --depth=1 https://git.savannah.gnu.org/git/emacs.git "$srcdir/emacs-git"
-	cd "$srcdir/emacs-git"
-    fi
+    cd "$srcdir/emacs-git"
     [[ -x configure ]] || ( ./autogen.sh all )
     mkdir -p "$srcdir/../build"
 }
@@ -99,7 +96,8 @@ build() {
     --without-gconf \
     --with-small-ja-dic \
     --with-xwidgets \
-    --without-compress-install"
+    --without-compress-install \
+    --with-tree-sitter"
 
     export ac_cv_lib_gif_EGifPutExtensionLast=yes
 
