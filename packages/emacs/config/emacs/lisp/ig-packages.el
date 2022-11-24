@@ -299,29 +299,16 @@
 
 
 
-;; (push 'lsp-mode ig-selected-packages)
-;; (push 'lsp-ui ig-selected-packages)
-;; (push 'consult-lsp ig-selected-packages)
-;; (with-eval-after-load 'lsp-mode
-;;   (define-key lsp-mode-map (kbd "C-c l") lsp-command-map)
-;;   (setq lsp-log-io nil
-;; 	lsp-enable-suggest-server-download nil
-;; 	lsp-session-file (concat ig-cache-dir "lsp-session-v1")
-;; 	lsp-warn-no-matched-clients nil
-;; 	lsp-enable-snippet nil
-;; 	lsp-completion-provider :none
-;; 	lsp-lua-diagnostics-globals ["vim" "awesome" "client" "screen" "tag" "mouse" "keygrabber"])
-;;   (let* ((ig--sumneko-root-path (expand-file-name "~/.cache/lspServers/lua/sumneko-lua/extension/server/"))
-;; 	 (ig--sumneko-bin (concat ig--sumneko-root-path "bin/lua-language-server"))
-;; 	 (ig--sumneko-main (concat ig--sumneko-root-path "main.lua")))
-;;     (setq lsp-clients-lua-language-server-install-dir ig--sumneko-root-path
-;; 	  lsp-clients-lua-language-server-bin ig--sumneko-bin
-;; 	  lsp-clients-lua-language-server-main-location ig--sumneko-main)))
-;; (add-hook 'lua-mode-hook 'lsp-deferred)
-;; (add-hook 'sh-mode-hook 'lsp-deferred)
+(with-eval-after-load 'eglot
+   (let* ((ig--sumneko-root-path (expand-file-name "~/.cache/lspServers/lua/sumneko-lua/extension/server/"))
+	 (ig--sumneko-bin (concat ig--sumneko-root-path "bin/lua-language-server"))
+	 (ig--sumneko-main (concat ig--sumneko-root-path "main.lua")))
+     (push `(lua-mode . (,ig--sumneko-bin ,ig--sumneko-main)) eglot-server-programs))
+   (define-key eglot-mode-map (kbd "C-c s") 'consult-eglot-symbols))
+(add-hook 'lua-mode-hook 'eglot-ensure)
+(add-hook 'sh-mode-hook 'eglot-ensure)
 
-;; (push 'lsp-pyright ig-selected-packages)
-;; (add-hook 'python-mode-hook (lambda () (require 'lsp-pyright) (lsp-deferred)))
+(push 'consult-eglot ig-selected-packages)
 
 
 
