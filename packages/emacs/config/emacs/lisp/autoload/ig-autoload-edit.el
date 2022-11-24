@@ -106,6 +106,7 @@ Optional argument REVERSE - whether to reverse the sort."
         (pt (point)))
     (setq bname (or (file-remote-p bname 'localname)
 		    (concat "/sudo::" bname)))
+    (eval-when-compile (require 'cl-lib))
     (cl-flet ((server-buffer-done
 	       (buffer &optional for-killing)
 	       nil))
@@ -139,7 +140,7 @@ This function is suitable to add to `find-file-hook'."
 
 ;;;###autoload
 (defun ig-consult-keep-lines()
-  "Call consult-keep-lines with full lines reqion."
+  "Call `consult-keep-lines' with full lines reqion."
   (interactive)
   (when (use-region-p)
     ;; Include last selected line

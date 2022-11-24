@@ -129,17 +129,17 @@ CUR-X and CUR-Y - cursor X and Y."
 ;;;###autoload
 (defun alt-completing-read (prompt collection &optional nosort def)
   "Call `completing-read' but return the value from COLLECTION, using the PROMPT."
-  (cl-flet ((assoc-list-p (obj) (and (listp obj) (consp (car obj)))))
-    (let* ((choice
-            (completing-read prompt
-			     (if nosort
-				 (presorted-completion-table collection)
-			       collection)))
-           (results (cond
-                     ((hash-table-p collection) (gethash choice collection))
-                     ((assoc-list-p collection) (alist-get choice collection def nil 'equal))
-                     (t                         choice))))
-      results)))
+  (let* ((choice
+          (completing-read prompt
+			   (if nosort
+			       (presorted-completion-table collection)
+			     collection)))
+         (results (cond
+                   ((hash-table-p collection) (gethash choice collection))
+                   ((and (listp collection) (consp (car collection)))
+		    (alist-get choice collection def nil 'equal))
+                   (t                         choice))))
+    results))
 
 ;; TODO it freezes sometimes
 ;;;###autoload

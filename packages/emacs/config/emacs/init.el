@@ -61,6 +61,7 @@
 
 (global-display-line-numbers-mode)
 
+(defvar generated-autoload-file)
 (push (file-name-directory generated-autoload-file) load-path)
 (load generated-autoload-file t t t)
 
@@ -85,7 +86,6 @@
 			       (require 'ig-packages)))
 
 ;; Local Variables:
-;; byte-compile-warnings: (not free-vars)
 ;; End:
 (provide 'init)
 ;;; init.el ends here

@@ -6,7 +6,7 @@
 ;;; Code:
 
 (require 'ig-common)
-(defconst ig-selected-packages '() "Autogeneration of package-selected-packages.")
+(defconst ig-selected-packages '() "Autogeneration of `package-selected-packages'.")
 
 (push 'lua-mode ig-selected-packages)
 (push '("\\.lua\\'" . lua-mode) auto-mode-alist)
@@ -212,8 +212,7 @@
 (define-key minibuffer-local-map "\M-s" 'consult-history) ;; orig. next-matching-history-element
 (define-key minibuffer-local-map "\M-r" 'consult-history) ;; orig. previous-matching-history-element
 
-(push 'consult-flycheck ig-selected-packages)
-(define-key global-map "\M-gf" 'consult-flycheck)
+(define-key global-map "\M-gf" 'consult-flymake)
 
 
 
@@ -292,38 +291,37 @@
 
 
 
-(push 'flycheck ig-selected-packages)
-(add-hook 'prog-mode-hook 'flycheck-mode)
-(with-eval-after-load 'flycheck
-  (setq flycheck-emacs-lisp-load-path 'inherit))
+(add-hook 'prog-mode-hook 'flymake-mode)
+(with-eval-after-load 'flymake
+  (setq elisp-flymake-byte-compile-load-path load-path))
 
 (push 'package-lint ig-selected-packages)
 
 
 
-(push 'lsp-mode ig-selected-packages)
-(push 'lsp-ui ig-selected-packages)
-(push 'consult-lsp ig-selected-packages)
-(with-eval-after-load 'lsp-mode
-  (define-key lsp-mode-map (kbd "C-c l") lsp-command-map)
-  (setq lsp-log-io nil
-	lsp-enable-suggest-server-download nil
-	lsp-session-file (concat ig-cache-dir "lsp-session-v1")
-	lsp-warn-no-matched-clients nil
-	lsp-enable-snippet nil
-	lsp-completion-provider :none
-	lsp-lua-diagnostics-globals ["vim" "awesome" "client" "screen" "tag" "mouse" "keygrabber"])
-  (let* ((ig--sumneko-root-path (expand-file-name "~/.cache/lspServers/lua/sumneko-lua/extension/server/"))
-	 (ig--sumneko-bin (concat ig--sumneko-root-path "bin/lua-language-server"))
-	 (ig--sumneko-main (concat ig--sumneko-root-path "main.lua")))
-    (setq lsp-clients-lua-language-server-install-dir ig--sumneko-root-path
-	  lsp-clients-lua-language-server-bin ig--sumneko-bin
-	  lsp-clients-lua-language-server-main-location ig--sumneko-main)))
-(add-hook 'lua-mode-hook 'lsp-deferred)
-(add-hook 'sh-mode-hook 'lsp-deferred)
+;; (push 'lsp-mode ig-selected-packages)
+;; (push 'lsp-ui ig-selected-packages)
+;; (push 'consult-lsp ig-selected-packages)
+;; (with-eval-after-load 'lsp-mode
+;;   (define-key lsp-mode-map (kbd "C-c l") lsp-command-map)
+;;   (setq lsp-log-io nil
+;; 	lsp-enable-suggest-server-download nil
+;; 	lsp-session-file (concat ig-cache-dir "lsp-session-v1")
+;; 	lsp-warn-no-matched-clients nil
+;; 	lsp-enable-snippet nil
+;; 	lsp-completion-provider :none
+;; 	lsp-lua-diagnostics-globals ["vim" "awesome" "client" "screen" "tag" "mouse" "keygrabber"])
+;;   (let* ((ig--sumneko-root-path (expand-file-name "~/.cache/lspServers/lua/sumneko-lua/extension/server/"))
+;; 	 (ig--sumneko-bin (concat ig--sumneko-root-path "bin/lua-language-server"))
+;; 	 (ig--sumneko-main (concat ig--sumneko-root-path "main.lua")))
+;;     (setq lsp-clients-lua-language-server-install-dir ig--sumneko-root-path
+;; 	  lsp-clients-lua-language-server-bin ig--sumneko-bin
+;; 	  lsp-clients-lua-language-server-main-location ig--sumneko-main)))
+;; (add-hook 'lua-mode-hook 'lsp-deferred)
+;; (add-hook 'sh-mode-hook 'lsp-deferred)
 
-(push 'lsp-pyright ig-selected-packages)
-(add-hook 'python-mode-hook (lambda () (require 'lsp-pyright) (lsp-deferred)))
+;; (push 'lsp-pyright ig-selected-packages)
+;; (add-hook 'python-mode-hook (lambda () (require 'lsp-pyright) (lsp-deferred)))
 
 
 
