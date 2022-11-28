@@ -44,6 +44,7 @@ function doWork(){
     link ".toprc"
     link ".config/awesome"
     link ".config/iwgtk.conf"
+    link ".config/pacman"
 }
 
 doWork

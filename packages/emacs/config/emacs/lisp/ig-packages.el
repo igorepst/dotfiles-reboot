@@ -6,7 +6,7 @@
 ;;; Code:
 
 (require 'ig-common)
-(defconst ig-selected-packages '() "Autogeneration of package-selected-packages.")
+(defconst ig-selected-packages '() "Autogeneration of `package-selected-packages'.")
 
 (push 'lua-mode ig-selected-packages)
 (push '("\\.lua\\'" . lua-mode) auto-mode-alist)
@@ -53,17 +53,10 @@
 	isearch-lazy-highlight t
 	search-upper-case nil
 	isearch-wrap-pause 'no-ding)
-  ;; http://stackoverflow.com/a/287067/407953
-  ;; TODO rewrite to use newer advice-add
-  (defadvice isearch-search (after isearch-no-fail activate)
-    "Wrap isearch automatically."
-    (unless isearch-success
-      (ad-disable-advice 'isearch-search 'after 'isearch-no-fail)
-      (ad-activate 'isearch-search)
-      (isearch-repeat (if isearch-forward 'forward))
-      (ad-enable-advice 'isearch-search 'after 'isearch-no-fail)
-      (ad-activate 'isearch-search)))
-  (define-key isearch-mode-map [remap isearch-delete-char] 'isearch-del-char))
+  (defun ig-clear-isearch()
+    (interactive)
+    (isearch-del-char most-positive-fixnum))
+  (define-key isearch-mode-map [\C-backspace] #'ig-clear-isearch))
 
 (let ((inhibit-message t))
   (global-hl-line-mode)
@@ -73,6 +66,7 @@
   (delete-selection-mode)
   (column-number-mode)
   (global-goto-address-mode)
+  (undelete-frame-mode)
   (repeat-mode))
 (with-current-buffer "*scratch*"
   (emacs-lock-mode 'kill))
@@ -218,8 +212,7 @@
 (define-key minibuffer-local-map "\M-s" 'consult-history) ;; orig. next-matching-history-element
 (define-key minibuffer-local-map "\M-r" 'consult-history) ;; orig. previous-matching-history-element
 
-(push 'consult-flycheck ig-selected-packages)
-(define-key global-map "\M-gf" 'consult-flycheck)
+(define-key global-map "\M-gf" 'consult-flymake)
 
 
 
@@ -298,38 +291,24 @@
 
 
 
-(push 'flycheck ig-selected-packages)
-(add-hook 'prog-mode-hook 'flycheck-mode)
-(with-eval-after-load 'flycheck
-  (setq flycheck-emacs-lisp-load-path 'inherit))
+(add-hook 'prog-mode-hook 'flymake-mode)
+(with-eval-after-load 'flymake
+  (setq elisp-flymake-byte-compile-load-path load-path))
 
 (push 'package-lint ig-selected-packages)
 
 
 
-(push 'lsp-mode ig-selected-packages)
-(push 'lsp-ui ig-selected-packages)
-(push 'consult-lsp ig-selected-packages)
-(with-eval-after-load 'lsp-mode
-  (define-key lsp-mode-map (kbd "C-c l") lsp-command-map)
-  (setq lsp-log-io nil
-	lsp-enable-suggest-server-download nil
-	lsp-session-file (concat ig-cache-dir "lsp-session-v1")
-	lsp-warn-no-matched-clients nil
-	lsp-enable-snippet nil
-	lsp-completion-provider :none
-	lsp-lua-diagnostics-globals ["vim" "awesome" "client" "screen" "tag" "mouse" "keygrabber"])
-  (let* ((ig--sumneko-root-path (expand-file-name "~/.cache/lspServers/lua/sumneko-lua/extension/server/"))
+(with-eval-after-load 'eglot
+   (let* ((ig--sumneko-root-path (expand-file-name "~/.cache/lspServers/lua/sumneko-lua/extension/server/"))
 	 (ig--sumneko-bin (concat ig--sumneko-root-path "bin/lua-language-server"))
 	 (ig--sumneko-main (concat ig--sumneko-root-path "main.lua")))
-    (setq lsp-clients-lua-language-server-install-dir ig--sumneko-root-path
-	  lsp-clients-lua-language-server-bin ig--sumneko-bin
-	  lsp-clients-lua-language-server-main-location ig--sumneko-main)))
-(add-hook 'lua-mode-hook 'lsp-deferred)
-(add-hook 'sh-mode-hook 'lsp-deferred)
+     (push `(lua-mode . (,ig--sumneko-bin ,ig--sumneko-main)) eglot-server-programs))
+   (define-key eglot-mode-map (kbd "C-c s") 'consult-eglot-symbols))
+(add-hook 'lua-mode-hook 'eglot-ensure)
+(add-hook 'sh-mode-hook 'eglot-ensure)
 
-(push 'lsp-pyright ig-selected-packages)
-(add-hook 'python-mode-hook (lambda () (require 'lsp-pyright) (lsp-deferred)))
+(push 'consult-eglot ig-selected-packages)
 
 
 
@@ -373,6 +352,8 @@
 			      (add-hook 'eshell-post-command-hook #'ig-eshell-post-command nil t)
 			      (setq-local global-hl-line-mode nil
 					  imenu-generic-expression `(("Prompt" ,(concat eshell-prompt-regexp "\\(.*\\)") 1)))))
+
+(push 'gitstatus ig-selected-packages)
 (with-eval-after-load 'gitstatusd
   (customize-set-variable 'gitstatusd-exe "~/.cache/gitstatus/gitstatusd-linux-x86_64"))
 (with-eval-after-load 'gitstatus

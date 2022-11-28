@@ -7,11 +7,13 @@
 
 (push (concat user-emacs-directory "lisp") load-path)
 (require 'ig-common)
-(push (concat ig-cache-dir "eln-cache") native-comp-eln-load-path)
 (defvar ig--file-name-handler-alist file-name-handler-alist)
+(defvar generated-autoload-file)
 (setq default-frame-alist `((font . "DejaVuSansMono Nerd Font Mono-14") (cursor-color . ,ig-color-orange))
+      native-comp-eln-load-path `(,(concat ig-cache-dir "eln-cache")
+				 ,(car (last native-comp-eln-load-path)))
       gc-cons-threshold most-positive-fixnum
-      gc-cons-percentage 0.6
+      gc-cons-percentage 1.0
       file-name-handler-alist nil
       frame-resize-pixelwise t
       frame-inhibit-implied-resize t
@@ -36,7 +38,6 @@
 (blink-cursor-mode -1)
 
 ;; Local Variables:
-;; byte-compile-warnings: (not free-vars)
 ;; End:
 (provide 'early-init)
 ;;; early-init.el ends here

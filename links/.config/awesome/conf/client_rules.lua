@@ -57,12 +57,6 @@ ruled.client.connect_signal('request::rules', function()
     })
 
     ruled.client.append_rule({
-        id = 'kitty',
-        rule_any = { class = { 'kitty', 'kitty-vifm' } },
-        properties = { delayed_max = true },
-    })
-
-    ruled.client.append_rule({
         id = 'vivaldi',
         rule_any = { class = { 'vivaldi-stable' } },
         properties = {

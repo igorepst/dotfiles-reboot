@@ -1,7 +1,7 @@
 ;;; ig-common.el --- Common definitions -*- lexical-binding: t; -*-
 
 ;;; Commentary:
-;; Common definitions. Make Flycheck happy
+;; Common definitions.
 
 ;;; Code:
 
