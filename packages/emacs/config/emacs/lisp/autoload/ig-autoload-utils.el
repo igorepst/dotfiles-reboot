@@ -25,10 +25,9 @@
   (interactive)
   (make-directory (file-name-directory generated-autoload-file) t)
   (let ((inhibit-message t))
-    (make-directory-autoloads
+    (loaddefs-generate
      `(,user-emacs-directory ,(concat user-emacs-directory "lisp") ,(concat user-emacs-directory "lisp/autoload"))
-     generated-autoload-file))
-  (kill-buffer (file-name-nondirectory generated-autoload-file)))
+     generated-autoload-file nil nil nil t)))
 
 ;;;###autoload
 (defun ig-update-packages ()
