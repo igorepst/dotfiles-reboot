@@ -18,8 +18,9 @@
   (setq savehist-file (concat ig-cache-dir "savehist")
 	history-length 250
 	savehist-additional-variables
-	'(search-ring regexp-search-ring compile-history kill-ring
-		      shell-command-history vertico-repeat-history)))
+	'((search-ring . 10) (regexp-search-ring . 10)
+	  (kill-ring . 10) (vertico-repeat-history . 10)
+	  shell-command-history compile-history)))
 
 (with-eval-after-load 'saveplace
   (setq save-place-file (concat ig-cache-dir "saveplace")
@@ -79,6 +80,11 @@
 
 (with-eval-after-load 'dired
   (require 'ig-dired))
+
+(with-eval-after-load 'image-dired
+  (custom-set-variables
+   '(image-dired-thumb-size 256)
+   '(image-dired-dir (concat ig-cache-dir "image-dired"))))
 
 
 
@@ -300,13 +306,14 @@
 
 
 (with-eval-after-load 'eglot
-   (let* ((ig--sumneko-root-path (expand-file-name "~/.cache/lspServers/lua/sumneko-lua/extension/server/"))
+  (let* ((ig--sumneko-root-path (expand-file-name "~/.cache/lspServers/lua/sumneko-lua/extension/server/"))
 	 (ig--sumneko-bin (concat ig--sumneko-root-path "bin/lua-language-server"))
 	 (ig--sumneko-main (concat ig--sumneko-root-path "main.lua")))
-     (push `(lua-mode . (,ig--sumneko-bin ,ig--sumneko-main)) eglot-server-programs))
-   (define-key eglot-mode-map (kbd "C-c s") 'consult-eglot-symbols))
+    (push `(lua-mode . (,ig--sumneko-bin ,ig--sumneko-main)) eglot-server-programs))
+  (define-key eglot-mode-map (kbd "C-c s") 'consult-eglot-symbols))
 (add-hook 'lua-mode-hook 'eglot-ensure)
 (add-hook 'sh-mode-hook 'eglot-ensure)
+(add-hook 'python-mode-hook 'eglot-ensure)
 
 (push 'consult-eglot ig-selected-packages)
 
@@ -492,8 +499,8 @@
       (if root (cons 'local root) nil)))
 
   (cl-defmethod project-root ((project (head local)))
-  "Return root directory of current PROJECT."
-  (cdr project))
+    "Return root directory of current PROJECT."
+    (cdr project))
 
   (add-hook 'project-find-functions 'project-x-try-local -90))
 
@@ -505,9 +512,9 @@
 
 (with-eval-after-load 'ffap
   (advice-add #'ffap-menu-ask :around (lambda (&rest args)
-                                   (cl-letf (((symbol-function #'minibuffer-completion-help)
-                                              #'ignore))
-                                     (apply args)))))
+					(cl-letf (((symbol-function #'minibuffer-completion-help)
+						   #'ignore))
+					  (apply args)))))
 
 ;; Local Variables:
 ;; byte-compile-warnings: (not free-vars unresolved)

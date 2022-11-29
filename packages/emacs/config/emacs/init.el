@@ -14,7 +14,6 @@
       inhibit-default-init t
       inhibit-startup-screen t
       initial-scratch-message nil
-      initial-major-mode 'fundamental-mode
       focus-follows-mouse t
       mouse-autoselect-window nil
       disabled-command-function nil
@@ -51,7 +50,8 @@
  '(warning-minimum-level :error)
  '(transient-levels-file (concat ig-cache-dir "transient/levels.el"))
  '(transient-values-file (concat ig-cache-dir "transient/values.el"))
- '(transient-history-file (concat ig-cache-dir "transient/history.el")))
+ '(transient-history-file (concat ig-cache-dir "transient/history.el"))
+ '(find-library-include-other-files nil))
 
 (push ".zwc" completion-ignored-extensions)
 (push '("-2d" . ig-open-dired-2pane) command-switch-alist)
