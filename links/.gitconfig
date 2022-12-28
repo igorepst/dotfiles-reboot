@@ -1,6 +1,7 @@
 [include]
     # Validate: git config --global --includes user.email
     path = ~/.gitconfig-private
+    path = ~/.work/.gitconfig-work
 [core]
     excludesfile = ~/.gitignore-global
     autocrlf = input
@@ -14,6 +15,8 @@
     url = "!f() { git remote -v | awk '/fetch/{print $2}' | sed -Ee 's#(git@|git://)#http://#' -e 's@com:@com/@' | head -n1; }; f"
     co = checkout
     gold = log --graph --pretty=mine --abbrev-commit --date=relative -n 10
+	mergetest = "!f(){ git merge --no-commit --no-ff \"$1\"; git merge --abort; echo \"Merge aborted\"; };f "
+	mergetests = "!f(){ echo \"testing merge to origin/qa ...\"; git mergetest origin/qa ; echo \"testing merge to origin/stage ...\"; git mergetest origin/stage; };f "
 [pretty]
   mine = %C(red)%h%Creset - %s %C(green)(%cr) %C(bold blue)<%an>%Creset
 [diff]
