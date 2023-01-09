@@ -1,6 +1,7 @@
 #!/usr/bin/env bash
 
 function doWork() {
+    [ -z "$1" ] && echo "Pass Emacs branch to compile explicitly" && exit 1
     # https://github.com/alexmurray/emacs-snap/blob/master/snapcraft.yaml
     local arr=(
 	# Build
@@ -173,37 +174,59 @@ function doWork() {
     export CC=/usr/bin/gcc-10
     export CXX=/usr/bin/gcc-10
 
+    local skip
+    echo "Building tree-sitter library"
     if [[ -d ~/aur/tree-sitter ]]; then
 	cd ~/aur/tree-sitter
 	git fetch
+	if [[ -z "$FORCE_EMACS_COMP" && $(git rev-parse HEAD) = $(git rev-parse @{u}) ]]; then
+	    skip=1
+	else
+	    git merge origin/"$(git rev-parse --abbrev-ref HEAD)"
+	fi
     else
 	mkdir -p ~/aur
-	cd ~/aur/
+	cd ~/aur
 	git clone https://github.com/tree-sitter/tree-sitter.git tree-sitter
     fi
-    cd ~/aur/tree-sitter
-    make
-    echo "Installing tree-sitter library"
-    sudo make install
+    if [ -n "$skip" ]; then
+	echo "Skipping tree-sitter compilation as it is up to date"
+	skip=
+    else
+	cd ~/aur/tree-sitter	
+	if make -j$(nproc) | grep -v "make: Nothing to be done for 'all'"; then
+	    echo "Installing tree-sitter library"
+	    sudo make install
+	fi
+    fi
     if command -v tree-sitter >/dev/null; then
 	! ncu -gs -e 2 tree-sitter-cli && echo "Updating tree-sitter executable" && npm i -g tree-sitter-cli
     else
 	echo "Installing tree-sitter executable"
 	npm i -g tree-sitter-cli
     fi
-    
+
+    echo "Building Emacs"
     if [[ -d ~/aur/emacs-git/src ]]; then
-	cd ~/aur/emacs-git/src
+	cd ~/aur/emacs-git/src/emacs-git
 	git fetch
+	[ -z "$FORCE_EMACS_COMP" ] && skip=1
     else
 	mkdir -p ~/aur/emacs-git/src
 	cd ~/aur/emacs-git/src
 	git clone https://git.savannah.gnu.org/git/emacs.git emacs-git
     fi
     cd ~/aur/emacs-git/src/emacs-git
-
-    [[ -x configure ]] || ( ./autogen.sh )
-    local _confflags="--sysconfdir=/etc \
+    if ! git checkout "$1" >/dev/null 2>&1; then
+	echo "Cannot checkout the given branch $1"
+	exit 1
+    fi
+    if [[ -n "$skip" && $(git rev-parse HEAD) = $(git rev-parse @{u}) ]]; then
+	echo "Skipping Emacs compilation as it is up to date"
+    else	
+	git merge origin/"$1"
+	[[ -x configure ]] || ( ./autogen.sh )
+	local _confflags="--sysconfdir=/etc \
     --prefix=/usr \
     --libexecdir=/usr/lib \
     --localstatedir=/var \
@@ -225,17 +248,19 @@ function doWork() {
     --without-compress-install \
     --with-tree-sitter"
 
-    export ac_cv_lib_gif_EGifPutExtensionLast=yes
-    export CFLAGS="-march=native -O2 -pipe -fno-plt -fexceptions -Wp,-D_FORTIFY_SOURCE=2 -Wformat -Werror=format-security -fstack-clash-protection -fcf-protection"
-    export CXXFLAGS="$CFLAGS -Wp,-D_GLIBCXX_ASSERTIONS"
-    export LDFLAGS="-Wl,-O1,--sort-common,--as-needed,-z,relro,-z,now"
-    export LTOFLAGS="-flto=auto"
+	export ac_cv_lib_gif_EGifPutExtensionLast=yes
+	export CFLAGS="-march=native -O2 -pipe -fno-plt -fexceptions -Wp,-D_FORTIFY_SOURCE=2 -Wformat -Werror=format-security -fstack-clash-protection -fcf-protection"
+	export CXXFLAGS="$CFLAGS -Wp,-D_GLIBCXX_ASSERTIONS"
+	export LDFLAGS="-Wl,-O1,--sort-common,--as-needed,-z,relro,-z,now"
+	export LTOFLAGS="-flto=auto"
 
-    mkdir -p ~/aur/emacs-git/build
-    cd ~/aur/emacs-git/build
-    ~/aur/emacs-git/src/emacs-git/configure $_confflags
-    make -j$(nproc) bootstrap
-    sudo make install
+	mkdir -p ~/aur/emacs-git/build
+	cd ~/aur/emacs-git/build
+	~/aur/emacs-git/src/emacs-git/configure $_confflags
+	make -j$(nproc) bootstrap
+	echo "Installing Emacs"
+	sudo make install
+    fi
 }
 
 doWork "$@"
