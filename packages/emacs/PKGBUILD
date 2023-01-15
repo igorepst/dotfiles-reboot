@@ -58,7 +58,7 @@ provides=('emacs')
 replaces=('emacs')
 makedepends=('git' 'xorgproto' 'libxi')
 options=(!strip)
-source=("emacs-git::git+https://git.savannah.gnu.org/git/emacs.git")
+source=("emacs-git::git+https://git.savannah.gnu.org/git/emacs.git#branch=emacs-29")
 b2sums=('SKIP')
 
 pkgver() {
