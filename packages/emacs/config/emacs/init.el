@@ -80,6 +80,19 @@
 (set-default-coding-systems 'utf-8)
 (push '(".*" . utf-8) process-coding-system-alist)
 
+(defun ig-hook-kill-emacs ()
+  "Kill Emacs hook."
+  (when (and (daemonp) (get-buffer "*scratch*"))
+    (with-current-buffer "*scratch*"
+      (write-file (concat ig-cache-dir "scratch.buf") nil))))
+(add-hook 'kill-emacs-hook #'ig-hook-kill-emacs)
+(defun ig-hook-after-init ()
+  "After init hook."
+  (when (get-buffer "*scratch*")
+			       (with-current-buffer "*scratch*"
+				 (insert-file-contents (concat ig-cache-dir "scratch.buf")))))
+(add-hook 'after-init-hook #'ig-hook-after-init)
+
 (run-with-idle-timer 0.1 nil (lambda()
 			       (require 'ig-fonts)
 			       (require 'ig-packages-load)
