@@ -180,6 +180,13 @@ CUR-X and CUR-Y - cursor X and Y."
 	 (kill-new choice)
 	 (message (concat "Path '" choice "' is copied")))))))
 
+;;;###autoload
+(defun ig-kill-emacs-hook ()
+  "Kill Emacs hook."
+  (when (and (daemonp) (get-buffer "*scratch*"))
+    (with-current-buffer "*scratch*"
+      (write-file (concat ig-cache-dir "scratch.buf") nil))))
+
 ;; Local Variables:
 ;; byte-compile-warnings: (not free-vars unresolved)
 ;; End:
